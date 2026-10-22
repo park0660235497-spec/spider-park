@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>แก้ไขเว็บ · สื่อการสอนของปาร์ค</title>
+<meta name="color-scheme" content="light">
+<meta name="robots" content="noindex">
+<script>
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw-Ev7uPnCj0dDag_eyeembdpKhrlw98AihU62y2MAmVfYJGbFKsroNwIOz08s0gd9K/exec"; // ลิงก์ Web app ของ Apps Script
+  const SITE_URL = "https://spiderpark-sciecce-2026.netlify.app/"; // ลิงก์หน้าเว็บหลัก (ปุ่ม "ดูหน้าเว็บ")
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mitr:wght@400;500;600&family=Anuphan:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#F7F6FC; --card:#FFFFFF; --ink:#2B2A3D; --sub:#6A6886; --mute:#8A87A3; --line:#EFEDF7; --field:#E7E4F3; --soft:#FAF9FE;
+  --peach:#FFD8C9; --mint:#CDEFE0; --sky:#D6E6FF; --lilac:#E6DDFB; --butter:#FFF1B8; --rose:#FBD9E6;
+  --accent:#5B4FC4; --ok:#2D7A57; --ok-bg:#DDF4E8; --err:#B23B30; --err-bg:#FFE0DC;
+  --slide-bg:#E8F0FF; --slide:#3F64A8; --lab-bg:#E3F6EC; --lab:#2D7A57; --sheet-bg:#FFEFD9; --sheet:#9A5B12;
+  --display:'Mitr','Anuphan',system-ui,sans-serif; --body:'Anuphan',system-ui,sans-serif; color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid #9B8CF0;outline-offset:2px}
+.hidden{display:none!important}
+h1,h2,h3{font-family:var(--display);font-weight:500;margin:0}
+
+/* login */
+.login{max-width:380px;margin:12vh auto 0;padding:0 16px}
+.login .box{background:var(--card);border-radius:26px;padding:30px;display:flex;flex-direction:column;gap:14px;text-align:center}
+.login .badge{width:64px;height:64px;border-radius:20px;background:var(--lilac);display:grid;place-items:center;margin:0 auto;font-family:var(--display);font-size:26px;color:var(--accent)}
+.login p{margin:0;color:var(--sub)}
+.err{color:var(--err);font-size:14px;min-height:20px}
+
+/* layout */
+.top{position:sticky;top:0;z-index:10;background:rgba(247,246,252,.92);backdrop-filter:blur(8px);border-bottom:1.5px solid var(--line);padding:12px 16px}
+.top-in{max-width:980px;margin:0 auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.top h1{font-size:20px;flex:1;min-width:140px}
+.status{font-size:13.5px;border-radius:999px;padding:5px 12px;background:var(--line);color:var(--sub)}
+.status.ok{background:var(--ok-bg);color:var(--ok)} .status.err{background:var(--err-bg);color:var(--err)}
+main{max-width:980px;margin:0 auto;padding:22px 16px 90px;display:flex;flex-direction:column;gap:22px}
+.panel{background:var(--card);border-radius:24px;padding:22px;display:flex;flex-direction:column;gap:16px}
+.panel>h2{font-size:20px}
+.hint{color:var(--mute);font-size:13.5px;margin:-8px 0 0}
+
+/* fields */
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field>span{font-size:13px;font-weight:600;color:var(--sub)}
+input[type=text],input[type=url],input[type=password],select{width:100%;border:1.5px solid var(--field);background:#fff;border-radius:12px;padding:9px 12px;min-width:0}
+input:focus,select:focus{border-color:#B9AEF3;outline:none}
+input.saved{border-color:#9ED9BB} input.saving{border-color:#E7D58A}
+
+.btn{border:1.5px solid var(--field);background:#fff;border-radius:999px;padding:8px 16px;cursor:pointer;font-weight:500;white-space:nowrap}
+.btn:hover{border-color:#B9AEF3}
+.btn.primary{background:var(--ink);border-color:var(--ink);color:#fff}
+.btn.soft{background:var(--lilac);border-color:transparent}
+.btn.danger{color:var(--err)} .btn.danger:hover{background:var(--err-bg);border-color:var(--err-bg)}
+.btn.sm{padding:5px 12px;font-size:13.5px}
+.icon{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--field);background:#fff;cursor:pointer;display:grid;place-items:center;flex:none;padding:0}
+.icon:hover{border-color:#B9AEF3} .icon.danger:hover{background:var(--err-bg);border-color:var(--err-bg);color:var(--err)}
+.icon svg{width:16px;height:16px}
+.icon[disabled]{opacity:.35;cursor:default}
+
+/* image picker */
+.images{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.imgpick{border:1.5px dashed var(--field);border-radius:18px;padding:12px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.imgpick .prev{border-radius:12px;background:linear-gradient(120deg,#FFE3D6,#E6DDFB 55%,#D6E6FF);aspect-ratio:16/7;overflow:hidden;position:relative;display:grid;place-items:center;color:var(--sub);font-size:13px}
+.imgpick .prev.round{aspect-ratio:1;width:96px;border-radius:50%;background:var(--peach)}
+.imgpick .prev img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.row>input{flex:1 1 180px}
+
+/* tabs */
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tab{border:none;cursor:pointer;border-radius:999px;padding:9px 18px;font-family:var(--display);background:var(--c)}
+.tab[aria-selected="true"]{background:var(--ink);color:#fff}
+.tab.add{background:#fff;border:1.5px dashed var(--field);color:var(--accent)}
+.levelbar{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr) auto;gap:12px;align-items:end;background:var(--soft);border-radius:18px;padding:14px}
+
+/* units */
+.unit{border:1.5px solid var(--line);border-radius:20px;overflow:hidden}
+.unit-head{display:flex;gap:10px;align-items:center;padding:12px 14px;background:var(--uc)}
+.unit-head .num{width:36px;height:36px;border-radius:12px;background:rgba(255,255,255,.7);display:grid;place-items:center;font-family:var(--display);flex:none}
+.unit-head input{flex:1;background:rgba(255,255,255,.85);border-color:transparent;font-family:var(--display);font-size:16.5px}
+.toggle{border:none;background:rgba(255,255,255,.7)}
+.unit-body{padding:14px;display:flex;flex-direction:column;gap:12px}
+.unit.closed .unit-body{display:none}
+.chapter{background:var(--soft);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:10px}
+.chapter-head{display:flex;gap:8px;align-items:center}
+.chapter-head input{flex:1;font-weight:600}
+.res{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:10px;display:grid;grid-template-columns:96px minmax(0,1fr) auto;gap:12px;align-items:start}
+.res .pv{width:96px;aspect-ratio:16/10;border-radius:10px;overflow:hidden;position:relative;background:var(--tb);display:grid;place-items:center;font-size:11px;color:var(--tc);text-align:center;padding:4px}
+.res .pv img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.res .inputs{display:grid;grid-template-columns:120px minmax(0,1fr);gap:8px;min-width:0}
+.res .inputs .full{grid-column:1/-1}
+.res .side{display:flex;flex-direction:column;gap:6px}
+.addrow{display:flex;gap:8px;flex-wrap:wrap}
+.empty{color:var(--mute);font-size:14px;text-align:center;padding:16px}
+@media (max-width:680px){
+  .fields,.images{grid-template-columns:1fr}
+  .levelbar{grid-template-columns:1fr}
+  .res{grid-template-columns:minmax(0,1fr) auto}
+  .res .pv{width:100%;max-width:160px;grid-column:1}
+  .res .side{grid-column:2;grid-row:1;flex-direction:row;align-self:start}
+  .res .inputs{grid-column:1/-1;grid-template-columns:1fr}
+  .unit-head{flex-wrap:wrap}
+  .unit-head input{flex:1 1 calc(100% - 50px);order:0}
+  .unit-head .num{order:-1}
+  .unit-head .icon{order:1}
+}
+</style>
+</head>
+<body>
+
+<section class="login" id="login">
+  <form class="box" id="loginForm">
+    <div class="badge" aria-hidden="true">ป</div>
+    <h1 style="font-size:22px">แก้ไขเว็บสื่อการสอน</h1>
+    <p>ใส่รหัสผ่านเพื่อเริ่มแก้ไข</p>
+    <label class="field" style="text-align:left"><span>รหัสผ่าน</span><input type="password" id="pw" autocomplete="current-password" required></label>
+    <button class="btn primary" type="submit" id="loginBtn">เข้าสู่หน้าแก้ไข</button>
+    <div class="err" id="loginErr" role="alert"></div>
+  </form>
+</section>
+
+<div id="app" class="hidden">
+  <div class="top"><div class="top-in">
+    <h1>แก้ไขเว็บ</h1>
+    <span class="status" id="status" role="status">พร้อมแก้ไข</span>
+    <button class="btn sm" type="button" id="reloadBtn">รีเฟรช</button>
+    <a class="btn sm soft" id="viewSite" target="_blank" rel="noopener" style="text-decoration:none">ดูหน้าเว็บ ↗</a>
+  </div></div>
+
+  <main>
+    <section class="panel">
+      <h2>หน้าตาเว็บ</h2>
+      <p class="hint">พิมพ์แล้วคลิกที่อื่น ระบบบันทึกให้เอง กรอบสีเขียวแปลว่าบันทึกแล้ว</p>
+      <div class="fields">
+        <label class="field"><span>ชื่อเว็บ</span><input type="text" data-site="title"></label>
+        <label class="field"><span>คำโปรยใต้ชื่อ</span><input type="text" data-site="subtitle"></label>
+      </div>
+      <div class="images">
+        <div class="imgpick">
+          <strong>รูปปกด้านบน</strong>
+          <div class="prev" id="pv-coverimage">ยังไม่มีรูปปก</div>
+          <div class="row"><input type="url" data-site="coverimage" placeholder="วางลิงก์รูป หรือกดอัปโหลด"><button class="btn sm soft" type="button" data-upload="coverimage">อัปโหลดรูป</button></div>
+        </div>
+        <div class="imgpick">
+          <strong>รูปโปรไฟล์</strong>
+          <div class="prev round" id="pv-headerimage">ไม่มีรูป</div>
+          <div class="row"><input type="url" data-site="headerimage" placeholder="วางลิงก์รูป หรือกดอัปโหลด"><button class="btn sm soft" type="button" data-upload="headerimage">อัปโหลดรูป</button></div>
+        </div>
+      </div>
+      <div class="fields" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+        <label class="field"><span>ชื่อป้าย “สไลด์”</span><input type="text" data-site="label_slide" placeholder="สไลด์"></label>
+        <label class="field"><span>ชื่อป้าย “แล็บ”</span><input type="text" data-site="label_lab" placeholder="แล็บ / กิจกรรม"></label>
+        <label class="field"><span>ชื่อป้าย “ใบงาน”</span><input type="text" data-site="label_sheet" placeholder="ใบงาน"></label>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>เนื้อหา</h2>
+      <div class="tabs" id="tabs" role="tablist" aria-label="หมวดหมู่"></div>
+      <div id="levelArea"></div>
+    </section>
+
+    <section class="panel">
+      <h2>เปลี่ยนรหัสผ่าน</h2>
+      <form class="row" id="pwForm">
+        <input type="password" id="newPw" placeholder="รหัสผ่านใหม่ (อย่างน้อย 6 ตัว)" autocomplete="new-password" minlength="6" required aria-label="รหัสผ่านใหม่">
+        <button class="btn" type="submit">เปลี่ยนรหัสผ่าน</button>
+      </form>
+    </section>
+  </main>
+</div>
+
+<input type="file" id="filePick" accept="image/*" class="hidden">
+
+<script>
+const UNIT_COLORS = ['--peach','--sky','--mint','--lilac','--butter','--rose'];
+const TYPES = {slide:['สไลด์','--slide-bg','--slide'], lab:['แล็บ','--lab-bg','--lab'], sheet:['ใบงาน','--sheet-bg','--sheet']};
+const I = {
+  up:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg>',
+  down:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg>',
+  left:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>',
+  right:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>',
+  del:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg>',
+  open:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>',
+  img:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-8 8"/></svg>'
+};
+let DATA = {resources:[], site:{}}, PASSWORD = '', level = null;
+const closed = new Set();
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+/* ---------- api ---------- */
+async function api(payload){
+  const res = await fetch(APPS_SCRIPT_URL, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify({...payload, password:PASSWORD})});
+  const data = await res.json(); if(data.error) throw new Error(data.error); return data;
+}
+let pending = 0;
+function status(t, kind){ const s = $('#status'); s.textContent = t; s.className = 'status ' + (kind || ''); }
+async function run(payload, {rerender = true, input = null} = {}){
+  pending++; status('กำลังบันทึก…'); if(input){ input.classList.remove('saved'); input.classList.add('saving'); }
+  try{
+    const data = await api(payload);
+    if(data.resources){ DATA = data; if(rerender) render(); }
+    if(input){ input.classList.remove('saving'); input.classList.add('saved'); }
+    if(--pending === 0) status('บันทึกแล้ว ✓', 'ok');
+    return data;
+  }catch(err){ pending = Math.max(0, pending - 1); if(input) input.classList.remove('saving'); status('บันทึกไม่สำเร็จ: ' + err.message, 'err'); throw err; }
+}
+
+/* ---------- helpers ---------- */
+function driveId(u){ const m = String(u||'').match(/\/d\/([\w-]{20,})/) || String(u||'').match(/[?&]id=([\w-]{20,})/); return m ? m[1] : null; }
+const isDrive = u => /(drive|docs)\.google\.com/.test(String(u||''));
+function imgURL(u, w){ if(!u) return ''; const id = isDrive(u) && driveId(u); return id ? `https://drive.google.com/thumbnail?id=${id}&sz=w${w||600}` : String(u).trim(); }
+function preview(el, url, emptyText){ el.innerHTML = esc(emptyText); if(url){ const im = new Image(); im.alt = ''; im.referrerPolicy = 'no-referrer'; im.onerror = () => im.remove(); im.src = imgURL(url, 1000); el.appendChild(im); } }
+const rid = r => r.ResID ? {resId:r.ResID} : {rowNum:r.__row};
+
+function group(){
+  const L = [], map = {};
+  DATA.resources.forEach(r => {
+    if(!r.LevelID) return;
+    let lv = map[r.LevelID]; if(!lv){ lv = map[r.LevelID] = {id:r.LevelID, short:r.LevelShort || r.LevelID, desc:r.LevelDesc || '', units:{}}; L.push(lv); }
+    const uk = String(r.UnitOrder); let u = lv.units[uk]; if(!u) u = lv.units[uk] = {order:+r.UnitOrder||0, name:r.UnitName||'', ch:{}};
+    const ck = String(r.ChapterOrder); let c = u.ch[ck]; if(!c) c = u.ch[ck] = {order:+r.ChapterOrder||0, name:r.ChapterName||'', res:[]};
+    if(r.ResType) c.res.push(r);
+  });
+  L.forEach(lv => { lv.units = Object.values(lv.units).sort((a,b) => a.order - b.order); lv.units.forEach(u => u.ch = Object.values(u.ch).sort((a,b) => a.order - b.order)); });
+  return L;
+}
+
+/* ---------- image upload ---------- */
+function resizeToBase64(file, max = 1600){ return new Promise((res, rej) => {
+  const fr = new FileReader(); fr.onerror = () => rej(new Error('อ่านไฟล์ไม่ได้'));
+  fr.onload = () => { const im = new Image(); im.onerror = () => rej(new Error('ไฟล์นี้ไม่ใช่รูปภาพ'));
+    im.onload = () => { const k = Math.min(1, max / Math.max(im.width, im.height)); const c = document.createElement('canvas'); c.width = Math.round(im.width * k); c.height = Math.round(im.height * k);
+      const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); g.drawImage(im, 0, 0, c.width, c.height);
+      res(c.toDataURL('image/jpeg', .85).split(',')[1]); };
+    im.src = fr.result; };
+  fr.readAsDataURL(file); }); }
+function pickImage(){ return new Promise(resolve => { const f = $('#filePick'); f.value = ''; f.onchange = () => resolve(f.files[0] || null); f.click(); }); }
+async function uploadInto(input){
+  const file = await pickImage(); if(!file) return;
+  status('กำลังอัปโหลดรูป…');
+  try{
+    const data = await resizeToBase64(file);
+    const r = await api({action:'upload_image', name:file.name, mimeType:'image/jpeg', data});
+    input.value = r.url; input.dispatchEvent(new Event('change', {bubbles:true}));
+  }catch(err){ status('อัปโหลดไม่สำเร็จ: ' + err.message, 'err'); }
+}
+
+/* ---------- render: site ---------- */
+function renderSite(){
+  document.querySelectorAll('[data-site]').forEach(inp => { inp.value = DATA.site[inp.dataset.site] || ''; inp.classList.remove('saved','saving'); });
+  preview($('#pv-coverimage'), DATA.site.coverimage, 'ยังไม่มีรูปปก (ใช้พื้นสีพาสเทลแทน)');
+  preview($('#pv-headerimage'), DATA.site.headerimage, 'ไม่มีรูป');
+}
+
+/* ---------- render: content ---------- */
+const iconBtn = (act, icon, label, extra = '', disabled = false) => `<button class="icon ${extra}" type="button" data-act="${act}" aria-label="${label}" title="${label}" ${disabled ? 'disabled' : ''}>${I[icon]}</button>`;
+function render(){
+  const L = group();
+  if(!L.some(l => l.id === level)) level = L[0] && L[0].id;
+  $('#tabs').innerHTML = L.map((l,i) => `<button class="tab" type="button" role="tab" aria-selected="${l.id===level}" data-tab="${esc(l.id)}" style="--c:var(${UNIT_COLORS[i % UNIT_COLORS.length]})">${esc(l.short)}</button>`).join('')
+    + `<button class="tab add" type="button" data-act="add_level">+ เพิ่มหมวดหมู่</button>`;
+  const lv = L.find(l => l.id === level), li = L.indexOf(lv);
+  if(!lv){ $('#levelArea').innerHTML = '<div class="empty">ยังไม่มีหมวดหมู่ กด “+ เพิ่มหมวดหมู่” เพื่อเริ่ม</div>'; return; }
+  $('#levelArea').innerHTML = `
+    <div class="levelbar" data-level="${esc(lv.id)}">
+      <label class="field"><span>ชื่อแท็บ</span><input type="text" data-edit="level_short" value="${esc(lv.short)}"></label>
+      <label class="field"><span>คำอธิบายใต้แท็บ</span><input type="text" data-edit="level_desc" value="${esc(lv.desc)}"></label>
+      <div class="row">${iconBtn('move_level:-1','left','เลื่อนแท็บไปทางซ้าย','',li===0)}${iconBtn('move_level:1','right','เลื่อนแท็บไปทางขวา','',li===L.length-1)}${iconBtn('delete_level','del','ลบหมวดหมู่นี้','danger')}</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;margin-top:14px">
+    ${lv.units.map((u, ui) => `
+      <div class="unit ${closed.has(lv.id+'|'+u.order) ? 'closed' : ''}" data-unit="${u.order}" style="--uc:var(${UNIT_COLORS[ui % UNIT_COLORS.length]})">
+        <div class="unit-head">
+          <span class="num">${ui+1}</span>
+          <input type="text" data-edit="unit_name" value="${esc(u.name)}" aria-label="ชื่อหน่วย">
+          ${iconBtn('move_unit:-1','up','เลื่อนหน่วยขึ้น','toggle',ui===0)}${iconBtn('move_unit:1','down','เลื่อนหน่วยลง','toggle',ui===lv.units.length-1)}${iconBtn('delete_unit','del','ลบหน่วยนี้','toggle danger')}${iconBtn('toggle','open','ย่อ/ขยาย','toggle')}
+        </div>
+        <div class="unit-body">
+          ${u.ch.map((c, ci) => `
+            <div class="chapter" data-chapter="${c.order}">
+              <div class="chapter-head">
+                <input type="text" data-edit="chapter_name" value="${esc(c.name)}" aria-label="ชื่อบท">
+                ${iconBtn('move_chapter:-1','up','เลื่อนบทขึ้น','',ci===0)}${iconBtn('move_chapter:1','down','เลื่อนบทลง','',ci===u.ch.length-1)}${iconBtn('delete_chapter','del','ลบบทนี้','danger')}
+              </div>
+              ${c.res.map((r, ri) => resRow(r, ri, c.res.length)).join('')}
+              <div class="addrow">${Object.entries(TYPES).map(([t,[n]]) => `<button class="btn sm" type="button" data-act="add_resource:${t}">+ ${n}</button>`).join('')}</div>
+            </div>`).join('')}
+          <div><button class="btn sm soft" type="button" data-act="add_chapter">+ เพิ่มบทในหน่วยนี้</button></div>
+        </div>
+      </div>`).join('')}
+    </div>
+    <div style="margin-top:14px"><button class="btn primary" type="button" data-act="add_unit">+ เพิ่มหน่วยใหม่</button></div>`;
+  document.querySelectorAll('.res').forEach(updateResPreview);
+}
+function resRow(r, ri, n){
+  const [, bg, fg] = TYPES[r.ResType] || ['', '--lilac', '--accent'];
+  return `<div class="res" data-res="${esc(r.ResID || '')}" data-row="${r.__row}" style="--tb:var(${bg});--tc:var(${fg})">
+    <div class="pv">ไม่มีรูป</div>
+    <div class="inputs">
+      <select data-edit="res" data-f="resType" aria-label="ประเภท">${Object.entries(TYPES).map(([t,[nm]]) => `<option value="${t}" ${t===r.ResType?'selected':''}>${nm}</option>`).join('')}</select>
+      <input type="text" data-edit="res" data-f="label" value="${esc(r.ResLabel)}" placeholder="ชื่อที่แสดงบนการ์ด" aria-label="ชื่อ">
+      <input class="full" type="url" data-edit="res" data-f="url" value="${esc(r.ResURL)}" placeholder="ลิงก์ไฟล์ / ลิงก์แล็บ" aria-label="ลิงก์">
+      <div class="full row"><input type="url" data-edit="res" data-f="image" value="${esc(r.ResImageURL)}" placeholder="รูปโชว์ลิงก์ (เว้นว่างได้ ระบบใช้หน้าแรกของไฟล์ Drive ให้)" aria-label="รูปโชว์ลิงก์"><button class="btn sm soft" type="button" data-act="upload_res">อัปโหลดรูป</button></div>
+    </div>
+    <div class="side">${iconBtn('move_res:-1','up','เลื่อนขึ้น','',ri===0)}${iconBtn('move_res:1','down','เลื่อนลง','',ri===n-1)}${iconBtn('delete_res','del','ลบไฟล์นี้','danger')}</div>
+  </div>`;
+}
+function updateResPreview(row){
+  const img = row.querySelector('[data-f=image]').value.trim(), url = row.querySelector('[data-f=url]').value.trim();
+  const src = img || (isDrive(url) && driveId(url) ? url : '');
+  preview(row.querySelector('.pv'), src, src ? '' : (url ? 'ไม่มีรูป' : 'ยังไม่ใส่ลิงก์'));
+}
+
+/* ---------- context from DOM ---------- */
+function ctx(el){
+  const lvEl = $('.levelbar'), u = el.closest('[data-unit]'), c = el.closest('[data-chapter]'), r = el.closest('.res');
+  const o = {levelId: lvEl && lvEl.dataset.level};
+  if(u) o.unitOrder = Number(u.dataset.unit);
+  if(c) o.chapterOrder = Number(c.dataset.chapter);
+  if(r) Object.assign(o, r.dataset.res ? {resId:r.dataset.res} : {rowNum:Number(r.dataset.row)});
+  return o;
+}
+
+/* ---------- events ---------- */
+document.addEventListener('change', e => {
+  const t = e.target;
+  if(t.dataset.site){ run({action:'save_site', key:t.dataset.site, value:t.value.trim()}, {rerender:false, input:t}).then(() => { DATA.site[t.dataset.site] = t.value.trim(); renderSite(); t.classList.add('saved'); }).catch(()=>{}); return; }
+  const k = t.dataset.edit; if(!k) return; const c = ctx(t);
+  if(k === 'level_short' || k === 'level_desc'){
+    const bar = t.closest('.levelbar');
+    run({action:'edit_level', levelId:c.levelId, levelShort:bar.querySelector('[data-edit=level_short]').value, levelDesc:bar.querySelector('[data-edit=level_desc]').value}, {rerender:false, input:t})
+      .then(() => { const sel = document.querySelector('.tab[aria-selected=true]'); if(sel && k === 'level_short') sel.textContent = t.value; }).catch(()=>{});
+  } else if(k === 'unit_name') run({action:'edit_unit', ...c, unitName:t.value}, {rerender:false, input:t}).catch(()=>{});
+  else if(k === 'chapter_name') run({action:'edit_chapter', ...c, chapterName:t.value}, {rerender:false, input:t}).catch(()=>{});
+  else if(k === 'res'){
+    const row = t.closest('.res'); updateResPreview(row);
+    if(t.dataset.f === 'resType'){ const [, bg, fg] = TYPES[t.value]; row.style.setProperty('--tb', `var(${bg})`); row.style.setProperty('--tc', `var(${fg})`); }
+    const v = f => row.querySelector(`[data-f=${f}]`).value.trim();
+    run({action:'save_resource', ...c, resType:v('resType'), label:v('label'), url:v('url'), image:v('image')}, {rerender:false, input:t}).catch(()=>{});
+  }
+});
+document.addEventListener('click', async e => {
+  const tab = e.target.closest('[data-tab]'); if(tab){ level = tab.dataset.tab; render(); return; }
+  const up = e.target.closest('[data-upload]'); if(up){ uploadInto(document.querySelector(`[data-site="${up.dataset.upload}"]`)); return; }
+  const b = e.target.closest('[data-act]'); if(!b || b.disabled) return;
+  const [act, arg] = b.dataset.act.split(':'); const c = ctx(b);
+  try{
+    if(act === 'toggle'){ const u = b.closest('.unit'), key = c.levelId + '|' + c.unitOrder; u.classList.toggle('closed'); closed.has(key) ? closed.delete(key) : closed.add(key); }
+    else if(act === 'add_level'){ const before = new Set(group().map(l => l.id)); await run({action:'add_level', levelShort:'หมวดใหม่', levelDesc:''}); const n = group().find(l => !before.has(l.id)); if(n){ level = n.id; render(); } document.querySelector('[data-edit=level_short]')?.focus(); }
+    else if(act === 'move_level') await run({action:'move_level', levelId:c.levelId, dir:Number(arg)});
+    else if(act === 'delete_level'){ if(confirm('ลบหมวดหมู่นี้ทั้งหมด รวมทุกหน่วย บท และไฟล์ข้างใน ใช่ไหม?')){ await run({action:'delete_level', levelId:c.levelId}); level = null; render(); } }
+    else if(act === 'add_unit'){ await run({action:'add_unit', levelId:c.levelId, unitName:'หน่วยใหม่'}); const ins = document.querySelectorAll('[data-edit=unit_name]'); const last = ins[ins.length-1]; if(last){ last.focus(); last.select(); } }
+    else if(act === 'move_unit') await run({action:'move_unit', ...c, dir:Number(arg)});
+    else if(act === 'delete_unit'){ if(confirm('ลบหน่วยนี้ รวมทุกบทและไฟล์ข้างใน ใช่ไหม?')) await run({action:'delete_unit', ...c}); }
+    else if(act === 'add_chapter') await run({action:'add_chapter', ...c, chapterName:'บทใหม่'});
+    else if(act === 'move_chapter') await run({action:'move_chapter', ...c, dir:Number(arg)});
+    else if(act === 'delete_chapter'){ if(confirm('ลบบทนี้ รวมทุกไฟล์ข้างใน ใช่ไหม?')) await run({action:'delete_chapter', ...c}); }
+    else if(act === 'add_resource') await run({action:'add_resource', ...c, resType:arg});
+    else if(act === 'move_res'){ if(!c.resId){ status('ต้องอัปเดต Apps Script เป็นเวอร์ชันใหม่ก่อน จึงจะเลื่อนลำดับไฟล์ได้', 'err'); return; } await run({action:'move_resource', resId:c.resId, dir:Number(arg)}); }
+    else if(act === 'delete_res'){ if(confirm('ลบไฟล์นี้ใช่ไหม?')) await run({action:'delete_resource', ...c}); }
+    else if(act === 'upload_res') uploadInto(b.closest('.res').querySelector('[data-f=image]'));
+  }catch(_){}
+});
+$('#reloadBtn').addEventListener('click', boot);
+$('#pwForm').addEventListener('submit', async e => { e.preventDefault(); const np = $('#newPw').value; try{ await run({action:'change_password', newPassword:np}, {rerender:false}); PASSWORD = np; $('#newPw').value = ''; status('เปลี่ยนรหัสผ่านแล้ว ✓', 'ok'); }catch(_){} });
+$('#loginForm').addEventListener('submit', async e => {
+  e.preventDefault(); $('#loginErr').textContent = '';
+  if(APPS_SCRIPT_URL.startsWith('PASTE')){ $('#loginErr').textContent = 'ยังไม่ได้ใส่ลิงก์ Apps Script ในไฟล์ edit.html'; return; }
+  PASSWORD = $('#pw').value; $('#loginBtn').disabled = true; $('#loginBtn').textContent = 'กำลังตรวจสอบ…';
+  try{ await api({action:'ping'}); try{ sessionStorage.setItem('park-pw', PASSWORD); }catch(_){} $('#login').classList.add('hidden'); $('#app').classList.remove('hidden'); await boot(); }
+  catch(err){ $('#loginErr').textContent = /ไม่รู้จักคำสั่ง/.test(err.message) ? 'Apps Script ยังเป็นเวอร์ชันเก่า กรุณาอัปเดตโค้ดก่อน' : 'เข้าไม่ได้: ' + err.message; }
+  finally{ $('#loginBtn').disabled = false; $('#loginBtn').textContent = 'เข้าสู่หน้าแก้ไข'; }
+});
+async function boot(){
+  status('กำลังโหลด…');
+  try{ const r = await fetch(APPS_SCRIPT_URL); DATA = await r.json(); renderSite(); render(); status('พร้อมแก้ไข'); }
+  catch(err){ status('โหลดข้อมูลไม่สำเร็จ: ' + err.message, 'err'); }
+}
+$('#viewSite').href = SITE_URL;
+try{ const p = sessionStorage.getItem('park-pw'); if(p){ $('#pw').value = p; } }catch(_){}
+</script>
+</body>
+</html>
