@@ -18,7 +18,7 @@
   --bg:#F7F6FC; --card:#FFFFFF; --ink:#2B2A3D; --sub:#6A6886; --mute:#8A87A3; --line:#EFEDF7; --field:#E7E4F3; --soft:#FAF9FE;
   --peach:#FFD8C9; --mint:#CDEFE0; --sky:#D6E6FF; --lilac:#E6DDFB; --butter:#FFF1B8; --rose:#FBD9E6;
   --accent:#5B4FC4; --ok:#2D7A57; --ok-bg:#DDF4E8; --err:#B23B30; --err-bg:#FFE0DC;
-  --slide-bg:#E8F0FF; --slide:#3F64A8; --lab-bg:#E3F6EC; --lab:#2D7A57; --sheet-bg:#FFEFD9; --sheet:#9A5B12;
+  --slide-bg:#E8F0FF; --slide:#3F64A8; --lab-bg:#E3F6EC; --lab:#2D7A57; --sheet-bg:#FFEFD9; --sheet:#9A5B12; --video-bg:#FBD9E6; --video:#A8406A;
   --display:'Mitr','Anuphan',system-ui,sans-serif; --body:'Anuphan',system-ui,sans-serif; color-scheme:light;
 }
 *{box-sizing:border-box}
@@ -155,10 +155,11 @@ input.saved{border-color:#9ED9BB} input.saving{border-color:#E7D58A}
           <div class="row"><input type="url" data-site="headerimage" placeholder="วางลิงก์รูป หรือกดอัปโหลด"><button class="btn sm soft" type="button" data-upload="headerimage">อัปโหลดรูป</button></div>
         </div>
       </div>
-      <div class="fields" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+      <div class="fields" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr))">
         <label class="field"><span>ชื่อป้าย “สไลด์”</span><input type="text" data-site="label_slide" placeholder="สไลด์"></label>
         <label class="field"><span>ชื่อป้าย “แล็บ”</span><input type="text" data-site="label_lab" placeholder="แล็บ / กิจกรรม"></label>
         <label class="field"><span>ชื่อป้าย “ใบงาน”</span><input type="text" data-site="label_sheet" placeholder="ใบงาน"></label>
+        <label class="field"><span>ชื่อป้าย “วิดีโอ”</span><input type="text" data-site="label_video" placeholder="วิดีโอ"></label>
       </div>
     </section>
 
@@ -182,7 +183,7 @@ input.saved{border-color:#9ED9BB} input.saving{border-color:#E7D58A}
 
 <script>
 const UNIT_COLORS = ['--peach','--sky','--mint','--lilac','--butter','--rose'];
-const TYPES = {slide:['สไลด์','--slide-bg','--slide'], lab:['แล็บ','--lab-bg','--lab'], sheet:['ใบงาน','--sheet-bg','--sheet']};
+const TYPES = {slide:['สไลด์','--slide-bg','--slide'], lab:['แล็บ','--lab-bg','--lab'], sheet:['ใบงาน','--sheet-bg','--sheet'], video:['วิดีโอ','--video-bg','--video']};
 const I = {
   up:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg>',
   down:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg>',
@@ -216,6 +217,7 @@ async function run(payload, {rerender = true, input = null} = {}){
 }
 
 /* ---------- helpers ---------- */
+function ytId(u){ const m = String(u||'').match(/(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/))([\w-]{11})/); return m ? m[1] : null; }
 function driveId(u){ const m = String(u||'').match(/\/d\/([\w-]{20,})/) || String(u||'').match(/[?&]id=([\w-]{20,})/); return m ? m[1] : null; }
 const isDrive = u => /(drive|docs)\.google\.com/.test(String(u||''));
 function imgURL(u, w){ if(!u) return ''; const id = isDrive(u) && driveId(u); return id ? `https://drive.google.com/thumbnail?id=${id}&sz=w${w||600}` : String(u).trim(); }
@@ -309,7 +311,7 @@ function resRow(r, ri, n){
     <div class="inputs">
       <select data-edit="res" data-f="resType" aria-label="ประเภท">${Object.entries(TYPES).map(([t,[nm]]) => `<option value="${t}" ${t===r.ResType?'selected':''}>${nm}</option>`).join('')}</select>
       <input type="text" data-edit="res" data-f="label" value="${esc(r.ResLabel)}" placeholder="ชื่อที่แสดงบนการ์ด" aria-label="ชื่อ">
-      <input class="full" type="url" data-edit="res" data-f="url" value="${esc(r.ResURL)}" placeholder="ลิงก์ไฟล์ / ลิงก์แล็บ" aria-label="ลิงก์">
+      <input class="full" type="url" data-edit="res" data-f="url" value="${esc(r.ResURL)}" placeholder="ลิงก์ไฟล์ / ลิงก์แล็บ / ลิงก์ YouTube" aria-label="ลิงก์">
       <div class="full row"><input type="url" data-edit="res" data-f="image" value="${esc(r.ResImageURL)}" placeholder="รูปโชว์ลิงก์ (เว้นว่างได้ ระบบใช้หน้าแรกของไฟล์ Drive ให้)" aria-label="รูปโชว์ลิงก์"><button class="btn sm soft" type="button" data-act="upload_res">อัปโหลดรูป</button></div>
     </div>
     <div class="side">${iconBtn('move_res:-1','up','เลื่อนขึ้น','',ri===0)}${iconBtn('move_res:1','down','เลื่อนลง','',ri===n-1)}${iconBtn('delete_res','del','ลบไฟล์นี้','danger')}</div>
@@ -317,7 +319,8 @@ function resRow(r, ri, n){
 }
 function updateResPreview(row){
   const img = row.querySelector('[data-f=image]').value.trim(), url = row.querySelector('[data-f=url]').value.trim();
-  const src = img || (isDrive(url) && driveId(url) ? url : '');
+  const yt = ytId(url);
+  const src = img || (yt ? `https://i.ytimg.com/vi/${yt}/mqdefault.jpg` : (isDrive(url) && driveId(url) ? url : ''));
   preview(row.querySelector('.pv'), src, src ? '' : (url ? 'ไม่มีรูป' : 'ยังไม่ใส่ลิงก์'));
 }
 

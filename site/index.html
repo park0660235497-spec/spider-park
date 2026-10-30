@@ -19,7 +19,7 @@
 :root{
   --bg:#F7F6FC; --card:#FFFFFF; --ink:#2B2A3D; --sub:#6A6886; --mute:#8A87A3; --line:#EFEDF7; --field:#E7E4F3;
   --peach:#FFD8C9; --mint:#CDEFE0; --sky:#D6E6FF; --lilac:#E6DDFB; --butter:#FFF1B8; --rose:#FBD9E6;
-  --slide-bg:#E8F0FF; --slide:#3F64A8; --lab-bg:#E3F6EC; --lab:#2D7A57; --sheet-bg:#FFEFD9; --sheet:#9A5B12;
+  --slide-bg:#E8F0FF; --slide:#3F64A8; --lab-bg:#E3F6EC; --lab:#2D7A57; --sheet-bg:#FFEFD9; --sheet:#9A5B12; --video-bg:#FBD9E6; --video:#A8406A;
   --easy-bg:#DDF4E8; --easy:#2D7A57; --mid-bg:#FFF1C2; --mid:#8A6A12; --hard-bg:#FFE0DC; --hard:#A8483C; --key-bg:#ECE6FD; --key:#5B4FC4;
   --display:'Mitr','Anuphan',system-ui,sans-serif; --body:'Anuphan',system-ui,sans-serif;
   color-scheme:light;
@@ -79,6 +79,20 @@ button{font:inherit;color:inherit}
 .pill.easy{background:var(--easy-bg);color:var(--easy)} .pill.mid{background:var(--mid-bg);color:var(--mid)} .pill.hard{background:var(--hard-bg);color:var(--hard)} .pill.key{background:var(--key-bg);color:var(--key)}
 .soon{color:var(--mute);font-size:14px}
 .msg{background:#fff;border-radius:22px;padding:40px 20px;text-align:center;color:var(--sub)}
+/* video */
+.play{position:absolute;left:50%;top:50%;width:52px;height:52px;margin:-26px 0 0 -26px;border-radius:50%;background:rgba(255,255,255,.92);display:grid;place-items:center;box-shadow:0 4px 14px rgba(43,42,61,.18);transition:transform .15s}
+.play::after{content:"";margin-left:4px;border-left:16px solid var(--video);border-top:10px solid transparent;border-bottom:10px solid transparent}
+.card:hover .play{transform:scale(1.08)}
+dialog.player{border:none;padding:0;border-radius:24px;width:min(960px,calc(100vw - 24px));max-height:calc(100dvh - 24px);background:var(--card);color:var(--ink);overflow:auto}
+dialog.player::backdrop{background:rgba(43,42,61,.55)}
+.pl-frame{aspect-ratio:16/9;background:#111;width:100%}
+.pl-frame iframe{width:100%;height:100%;border:0;display:block}
+.pl-bar{display:flex;align-items:center;gap:10px;padding:12px 14px 14px;flex-wrap:wrap}
+.pl-title{flex:1 1 220px;min-width:0;font-family:var(--display);font-size:17px;line-height:1.35}
+.pl-title small{display:block;font-family:var(--body);font-size:13px;color:var(--mute)}
+.pl-btn{border:none;cursor:pointer;border-radius:999px;padding:9px 16px;background:var(--bg);font-family:var(--display);font-size:14.5px;white-space:nowrap}
+.pl-btn:disabled{opacity:.4;cursor:default}
+.pl-btn.close{background:var(--ink);color:#fff}
 mark{background:var(--butter);color:inherit;border-radius:4px;padding:0 2px}
 footer{text-align:center;color:var(--mute);font-size:13px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;align-items:center}
 footer button{border:1.5px solid var(--field);background:#fff;border-radius:999px;padding:5px 14px;cursor:pointer}
@@ -120,10 +134,11 @@ footer button{border:1.5px solid var(--field);background:#fff;border-radius:999p
 <script>
 const UNIT_COLORS = ['--peach','--sky','--mint','--lilac','--butter','--rose'];
 const TAB_COLORS = ['--peach','--mint','--sky','--lilac','--butter','--rose'];
-const TYPE_STYLE = {slide:['--slide-bg','--slide'], lab:['--lab-bg','--lab'], sheet:['--sheet-bg','--sheet']};
+const TYPE_STYLE = {slide:['--slide-bg','--slide'], lab:['--lab-bg','--lab'], sheet:['--sheet-bg','--sheet'], video:['--video-bg','--video']};
 const ICONS = {
   slide:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4M8 20h8"/></svg>',
   lab:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6a2 2 0 0 0 1.7-3l-5-9V3"/><path d="M7.5 15h9"/></svg>',
+  video:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9.5v5l4.5-2.5z"/></svg>',
   link:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>'
 };
 let DATA = {resources:[], site:{}}, level = null, openUnits = new Set();
@@ -153,10 +168,11 @@ async function fetchData(){
 
 /* ---------- helpers ---------- */
 function driveId(u){ const m = String(u||'').match(/\/d\/([\w-]{20,})/) || String(u||'').match(/[?&]id=([\w-]{20,})/); return m ? m[1] : null; }
+function ytId(u){ const m = String(u||'').match(/(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/))([\w-]{11})/); return m ? m[1] : null; }
 function isDrive(u){ return /(drive|docs)\.google\.com/.test(String(u||'')); }
 function imgURL(u, w){ if(!u) return ''; const id = isDrive(u) && driveId(u); return id ? `https://drive.google.com/thumbnail?id=${id}&sz=w${w||800}` : String(u).trim(); }
-function thumbFor(r){ if(r.ResImageURL) return imgURL(r.ResImageURL); if(isDrive(r.ResURL) && driveId(r.ResURL)) return imgURL(r.ResURL); return ''; }
-const typeLabel = t => (DATA.site['label_' + t] || {slide:'สไลด์', lab:'แล็บ / กิจกรรม', sheet:'ใบงาน'}[t] || 'ลิงก์');
+function thumbFor(r){ if(r.ResImageURL) return imgURL(r.ResImageURL); const yt = ytId(r.ResURL); if(yt) return `https://i.ytimg.com/vi/${yt}/mqdefault.jpg`; if(isDrive(r.ResURL) && driveId(r.ResURL)) return imgURL(r.ResURL); return ''; }
+const typeLabel = t => (DATA.site['label_' + t] || {slide:'สไลด์', lab:'แล็บ / กิจกรรม', sheet:'ใบงาน', video:'วิดีโอ'}[t] || 'ลิงก์');
 const diff = l => /เฉลย/.test(l) ? 'key' : /ง่าย/.test(l) ? 'easy' : /กลาง/.test(l) ? 'mid' : /ยาก/.test(l) ? 'hard' : '';
 const diffRank = l => ({easy:1, mid:2, hard:3, key:4})[diff(l)] || 0;
 function hl(text, q){ const t = String(text||''); if(!q) return esc(t); const i = t.toLowerCase().indexOf(q); return i < 0 ? esc(t) : esc(t.slice(0,i)) + '<mark>' + esc(t.slice(i, i+q.length)) + '</mark>' + esc(t.slice(i+q.length)); }
@@ -193,8 +209,9 @@ function renderTabs(L){
 function resCard(r, q){
   const [bg, fg] = TYPE_STYLE[r.ResType] || ['--lilac','--key']; const th = thumbFor(r);
   const icon = ICONS[r.ResType] || ICONS.link;
-  return `<a class="card" href="${esc(r.ResURL)}" target="_blank" rel="noopener" style="--tb:var(${bg});--tc:var(${fg})">
-    <div class="thumb">${icon}${th ? `<img src="${esc(th)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}</div>
+  const vid = r.ResType === 'video' && ytId(r.ResURL);
+  return `<a class="card" href="${esc(r.ResURL)}" target="_blank" rel="noopener" style="--tb:var(${bg});--tc:var(${fg})"${vid ? ` data-v="${esc(vid)}"` : ''}>
+    <div class="thumb">${icon}${th ? `<img src="${esc(th)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}${vid ? '<span class="play" aria-hidden="true"></span>' : ''}</div>
     <div class="card-body"><span class="tag">${esc(typeLabel(r.ResType))}</span><span class="card-title">${hl(r.ResLabel || typeLabel(r.ResType), q)}</span></div></a>`;
 }
 function render(){
@@ -225,9 +242,32 @@ function render(){
   }).join('');
 }
 
+/* ---------- video player ---------- */
+let PL = [], PI = 0;
+const dlg = document.createElement('dialog'); dlg.className = 'player'; dlg.setAttribute('aria-label', 'เล่นวิดีโอ');
+dlg.innerHTML = '<div class="pl-frame" id="plFrame"></div><div class="pl-bar"><div class="pl-title" id="plTitle"></div><button class="pl-btn" type="button" id="plPrev">‹ ก่อนหน้า</button><button class="pl-btn" type="button" id="plNext">ถัดไป ›</button><button class="pl-btn close" type="button" id="plClose">ปิด</button></div>';
+document.body.appendChild(dlg);
+function playAt(i){
+  PI = i; const c = PL[i];
+  $('#plFrame').innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${c.v}?autoplay=1&rel=0&playsinline=1" title="${esc(c.t)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+  $('#plTitle').innerHTML = `${esc(c.t)}<small>${i + 1} / ${PL.length}${c.ch ? ' · ' + esc(c.ch) : ''}</small>`;
+  $('#plPrev').disabled = i === 0; $('#plNext').disabled = i === PL.length - 1;
+}
+function openPlayer(card){
+  const cards = [...card.closest('.unit-body, .units').querySelectorAll('.card[data-v]')];
+  PL = cards.map(c => ({v:c.dataset.v, t:c.querySelector('.card-title').textContent, ch:(c.closest('.chapter')?.querySelector('h3')?.textContent || '')}));
+  playAt(Math.max(0, cards.indexOf(card)));
+  if(!dlg.open) dlg.showModal();
+}
+$('#plPrev').addEventListener('click', () => PI > 0 && playAt(PI - 1));
+$('#plNext').addEventListener('click', () => PI < PL.length - 1 && playAt(PI + 1));
+$('#plClose').addEventListener('click', () => dlg.close());
+dlg.addEventListener('click', e => { if(e.target === dlg) dlg.close(); });
+dlg.addEventListener('close', () => { $('#plFrame').innerHTML = ''; });
+
 /* ---------- events ---------- */
 $('#tabs').addEventListener('click', e => { const b = e.target.closest('[data-l]'); if(!b) return; level = b.dataset.l; openUnits.clear(); try{ localStorage.setItem('park-level', level); }catch(_){} render(); });
-$('#units').addEventListener('click', e => { const b = e.target.closest('[data-u]'); if(!b) return; const k = b.dataset.u; openUnits.has(k) ? openUnits.delete(k) : openUnits.add(k); b.closest('.unit').classList.toggle('open'); b.setAttribute('aria-expanded', b.closest('.unit').classList.contains('open')); });
+$('#units').addEventListener('click', e => { const v = e.target.closest('.card[data-v]'); if(v && !e.ctrlKey && !e.metaKey && !e.shiftKey){ e.preventDefault(); openPlayer(v); return; } const b = e.target.closest('[data-u]'); if(!b) return; const k = b.dataset.u; openUnits.has(k) ? openUnits.delete(k) : openUnits.add(k); b.closest('.unit').classList.toggle('open'); b.setAttribute('aria-expanded', b.closest('.unit').classList.contains('open')); });
 $('#q').addEventListener('input', render);
 $('#reload').addEventListener('click', () => boot());
 async function boot(){
