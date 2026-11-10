@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><script>window.__fbDL={save:async function(o){var n=o.filename||'download',t=/\.pdf$/i.test(n)?'application/pdf':/\.png$/i.test(n)?'image/png':'application/octet-stream',b=o.data instanceof Blob?o.data:new Blob([o.data],{type:t}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=n;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},4000);}};</script><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>ParK_iLab สมดุลกล</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mitr:wght@400;500;600&family=Anuphan:wght@400;500;600&display=swap">
@@ -1217,7 +1217,7 @@ function rfPick(v){ const [i,j] = v.split('|').map(Number), r = revState(), R = 
   if(j===R.a){ rf.done = true; rf.bad = null; toast('ถูกต้อง'); } else rf.bad = j; save(); renderRail(); render(); }
 async function cardPng(btn){ const el = $('#sumCard'); if(!el) return; const lb = btn.innerHTML; btn.disabled = true; btn.textContent = 'กำลังสร้างรูป...';
   try{ if(document.fonts && document.fonts.ready) await document.fonts.ready; const cv = await html2canvas(el, {scale:2, backgroundColor:'#ffffff'});
-    const blob = await new Promise(res=>cv.toBlob(res, 'image/png')), data = await blob.arrayBuffer(), dl = window.claude ? await window.claude.use('downloads') : null;
+    const blob = await new Promise(res=>cv.toBlob(res, 'image/png')), data = await blob.arrayBuffer(), dl = window.claude ? await window.claude.use('downloads') : window.__fbDL;
     if(!dl) toast('บันทึกรูปไม่ได้ในหน้านี้ แคปหน้าจอแทนได้ครับ'); else { try { await dl.save({filename:CONF.file.replace(/worksheet\.pdf$/,'summary-card.png'), data}); toast('บันทึกการ์ดแล้ว'); } catch(err){ toast(err && err.code==='declined' ? 'ยกเลิกการบันทึก' : 'บันทึกไม่สำเร็จ แคปหน้าจอแทนได้ครับ'); } }
   }catch(e){ toast('สร้างรูปไม่สำเร็จ แคปหน้าจอแทนได้ครับ'); } btn.disabled = false; btn.innerHTML = lb; }
 document.addEventListener('input', e=>{ if(e.target && (e.target.id==='cardName' || e.target.id==='cardId')){ const r = revState(); r.card[e.target.id==='cardName' ? 'name' : 'id'] = e.target.value.slice(0, 60); save(); const w = $('#sumCard .sc-who'); if(w) w.textContent = `${r.card.name || '(ใส่ชื่อ-สกุลด้านบน)'} · ${r.card.id || 'รหัส -'} · ชื่อเล่น ${S.nick || '-'}`; } });
@@ -1264,7 +1264,7 @@ async function makePdf(btn){
     }
     el.innerHTML = '';
     const data = pdf.output('arraybuffer');
-    const dl = window.claude ? await window.claude.use('downloads') : null;
+    const dl = window.claude ? await window.claude.use('downloads') : window.__fbDL;
     if(!dl){ toast('ดาวน์โหลดไม่ได้ในหน้านี้ ลองเปิดลิงก์ในเบราว์เซอร์'); }
     else {
       try { await dl.save({filename:CONF.file, data}); S.sheetDone = true; save(); renderRail(); toast('ดาวน์โหลดใบกิจกรรมแล้ว นำไปปริ้นได้เลย'); }

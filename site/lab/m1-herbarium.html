@@ -1,0 +1,754 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found]){display:none!important}</style></head><body>
+<title>Herbarium</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500;1,9..144,600&family=Noto+Serif+Thai:wght@500;700&family=Noto+Sans+Thai:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+  :root{
+    --paper:#eae6d6;
+    --paper-raised:#f4f1e4;
+    --ink:#1e2a1f;
+    --ink-soft:#4c5645;
+    --forest:#2f5233;
+    --forest-deep:#1f3a24;
+    --moss:#6b8f71;
+    --gold:#8f6a1c;
+    --gold-soft:#e6d8ac;
+    --berry:#8c333c;
+    --teal:#1c6f62;
+    --line:#c6bd9d;
+    --shadow:rgba(30,42,31,.16);
+    --shadow-lg:rgba(30,42,31,.28);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#16241a;
+      --paper-raised:#1e2f22;
+      --ink:#ece6d4;
+      --ink-soft:#b3c0ac;
+      --forest:#75b17c;
+      --forest-deep:#4f8f59;
+      --moss:#8fb395;
+      --gold:#dcae55;
+      --gold-soft:#3a3018;
+      --berry:#e18189;
+      --teal:#62c9b5;
+      --line:#33452f;
+      --shadow:rgba(0,0,0,.4);
+      --shadow-lg:rgba(0,0,0,.55);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#16241a;
+    --paper-raised:#1e2f22;
+    --ink:#ece6d4;
+    --ink-soft:#b3c0ac;
+    --forest:#75b17c;
+    --forest-deep:#4f8f59;
+    --moss:#8fb395;
+    --gold:#dcae55;
+    --gold-soft:#3a3018;
+    --berry:#e18189;
+    --teal:#62c9b5;
+    --line:#33452f;
+    --shadow:rgba(0,0,0,.4);
+    --shadow-lg:rgba(0,0,0,.55);
+    color-scheme: dark;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Noto Sans Thai','Noto Sans',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image:
+      radial-gradient(circle at 1px 1px, var(--line) 1px, transparent 0);
+    background-size: 22px 22px;
+    opacity:.35;
+    pointer-events:none;
+    z-index:0;
+  }
+  .th{font-family:'Noto Serif Thai','Noto Sans Thai',serif;}
+  .en{font-family:'Fraunces','Noto Serif Thai',serif; font-optical-sizing:auto;}
+  .mono{font-family:'JetBrains Mono',monospace; letter-spacing:.02em;}
+
+  h1,h2,h3{text-wrap:balance; margin:0;}
+  button{font-family:inherit; cursor:pointer;}
+  :focus-visible{outline:3px solid var(--gold); outline-offset:3px; border-radius:4px;}
+
+  #app{position:relative; z-index:1; max-width:960px; margin:0 auto; padding:28px 20px 64px;}
+
+  /* ---------- top brand strip ---------- */
+  .brandbar{
+    display:flex; align-items:baseline; justify-content:space-between;
+    gap:12px; padding-bottom:18px; margin-bottom:22px;
+    border-bottom:2px solid var(--line);
+  }
+  .brandbar .mark{display:flex; align-items:center; gap:10px;}
+  .brandbar .mark svg{flex:none;}
+  .brandbar .wordmark{
+    font-size:22px; font-weight:600; letter-spacing:.04em; font-style:italic;
+    color:var(--forest-deep);
+  }
+  .brandbar .tagline{font-size:12.5px; color:var(--ink-soft); letter-spacing:.03em;}
+
+  /* ---------- screens ---------- */
+  .screen{display:none;}
+  .screen.active{display:block; animation:fadein .35s ease both;}
+  @media (prefers-reduced-motion:reduce){.screen.active{animation:none;}}
+  @keyframes fadein{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
+
+  /* ---------- cover / index ---------- */
+  .cover-hero{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:34px 30px;
+    box-shadow:0 10px 30px var(--shadow);
+    margin-bottom:26px;
+    position:relative;
+    overflow:hidden;
+  }
+  .cover-hero .stamp{
+    position:absolute; top:18px; right:22px;
+    font-size:11px; text-align:right; color:var(--gold);
+    border:1px solid var(--gold); border-radius:999px;
+    padding:5px 12px; letter-spacing:.08em; text-transform:uppercase;
+  }
+  .cover-hero .eyebrow{
+    color:var(--moss); font-size:13px; letter-spacing:.14em; text-transform:uppercase; font-weight:600;
+    margin-bottom:8px;
+  }
+  .cover-hero h1{
+    font-size:clamp(34px,6vw,52px); color:var(--forest-deep); font-weight:600; font-style:italic;
+    line-height:1;
+  }
+  .cover-hero .subtitle{
+    margin-top:10px; font-size:17px; color:var(--ink-soft);
+    max-width:56ch;
+  }
+  .cover-hero .lede{
+    margin-top:16px; font-size:14.5px; color:var(--ink-soft); max-width:64ch; line-height:1.65;
+  }
+  .cover-hero .cta-row{display:flex; align-items:center; gap:14px; margin-top:20px; flex-wrap:wrap;}
+  .btn{
+    border:none; border-radius:10px; padding:12px 20px; font-size:15px; font-weight:600;
+    display:inline-flex; align-items:center; gap:8px; transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn.primary{background:var(--forest); color:var(--paper-raised); box-shadow:0 6px 16px var(--shadow);}
+  .btn.primary:hover{transform:translateY(-1px); box-shadow:0 10px 22px var(--shadow-lg);}
+  .btn.ghost{background:transparent; color:var(--forest-deep); border:1.5px solid var(--line);}
+  .btn.ghost:hover{border-color:var(--forest-deep);}
+  @media (prefers-reduced-motion:reduce){.btn{transition:none;}}
+
+  .index-label{
+    display:flex; align-items:center; gap:10px; margin:30px 0 14px;
+    color:var(--ink-soft); font-size:13px; letter-spacing:.1em; text-transform:uppercase;
+  }
+  .index-label::after{content:""; flex:1; height:1px; background:var(--line);}
+
+  .grid{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px;
+  }
+  .spec-card{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:12px;
+    padding:18px; position:relative; text-align:left;
+    box-shadow:0 4px 14px var(--shadow); transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .spec-card:hover{transform:translateY(-3px); box-shadow:0 12px 24px var(--shadow-lg);}
+  @media (prefers-reduced-motion:reduce){.spec-card{transition:none;} .spec-card:hover{transform:none;}}
+  .spec-card .catno{
+    font-size:11px; color:var(--gold); letter-spacing:.06em; margin-bottom:10px; display:block;
+  }
+  .spec-card .icon-wrap{
+    width:46px; height:46px; border-radius:50%; background:var(--gold-soft);
+    display:flex; align-items:center; justify-content:center; margin-bottom:12px;
+  }
+  .spec-card .th-name{font-size:17px; font-weight:700; color:var(--ink); line-height:1.3;}
+  .spec-card .en-name{font-size:12.5px; color:var(--moss); margin-top:3px; font-style:italic;}
+  .spec-card .meta{
+    display:flex; justify-content:space-between; align-items:center;
+    margin-top:14px; padding-top:12px; border-top:1px dashed var(--line);
+    font-size:12px; color:var(--ink-soft);
+  }
+  .spec-card .best{color:var(--forest-deep); font-weight:700;}
+  .spec-card.mixed{background:linear-gradient(155deg, var(--gold-soft), var(--paper-raised));}
+
+  /* ---------- quiz screen ---------- */
+  .quiz-topbar{
+    display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:16px; flex-wrap:wrap;
+  }
+  .back-btn{
+    background:none; border:1px solid var(--line); border-radius:8px; padding:8px 12px;
+    color:var(--ink-soft); font-size:13px; display:flex; align-items:center; gap:6px;
+  }
+  .back-btn:hover{color:var(--forest-deep); border-color:var(--forest-deep);}
+  .quiz-title{font-size:14px; color:var(--ink-soft); letter-spacing:.03em;}
+  .quiz-title b{color:var(--ink); font-weight:700;}
+  .stat-pill{
+    display:flex; gap:14px; font-size:13px; color:var(--ink-soft); align-items:center;
+  }
+  .stat-pill .num{font-family:'JetBrains Mono',monospace; color:var(--forest-deep); font-weight:700;}
+  .streak{display:flex; align-items:center; gap:5px;}
+
+  .vine{display:flex; gap:5px; margin-bottom:22px; flex-wrap:wrap;}
+  .leaf{
+    width:16px; height:16px; background:var(--line);
+    border-radius:0 60% 0 60%;
+    transform:rotate(-8deg);
+    flex:none;
+    transition:background .25s ease, transform .25s ease;
+  }
+  .leaf.done{background:var(--forest);}
+  .leaf.current{background:var(--gold); transform:rotate(-8deg) scale(1.15);}
+  @media (prefers-reduced-motion:reduce){.leaf{transition:none;}}
+
+  .card{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:14px;
+    padding:28px 26px; box-shadow:0 10px 26px var(--shadow); position:relative;
+  }
+  .card .tag-row{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; gap:10px;}
+  .card .catno{font-size:11px; color:var(--gold); letter-spacing:.08em;}
+  .card .origin{font-size:11px; color:var(--ink-soft); text-align:right;}
+  .card .question{
+    font-family:'Noto Serif Thai',serif; font-weight:700; font-size:clamp(18px,2.6vw,22px);
+    line-height:1.5; color:var(--ink); margin-bottom:22px;
+  }
+  .card .question .en-inline{font-family:'JetBrains Mono',monospace; font-weight:500; color:var(--forest-deep);}
+
+  .options{display:grid; grid-template-columns:1fr; gap:10px;}
+  @media (min-width:600px){ .options{grid-template-columns:1fr 1fr;} }
+  .opt{
+    text-align:left; background:var(--paper); border:1.5px solid var(--line); border-radius:10px;
+    padding:13px 14px; display:flex; gap:10px; align-items:flex-start; font-size:14.5px; color:var(--ink);
+    transition:border-color .15s ease, transform .1s ease, background .15s ease;
+  }
+  .opt .letter{
+    font-family:'Noto Serif Thai',serif; font-weight:700; color:var(--gold);
+    width:22px; flex:none; text-align:center;
+  }
+  .opt:hover:not(:disabled){border-color:var(--forest);}
+  .opt:active:not(:disabled){transform:scale(.99);}
+  .opt:disabled{cursor:default;}
+  .opt.correct{background:color-mix(in srgb, var(--teal) 16%, var(--paper)); border-color:var(--teal);}
+  .opt.correct .letter{color:var(--teal);}
+  .opt.wrong{background:color-mix(in srgb, var(--berry) 14%, var(--paper)); border-color:var(--berry);}
+  .opt.wrong .letter{color:var(--berry);}
+  @media (prefers-reduced-motion:reduce){.opt{transition:none;}}
+
+  .note{
+    margin-top:18px; padding:13px 15px; border-radius:10px; font-size:13.5px; line-height:1.6;
+    background:var(--gold-soft); color:var(--ink); display:none; border-left:3px solid var(--gold);
+  }
+  .note.show{display:block; animation:fadein .25s ease both;}
+
+  .next-row{display:flex; justify-content:flex-end; margin-top:20px;}
+  .next-row .btn{display:none;}
+  .next-row .btn.show{display:inline-flex;}
+
+  /* ---------- results screen ---------- */
+  .cert{
+    background:var(--paper-raised); border:2px solid var(--gold); border-radius:16px;
+    padding:34px 28px; text-align:center; box-shadow:0 14px 34px var(--shadow-lg); position:relative;
+  }
+  .cert .seal{margin:0 auto 14px;}
+  .cert .eyebrow{font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--moss); font-weight:700;}
+  .cert .tier{font-family:'Noto Serif Thai',serif; font-weight:700; font-size:26px; color:var(--forest-deep); margin-top:6px;}
+  .cert .tier-en{font-size:13px; color:var(--ink-soft); font-style:italic; margin-top:2px;}
+  .cert .score-big{font-family:'Fraunces',serif; font-size:56px; color:var(--ink); margin:16px 0 2px; font-weight:600;}
+  .cert .score-sub{font-size:13px; color:var(--ink-soft);}
+  .cert .cta-row{display:flex; justify-content:center; gap:12px; margin-top:22px; flex-wrap:wrap;}
+
+  .review{margin-top:26px; text-align:left;}
+  .review h3{font-size:14px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:10px;}
+  .review-item{
+    border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin-bottom:8px; font-size:13.5px;
+    background:var(--paper);
+  }
+  .review-item .q{font-weight:700; margin-bottom:6px; color:var(--ink);}
+  .review-item .a-wrong{color:var(--berry);}
+  .review-item .a-right{color:var(--teal);}
+  .review-list{max-height:340px; overflow-y:auto; padding-right:4px;}
+
+  footer.foot{
+    text-align:center; margin-top:40px; font-size:12px; color:var(--ink-soft); letter-spacing:.03em;
+  }
+</style>
+
+<div id="app">
+
+  <div class="brandbar">
+    <div class="mark">
+      <svg width="30" height="30" viewBox="0 0 30 30" fill="none" aria-hidden="true">
+        <circle cx="15" cy="15" r="14" stroke="var(--forest)" stroke-width="1.4"/>
+        <path d="M15 22C15 22 9 18.5 9 12.5C9 9.5 11.5 8 15 8C18.5 8 21 9.5 21 12.5C21 18.5 15 22 15 22Z" fill="var(--forest)"/>
+        <path d="M15 22V10" stroke="var(--paper-raised)" stroke-width="1"/>
+      </svg>
+      <span class="wordmark en">Herbarium</span>
+    </div>
+    <span class="tagline th">สมุดบันทึกศัพท์พฤกษศาสตร์ · English–Thai</span>
+  </div>
+
+  <!-- ============ COVER / INDEX ============ -->
+  <section id="screen-cover" class="screen active">
+    <div class="cover-hero">
+      <span class="stamp mono">Specimen&nbsp;Ledger</span>
+      <div class="eyebrow th">เกมตอบคำถามคำศัพท์วิทยาศาสตร์</div>
+      <h1 class="en">Herbarium</h1>
+      <p class="subtitle th">ทายศัพท์วิทย์ภาษาอังกฤษของพืช พร้อมความหมายภาษาไทย จากทั้ง 6 บทเรียน</p>
+      <p class="lede th">เลือกหมวดด้านล่างเพื่อเริ่มสำรวจ "ตัวอย่างพรรณไม้" แต่ละใบ — ตอบถูกจะได้เห็นคำศัพท์คู่ไทย–อังกฤษทันที เก็บคะแนนสูงสุดของแต่ละหมวดไว้ในเครื่องของคุณ</p>
+      <div class="cta-row">
+        <button class="btn primary" onclick="startQuiz('mixed')">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1L9.8 6.2L15 8L9.8 9.8L8 15L6.2 9.8L1 8L6.2 6.2L8 1Z" fill="currentColor"/></svg>
+          <span class="th">สุ่มรวมทุกหมวด (20 ข้อ)</span>
+        </button>
+        <span class="tagline th" style="color:var(--ink-soft)">หรือเลือกสำรวจทีละหมวดด้านล่าง ↓</span>
+      </div>
+    </div>
+
+    <div class="index-label th">ดัชนีตัวอย่างพรรณไม้ (Index of Specimens)</div>
+    <div class="grid" id="category-grid"></div>
+
+    <footer class="foot th">ทำจากเนื้อหา 6 บทเรียนพฤกษศาสตร์ · ใช้เพื่อการเรียนรู้คำศัพท์วิทยาศาสตร์</footer>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section id="screen-quiz" class="screen">
+    <div class="quiz-topbar">
+      <button class="back-btn th" onclick="confirmExit()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L3 7L9 12" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        กลับหน้าแรก
+      </button>
+      <div class="quiz-title th" id="quiz-title-label"></div>
+      <div class="stat-pill">
+        <span class="streak">🔥 <span class="num mono" id="stat-streak">0</span></span>
+        <span class="th">คะแนน <span class="num mono" id="stat-score">0</span>/<span class="num mono" id="stat-total">0</span></span>
+      </div>
+    </div>
+
+    <div class="vine" id="vine-track"></div>
+
+    <div class="card">
+      <div class="tag-row">
+        <span class="catno mono" id="card-catno">SPEC. NO. 001</span>
+        <span class="origin th" id="card-origin"></span>
+      </div>
+      <div class="question th" id="card-question"></div>
+      <div class="options" id="card-options"></div>
+      <div class="note" id="card-note"></div>
+      <div class="next-row">
+        <button class="btn primary th" id="btn-next" onclick="nextQuestion()">ถัดไป →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ RESULTS ============ -->
+  <section id="screen-results" class="screen">
+    <div class="cert">
+      <svg class="seal" width="56" height="56" viewBox="0 0 56 56" fill="none" aria-hidden="true">
+        <circle cx="28" cy="28" r="26" stroke="var(--gold)" stroke-width="2"/>
+        <circle cx="28" cy="28" r="19" stroke="var(--gold)" stroke-width="1"/>
+        <path d="M28 38C28 38 18 32 18 22C18 17.5 22 15 28 15C34 15 38 17.5 38 22C38 32 28 38 28 38Z" fill="var(--gold)"/>
+      </svg>
+      <div class="eyebrow th">ผลการสำรวจ</div>
+      <div class="tier th" id="res-tier">—</div>
+      <div class="tier-en en" id="res-tier-en">—</div>
+      <div class="score-big mono" id="res-score">0/0</div>
+      <div class="score-sub th" id="res-sub">ถูก 0%</div>
+      <div class="cta-row">
+        <button class="btn primary th" id="res-retry">เล่นหมวดนี้อีกครั้ง</button>
+        <button class="btn ghost th" onclick="goHome()">กลับหน้าแรก</button>
+      </div>
+      <div class="review" id="res-review-wrap" style="display:none;">
+        <h3 class="th">ทบทวนข้อที่ตอบผิด</h3>
+        <div class="review-list" id="res-review"></div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+/* =========================================================
+   DATA
+   ========================================================= */
+const CATS = [
+  {id:"blueprint", th:"พิมพ์เขียวขยายพันธุ์", en:"Propagation Blueprint", no:"01",
+   icon:`<path d="M15 30V15" stroke="var(--forest)" stroke-width="2" stroke-linecap="round"/><path d="M15 15C15 15 8 12 8 7" stroke="var(--forest)" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M15 15C15 15 22 12 22 7" stroke="var(--forest)" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="8" cy="6" r="2.6" fill="var(--gold)"/><circle cx="22" cy="6" r="2.6" fill="var(--gold)"/>`},
+  {id:"nutrition", th:"โภชนาการพืช", en:"Plant Nutrition", no:"02",
+   icon:`<circle cx="15" cy="15" r="3.4" fill="var(--forest)"/><circle cx="15" cy="6" r="2.4" fill="var(--gold)"/><circle cx="7" cy="20" r="2.4" fill="var(--gold)"/><circle cx="23" cy="20" r="2.4" fill="var(--gold)"/><path d="M15 15L15 8M15 15L8 19M15 15L22 19" stroke="var(--moss)" stroke-width="1.4"/>`},
+  {id:"cloning", th:"โคลนนิ่งในธรรมชาติ", en:"Natural Cloning", no:"03",
+   icon:`<path d="M11 22C11 22 6 19 6 13.5C6 10.8 8.2 9 11 9C13.8 9 16 10.8 16 13.5C16 19 11 22 11 22Z" fill="var(--forest)"/><path d="M23 22C23 22 18 19 18 13.5C18 10.8 20.2 9 23 9C25.8 9 28 10.8 28 13.5C28 19 23 22 23 22Z" fill="var(--moss)"/>`},
+  {id:"factory", th:"โรงงานสีเขียว", en:"The Green Factory", no:"04",
+   icon:`<circle cx="10" cy="9" r="4.4" fill="var(--gold)"/><path d="M10 2V4M10 14V16M3 9H5M15 9H17M4.9 3.9L6.3 5.3M13.7 3.9L15.1 5.3" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round"/><path d="M19 27C19 27 12 23 12 15.5C12 11.9 15 9.5 19 9.5C23 9.5 26 11.9 26 15.5C26 23 19 27 19 27Z" fill="var(--forest)"/>`},
+  {id:"highway", th:"ทางด่วนลำเลียง", en:"The Plant Highway", no:"05",
+   icon:`<path d="M12 26V6" stroke="var(--line)" stroke-width="4" stroke-linecap="round"/><path d="M18 26V6" stroke="var(--line)" stroke-width="4" stroke-linecap="round"/><path d="M12 12L12 6L9 9M12 6L15 9" stroke="var(--teal)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 10L18 20M18 20L15 17M18 20L21 17" stroke="var(--gold)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`},
+  {id:"lifecycle", th:"วัฏจักรชีวิต", en:"The Life Cycle", no:"06",
+   icon:`<path d="M15 20C15 20 10 17 10 12.5C10 10 12 8.5 15 8.5C18 8.5 20 10 20 12.5C20 17 15 20 15 20Z" fill="var(--berry)"/><path d="M15 8.5V4" stroke="var(--forest)" stroke-width="1.6" stroke-linecap="round"/><path d="M22 24C20 27 18.5 27.5 15 27.5C11.5 27.5 10 27 8 24" stroke="var(--moss)" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-dasharray="2 3"/>`}
+];
+
+const DATA = {};
+
+DATA.blueprint = [
+ {q:'"การสืบพันธุ์แบบอาศัยเพศ" ตรงกับศัพท์วิทย์ภาษาอังกฤษคำใด?', options:['Sexual Reproduction','Vegetative Propagation','Tissue Culture','Grafting'], a:0, note:'Sexual Reproduction = การสืบพันธุ์แบบอาศัยเพศ ใช้เมล็ด ได้ต้นใหม่ที่ลักษณะผสม แต่เมล็ดงอกยากและโตช้า'},
+ {q:'"Vegetative Propagation" (การสืบพันธุ์แบบไม่อาศัยเพศ) มนุษย์ใช้ส่วนใดของพืชในการขยายพันธุ์?', options:['ลำต้น ราก ใบ และเนื้อเยื่อ','เมล็ดเท่านั้น','ละอองเรณูเท่านั้น','ผลไม้เท่านั้น'], a:0, note:'Vegetative Propagation ใช้ส่วนต่างๆ ของพืชข้ามข้อจำกัดของการเพาะเมล็ด'},
+ {q:'"Cutting" คือกลไกการขยายพันธุ์แบบใด?', options:['การปักชำ','การตอนกิ่ง','การทาบกิ่ง','การติดตา'], a:0, note:'Cutting = การปักชำ กระตุ้นส่วนที่ตัดมา (กิ่ง/ใบ/ราก) ให้สร้างรากใหม่'},
+ {q:'"Air Layering" คือกลไกการขยายพันธุ์แบบใด?', options:['การตอนกิ่ง','การปักชำ','การต่อกิ่ง','การเพาะเลี้ยงเนื้อเยื่อ'], a:0, note:'Air Layering = การตอนกิ่ง ควั่นเปลือกตัดท่อโฟลเอ็ม แล้วหุ้มด้วยวัสดุชื้นให้เกิดรากเหนือรอยควั่น'},
+ {q:'"Bud/Node" (ตา) มีความสำคัญอย่างไรต่อการปักชำ?', options:['เป็นจุดสำคัญที่พืชจะแตกต้นใหม่','เป็นจุดที่รากเก่าหลุดออก','เป็นจุดที่ใบร่วง','ไม่มีผลต่อการปักชำ'], a:0, note:'ตา (Bud/Node) คือหัวใจสำคัญที่พืชจะใช้แตกต้นใหม่ ต้องมีอยู่บนกิ่งปักชำ'},
+ {q:'"Rootstock" (ต้นตอ) ที่ใช้ในการต่อกิ่งควรมีคุณสมบัติเด่นคือ?', options:['รากแข็งแรง หาอาหารเก่ง','ผลผลิตดกและอร่อย','ดอกสีสวย','ใบใหญ่'], a:0, note:'Rootstock = ต้นตอ ให้ระบบรากที่แข็งแรง ส่วน Scion (กิ่งพันธุ์) ให้ลักษณะผลผลิตที่ต้องการ'},
+ {q:'"Scion" (กิ่งพันธุ์) ในสมการการต่อกิ่งมีบทบาทคือ?', options:['ให้ลักษณะเด่นและผลผลิตดี','ให้รากที่แข็งแรง','ป้องกันโรค','ดูดซับน้ำจากดิน'], a:0, note:'Scion = กิ่งพันธุ์ที่นำมาต่อบนต้นตอ เพื่อให้ได้ลักษณะเด่นตามต้องการ'},
+ {q:'"Approach Grafting" (การทาบกิ่ง) ต่างจากวิธีต่อกิ่งอื่นตรงที่?', options:['ต้นตอและกิ่งพันธุ์ต่างมีรากของตัวเองระหว่างประสาน','ใช้เพียงตาเดียวแทนกิ่งทั้งกิ่ง','ทำในห้องปลอดเชื้อ','ไม่ต้องมีจุดเชื่อมต่อกัน'], a:0, note:'Approach Grafting: ทั้งต้น A (Rootstock) และต้น B (Rootstock ของกิ่งพันธุ์) มีรากของตัวเองขณะเนื้อเยื่อประสานกัน'},
+ {q:'"Graft Union" (รอยต่อ) ในการต่อกิ่งต้องมีลักษณะอย่างไรจึงจะสำเร็จ?', options:['เนื้อเยื่อของทั้งสองฝั่งต้องแนบสนิทกัน','ต้องมีช่องว่างระหว่างรอยตัด','ต้องใช้กาวเคมีเท่านั้น','ต้องตัดในเวลากลางคืน'], a:0, note:'Graft Union คือรอยต่อที่เนื้อเยื่อของต้นตอกับกิ่งพันธุ์ต้องแนบสนิทเพื่อให้ท่อลำเลียงเชื่อมกันได้'},
+ {q:'"Budding" (การติดตา) ประหยัดกิ่งพันธุ์ได้มากเพราะเหตุใด?', options:['ใช้เพียงตาเดียวแทนกิ่งทั้งกิ่ง','ใช้รากทั้งระบบ','ใช้ใบทั้งใบ','ใช้เมล็ดแทน'], a:0, note:'Budding ใช้เพียง "ตา" (Bud) หนึ่งจุดแทนกิ่งทั้งกิ่ง จึงประหยัดกิ่งพันธุ์ที่สุด แต่ต้องการความแม่นยำสูง'},
+ {q:'"Tissue Culture" (การเพาะเลี้ยงเนื้อเยื่อ) เริ่มต้นจากชิ้นส่วนพืชที่เรียกว่าอะไร?', options:['Explant','Scion','Rootstock','Seed'], a:0, note:'Explant = ชิ้นส่วนพืชที่นำมาเจริญเติบโตในขั้นตอนแรกของ Tissue Culture'},
+ {q:'"Synthetic Media" ในการเพาะเลี้ยงเนื้อเยื่อคือสิ่งใด?', options:['วุ้นที่มีธาตุอาหารจำเพาะสำหรับเลี้ยงเนื้อเยื่อ','ดินปลูกทั่วไป','น้ำเปล่าล้วน','ปุ๋ยเคมีสูตรเข้มข้น'], a:0, note:'Synthetic Media คืออาหารสังเคราะห์ (วุ้น) ที่มีธาตุอาหารจำเพาะ ใช้เลี้ยง Explant ในห้องปลอดเชื้อ'},
+ {q:'"Plantlet" คือผลลัพธ์ขั้นสุดท้ายของ Tissue Culture หมายถึง?', options:['ต้นกล้าที่พัฒนาลำต้นและรากสมบูรณ์ พร้อมย้ายสู่ธรรมชาติ','ชิ้นส่วนพืชเริ่มต้น','อาหารวุ้นสังเคราะห์','ภาชนะปลอดเชื้อ'], a:0, note:'Plantlet = ต้นกล้าสมบูรณ์ที่พร้อมย้ายออกจากห้องปฏิบัติการไปปลูกในธรรมชาติ'},
+ {q:'ข้อดีเด่นของ "Tissue Culture" เมื่อเทียบกับวิธีอื่นคือ?', options:['ได้ปริมาณต้นพันธุ์มหาศาลและปลอดเชื้อ','ทำง่ายที่สุด ไม่ต้องใช้ทักษะ','ใช้เวลาสั้นที่สุด','ต้นทุนต่ำที่สุด'], a:0, note:'Tissue Culture ต้องการผู้เชี่ยวชาญ (Skill: Expert) แต่ให้ปริมาณมหาศาลและปลอดเชื้อ เหมาะกับเศรษฐกิจ การอนุรักษ์ และเภสัชวิทยา'},
+ {q:'เปรียบเทียบระดับทักษะที่ต้องใช้ ข้อใดเรียงจาก "ต่ำ" ไป "สูงสุด" ถูกต้อง?', options:['เพาะเมล็ด → ตอนกิ่ง → ต่อกิ่ง → เพาะเลี้ยงเนื้อเยื่อ','เพาะเลี้ยงเนื้อเยื่อ → ต่อกิ่ง → ตอนกิ่ง → เพาะเมล็ด','ต่อกิ่ง → เพาะเมล็ด → ตอนกิ่ง → เพาะเลี้ยงเนื้อเยื่อ','ตอนกิ่ง → เพาะเลี้ยงเนื้อเยื่อ → เพาะเมล็ด → ต่อกิ่ง'], a:0, note:'ตารางวิเคราะห์แสดงระดับทักษะ: เพาะเมล็ด/ปักชำ (ต่ำ) → ตอนกิ่ง (ปานกลาง) → ต่อกิ่ง/ทาบกิ่ง/ติดตา (สูง) → เพาะเลี้ยงเนื้อเยื่อ (ผู้เชี่ยวชาญ)'},
+ {q:'"Root Induction" (การสร้างรากใหม่) ครอบคลุมวิธีใดบ้าง?', options:['การปักชำและการตอนกิ่ง','การต่อกิ่งและการติดตา','การเพาะเลี้ยงเนื้อเยื่อเท่านั้น','การเพาะเมล็ดเท่านั้น'], a:0, note:'Root Induction คือการกระตุ้นให้ส่วนที่ตัดหรือควั่นสร้างรากใหม่ ได้แก่ Cutting และ Air Layering'},
+ {q:'"Tissue Joining" (การผสานเนื้อเยื่อ) ใช้เชื่อมระบบใดของพืชสองต้นเข้าด้วยกัน?', options:['ระบบท่อลำเลียง (Vascular System)','ระบบราก (Root System) เท่านั้น','ระบบใบ (Leaf System) เท่านั้น','ระบบดอก (Flower System) เท่านั้น'], a:0, note:'Tissue Joining เชื่อมต่อระบบลำเลียงของพืชสองต้นเข้าด้วยกัน ครอบคลุมการทาบกิ่ง ต่อกิ่ง และติดตา'}
+];
+
+DATA.nutrition = [
+ {q:'"Nutrient" (สารอาหาร) หมายถึงข้อใด?', options:['สารที่สิ่งมีชีวิตนำไปใช้เจริญเติบโตและซ่อมแซมร่างกาย','น้ำที่พืชดูดซึมเท่านั้น','แสงแดดที่พืชรับ','ฮอร์โมนพืชสังเคราะห์'], a:0, note:'Nutrient = สารอาหาร ที่สิ่งมีชีวิตนำไปใช้เจริญเติบโตและซ่อมแซมร่างกาย'},
+ {q:'พืชต้องการ "Essential Elements" (ธาตุอาหารจำเป็น) ทั้งหมดกี่ชนิด?', options:['17 ชนิด','10 ชนิด','20 ชนิด','12 ชนิด'], a:0, note:'มีธาตุอาหารจำเป็น 17 ชนิด แบ่งเป็น 3 ชนิดจากน้ำ/อากาศ และ 14 ชนิดที่รากต้องดูดจากดิน'},
+ {q:'ธาตุใดที่พืชได้ "ฟรี" จากน้ำและอากาศ ไม่ต้องหาจากดิน?', options:['C, H, O','N, P, K','Ca, Mg, S','Fe, Zn, Mn'], a:0, note:'Carbon (C), Hydrogen (H), Oxygen (O) ได้จากน้ำและอากาศโดยตรง ส่วนอีก 14 ธาตุต้องดูดจากดิน'},
+ {q:'กลุ่มธาตุ "N-P-K" คือกลุ่มดาวเด่นเพราะเหตุใด?', options:['เป็น 3 ธาตุที่พืชต้องการมากที่สุด','เป็นธาตุที่พืชไม่ต้องการเลย','เป็นสารกำจัดศัตรูพืช','เป็นธาตุที่ได้จากอากาศ'], a:0, note:'N (ไนโตรเจน) P (ฟอสฟอรัส) K (โพแทสเซียม) คือ 3 ธาตุอาหารหลักที่พืชต้องการในปริมาณมากที่สุด'},
+ {q:'"Nitrogen (N)" มีบทบาทสำคัญที่สุดในการสร้างสิ่งใด?', options:['คลอโรฟิลล์และใบสีเขียว','ผนังเซลล์','กลิ่นเฉพาะตัว','ราก'], a:0, note:'Nitrogen เป็นองค์ประกอบของ Chlorophyll ช่วยเร่งการเจริญเติบโตของใบ ลำต้น และสร้างโปรตีน'},
+ {q:'อาการขาดไนโตรเจน (N) จะแสดงออกที่ส่วนใดก่อน?', options:['ใบแก่ด้านล่างเหลืองก่อน','ใบอ่อนด้านบนเหลืองก่อน','รากเน่าก่อน','ดอกร่วงก่อน'], a:0, note:'ขาด N: ใบแก่ด้านล่างจะเหลืองก่อน แล้วเหี่ยวร่วง ลำต้นแคระแกร็น'},
+ {q:'"Phosphorus (P)" เกี่ยวข้องกับกระบวนการใดเป็นพิเศษ?', options:['การสังเคราะห์ด้วยแสงและ DNA เร่งราก/ดอก/ผล','การปิด-เปิดปากใบ','การสร้างผนังเซลล์','การสร้างกลิ่นเฉพาะตัว'], a:0, note:'Phosphorus เกี่ยวข้องกับ Photosynthesis และการถ่ายทอดพันธุกรรม (DNA) เร่งการเติบโตของรากและการออกดอกติดผล'},
+ {q:'อาการขาดฟอสฟอรัส (P) สังเกตได้จากอะไร?', options:['ใบแก่เปลี่ยนเป็นสีม่วงหรือน้ำตาลแล้วหลุดร่วง','ใบเหลืองทั้งใบทันที','ลำต้นแตกหักทันที','ผลแตกกลางลำต้น'], a:0, note:'ขาด P: ใบแก่เปลี่ยนจากสีเขียวเป็น "สีม่วง" หรือน้ำตาลแล้วหลุดร่วง ต้นแคระแกร็น ออกดอกช้า'},
+ {q:'"Potassium (K)" ควบคุมกระบวนการใดเป็นหลัก?', options:['การปิด-เปิดปากใบ (Stomata) และออสโมซิส','การสร้างคลอโรฟิลล์','การสร้างผนังเซลล์','การสร้าง DNA'], a:0, note:'Potassium ควบคุมวาล์วปากใบและสมดุลน้ำ (Osmosis) ในเซลล์ ช่วยสังเคราะห์แป้ง โปรตีน และความหวานของผล'},
+ {q:'อาการขาดโพแทสเซียม (K) มีลักษณะอย่างไร?', options:['ปลายใบและขอบใบล่างมีจุดขาว/เหลือง แต่เส้นใบยังเขียว','ใบเหลืองทั้งใบพร้อมกัน','รากเน่าทันที','ลำต้นแตกกิ่งเพิ่ม'], a:0, note:'ขาด K: ปลายใบและขอบใบล่างมีจุดขาว/เหลือง เส้นใบยังเขียว ผลไม้สีไม่สวยและรสไม่หวาน'},
+ {q:'"Calcium (Ca)" มีบทบาทเปรียบเสมือน "เกราะป้องกัน" เพราะเป็นองค์ประกอบหลักของ?', options:['ผนังเซลล์ (Cell Wall)','คลอโรฟิลล์','กรดอะมิโน','ปากใบ'], a:0, note:'Calcium เป็นองค์ประกอบหลักของผนังเซลล์ ทำให้ต้นแข็งแรง ทนทานโรค ช่วยซ่อมแซมบาดแผล'},
+ {q:'อาการขาดแคลเซียม (Ca) มักเกิดที่ส่วนใดของพืช?', options:['ยอดอ่อน ดอกหงิกงอ ก้นผลเน่า','ใบแก่ด้านล่าง','รากอากาศ','เมล็ดที่แก่แล้ว'], a:0, note:'ขาด Ca: เกิดที่ "ยอดอ่อน" ดอกหงิกงอ ขอบใบม้วนแห้งขาว ก้นผลเน่า (เช่น มะเขือเทศก้นเน่า)'},
+ {q:'"Magnesium (Mg)" เป็นแกนกลางของโมเลกุลใด?', options:['Chlorophyll (คลอโรฟิลล์)','DNA','กรดอะมิโน','เซลลูโลส'], a:0, note:'Magnesium เป็นอะตอมแกนกลางของโมเลกุลคลอโรฟิลล์ ช่วยสังเคราะห์โปรตีนและการงอกของเมล็ด'},
+ {q:'ข้อแตกต่างสำคัญระหว่างอาการขาด N กับขาด Mg คือ?', options:['ขาด Mg เหลืองแต่เส้นใบยังเขียวเข้ม ส่วนขาด N เหลืองกลืนไปทั้งใบ','ไม่มีความแตกต่างกันเลย','ขาด N ทำให้ใบร่วงทันที','ขาด Mg ทำให้รากเน่า'], a:0, note:'ขาด Mg: ใบเหลืองแต่เส้นใบยังเขียวเข้มชัดเจน (Green Vein) ขาด N: เหลืองกลืนไปทั้งใบ'},
+ {q:'"Sulfur (S)" (กำมะถัน) เกี่ยวข้องกับสิ่งใดเป็นพิเศษ?', options:['กรดอะมิโน (Amino Acid) และกลิ่นเฉพาะตัวของพืช','คลอโรฟิลล์','ผนังเซลล์','ออสโมซิส'], a:0, note:'Sulfur เป็นองค์ประกอบของกรดอะมิโน (โปรตีน) และสร้างกลิ่นฉุนเฉพาะตัว เช่น กลิ่นทุเรียน หัวหอม กระเทียม'},
+ {q:'"Fertilizer" (ปุ๋ย) แบ่งออกเป็นกี่ประเภทหลัก?', options:['3 ประเภท: เคมี อินทรีย์ ชีวภาพ','2 ประเภท','4 ประเภท','5 ประเภท'], a:0, note:'ปุ๋ยแบ่งเป็น 3 ประเภทหลัก: ปุ๋ยเคมี (Chemical) ปุ๋ยอินทรีย์ (Organic) และปุ๋ยชีวภาพ (Biological)'},
+ {q:'จุดเด่นที่แท้จริงของ "ปุ๋ยอินทรีย์ (Organic Fertilizer)" คือ?', options:['ปรับสมบัติทางกายภาพของดินให้ร่วนซุย ระบายน้ำ/อากาศดี','มี N-P-K สูงที่สุด','ออกฤทธิ์เร็วที่สุด','ไม่ต้องผ่านการย่อยสลาย'], a:0, note:'ปุ๋ยอินทรีย์แม้ N-P-K จะน้อยกว่าปุ๋ยเคมี แต่ช่วยฟื้นฟูโครงสร้างดินให้ร่วนซุยอย่างยั่งยืน'},
+ {q:'"Biological Fertilizer" (ปุ๋ยชีวภาพ) ประกอบด้วยอะไรเป็นหลัก?', options:['จุลินทรีย์ที่มีชีวิต (Microorganism)','สารเคมีสังเคราะห์','ซากพืชซากสัตว์ที่ย่อยสลายแล้ว','แร่ธาตุบริสุทธิ์จากเหมือง'], a:0, note:'Microorganism (จุลินทรีย์) ในปุ๋ยชีวภาพ เช่น แหนแดง (เพิ่มไนโตรเจน) และไมคอร์ไรซา (ช่วยละลายฟอสฟอรัส)'},
+ {q:'ตัวเลข "30-20-10" บนถุงปุ๋ยเคมีหมายถึงสัดส่วนของอะไร?', options:['N-P-K','น้ำหนักถุงเป็นกิโลกรัม','ราคาต่อถุง','จำนวนธาตุอาหารรอง'], a:0, note:'ตัวเลขบนถุงปุ๋ยเคมีคือสัดส่วน N (ไนโตรเจน) - P (ฟอสฟอรัส) - K (โพแทสเซียม) เช่น 30-20-10'},
+ {q:'"Analysis" (การวิเคราะห์) ในการวินิจฉัยต้นไม้ป่วยหมายถึงขั้นตอนใด?', options:['การแยกตรวจสอบดิน/เนื้อเยื่ออย่างละเอียดเพื่อหาสาเหตุ','การให้ปุ๋ยทันทีโดยไม่ตรวจสอบ','การรดน้ำเพิ่มเป็นสองเท่า','การตัดกิ่งทิ้งทั้งหมด'], a:0, note:'Analysis คือการส่งวิเคราะห์ดิน/เนื้อเยื่อในห้องแล็บเพื่อหาธาตุที่ขาดอย่างแม่นยำ ก่อนปรับปรุงดิน'}
+];
+
+DATA.cloning = [
+ {q:'พืชที่ขยายพันธุ์แบบไม่อาศัยเพศจะได้ต้นใหม่ที่เรียกว่า "Clone" เพราะเหตุใด?', options:['เพราะมีลักษณะเหมือนต้นแม่ทุกประการ','เพราะเกิดจากเมล็ดที่ผสมพันธุ์แล้ว','เพราะต้องอาศัยแมลงช่วยผสมเกสร','เพราะใช้เวลานานกว่าจะเจริญเติบโต'], a:0, note:'Clone = ต้นใหม่ที่เหมือนต้นแม่ทุกประการ เกิดจากการใช้ ราก ลำต้น หรือใบ แทนเมล็ด'},
+ {q:'"Runners" (ไหล) พบในพืชชนิดใด?', options:['สตรอว์เบอร์รีและบัวบก','มันฝรั่งและขิง','มันเทศ','เศรษฐีเงินล้าน'], a:0, note:'Runners (ไหล) คือลำต้นที่ทอดเลื้อยไปตามผิวดิน พบในสตรอว์เบอร์รีและบัวบก'},
+ {q:'"Underground Stems" (ลำต้นใต้ดิน) พบในพืชชนิดใด?', options:['มันฝรั่งและขิง','สตรอว์เบอร์รี','มันเทศ','บัวบก'], a:0, note:'Underground Stems (ลำต้นใต้ดิน) พบในมันฝรั่งและขิง ต่างจากมันเทศซึ่งเป็น "ราก" สะสมอาหาร'},
+ {q:'มันเทศสามารถขยายพันธุ์โดยแตกยอดใหม่จากส่วนใดของพืชได้โดยตรง?', options:['ราก (Root)','ลำต้น (Stem)','ใบ (Leaf)','ดอก (Flower)'], a:0, note:'มันเทศเป็น "ราก" สะสมอาหาร สามารถแตกยอดใหม่ผุดออกมาจากรากได้โดยตรง'},
+ {q:'ต้น "เศรษฐีเงินล้าน" ขยายพันธุ์โดยมีต้นอ่อนงอกออกมาจากส่วนใด?', options:['ขอบใบ (Leaf edge)','ปลายราก','ข้อลำต้น','กลีบดอก'], a:0, note:'ต้นเศรษฐีเงินล้านมีต้นอ่อนเล็กๆ งอกออกมาจากขอบใบ เมื่อร่วงลงดินจะเติบโตเป็นต้นใหม่'},
+ {q:'ในตารางเปรียบเทียบ "อาศัยเพศ vs ไม่อาศัยเพศ" การไม่อาศัยเพศใช้สิ่งใดในการเติบโตเป็นต้นใหม่?', options:['ราก ลำต้น หรือใบ','เมล็ดเท่านั้น','ละอองเรณูเท่านั้น','ดอกไม้เท่านั้น'], a:0, note:'ไม่อาศัยเพศไม่ต้องการดอกไม้หรือการถ่ายเรณู ใช้ ราก ลำต้น หรือใบ โดยตรง'},
+ {q:'ผลลัพธ์ของการสืบพันธุ์แบบ "อาศัยเพศ (Sexual)" ต่างจากแบบไม่อาศัยเพศอย่างไร?', options:['ได้พืชต้นใหม่ที่ลักษณะผสม ไม่เหมือนต้นแม่ทุกประการ','ได้ต้นใหม่ที่เหมือนต้นแม่ทุกประการ','ไม่ได้ต้นใหม่เลย','ได้เฉพาะดอกไม้เท่านั้น'], a:0, note:'อาศัยเพศ: ได้พืชต้นใหม่ที่ลักษณะผสม (จากพ่อแม่สองต้น) / ไม่อาศัยเพศ: ได้ Clone เหมือนต้นแม่ทุกประการ'},
+ {q:'ข้อดีของการสืบพันธุ์แบบ "ไม่อาศัยเพศ" คือข้อใด?', options:['ได้ต้นใหม่ลักษณะเหมือนต้นแม่อย่างรวดเร็ว ไม่ต้องรอผสมเกสร','ได้ลักษณะพันธุกรรมที่หลากหลายมากขึ้น','ต้องใช้เมล็ดจำนวนมากเสมอ','ใช้เวลานานกว่าการเพาะเมล็ดมาก'], a:0, note:'ไม่อาศัยเพศไม่ต้องพึ่งดอกไม้หรือแมลงช่วยผสมเกสร จึงรวดเร็วและได้ผลแน่นอนกว่า'},
+ {q:'ในวัฏจักรชีวิตพืช เส้นทางที่เริ่มจาก "ดอกไม้ (Flower)" จะผ่านขั้นตอนใดก่อนได้ต้นใหม่?', options:['การถ่ายเรณู → เมล็ด → ต้นใหม่','การเจริญเติบโตโดยตรงจากดอก','การสังเคราะห์แสงโดยตรง','การหายใจระดับเซลล์'], a:0, note:'เส้นทางฝั่งดอกไม้: ดอกไม้ (Flower) → การถ่ายเรณู (Pollination) → เมล็ด (Seed) → พืชต้นใหม่'},
+ {q:'เส้นทางที่เริ่มจาก "ใบ/ลำต้น/ราก" ในวัฏจักรพืชจะนำไปสู่ต้นใหม่ผ่านขั้นตอนใด?', options:['การเจริญเติบโต (Growth) โดยไม่ต้องผ่านเมล็ด','การถ่ายเรณู','การปฏิสนธิ','การกระจายเมล็ด'], a:0, note:'เส้นทางฝั่งไม่อาศัยเพศ: ใบ/ลำต้น/ราก → การเจริญเติบโต (Growth) → พืชต้นใหม่ โดยไม่ต้องผ่านเมล็ด'},
+ {q:'"ไหลของสตรอว์เบอร์รี" (Strawberry Runner) เป็นตัวอย่างของการขยายพันธุ์จากส่วนใด?', options:['ลำต้น (Stem)','ราก (Root)','ใบ (Leaf)','ดอก (Flower)'], a:0, note:'ไหล (Runner) จัดเป็นลำต้นชนิดหนึ่งที่ทอดเลื้อยไปตามผิวดินแล้วแตกต้นใหม่'},
+ {q:'ข้อใดเป็นข้อจำกัดของการสืบพันธุ์แบบ "อาศัยเพศ (Sexual)" เมื่อเทียบกับแบบไม่อาศัยเพศ?', options:['สร้างเมล็ดได้จำนวนน้อยกว่าและเมล็ดงอกยากกว่า','ไม่สามารถสร้างพันธุ์ใหม่ได้เลย','ต้นทุนสูงกว่าการไม่อาศัยเพศเสมอ','ไม่สามารถเกิดในธรรมชาติได้'], a:0, note:'ข้อจำกัดของอาศัยเพศ: สร้างเมล็ดน้อยกว่า เมล็ดงอกยากกว่า และเติบโตช้ากว่าไม่อาศัยเพศ'},
+ {q:'"Pollination" (การถ่ายเรณู) จำเป็นสำหรับการสืบพันธุ์แบบใด?', options:['อาศัยเพศ (Sexual) เป็นส่วนใหญ่','ไม่อาศัยเพศ (Asexual) เท่านั้น','ทั้งสองแบบเท่ากัน','ไม่จำเป็นเลยทั้งสองแบบ'], a:0, note:'การถ่ายเรณู (Pollination) จำเป็นสำหรับการสืบพันธุ์แบบอาศัยเพศเป็นส่วนใหญ่ เพื่อนำเรณูไปผสมกับเซลล์ไข่'}
+];
+
+DATA.factory = [
+ {q:'"Photosynthesis" (การสังเคราะห์ด้วยแสง) คือกระบวนการใด?', options:['พืชสร้างอาหารโดยใช้พลังงานแสงอาทิตย์','พืชหายใจปล่อยพลังงานออกมา','พืชดูดน้ำจากดินขึ้นสู่ยอด','พืชสร้างดอกเพื่อสืบพันธุ์'], a:0, note:'Photosynthesis คือกระบวนการที่พืชเปลี่ยนพลังงานแสงให้กลายเป็นพลังงานเคมี (อาหาร) โดยใช้คลอโรฟิลล์'},
+ {q:'การสังเคราะห์ด้วยแสงเกิดขึ้นหลักที่ "ใบ" เพราะเหตุใด?', options:['เพราะใบมีพื้นที่ผิวรับแสงได้มากที่สุด','เพราะใบไม่มีคลอโรฟิลล์','เพราะใบอยู่ใต้ดิน','เพราะใบไม่ต้องการน้ำ'], a:0, note:'ใบมีพื้นที่ผิวมากที่สุดสำหรับรับแสง แต่ส่วนอื่นที่มีสีเขียว เช่น ลำต้นหรือรากอากาศ ก็สังเคราะห์แสงได้เช่นกัน'},
+ {q:'"Aerial Root" (รากอากาศ) จะสังเคราะห์ด้วยแสงได้หากมีลักษณะใด?', options:['มีสีเขียว (มีคลอโรฟิลล์)','อยู่ใต้ดินลึก','มีขนาดใหญ่มาก','มีความชื้นสูง'], a:0, note:'Aerial Root (รากอากาศ) ของพืชอย่างกล้วยไม้ หากมีสีเขียวก็สังเคราะห์ด้วยแสงได้เช่นเดียวกับใบ'},
+ {q:'"Chlorophyll" (คลอโรฟิลล์) ทำหน้าที่หลักคือ?', options:['ดูดซับพลังงานแสงเพื่อสร้างอาหาร','ลำเลียงน้ำขึ้นสู่ยอด','เก็บสะสมแป้งไว้ในราก','สร้างกลิ่นเฉพาะตัวของพืช'], a:0, note:'Chlorophyll เป็นสารสีเขียวที่ทำหน้าที่ดักจับและดูดซับพลังงานแสงเพื่อใช้สร้างอาหาร'},
+ {q:'พืชดูดซับ "Carbon Dioxide" (แก๊สคาร์บอนไดออกไซด์) เข้าทางใด?', options:['ปากใบ (Stomata)','ราก','ลำต้น','กลีบดอก'], a:0, note:'พืชดึง CO2 จากอากาศเข้าสู่ตัวเองผ่านทาง "ปากใบ" เพื่อนำไปเป็นวัตถุดิบสร้างน้ำตาล'},
+ {q:'การทดลองใส่ใบพืชในถุงพลาสติกที่มี "โซดาไฟ" (ดูดซับ CO2) เพื่อพิสูจน์ว่าอะไร?', options:['พืชต้องการ CO2 ในการสร้างแป้ง','พืชต้องการน้ำในการสร้างแป้ง','พืชต้องการแสงในการสร้างแป้ง','พืชต้องการออกซิเจนในการสร้างแป้ง'], a:0, note:'เมื่อ CO2 ถูกดูดหมด ใบในถุงจะไม่สร้างแป้งเลย ต่างจากใบในถุงปกติ พิสูจน์ว่า CO2 คือวัตถุดิบสำคัญ'},
+ {q:'ผลผลิตแรกที่พืชสร้างขึ้นทันทีจากการสังเคราะห์ด้วยแสงคือ?', options:['น้ำตาล (Sugar/Glucose)','แป้ง (Starch)','เซลลูโลส (Cellulose)','ไขมัน (Fat/Oil)'], a:0, note:'Sugar/Glucose คือผลผลิตเริ่มต้นที่พืชสร้างขึ้นทันที นำไปใช้เป็นพลังงานได้ทันทีในการเจริญเติบโต'},
+ {q:'หากพืชใช้น้ำตาลไม่หมด จะถูกเปลี่ยนรูปสะสมไว้เป็นสิ่งใด?', options:['แป้ง (Starch) ที่ราก ลำต้น หรือใบ','น้ำ','แก๊สออกซิเจน','แก๊สคาร์บอนไดออกไซด์'], a:0, note:'น้ำตาลส่วนเกินจะถูกเปลี่ยนเป็น "แป้ง" สะสมไว้ตามราก ลำต้น หรือใบ เพื่อใช้ในอนาคต'},
+ {q:'"สารละลายไอโอดีน" (Iodine Solution) ใช้ทดสอบหาสารใดในใบพืช?', options:['แป้ง (Starch)','น้ำตาล','โปรตีน','ไขมัน'], a:0, note:'สารละลายไอโอดีนเปลี่ยนจากสีน้ำตาลเป็นสีน้ำเงินเข้มจนถึงดำ เมื่อพบแป้งในใบ'},
+ {q:'ผลผลิตพลอยได้ (by-product) ที่สำคัญจากการสังเคราะห์ด้วยแสงคือ?', options:['แก๊สออกซิเจน (Oxygen)','แก๊สคาร์บอนไดออกไซด์','แก๊สไนโตรเจน','แก๊สมีเทน'], a:0, note:'Oxygen เป็นผลผลิตพลอยได้ที่พืชระบายออกทางปากใบ เป็นแหล่งออกซิเจนที่ใหญ่ที่สุดของโลก'},
+ {q:'น้ำตาลที่พืชสร้างสามารถถูกดัดแปลงเป็นสารใดได้บ้าง นอกจากแป้ง?', options:['เซลลูโลส (Cellulose) และไขมัน (Fat/Oil)','น้ำอย่างเดียว','แก๊สออกซิเจนอย่างเดียว','แก๊สคาร์บอนไดออกไซด์อย่างเดียว'], a:0, note:'น้ำตาลดัดแปลงเป็น เซลลูโลส (สร้างผนังเซลล์) ไขมัน (สะสมในเมล็ด/ผล) และโปรตีน (ร่วมกับแร่ธาตุในดิน)'},
+ {q:'"Cellulose" (เซลลูโลส) พืชนำไปใช้สร้างส่วนใด?', options:['ผนังเซลล์ให้แข็งแรง','เมล็ด','ดอก','ราก'], a:0, note:'Cellulose คือเส้นใยโครงสร้างแข็งแรงที่พืชดัดแปลงจากน้ำตาล ใช้สร้างผนังเซลล์'},
+ {q:'"Respiration" (การหายใจระดับเซลล์) พืชใช้อาหารที่สร้างขึ้นเพื่อวัตถุประสงค์ใด?', options:['เป็นพลังงานในการดำรงชีวิตของตัวเอง','เป็นอาหารให้สัตว์กินเท่านั้น','สร้างแก๊สออกซิเจนโดยตรง','ดูดน้ำจากดิน'], a:0, note:'พืชสร้างอาหารเพื่อ "ตัวเอง" ผ่านกระบวนการ Respiration เพื่อการเจริญเติบโตและซ่อมแซมเซลล์'},
+ {q:'พืชถูกเรียกว่า "Producer" (ผู้ผลิต) ในระบบนิเวศเพราะเหตุใด?', options:['เป็นสิ่งมีชีวิตหนึ่งเดียวที่ดึงพลังงานแสงอาทิตย์เข้าสู่โลกของสิ่งมีชีวิต','เพราะพืชกินพืชอื่นเป็นอาหาร','เพราะพืชเคลื่อนที่ได้เร็ว','เพราะพืชไม่ต้องการน้ำเลย'], a:0, note:'Producer คือพืชซึ่งเป็นจุดเริ่มต้นเดียวที่ดึงพลังงานแสงอาทิตย์เข้าสู่สายใยของสิ่งมีชีวิตทั้งหมด'},
+ {q:'"Food Chain" (ห่วงโซ่อาหาร) จะเริ่มต้นจากสิ่งใดเสมอ?', options:['พืช (Producer)','สัตว์กินพืช','สัตว์ผู้ล่า','มนุษย์เท่านั้น'], a:0, note:'ทุกห่วงโซ่อาหารเริ่มต้นจากพืชซึ่งเป็นผู้ผลิตพลังงานเริ่มต้นเสมอ'},
+ {q:'สมการการสังเคราะห์ด้วยแสง วัตถุดิบตั้งต้น (สารตั้งต้น) คือข้อใด?', options:['น้ำ (H2O) + คาร์บอนไดออกไซด์ (CO2)','น้ำตาล + ออกซิเจน','แป้ง + โปรตีน','ไนโตรเจน + ฟอสฟอรัส'], a:0, note:'วัตถุดิบตั้งต้น: น้ำ + คาร์บอนไดออกไซด์ → (พลังงานแสง+คลอโรฟิลล์) → น้ำตาล + ออกซิเจน'},
+ {q:'"Ecosystem" (ระบบนิเวศ) หมายถึงข้อใด?', options:['ความสัมพันธ์ระหว่างสิ่งมีชีวิตและสิ่งไม่มีชีวิตในพื้นที่หนึ่ง','กลุ่มพืชเพียงอย่างเดียว','วัฏจักรของน้ำเท่านั้น','กระบวนการสังเคราะห์แสงเพียงอย่างเดียว'], a:0, note:'Ecosystem คือความสัมพันธ์ที่เป็นระบบระหว่างสิ่งมีชีวิตและไม่มีชีวิตในบริเวณหนึ่ง'},
+ {q:'"Absorb" (ดูดซึม) ในบริบทของรากพืชหมายถึงข้อใด?', options:['กระบวนการที่รากดึงน้ำและแร่ธาตุจากดินเข้าสู่ลำต้น','การปล่อยออกซิเจนออกจากใบ','การเปลี่ยนน้ำตาลเป็นแป้ง','การหายใจระดับเซลล์'], a:0, note:'Absorb คือการดูดซึมน้ำและแร่ธาตุของรากจากดินเข้าสู่ระบบลำเลียงของพืช'},
+ {q:'"Chemical Reaction" (ปฏิกิริยาเคมี) ในการสังเคราะห์ด้วยแสงหมายถึงข้อใด?', options:['กระบวนการที่สารตั้งต้นเปลี่ยนสภาพไปเป็นสารใหม่','การดูดน้ำของราก','การคายน้ำทางใบ','การกระจายเมล็ดของพืช'], a:0, note:'Chemical Reaction คือกระบวนการที่สารตั้งต้น (น้ำ+CO2) เปลี่ยนเป็นสารใหม่ (น้ำตาล+ออกซิเจน)'},
+ {q:'"Summary" (บทสรุป) ของการสังเคราะห์ด้วยแสงกล่าวถึงข้อใด?', options:['พืชต้องมีน้ำ CO2 แสง และคลอโรฟิลล์ครบทั้ง 4 อย่างจึงสร้างอาหารได้','พืชสร้างอาหารจากดินอย่างเดียว','พืชไม่ต้องการแสงในเวลากลางคืน','พืชหายใจเฉพาะเวลากลางวันเท่านั้น'], a:0, note:'บทสรุป: หากขาดปัจจัยใดปัจจัยหนึ่ง (น้ำ, CO2, แสง, คลอโรฟิลล์) กระบวนการนี้จะพังทลายทันที'}
+];
+
+DATA.highway = [
+ {q:'"Transport" (การขนส่ง) ในระบบพืชหมายถึง?', options:['การเคลื่อนย้ายสารจากที่หนึ่งไปยังอีกที่หนึ่งอย่างเป็นระบบ','การสร้างอาหารด้วยแสง','การหายใจระดับเซลล์','การสืบพันธุ์ของพืช'], a:0, note:'Transport คือการเคลื่อนย้ายสาร (น้ำ/อาหาร) จากที่หนึ่งไปยังอีกที่หนึ่งอย่างเป็นระบบภายในพืช'},
+ {q:'"Root Hair" (ขนราก) ช่วยเพิ่มประสิทธิภาพด้านใดของราก?', options:['เพิ่มพื้นที่ผิวในการดูดซับน้ำและธาตุอาหาร','เพิ่มความแข็งแรงของลำต้น','ช่วยสร้างอาหารด้วยแสง','ป้องกันแมลงศัตรูพืช'], a:0, note:'Root Hair (ขนราก) ยื่นออกจากเซลล์ผิวรากเพื่อ "เพิ่มพื้นที่ผิว" ในการดูดซับน้ำและแร่ธาตุ'},
+ {q:'"Osmosis" (ออสโมซิส) คือการเคลื่อนที่ของน้ำในทิศทางใด?', options:['จากบริเวณน้ำมากไปน้ำน้อย ผ่านเยื่อเลือกผ่าน','จากบริเวณน้ำน้อยไปน้ำมากเสมอ','จากบนลงล่างเท่านั้น','เคลื่อนที่แบบสุ่มไม่มีทิศทาง'], a:0, note:'Osmosis คือการเคลื่อนที่ของน้ำจากบริเวณที่มีน้ำมาก (สารละลายเจือจาง) ไปสู่บริเวณที่มีน้ำน้อย (สารละลายเข้มข้น)'},
+ {q:'"Diffusion" (การแพร่) ของธาตุอาหารเข้าสู่รากเกิดขึ้นเมื่อดินมีสภาพอย่างไร?', options:['ดินมีธาตุอาหารเข้มข้นมากกว่าภายในราก','ดินมีธาตุอาหารน้อยกว่าภายในราก','ดินไม่มีธาตุอาหารเลย','ดินแห้งสนิท'], a:0, note:'Diffusion (การแพร่) เกิดเมื่อดินมีธาตุอาหารมากกว่าในราก ธาตุอาหารจะไหลเข้าสู่รากเองโดยไม่ต้องออกแรง'},
+ {q:'เมื่อดินมีธาตุอาหารน้อยกว่าภายในราก พืชต้องใช้กลไกใดในการดึงธาตุอาหารเข้ามา?', options:['Active Transport (การใช้พลังงาน)','Diffusion (การแพร่)','Osmosis (ออสโมซิส)','Respiration (การหายใจ)'], a:0, note:'เมื่อดินมีธาตุอาหารน้อยกว่าในราก พืชต้องใช้ "พลังงาน" ในกลไก Active Transport เพื่อดึงธาตุอาหารเข้ามา'},
+ {q:'"Xylem" (ไซเล็ม) ทำหน้าที่ลำเลียงอะไร และไปในทิศทางใด?', options:['น้ำและธาตุอาหาร เคลื่อนที่ทิศทางเดียวขึ้นสู่ยอด','อาหาร (น้ำตาล) เคลื่อนที่ได้ทั้งขึ้นและลง','แก๊สออกซิเจน ทิศทางเดียว','แก๊สคาร์บอนไดออกไซด์ ทั้งสองทิศทาง'], a:0, note:'Xylem ลำเลียงน้ำและธาตุอาหารจากรากขึ้นสู่ยอด ("วันเวย์" ทิศทางเดียวเสมอ)'},
+ {q:'"Phloem" (โฟลเอ็ม) ลำเลียงสิ่งใด และไปในทิศทางใด?', options:['อาหาร (น้ำตาล) เคลื่อนที่ได้ทั้งขึ้นและลง','น้ำ ทิศทางเดียวขึ้นสู่ยอด','แก๊สออกซิเจน ทั้งสองทิศทาง','แร่ธาตุ ทิศทางเดียวลงสู่ราก'], a:0, note:'Phloem ลำเลียงอาหาร (สารละลายน้ำตาล) จากใบไปเลี้ยงทุกส่วนของต้น เคลื่อนที่ได้ทั้งขึ้นและลง ("ทูเวย์")'},
+ {q:'"Vascular Bundle" (มัดท่อลำเลียง) หมายถึงข้อใด?', options:['กลุ่มของไซเล็มและโฟลเอ็มที่เรียงตัวอยู่คู่กันเสมอ','รากฝอยจำนวนมากที่รวมกัน','ชั้นเปลือกไม้ด้านนอก','เซลล์ขนรากที่รวมตัวกัน'], a:0, note:'Vascular Bundle คือกลุ่มเนื้อเยื่อไซเล็มและโฟลเอ็มที่เรียงตัวอยู่คู่กันเสมอ เหมือนสายเคเบิลไฟฟ้า'},
+ {q:'"Accumulate" (สะสม) ในบริบทของพืชหมายถึง?', options:['การรวบรวมและเก็บรักษาพอกพูนไว้ใช้ในอนาคต','การขนส่งทันทีโดยไม่เก็บไว้','การใช้พลังงานทันทีที่สร้างได้','การปล่อยออกทิ้งทันที'], a:0, note:'Accumulate คือการที่พืชเก็บสะสมอาหารส่วนเกิน (แป้ง) ไว้ที่ราก ลำต้น หรือเมล็ด เพื่อใช้ในอนาคต'},
+ {q:'ทิศทางการเคลื่อนที่ของไซเล็มเปรียบเหมือนถนนแบบใด?', options:['"One-way" (ทางเดียว) พุ่งขึ้นสู่ยอดเสมอ','"Two-way" ไปกลับได้ทั้งสองทาง','ถนนวงกลม','ไม่มีทิศทางแน่นอน'], a:0, note:'ไซเล็มเปรียบเหมือน "ถนนวันเวย์" ที่น้ำและธาตุอาหารพุ่งขึ้นสู่ยอดทางเดียวเท่านั้น'},
+ {q:'"Cross-section" (ภาพตัดตามขวาง) ใช้ในการศึกษาสิ่งใดของพืช?', options:['การจัดเรียงตัวของท่อไซเล็มและโฟลเอ็มภายในลำต้น','สีของกลีบดอก','กลิ่นเฉพาะตัวของใบ','รสชาติของผลไม้'], a:0, note:'Cross-section คือภาพตัดในแนวตั้งฉากกับความยาว ใช้ดูการจัดเรียงตัวของท่อไซเล็ม/โฟลเอ็มภายในลำต้นหรือราก'},
+ {q:'"Fertilizer" (ปุ๋ย) ช่วยแก้ปัญหาดินขาดธาตุอาหารโดยกลไกใด?', options:['เพิ่มความเข้มข้นของธาตุอาหารในดินให้เกิดการแพร่เข้าสู่รากอีกครั้ง','เปลี่ยนทิศทางการไหลของน้ำในไซเล็ม','หยุดการหายใจของพืชชั่วคราว','เร่งการออกดอกโดยตรงทันที'], a:0, note:'การใส่ปุ๋ยเพิ่มความเข้มข้นของธาตุอาหารในดิน ทำให้เกิดการ "แพร่" (Diffusion) เข้าสู่รากได้อีกครั้ง'},
+ {q:'"Direction" (ทิศทาง) การลำเลียงของไซเล็มกับโฟลเอ็มต่างกันอย่างไร?', options:['ไซเล็มไปทางเดียว (ขึ้น) ส่วนโฟลเอ็มไปได้ทั้งขึ้นและลง','ทั้งสองไปทางเดียวกันเสมอ','โฟลเอ็มไปทางเดียว ส่วนไซเล็มไปสองทาง','ทั้งสองไม่มีทิศทางที่แน่นอน'], a:0, note:'การแยกทิศทางกันทำให้ระบบขนส่งของพืชไม่ปั่นป่วน ทำงานได้รวดเร็วและมีประสิทธิภาพ'},
+ {q:'"System" (ระบบ) ในบริบทของการขนส่งพืชหมายถึง?', options:['กลุ่มของสิ่งต่างๆ ที่ทำงานประสานกันอย่างมีระเบียบเพื่อเป้าหมายเดียวกัน','ส่วนประกอบเดี่ยวๆ ที่ไม่เกี่ยวข้องกัน','เฉพาะรากเพียงอย่างเดียว','เฉพาะใบเพียงอย่างเดียว'], a:0, note:'System คือกลุ่มของสิ่งต่างๆ (ราก ไซเล็ม โฟลเอ็ม) ที่ทำงานประสานกันอย่างมีระเบียบเพื่อเป้าหมายเดียวกัน'}
+];
+
+DATA.lifecycle = [
+ {q:'"Petal" (กลีบดอก) มีหน้าที่หลักคือ?', options:['สีสันสดใสดึงดูดสัตว์และแมลง','ปกป้องตาดอกก่อนบาน','ยึดส่วนประกอบดอกไม้ไว้ด้วยกัน','สร้างละอองเรณู'], a:0, note:'Petal (กลีบดอก) มีสีสันสดใสเพื่อดึงดูดสัตว์และแมลงมาช่วยผสมเกสร'},
+ {q:'"Sepal" (กลีบเลี้ยง) ทำหน้าที่อะไร?', options:['ปกป้องตาดอกก่อนบาน','ดึงดูดแมลงด้วยสีสัน','สร้างเซลล์ไข่','รับละอองเรณู'], a:0, note:'Sepal (กลีบเลี้ยง) คือใบสีเขียวที่ปกป้องตาดอกไว้ก่อนที่ดอกจะบาน'},
+ {q:'"Receptacle" (ฐานรองดอก) คือส่วนใด?', options:['ฐานที่ยึดส่วนประกอบของดอกไม้เข้าด้วยกัน','กลีบดอกชั้นนอกสุด','ส่วนที่สร้างละอองเรณู','รังไข่ของดอก'], a:0, note:'Receptacle (ฐานรองดอก) คือฐานที่ยึดกลีบดอก กลีบเลี้ยง เกสรเพศผู้ และเกสรเพศเมียเข้าด้วยกัน'},
+ {q:'"Stamen" (เกสรเพศผู้) มีหน้าที่คือ?', options:['สร้างเรณู (Pollen)','รับเรณูและสร้างเซลล์ไข่','ปกป้องตาดอก','ดึงดูดแมลง'], a:0, note:'Stamen (เกสรเพศผู้) ประกอบด้วยอับเรณูและก้านชูอับเรณู ทำหน้าที่สร้างเรณู'},
+ {q:'"Anther" (อับเรณู) เป็นส่วนหนึ่งของอวัยวะใด?', options:['Stamen (เกสรเพศผู้)','Pistil (เกสรเพศเมีย)','Sepal (กลีบเลี้ยง)','Receptacle (ฐานรองดอก)'], a:0, note:'Anther (อับเรณู) อยู่ปลายสุดของ Stamen เป็นที่สร้างและเก็บละอองเรณูสีเหลือง'},
+ {q:'"Filament" (ก้านชูอับเรณู) ทำหน้าที่อะไร?', options:['ชูอับเรณูให้อยู่ในตำแหน่งที่เหมาะสม','รับเรณูจากแมลง','สร้างเซลล์ไข่ในรังไข่','ปกป้องดอกก่อนบาน'], a:0, note:'Filament (ก้านชูอับเรณู) เป็นก้านที่ชู Anther ให้อยู่ในตำแหน่งที่แมลงหรือลมเข้าถึงเรณูได้ง่าย'},
+ {q:'"Pistil" (เกสรเพศเมีย) มีหน้าที่คือ?', options:['รับเรณูและสร้างเซลล์ไข่','สร้างเรณู','ดึงดูดแมลงด้วยสีสัน','ปกป้องตาดอก'], a:0, note:'Pistil (เกสรเพศเมีย) ประกอบด้วยยอดเกสรเพศเมีย ก้านเกสรเพศเมีย และรังไข่ ทำหน้าที่รับเรณูและสร้างเซลล์ไข่'},
+ {q:'"Stigma" (ยอดเกสรเพศเมีย) คือส่วนที่ทำหน้าที่?', options:['รับเรณูจากแมลงหรือลม','เก็บเซลล์ไข่ไว้ภายใน','ชูอับเรณูให้สูงขึ้น','สร้างเรณูสีเหลือง'], a:0, note:'Stigma (ยอดเกสรเพศเมีย) เป็นจุดที่เรณูตกลงมาและงอกหลอดเรณูลงไปตามก้านเกสรเพศเมีย'},
+ {q:'"Ovary" (รังไข่) หลังการปฏิสนธิจะเจริญเปลี่ยนไปเป็นสิ่งใด?', options:['ผล (Fruit)','เมล็ด (Seed)','ดอกใหม่ (Flower)','ราก (Root)'], a:0, note:'Ovary (รังไข่) จะเจริญกลายเป็นผล (Fruit) ในขณะที่ Ovule (ออวุล) ภายในจะเจริญเป็นเมล็ด'},
+ {q:'"Pollen" (เรณู) คือสิ่งใด?', options:['ผงสีเหลืองที่สร้างขึ้นจากส่วนเพศผู้ของดอก','ของเหลวภายในรังไข่','เปลือกที่หุ้มเมล็ด','ส่วนต้นอ่อนในเมล็ด'], a:0, note:'Pollen (เรณู) คือผงสีเหลืองที่สร้างจาก Anther ใช้สำหรับปฏิสนธิกับเซลล์ไข่'},
+ {q:'"Pollination" (การถ่ายเรณู) หมายถึงกระบวนการใด?', options:['การเคลื่อนย้ายเรณูจากอับเรณูไปยังยอดเกสรเพศเมีย','การรวมตัวของเซลล์เพศผู้กับเซลล์ไข่','การงอกของเมล็ดในดิน','การกระจายเมล็ดไปยังที่ใหม่'], a:0, note:'Pollination คือการเคลื่อนย้ายเรณูจากอับเรณู (Anther) ไปยังยอดเกสรเพศเมีย (Stigma)'},
+ {q:'ตัวช่วยถ่ายเรณูตามธรรมชาติในบทเรียนได้แก่สิ่งใด?', options:['ลม น้ำ ผึ้ง และนก','มนุษย์เพียงอย่างเดียว','น้ำเพียงอย่างเดียว','ไม่มีตัวช่วยใดเลย เพราะพืชเคลื่อนที่เองได้'], a:0, note:'เนื่องจากพืชเคลื่อนที่ไม่ได้ จึงต้องอาศัยผู้ช่วยถ่ายเรณู เช่น ลม น้ำ ผึ้ง และนก'},
+ {q:'"Fertilization" (การปฏิสนธิ) คือกระบวนการใด?', options:['การรวมกันของเซลล์เพศผู้ (สเปิร์ม) กับเซลล์ไข่','การเคลื่อนย้ายเรณูไปยังยอดเกสรเพศเมีย','การงอกของเมล็ดในดิน','การกระจายผลและเมล็ด'], a:0, note:'Fertilization เกิดขึ้นเมื่อเรณูงอกหลอดลงไปตามก้านเกสรเพศเมียจนสเปิร์มผสมกับเซลล์ไข่ในออวุล'},
+ {q:'"Ovule" (ออวุล) หลังการปฏิสนธิจะเจริญไปเป็นสิ่งใด?', options:['เมล็ด (Seed)','ผล (Fruit)','กลีบดอก (Petal)','ราก (Root)'], a:0, note:'Ovule (ออวุล) ที่อยู่ภายในรังไข่ หลังปฏิสนธิจะเจริญกลายเป็นเมล็ด'},
+ {q:'ส่วนประกอบภายในเมล็ดมี 3 ส่วนหลัก ได้แก่ข้อใด?', options:['Seed Coat, Embryo, Endosperm/Cotyledon','Petal, Sepal, Stamen','Root, Stem, Leaf','Xylem, Phloem, Cambium'], a:0, note:'เมล็ดประกอบด้วย เปลือกหุ้มเมล็ด (Seed Coat) ต้นอ่อน (Embryo) และแหล่งอาหารสำรอง (Endosperm/Cotyledon)'},
+ {q:'"Seed Coat" (เปลือกหุ้มเมล็ด) ทำหน้าที่อะไร?', options:['เป็นชั้นนอกที่แข็งเพื่อป้องกันเมล็ด','เป็นแหล่งอาหารสำหรับต้นอ่อน','เจริญไปเป็นรากของต้นใหม่','ดึงดูดสัตว์ให้มากิน'], a:0, note:'Seed Coat คือเปลือกหุ้มเมล็ดชั้นนอกที่แข็งแรง ทำหน้าที่ปกป้องต้นอ่อนภายใน'},
+ {q:'"Embryo" (ต้นอ่อน) ที่อยู่ภายในเมล็ดคือสิ่งใด?', options:['พืชต้นจิ๋วที่มีรากและยอด','แหล่งอาหารสำรองของเมล็ด','เปลือกป้องกันชั้นนอก','ส่วนที่ดึงดูดสัตว์ให้กิน'], a:0, note:'Embryo คือพืชต้นจิ๋วที่หลับใหลอยู่ในเมล็ด มีทั้งส่วนรากและยอดพร้อมเจริญเติบโต'},
+ {q:'"Endosperm/Cotyledon" (ใบเลี้ยง) ในเมล็ดทำหน้าที่อะไร?', options:['เป็นแหล่งอาหารสำหรับต้นอ่อนใช้ในระยะแรกของการงอก','ป้องกันเมล็ดจากความชื้น','เจริญไปเป็นดอกไม้','สร้างละอองเรณู'], a:0, note:'Endosperm/Cotyledon คือแหล่งอาหารสะสมที่ต้นอ่อนใช้ในช่วงแรกของการงอก ก่อนที่จะสร้างใบสังเคราะห์แสงเองได้'},
+ {q:'"Germination" (การงอก) ต้องการปัจจัยสำคัญ 3 ประการใด?', options:['น้ำ ออกซิเจน และอุณหภูมิที่เหมาะสม','แสงแดดเท่านั้น','ปุ๋ยเคมีเท่านั้น','ดินร่วนซุยเท่านั้น'], a:0, note:'การงอกต้องการ น้ำ (ทำให้เปลือกเมล็ดนิ่ม) ออกซิเจน (หายใจ) และอุณหภูมิที่เหมาะสม (ไม่ร้อนหรือเย็นเกินไป)'},
+ {q:'พืชใบเลี้ยงคู่ (เช่น ถั่ว) ต่างจากพืชใบเลี้ยงเดี่ยว (เช่น ข้าวโพด) ในการงอกอย่างไร?', options:['มีใบเลี้ยง 2 ใบ ต่างจากข้าวโพดที่มีใบเลี้ยง 1 ใบ','มีใบเลี้ยง 1 ใบเหมือนกันทั้งคู่','มีใบเลี้ยง 3 ใบ มากกว่าข้าวโพด','ไม่มีใบเลี้ยงเลยทั้งคู่'], a:0, note:'ถั่วเป็นพืชใบเลี้ยงคู่ (2 ใบเลี้ยง) ส่วนข้าวโพดเป็นพืชใบเลี้ยงเดี่ยว (1 ใบเลี้ยง) รูปแบบการงอกจึงต่างกัน'},
+ {q:'"Dispersal" (การกระจายผลและเมล็ด) มีวิธีการหลักตามบทเรียนกี่แบบ?', options:['4 แบบ: สัตว์ ลม น้ำ และการแตกกระเด็น','2 แบบ: สัตว์และลมเท่านั้น','6 แบบ','1 แบบ คือลมเท่านั้น'], a:0, note:'การกระจายเมล็ดมี 4 วิธีหลัก: สัตว์ (Animals) ลม (Wind) น้ำ (Water) และการแตกกระเด็น (Bursting)'},
+ {q:'มะพร้าวใช้วิธีกระจายเมล็ดแบบใดเป็นหลัก?', options:['น้ำ (Water) — ลอยไปตามแม่น้ำและมหาสมุทร','สัตว์ (Animals)','ลม (Wind)','การแตกกระเด็น (Bursting)'], a:0, note:'มะพร้าวมีเปลือกหนาและเบา ลอยน้ำได้ดี จึงกระจายพันธุ์ไปตามแม่น้ำและมหาสมุทร'},
+ {q:'เมล็ดที่มีขนปุยลอยปลิวตามลม (เช่น ดอกรัก) เป็นการกระจายพันธุ์แบบใด?', options:['ลม (Wind)','น้ำ (Water)','สัตว์ (Animals)','การแตกกระเด็น (Bursting)'], a:0, note:'เมล็ดที่มีขนปุยเบาจะปลิวไปตามลมได้ไกล เป็นการกระจายพันธุ์แบบ Wind'},
+ {q:'ต้อยติ่งกระจายเมล็ดด้วยวิธีใด?', options:['การแตกกระเด็น (Bursting) เมื่อฝักโดนน้ำ','ลม (Wind)','น้ำ (Water)','สัตว์ (Animals)'], a:0, note:'ฝักต้อยติ่งจะแตกกระเด็นทันทีเมื่อโดนน้ำ ทำให้เมล็ดกระจายออกไปรอบต้น'},
+ {q:'ทำไมพืชจึงต้องกระจายเมล็ดออกไปให้ไกลจากต้นแม่?', options:['เพื่อไม่ให้แย่งน้ำและแสงกับต้นแม่','เพื่อให้เมล็ดตายเร็วขึ้น','เพื่อลดจำนวนเมล็ดที่งอก','ไม่มีเหตุผลพิเศษใดๆ'], a:0, note:'การกระจายเมล็ดช่วยให้ต้นอ่อนใหม่ไม่ต้องแย่งน้ำ แสง และพื้นที่กับต้นแม่'},
+ {q:'ลำดับวัฏจักรชีวิตพืชที่ถูกต้องคือข้อใด?', options:['การถ่ายเรณู → การปฏิสนธิ → การงอก → การกระจายเมล็ด','การงอก → การถ่ายเรณู → การปฏิสนธิ → การกระจายเมล็ด','การกระจายเมล็ด → การงอก → การถ่ายเรณู → การปฏิสนธิ','การปฏิสนธิ → การกระจายเมล็ด → การถ่ายเรณู → การงอก'], a:0, note:'วัฏจักรที่สมบูรณ์: 1) การถ่ายเรณู 2) การปฏิสนธิ (เกิดเมล็ด) 3) การงอก 4) การกระจายเมล็ดไปบ้านใหม่'},
+ {q:'"Reproduction" (การสืบพันธุ์) ของดอกไม้มีความหมายว่าอะไร?', options:['การสร้างสิ่งมีชีวิตใหม่','การสร้างอาหารด้วยแสง','การลำเลียงน้ำในลำต้น','การหายใจระดับเซลล์'], a:0, note:'Reproduction หมายถึงการสร้างสิ่งมีชีวิตใหม่ ดอกไม้คืออวัยวะสืบพันธุ์ของพืช'}
+];
+
+/* =========================================================
+   STATE
+   ========================================================= */
+let state = { catId:null, catLabel:"", questions:[], idx:0, score:0, streak:0, bestStreak:0, wrong:[] };
+const LS_PREFIX = "herbarium.best.";
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function getBest(catId){
+  try{ return parseInt(localStorage.getItem(LS_PREFIX+catId) || "0", 10); }catch(e){ return 0; }
+}
+function setBest(catId, pct){
+  try{
+    const cur = getBest(catId);
+    if(pct > cur) localStorage.setItem(LS_PREFIX+catId, String(pct));
+  }catch(e){}
+}
+
+/* =========================================================
+   RENDER: cover / index
+   ========================================================= */
+function renderCategoryGrid(){
+  const grid = document.getElementById('category-grid');
+  grid.innerHTML = "";
+  CATS.forEach(cat=>{
+    const n = DATA[cat.id].length;
+    const best = getBest(cat.id);
+    const card = document.createElement('button');
+    card.className = 'spec-card';
+    card.style.width = '100%';
+    card.style.border = '1px solid var(--line)';
+    card.style.background = 'var(--paper-raised)';
+    card.setAttribute('aria-label', cat.th + ' — ' + cat.en);
+    card.onclick = ()=>startQuiz(cat.id);
+    card.innerHTML = `
+      <span class="catno mono">SPEC. NO. 0${cat.no}</span>
+      <span class="icon-wrap"><svg width="26" height="26" viewBox="0 0 30 30" fill="none" aria-hidden="true">${cat.icon}</svg></span>
+      <div class="th-name th">${cat.th}</div>
+      <div class="en-name en">${cat.en}</div>
+      <div class="meta">
+        <span class="th">${n} ข้อ</span>
+        <span class="best mono">${best>0 ? 'สูงสุด '+best+'%' : 'ยังไม่เล่น'}</span>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+/* =========================================================
+   QUIZ FLOW
+   ========================================================= */
+function startQuiz(catId){
+  let pool = [];
+  let label = "";
+  if(catId === "mixed"){
+    label = "สุ่มรวมทุกหมวด · Mixed Specimens";
+    CATS.forEach(c=>{
+      DATA[c.id].forEach(q=> pool.push(Object.assign({}, q, {origin:c.th})));
+    });
+    pool = shuffle(pool).slice(0, 20);
+  } else {
+    const cat = CATS.find(c=>c.id===catId);
+    label = cat.th + " · " + cat.en;
+    pool = shuffle(DATA[catId]).map(q=>Object.assign({}, q, {origin:null}));
+  }
+  // shuffle options within each question, tracking the correct index
+  pool = pool.map(q=>{
+    const idxs = shuffle(q.options.map((_,i)=>i));
+    const options = idxs.map(i=>q.options[i]);
+    const answer = idxs.indexOf(q.a);
+    return {q:q.q, note:q.note, origin:q.origin, options, answer};
+  });
+
+  state = { catId, catLabel: label, questions: pool, idx:0, score:0, streak:0, bestStreak:0, wrong:[] };
+
+  document.getElementById('quiz-title-label').innerHTML = '<b>'+label.split(' · ')[0]+'</b> · '+ (label.split(' · ')[1]||'');
+  document.getElementById('stat-total').textContent = pool.length;
+  showScreen('quiz');
+  buildVine();
+  renderQuestion();
+}
+
+function buildVine(){
+  const track = document.getElementById('vine-track');
+  track.innerHTML = "";
+  state.questions.forEach((_,i)=>{
+    const leaf = document.createElement('div');
+    leaf.className = 'leaf';
+    leaf.id = 'leaf-'+i;
+    track.appendChild(leaf);
+  });
+}
+function updateVine(){
+  state.questions.forEach((_,i)=>{
+    const el = document.getElementById('leaf-'+i);
+    el.classList.remove('done','current');
+    if(i < state.idx) el.classList.add('done');
+    else if(i === state.idx) el.classList.add('current');
+  });
+}
+
+const THAI_LETTERS = ['ก','ข','ค','ง','จ'];
+
+function renderQuestion(){
+  const q = state.questions[state.idx];
+  updateVine();
+  document.getElementById('card-catno').textContent = 'SPEC. NO. ' + String(state.idx+1).padStart(3,'0');
+  document.getElementById('card-origin').textContent = q.origin ? ('จาก: ' + q.origin) : '';
+  document.getElementById('card-question').textContent = q.q;
+  document.getElementById('stat-score').textContent = state.score;
+  document.getElementById('stat-streak').textContent = state.streak;
+
+  const optWrap = document.getElementById('card-options');
+  optWrap.innerHTML = "";
+  q.options.forEach((opt,i)=>{
+    const b = document.createElement('button');
+    b.className = 'opt';
+    b.innerHTML = '<span class="letter">'+THAI_LETTERS[i]+'</span><span>'+opt+'</span>';
+    b.onclick = ()=>selectAnswer(i);
+    optWrap.appendChild(b);
+  });
+
+  const note = document.getElementById('card-note');
+  note.classList.remove('show');
+  note.textContent = "";
+  document.getElementById('btn-next').classList.remove('show');
+  document.getElementById('btn-next').textContent = (state.idx === state.questions.length-1) ? 'ดูผลคะแนน →' : 'ถัดไป →';
+}
+
+function selectAnswer(i){
+  const q = state.questions[state.idx];
+  const buttons = document.querySelectorAll('#card-options .opt');
+  buttons.forEach(b=> b.disabled = true);
+
+  const correct = (i === q.answer);
+  buttons[i].classList.add(correct ? 'correct' : 'wrong');
+  if(!correct) buttons[q.answer].classList.add('correct');
+
+  if(correct){
+    state.score++;
+    state.streak++;
+    state.bestStreak = Math.max(state.bestStreak, state.streak);
+  } else {
+    state.streak = 0;
+    state.wrong.push({q:q.q, yours: q.options[i], correct: q.options[q.answer], note:q.note});
+  }
+  document.getElementById('stat-score').textContent = state.score;
+  document.getElementById('stat-streak').textContent = state.streak;
+
+  const note = document.getElementById('card-note');
+  note.innerHTML = (correct ? '✅ ถูกต้อง! ' : '❌ ยังไม่ถูก — ') + q.note;
+  note.classList.add('show');
+  document.getElementById('btn-next').classList.add('show');
+}
+
+function nextQuestion(){
+  state.idx++;
+  if(state.idx >= state.questions.length){
+    showResults();
+  } else {
+    renderQuestion();
+  }
+}
+
+function confirmExit(){
+  goHome();
+}
+
+function showResults(){
+  const total = state.questions.length;
+  const pct = Math.round((state.score/total)*100);
+  if(state.catId !== 'mixed') setBest(state.catId, pct);
+
+  let tierTh, tierEn;
+  if(pct >= 90){ tierTh='นักพฤกษศาสตร์ระดับปรมาจารย์'; tierEn='Master Botanist'; }
+  else if(pct >= 75){ tierTh='นักสำรวจพฤกษศาสตร์'; tierEn='Field Botanist'; }
+  else if(pct >= 50){ tierTh='นักเรียนภาคสนาม'; tierEn='Field Student'; }
+  else { tierTh='ผู้เริ่มต้นสำรวจ'; tierEn='Budding Explorer'; }
+
+  document.getElementById('res-tier').textContent = tierTh;
+  document.getElementById('res-tier-en').textContent = tierEn;
+  document.getElementById('res-score').textContent = state.score+'/'+total;
+  document.getElementById('res-sub').textContent = 'ถูก '+pct+'% · สตรีคสูงสุด '+state.bestStreak+' ข้อติด';
+
+  const wrap = document.getElementById('res-review-wrap');
+  const list = document.getElementById('res-review');
+  list.innerHTML = "";
+  if(state.wrong.length){
+    wrap.style.display = 'block';
+    state.wrong.forEach(w=>{
+      const div = document.createElement('div');
+      div.className = 'review-item';
+      div.innerHTML = '<div class="q th">'+w.q+'</div>'+
+        '<div class="th a-wrong">คุณตอบ: '+w.yours+'</div>'+
+        '<div class="th a-right">ที่ถูก: '+w.correct+'</div>';
+      list.appendChild(div);
+    });
+  } else {
+    wrap.style.display = 'none';
+  }
+
+  document.getElementById('res-retry').onclick = ()=> startQuiz(state.catId);
+  showScreen('results');
+}
+
+function goHome(){
+  renderCategoryGrid();
+  showScreen('cover');
+}
+
+function showScreen(name){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+  window.scrollTo({top:0, behavior:'auto'});
+}
+
+renderCategoryGrid();
+</script>
+
+</body></html>
