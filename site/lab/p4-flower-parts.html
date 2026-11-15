@@ -113,6 +113,8 @@ main{flex:1;min-width:0;padding:28px 36px 48px}
 .camctl{position:absolute;top:14px;right:14px;display:flex;flex-direction:column;gap:8px;z-index:3}
 .labels{position:absolute;inset:0;pointer-events:none;z-index:2;overflow:hidden}
 .labels div{position:absolute;left:0;top:0;transform:translate(-50%,-100%);padding:3px 10px;border-radius:99px;background:rgba(30,35,64,.78);color:#fff;font-size:12px;font-weight:600;white-space:nowrap}
+.labels div.info{white-space:pre-line;border-radius:12px;background:rgba(255,255,255,.96);color:#1E2340;font-size:13px;font-weight:500;line-height:1.55;padding:8px 12px;box-shadow:0 4px 16px rgba(30,35,64,.18);border-left:4px solid #3E9E57;max-width:min(46vw,260px)}
+.labels div.info::first-line{font-weight:700}
 .warn{position:absolute;top:60px;left:50%;transform:translateX(-50%);z-index:4;padding:8px 16px;border-radius:99px;background:var(--red);color:#fff;font-weight:600;font-size:14px;max-width:calc(100% - 100px);text-align:center;pointer-events:none}
 .bubble{position:absolute;left:12px;bottom:12px;right:12px;display:flex;align-items:flex-end;gap:8px;z-index:3;pointer-events:none}
 .bubble .msg{max-width:380px;padding:10px 14px;border-radius:18px 18px 18px 4px;background:var(--surface);box-shadow:0 6px 18px rgba(30,35,64,.10);font-size:15px;line-height:1.5}
@@ -1688,7 +1690,7 @@ const Lab = (function(){
     return g;
   }
   function buildP4(){
-    const W = R.world, s = P.s; P.pots = {};
+    const W = R.world, s = P.s; P.pots = {}; P.view = null; P.camGo = null;
     POTS.forEach(p=>{
       const {g, soil} = makePot(); g.userData.id = 'pot:' + p.id;
       const plant = new THREE.Group(); plant.position.y = .5; g.add(plant);
@@ -1700,7 +1702,7 @@ const Lab = (function(){
       g.add(hitBox(.8,1.5,.8,.75));
       g.position.set(p.x, TABLE_Y, 0); shadowAll(g); W.add(g);
       P.pots[p.id] = {g, plant, stem, leaves, top, sm, lm, soil};
-      P.labels.push({obj:anc, dy:0, text:()=>`กระถาง ${p.id}`});
+      P.labels.push({obj:anc, dy:0, text:()=>P.view ? '' : `กระถาง ${p.id}`});
     });
     const sun = new THREE.Group(); sun.add(sph(.3, new THREE.MeshBasicMaterial({color:0xFFD45C}), 24)); const halo = new THREE.Mesh(new THREE.CircleGeometry(.62, 32), new THREE.MeshBasicMaterial({color:0xFFE9A8, transparent:true, opacity:.35, depthWrite:false})); halo.position.z = -.05; sun.add(halo);
     sun.position.set(-2.7, 3.35, -2.4); sun.lookAt(R.camera.position); W.add(sun);
@@ -1708,7 +1710,8 @@ const Lab = (function(){
     P.drops = []; for(let k=0;k<16;k++){ const d = sph(.02, TRANS(0x6FB7F0,.85), 8); d.scale.y = 1.6; d.visible = false; W.add(d); P.drops.push(d); }
     const bx = item('box', makeDarkBox(), TOOL.box);
     P.labels.push({obj:can, dy:.62, text:()=>s.day ? '' : 'บัวรดน้ำ'});
-    const dAnc = new THREE.Object3D(); dAnc.position.set(0, TABLE_Y + 2.65, .2); W.add(dAnc); P.labels.push({obj:dAnc, dy:0, text:()=>`วันที่ ${s.day}`});
+    POTS.forEach(p=>{ const a = new THREE.Object3D(); a.position.set(p.x - .45, TABLE_Y + 1.3, .1); W.add(a); P.labels.push({obj:a, dy:0, cls:'info', text:()=>P.view===p.id ? potInfo(p.id) : ''}); });
+    const dAnc = new THREE.Object3D(); dAnc.position.set(0, TABLE_Y + 2.65, .2); W.add(dAnc); P.labels.push({obj:dAnc, dy:0, text:()=>P.view ? '' : `วันที่ ${s.day}`});
     syncP4();
   }
   const covered = () => (POTS.find(p=>!P.s.cond[p.id].l) || {}).id;
@@ -1718,12 +1721,12 @@ const Lab = (function(){
       o.leaves.forEach(l=>{ l.position.y = gr.H*l.userData.f; l.rotation.set(0, l.userData.ry, .35 - gr.droop); l.scale.setScalar(gr.leaf); });
       o.top.position.y = gr.H; o.plant.rotation.z = gr.tilt;
       o.soil.material.color.setHex(c.w ? 0x5A3C26 : (s.day >= 2 ? 0xD8BC92 : 0x9C7A55)); o.soil.material.roughness = c.w ? .55 : 1; });
-    const b = P.items && P.items.box; if(b && !(drag && drag.g===b)){ const id = covered(); if(id){ const p = POTS.find(q=>q.id===id); b.userData.home = s.seen[id] ? TOOL.box.clone() : V(p.x, TABLE_Y, 0); } else b.userData.home = TOOL.box.clone(); goHome(b); }
+    const b = P.items && P.items.box; if(b && !(drag && drag.g===b)){ const id = covered(); if(id){ const p = POTS.find(q=>q.id===id); b.userData.home = s.seen[id] || P.view===id ? TOOL.box.clone() : V(p.x, TABLE_Y, 0); } else b.userData.home = TOOL.box.clone(); goHome(b); }
   }
-  function waterPot(id){ const s = P.s; if(s.day > 0){ P.warn = 'เริ่มทดลองไปแล้ว เปลี่ยนเงื่อนไขไม่ได้ ถ้าจะจัดใหม่ กด "เริ่มใหม่" นะครับ'; return false; }
+  function waterPot(id){ const s = P.s; if(s.day > 0){ P.warn = 'เริ่มทดลองไปแล้ว ถ้าจะเปลี่ยนการรดน้ำ/ครอบกล่อง ให้ย้อนกลับไปวันที่ 0 (กด −1 วัน) หรือกด "เริ่มใหม่"'; return false; }
     if(s.cond[id].w){ P.say = `กระถาง ${id} รดน้ำแล้วครับ (ให้กระถางหนึ่งไม่ได้รดน้ำ ไว้เปรียบเทียบ)`; return false; }
     s.cond[id].w = true; P.pour = {id, t:0}; P.say = `รดน้ำ (Water) กระถาง ${id} แล้ว · ` + setupMsg(); return true; }
-  function coverPot(id){ const s = P.s; if(s.day > 0){ P.warn = 'เริ่มทดลองไปแล้ว เปลี่ยนเงื่อนไขไม่ได้ ถ้าจะจัดใหม่ กด "เริ่มใหม่" นะครับ'; return; }
+  function coverPot(id){ const s = P.s; if(s.day > 0){ P.warn = 'เริ่มทดลองไปแล้ว ถ้าจะเปลี่ยนการรดน้ำ/ครอบกล่อง ให้ย้อนกลับไปวันที่ 0 (กด −1 วัน) หรือกด "เริ่มใหม่"'; return; }
     POTS.forEach(p=>{ s.cond[p.id].l = p.id!==id; }); P.say = `ครอบกล่องทึบกระถาง ${id} แล้ว ต้นในกล่องไม่ได้รับ Sunlight (แสงแดด) · ` + setupMsg(); }
   function uncover(){ const s = P.s; if(s.day > 0) return; POTS.forEach(p=>{ s.cond[p.id].l = true; }); P.say = 'ยกกล่องทึบออกแล้ว ทุกกระถางได้รับแสง'; }
   function setupMsg(){ const s = P.s, cs = POTS.map(p=>condOf(s.cond[p.id]));
@@ -1731,17 +1734,27 @@ const Lab = (function(){
     if(cs.includes('none')) return 'มีกระถางที่ขาดทั้งน้ำและแสง จะบอกไม่ได้ว่าเพราะอะไร ให้ขาดทีละอย่าง';
     const need = []; if(!cs.includes('full')) need.push('ได้ทั้งน้ำและแสง'); if(!cs.includes('dry')) need.push('ไม่รดน้ำ'); if(!cs.includes('dark')) need.push('รดน้ำแต่ครอบกล่อง');
     return 'ยังขาดกระถางแบบ: ' + need.join(', '); }
-  function toggleCond(id, k){ const s = P.s; if(s.day > 0){ P.warn = 'เริ่มทดลองไปแล้ว เปลี่ยนเงื่อนไขไม่ได้ ถ้าจะจัดใหม่ กด "เริ่มใหม่" นะครับ'; return; }
+  function toggleCond(id, k){ const s = P.s; if(s.day > 0){ P.warn = 'เริ่มทดลองไปแล้ว ถ้าจะเปลี่ยนการรดน้ำ/ครอบกล่อง ให้ย้อนกลับไปวันที่ 0 (กด −1 วัน) หรือกด "เริ่มใหม่"'; return; }
     if(k==='w'){ if(s.cond[id].w){ s.cond[id].w = false; P.say = `กระถาง ${id} ไม่รดน้ำ · ` + setupMsg(); } else waterPot(id); }
     else { if(s.cond[id].l) coverPot(id); else uncover(); } }
-  function addDays(n){ const s = P.s; if(!setupOK()){ P.warn = 'จัดกระถางให้ครบ 3 แบบก่อน: ได้ทั้งน้ำและแสง 1 ใบ ไม่รดน้ำ 1 ใบ รดน้ำแต่ครอบกล่องทึบ 1 ใบ'; return; } s.day = Math.min(10, s.day + n); P.say = s.day >= 7 ? `ผ่านไป ${s.day} วันแล้ว (รดน้ำทุกวัน) แตะดูกระถางทีละใบ กระถางในกล่องให้แตะที่กล่องเพื่อยกออก` : `ผ่านไป ${s.day} วัน สังเกตต้นไม้แต่ละกระถาง`; }
-  function seePot(id){ const s = P.s; if(s.day < 7){ P.warn = 'ให้เวลาผ่านไปอย่างน้อย 7 วันก่อน แล้วค่อยดูผล'; return; } s.seen[id] = 1; const c = condOf(s.cond[id]), gr = growth(id);
+  function addDays(n){ const s = P.s; s.day = Math.max(0, Math.min(10, s.day + n)); if(P.view && s.day >= 7) s.seen[P.view] = 1;
+    P.say = s.day === 0 ? 'กลับมาวันที่ 0 แล้ว เปลี่ยนการรดน้ำ/ครอบกล่องได้' : (setupOK() ? '' : 'ยังจัดกระถางไม่ครบ 3 แบบนะ ผลจะเทียบกันไม่ได้ · ') + (s.day >= 7 ? `วันที่ ${s.day} แตะกระถางทีละใบเพื่อซูมดูรายละเอียด` : `วันที่ ${s.day} แตะกระถางเพื่อซูมดูต้นไม้`); }
+  function potInfo(id){ const s = P.s, c = s.cond[id], k = condOf(c), gr = growth(id), d = s.day, L = [`กระถาง ${id} · วันที่ ${d}`, `รดน้ำ ${c.w ? '✓' : '✗'}  ได้แสง ${c.l ? '✓' : '✗ (ในกล่องทึบ)'}`, `สูงประมาณ ${gr.cm} ซม.`];
+    if(d < 2 || (k==='dark' && d < 3)) L.push('ลำต้น: เล็ก ยังเหมือนกระถางอื่น', 'ใบ: สีเขียว');
+    else if(k==='full') L.push('ลำต้น: แข็งแรง ตั้งตรง', 'ใบ: สีเขียวเข้ม กางเต็มที่');
+    else if(k==='dark') L.push('ลำต้น: ผอม ยืดยาว อ่อนแอ', 'ใบ: เล็ก สีซีดเหลือง');
+    else L.push('ลำต้น: เหี่ยว โน้มลง', 'ใบ: เหลืองน้ำตาล ห่อเหี่ยว');
+    L.push(`ดิน: ${c.w ? 'ชื้น' : d >= 2 ? 'แห้ง แตก' : 'แห้ง'}`); return L.join('\n'); }
+  function viewAll(){ P.view = null; P.camGo = null; camHome(); }
+  function seePot(id){ const s = P.s; const p = POTS.find(q=>q.id===id); P.view = id; P.camGo = {tgt:V(p.x - .32, TABLE_Y + 1.05, 0), pos:V(p.x - .32, TABLE_Y + 1.75, 2.75)};
+    if(s.day < 7){ P.say = `ซูมดูกระถาง ${id} (วันที่ ${s.day}) · ให้เวลาผ่านไปจนครบ 7 วัน แล้วเปรียบเทียบกัน`; return; } s.seen[id] = 1; const c = condOf(s.cond[id]), gr = growth(id);
     P.say = `กระถาง ${id} (${CONDN[c]}): สูงประมาณ ${gr.cm} ซม. ` + (c==='full' ? 'ใบเขียว ลำต้นแข็งแรง ตั้งตรง' : c==='dark' ? 'ยกกล่องออกแล้ว: ลำต้นผอมยืดยาว ใบซีดเหลือง เพราะไม่มี Sunlight (แสงแดด)' : 'เหี่ยว ใบเหลืองน้ำตาล ดินแห้ง เพราะไม่ได้ Water (น้ำ)'); }
   function pickPot(id){ const s = P.s, c = condOf(s.cond[id]);
     if(c==='full'){ s.pick = id; P.say = `ถูกต้อง! กระถาง ${id} ได้รับทั้ง Water และ Sunlight จึงเจริญเติบโตดีที่สุด`; }
     else { s.wrong += 1; P.warn = c==='dark' ? `ยังไม่ถูก กระถาง ${id} สูงก็จริง แต่ลำต้นผอมและใบซีดเหลือง เพราะขาดแสง ดูสีใบและความแข็งแรงด้วย` : `ยังไม่ถูก กระถาง ${id} เหี่ยวและใบเหลืองน้ำตาล เพราะขาดน้ำ ลองเทียบกับกระถางอื่น`; } }
   const _tv = new THREE.Vector3();
   function tickP4(dt){
+    if(P.camGo){ const k = Math.min(1, dt*4); R.controls.target.lerp(P.camGo.tgt, k); R.camera.position.lerp(P.camGo.pos, k); if(R.camera.position.distanceTo(P.camGo.pos) < .01) P.camGo = null; }
     const pr = P.pour, can = P.items.can; if(!pr || !can){ return; }
     if(drag && drag.g===can){ return; }
     pr.t += dt; const pot = POTS.find(p=>p.id===pr.id);
@@ -1777,12 +1790,12 @@ const Lab = (function(){
     g.setAttribute('color', new THREE.Float32BufferAttribute(col, 3)); g.computeVertexNormals(); PETG = g; return g; }
   function hibiscus(M, withHits){
     const g = new THREE.Group(), parts = {}; const mk = k => { const q = new THREE.Group(); g.add(q); parts[k] = q; return q; };
-    const sg = mk('sepal'), smat = M(0x5E9A45,{roughness:.6, side:THREE.DoubleSide});
-    for(let k=0;k<5;k++){ const l = makeLeaf(.17,.05, smat, -.05); const w = new THREE.Group(); w.rotation.y = k/5*Math.PI*2 + .6; l.rotation.z = 1.05; w.add(l); sg.add(w); }
+    const sg = mk('sepal'), smat = M(0x3F8A3A,{roughness:.6, side:THREE.DoubleSide});
+    for(let k=0;k<5;k++){ const l = makeLeaf(.24,.075, smat, -.12); const w = new THREE.Group(); w.rotation.y = k/5*Math.PI*2 + .6; w.position.y = -.02; l.rotation.z = .5; w.add(l); sg.add(w); }
     for(let k=0;k<7;k++){ const b = cyl(.005,.009,.11, M(0x6FA84E), 5); const w = new THREE.Group(); w.rotation.y = k/7*Math.PI*2; b.position.set(.05,-.035,0); b.rotation.z = 1.9; w.add(b); sg.add(w); }
-    sg.add(at(ellip(.055,.05,.055, M(0x5E9A45,{roughness:.6}), 16), 0,.0,0));
+    sg.add(at(ellip(.06,.075,.06, M(0x3F8A3A,{roughness:.6}), 16), 0,.04,0));
     const pg = mk('petal'), pmat = M(0xffffff,{vertexColors:true, roughness:.5, side:THREE.DoubleSide});
-    for(let k=0;k<5;k++){ const m = new THREE.Mesh(petalGeo(), pmat); const w = new THREE.Group(); w.rotation.y = k/5*Math.PI*2; m.position.set(.02,.04,0); m.rotation.x = .28; w.add(m); pg.add(w); }
+    for(let k=0;k<5;k++){ const m = new THREE.Mesh(petalGeo(), pmat); const w = new THREE.Group(); w.rotation.y = k/5*Math.PI*2; m.position.set(.03,.11,0); m.rotation.x = .28; w.add(m); pg.add(w); }
     const pig = mk('pistil'), ov = new THREE.Group(); pig.add(ov);
     ov.add(at(ellip(.065,.085,.065, M(0x9BCB6A,{roughness:.45, side:THREE.DoubleSide}), 18), 0,.06,0));
     for(let k=0;k<10;k++){ const a = k/5*Math.PI, r = .03; ov.add(at(sph(.014, M(0xFFFBEA,{roughness:.5}), 8), Math.cos(a)*r, .045 + (k%2)*.03, Math.sin(a)*r)); }
@@ -1791,7 +1804,7 @@ const Lab = (function(){
     const stg = mk('stamen');
     stg.add(at(cyl(.016,.024,.6, M(0xE4566E,{roughness:.45, side:THREE.DoubleSide}), 12, true), 0,.38,0));
     for(let k=0;k<30;k++){ const y = .4 + rnd(k*4.1)*.27, a = rnd(k*9.3)*Math.PI*2, w = new THREE.Group(); w.position.y = y; w.rotation.y = a; const st = cyl(.003,.003,.04, M(0xF2D27A), 4); st.rotation.z = -1.2; st.position.x = .032; w.add(st); w.add(at(ellip(.013,.009,.009, M(0xF5C33B,{roughness:.8}), 8), .052,.01,0)); stg.add(w); }
-    if(withHits){ sg.add(hitBox(.3,.09,.3,.005)); stg.add(hitBox(.13,.3,.13,.53)); pig.add(hitBox(.17,.12,.17,.76)); }
+    if(withHits){ sg.add(hitBox(.44,.12,.44,.02)); stg.add(hitBox(.13,.3,.13,.53)); pig.add(hitBox(.17,.12,.17,.76)); }
     return {g, parts, ov};
   }
   let SECT = null;
@@ -1803,7 +1816,7 @@ const Lab = (function(){
       x.fillStyle = '#7DB04E'; x.beginPath(); x.ellipse(w/2, Y(.06), .068*sx, .088/.86*h, 0, 0, 7); x.fill();
       x.fillStyle = '#D9EDB8'; x.beginPath(); x.ellipse(w/2, Y(.06), .056*sx, .074/.86*h, 0, 0, 7); x.fill();
       x.fillStyle = '#FFFFFF'; x.strokeStyle = '#9BB77A'; x.lineWidth = 1.5; [[-.025,.03],[.025,.03],[-.025,.07],[.025,.07],[0,.05],[0,.1],[-.02,.11],[.02,.11]].forEach(([dx,dy])=>{ x.beginPath(); x.arc(w/2 + dx*sx, Y(dy), .011*sx, 0, 7); x.fill(); x.stroke(); }); }); return SECT; }
-  function fAnchor(k){ return {sepal:V(.13,.06,.05), petal:V(.36,.2,.12), stamen:V(.05,.52,.02), pistil:V(.03,.78,0)}[k]; }
+  function fAnchor(k){ return {sepal:V(.13,.05,.1), petal:V(.38,.29,.12), stamen:V(.05,.52,.02), pistil:V(.03,.78,0)}[k]; }
   function buildP5(){
     const W = R.world, s = P.s; P.fp = {}; P.fcards = {}; P.flines = {};
     const pot = makePot(.85); pot.g.position.set(0, TABLE_Y, 0); W.add(pot.g);
@@ -1812,7 +1825,7 @@ const Lab = (function(){
     const lm = mat(0x2F6E32,{roughness:.35, side:THREE.DoubleSide});
     [[.68,.4,.1],[.86,2.7,-.1],[1.0,-1.1,.15]].forEach(([y,ry,rz],j)=>{ const l = makeLeaf(.34 - j*.03,.16, lm, .22); const w = new THREE.Group(); w.position.set(0, TABLE_Y + y, 0); w.rotation.y = ry; l.rotation.z = .35 + rz; w.add(l); W.add(w); });
     const pivot = new THREE.Group(); pivot.position.copy(FBASE); W.add(pivot); P.fpiv = pivot;
-    const tiltG = () => { const t = new THREE.Group(); t.rotation.set(.5, 0, -.32); return t; };
+    const tiltG = () => { const t = new THREE.Group(); t.rotation.set(.22, 0, -.32); return t; };
     const intact = tiltG(); pivot.add(intact); const H = hibiscus(mat, true); intact.add(H.g); P.fIntact = intact;
     FK.forEach(k=>{ P.fp[k] = H.parts[k]; idTag(H.parts[k], 'fp:' + k); const a = new THREE.Object3D(); a.position.copy(fAnchor(k)); H.parts[k].add(a); P.fp[k].userData.anc = a; });
     P.halves = [-1, 1].map(sd=>{ const plane = new THREE.Plane(V(-sd,0,0), 0), lp = plane.clone(); const wrap = new THREE.Group(); pivot.add(wrap); const t = tiltG(); wrap.add(t);
@@ -1944,7 +1957,7 @@ const Lab = (function(){
     }
     if(P.i===3){
       if(!m.setup) return ['think','Plants need... อะไรบ้างนะ? ลากบัวรดน้ำไปรดกระถาง 2 ใบ แล้วลากกล่องทึบไปครอบ 1 ใบที่รดน้ำแล้ว จะได้ 3 แบบ: น้ำ+แสง / ขาดน้ำ / ขาดแสง'];
-      if(!m.days) return ['think', s.day ? `ผ่านไป ${s.day} วันแล้ว ให้เวลาผ่านไปจนครบ 7 วัน` : 'จัดกระถางครบแล้ว! กดให้เวลาผ่านไป แล้วสังเกตต้นไม้'];
+      if(!m.days) return ['think', s.day ? `วันที่ ${s.day} ให้เวลาผ่านไปจนครบ 7 วัน (แตะกระถางเพื่อซูมดูได้ทุกวัน)` : 'จัดกระถางครบแล้ว! กด +1 วัน ให้เวลาผ่านไป แล้วสังเกตต้นไม้'];
       if(!m.measure){ const left = POTS.filter(p=>!s.seen[p.id]).map(p=>p.id); return ['think', `แตะดูกระถางทีละใบ (เหลือ ${left.join(', ')}) กระถางในกล่องให้แตะกล่องเพื่อยกออก`]; }
       if(!m.pick) return ['think','กระถางไหนเจริญเติบโตดีที่สุด? ดูทั้งความสูง สีใบ และความแข็งแรง'];
       return ['yay','พืชต้องการทั้ง Water (น้ำ) และ Sunlight (แสงแดด) เพื่อเจริญเติบโต'];
@@ -2000,11 +2013,12 @@ const Lab = (function(){
       const st = ['ดอกบาน','กลีบดอกเหี่ยว', s.poll ? 'ผลอ่อน' : 'ดอกร่วง ไม่เกิดผล', s.poll ? 'ผลสุก' : 'ไม่เกิดผล'][s.wk];
       res = `<h2>ผลการสังเกต</h2>${grid('1fr auto', `<span>ละอองเรณูบนผึ้ง</span><span>${s.pollen ? 'มี ✓' : '–'}</span><span>การผสมเกสร</span><span>${s.poll ? 'เกิดแล้ว ✓' : 'ยังไม่เกิด'}</span><span>เวลาผ่านไป</span><span>${s.wk} สัปดาห์</span><span>ลักษณะ</span><span>${st}</span><span>เมล็ด</span><span>${s.open ? 'พบ 7 เมล็ด' : '–'}</span>`)}`;
     } else if(P.i===3){
-      sig = JSON.stringify(['p3', s.cond, s.day, s.seen, s.pick]);
+      sig = JSON.stringify(['p3', s.cond, s.day, s.seen, s.pick, P.view]);
       const ok = setupOK();
       const tbl = grid('auto auto auto auto', `<b>กระถาง</b><b>เงื่อนไข</b><b>สูง</b><b>ใบ</b>${POTS.map(p=>{ const c = condOf(s.cond[p.id]), gr = growth(p.id), show = s.day >= 7 ? s.seen[p.id] : s.day > 0; return `<span>${p.id}</span><span>${CONDN[c]}</span><span>${show ? gr.cm + ' ซม.' : '–'}</span><span>${show ? (c==='full' ? 'เขียว' : c==='dark' ? 'ซีดเหลือง' : 'เหลืองน้ำตาล') : '–'}</span>`; }).join('')}`);
       ctrls = `<div style="flex-basis:100%;display:flex;flex-direction:column;gap:6px"><h2 style="margin:0">ผลการสังเกต · วันที่ ${s.day}</h2>${tbl}</div>
-        <div class="row" style="gap:6px">${s.day < 10 ? `<span class="note" style="align-self:center">ให้เวลาผ่านไป:</span>` + B('day:1','+1 วัน', ok) + B('day:3','+3 วัน', ok) : ''}${s.day >= 7 ? POTS.map(p=>B('see:'+p.id, 'ดูกระถาง ' + p.id, !s.seen[p.id])).join('') : ''}${B('resetPart','เริ่มใหม่')}</div>
+        <div class="row" style="gap:6px"><span class="note" style="align-self:center">วันที่ ${s.day}:</span>${B('day:-1','−1 วัน')}${B('day:1','+1 วัน', true)}${B('day:3','+3 วัน')}</div>
+        <div class="row" style="gap:6px">${POTS.map(p=>B('see:'+p.id, 'ซูมกระถาง ' + p.id, P.view===p.id)).join('')}${P.view ? B('viewAll','ดูทั้งหมด') : ''}${B('resetPart','เริ่มใหม่')}</div>
         ${s.day >= 7 && POTS.every(p=>s.seen[p.id]) ? `<div style="flex-basis:100%;display:flex;flex-direction:column;gap:6px"><h2 style="margin:0">กระถางไหนเจริญเติบโตดีที่สุด</h2>${s.pick ? done('กระถาง ' + s.pick) : `<div class="row" style="gap:6px">${POTS.map(p=>B('pick:'+p.id, 'กระถาง ' + p.id)).join('')}</div>`}</div>` : ''}
         ${!s.day ? `<details style="flex-basis:100%"><summary class="note" style="cursor:pointer">ปุ่มสำรอง (ถ้าลากไม่ได้)</summary><div style="display:flex;flex-direction:column;gap:6px;margin-top:6px">${POTS.map(p=>{ const c = s.cond[p.id]; return `<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap"><b style="min-width:72px">กระถาง ${p.id}</b>${B('cw:'+p.id+':w', c.w ? 'รดน้ำแล้ว ✓' : 'รดน้ำ', c.w)}${B('cw:'+p.id+':l', c.l ? 'ครอบกล่อง' : 'ครอบกล่องแล้ว ✓', !c.l)}</div>`; }).join('')}</div></details>` : ''}`;
     } else {
@@ -2046,6 +2060,7 @@ const Lab = (function(){
     else if(v.startsWith('cw:')){ const [,id,k] = v.split(':'); act(()=>toggleCond(id, k)); }
     else if(v.startsWith('day:')) act(()=>addDays(+v.slice(4)));
     else if(v.startsWith('see:')) act(()=>seePot(v.slice(4)));
+    else if(v==='viewAll') act(viewAll);
     else if(v.startsWith('pick:')) act(()=>pickPot(v.slice(5)));
     else if(v.startsWith('fsel:')){ const k = v.slice(5); P.sel = P.sel===k ? null : k; act(()=>{ P.say = P.sel ? `เลือกป้าย "${FN[k]}" แล้ว แตะส่วนของดอกที่ตรงกัน` : null; }); }
     else if(v.startsWith('fplace:')){ const [,k,t] = v.split(':'); act(()=>fTag(k, t)); }
@@ -2122,7 +2137,7 @@ const Lab = (function(){
 
 
   /* ----- labels ----- */
-  function labelsDOM(){ const box = $('#labels'); if(box) box.innerHTML = P.labels.map((l,k)=>`<div data-l="${k}"></div>`).join(''); }
+  function labelsDOM(){ const box = $('#labels'); if(box) box.innerHTML = P.labels.map((l,k)=>`<div data-l="${k}"${l.cls ? ` class="${l.cls}"` : ''}></div>`).join(''); }
   const v3 = new THREE.Vector3();
   function placeLabels(){
     const box = $('#labels'); if(!box) return; const w = box.clientWidth, h = box.clientHeight;
@@ -2130,7 +2145,8 @@ const Lab = (function(){
       const l = P.labels[+el.dataset.l]; if(!l) return; const t = l.text();
       if(!t || !l.obj.visible){ el.hidden = true; return; }
       l.obj.getWorldPosition(v3); v3.y += l.dy; v3.project(R.camera);
-      el.style.transform = `translate(${(v3.x*.5+.5)*w}px, ${(-v3.y*.5+.5)*h}px) translate(-50%,-100%)`;
+      let px = (v3.x*.5+.5)*w; if(l.cls==='info') px = Math.max(px, Math.min(w - 8, (el.offsetWidth || 0) + 8));
+      el.style.transform = `translate(${px}px, ${(-v3.y*.5+.5)*h}px) ${l.cls==='info' ? 'translate(-100%,-50%)' : 'translate(-50%,-100%)'}`;
       el.hidden = v3.z > 1; if(el.textContent !== t) el.textContent = t;
     });
   }
