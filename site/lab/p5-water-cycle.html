@@ -725,6 +725,8 @@ function render(){
 document.getElementById('main').addEventListener('click', e=>{
   const a = e.target.closest('[data-act]'); if(!a || a.disabled) return;
   const act = a.dataset.act, v = a.dataset.v;
+  if(act==='sfx'){ const m = SFX.toggle(); a.innerHTML = m ? SND_OFF : SND_ON; a.setAttribute('aria-label', m ? 'เปิดเสียง' : 'ปิดเสียง'); toast(m ? 'ปิดเสียงแล้ว' : 'เปิดเสียงแล้ว'); return; }
+  if(act!=='say' && act!=='ans' && act!=='pred') SFX.click(); else if(act!=='say') SFX.pick();
   if(act==='go') go(v);
   if(act==='part') go('lab', {part:+v});
   if(act==='ans'){ const st = S[ui.view], q0 = Math.min(NQ - 1, Math.max(0, ui.q)); ui.q = q0; st.a[q0] = +v; st.a.length = NQ; save(); if(q0<NQ-1) { setTimeout(()=>{ if(ui.q===q0){ ui.q = q0 + 1; render(); } }, 180); } render(); }
@@ -888,7 +890,7 @@ function eqSt(i){ S.eq = S.eq || {}; const st = S.eq[i] = S.eq[i] || {a:{}, w:{}
 const eqQOk = (st, q) => st.a[q.k]===q.a && (!q.r || st.r[q.k]===q.ra);
 function eqDone(i){ const st = eqSt(i); return EQ(i).every(q=>eqQOk(st, q)); }
 function eqAnswer(v){ const [i, k, o] = v.split('|'), q = EQ(+i).find(x=>x.k===k), st = eqSt(+i); if(!q || st.a[k]===q.a) return false;
-  st.a[k] = o; if(o!==q.a){ st.w[k] = (st.w[k] || 0) + 1; } else toast(q.r ? 'ข้อสรุปถูกต้อง ต่อไปเลือกเหตุผล' : 'ถูกต้อง เก่งมาก!'); save(); return o===q.a; }
+  st.a[k] = o; if(o!==q.a){ st.w[k] = (st.w[k] || 0) + 1; SFX.bad(); } else SFX.ok(), toast(q.r ? 'ข้อสรุปถูกต้อง ต่อไปเลือกเหตุผล' : 'ถูกต้อง เก่งมาก!'); save(); return o===q.a; }
 function eqReason(v){ const [i, k, o] = v.split('|'), q = EQ(+i).find(x=>x.k===k), st = eqSt(+i); if(!q || !q.r || st.a[k]!==q.a || st.r[k]===q.ra) return false;
   st.r[k] = o; if(o!==q.ra){ st.wr[k] = (st.wr[k] || 0) + 1; } else toast('ถูกต้องทั้งข้อสรุปและเหตุผล'); save(); return o===q.ra; }
 const EQPOS = (()=>{ const m = {}; if(typeof ENDQ==='undefined') return m; let h = 2166136261; for(const ch of String(CONF.key) + 'eq'){ h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619) >>> 0; }
@@ -1139,6 +1141,7 @@ ${CONF.hs ? '' : `${PD ? '' : `          <button class="ibtn" type="button" data
           <button class="ibtn" type="button" data-act="lab" data-v="zin" aria-label="ซูมเข้า">${ICON.zin}</button>
           <button class="ibtn" type="button" data-act="lab" data-v="zout" aria-label="ซูมออก">${ICON.zout}</button>`}
           <button class="ibtn" type="button" data-act="lab" data-v="camReset" aria-label="มุมมองเริ่มต้น">${ICON.cube}</button>
+          <button class="ibtn" type="button" data-act="sfx" aria-label="${SFX.muted ? 'เปิดเสียง' : 'ปิดเสียง'}">${SFX.muted ? SND_OFF : SND_ON}</button>
 ${PD ? `          <button class="ibtn" type="button" data-act="guideinfo" aria-label="คู่มือการทำกิจกรรม" style="font-weight:700;font-size:20px;color:var(--primary-d)">ⓘ</button>
           <button class="ibtn" type="button" data-act="full" id="fullBtn" aria-label="ขยายเต็มจอ" style="font-size:20px">⛶</button>` : ''}
 ${CONF.uni ? `          <button class="ibtn" type="button" data-act="whyopen" aria-label="อธิบายการทดลองตอนนี้" style="font-weight:700;font-size:18px;color:var(--primary-d)">ⓘ</button>
@@ -1289,6 +1292,54 @@ function vResult(){
   </div>`;
 }
 
+
+/* ---------- sound effects (Web Audio, no files) ---------- */
+const SFX = (function(){
+  let ac = null, master = null, noise = null, ch = {}, last = {}, muted = false;
+  try { muted = localStorage.getItem('parkilab-sfx-mute') === '1'; } catch(_){}
+  const VOL = .32;
+  function unlock(){
+    if(ac){ if(ac.state === 'suspended') ac.resume(); return; }
+    try {
+      ac = new (window.AudioContext || window.webkitAudioContext)();
+      master = ac.createGain(); master.gain.value = muted ? 0 : VOL; master.connect(ac.destination);
+      const len = ac.sampleRate*2, buf = ac.createBuffer(1, len, ac.sampleRate), d = buf.getChannelData(0);
+      for(let i=0;i<len;i++) d[i] = Math.random()*2 - 1; noise = buf;
+      const mk = (type, freq, q, lfo) => { const src = ac.createBufferSource(); src.buffer = noise; src.loop = true;
+        const f = ac.createBiquadFilter(); f.type = type; f.frequency.value = freq; f.Q.value = q;
+        const g = ac.createGain(); g.gain.value = 0; src.connect(f); f.connect(g); g.connect(master); src.start();
+        if(lfo){ const o = ac.createOscillator(), og = ac.createGain(); o.frequency.value = lfo; og.gain.value = freq*.35; o.connect(og); og.connect(f.frequency); o.start(); }
+        return g; };
+      ch = { rain: mk('bandpass', 2600, .6), boil: mk('lowpass', 520, 1.2, 3.1), wind: mk('bandpass', 420, 1.4, .18), hiss: mk('highpass', 5200, .7), sizzle: mk('highpass', 2800, 1.5, 7) };
+    } catch(_){ ac = null; }
+  }
+  addEventListener('pointerdown', unlock, {capture:true, passive:true});
+  addEventListener('keydown', unlock, {capture:true});
+  function tone(f0, f1, dur, type='sine', vol=.5, delay=0){
+    if(!ac || muted) return; const t = ac.currentTime + delay, o = ac.createOscillator(), g = ac.createGain();
+    o.type = type; o.frequency.setValueAtTime(f0, t); if(f1) o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + .012); g.gain.exponentialRampToValueAtTime(.001, t + dur);
+    o.connect(g); g.connect(master); o.start(t); o.stop(t + dur + .02);
+  }
+  const AMB = {rain:.5, boil:.9, wind:.55, hiss:.12, sizzle:.18};
+  return {
+    unlock,
+    get muted(){ return muted; },
+    toggle(){ muted = !muted; try { localStorage.setItem('parkilab-sfx-mute', muted ? '1' : '0'); } catch(_){} if(master) master.gain.setTargetAtTime(muted ? 0 : VOL, ac.currentTime, .05); if(!muted){ unlock(); tone(660, 990, .12, 'sine', .4); } return muted; },
+    click(){ tone(820, 620, .05, 'triangle', .25); },
+    pick(){ tone(380, 620, .09, 'sine', .35); },
+    drop(){ tone(240, 140, .12, 'sine', .45); },
+    ok(){ tone(660, 0, .12, 'sine', .4); tone(990, 0, .18, 'sine', .35, .09); },
+    bad(){ tone(220, 170, .22, 'square', .12); },
+    done(){ [523, 659, 784, 1046].forEach((f,k)=>tone(f, 0, .22, 'triangle', .35, k*.09)); },
+    pop(){ tone(900 + Math.random()*700, 1500, .04, 'sine', .12); },
+    tick(){ tone(2400 + Math.random()*800, 0, .03, 'square', .06); },
+    amb(lv){ if(!ac) return; Object.keys(ch).forEach(k=>{ const v = Math.max(0, Math.min(1, (lv && lv[k]) || 0))*AMB[k]; if(Math.abs((last[k]||0) - v) > .01){ last[k] = v; ch[k].gain.setTargetAtTime(v, ac.currentTime, .25); } }); }
+  };
+})();
+
+const SND_ON = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>';
+const SND_OFF = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9l5 6M21 9l-5 6"/></svg>';
 /* ---------- PDF ---------- */
 async function makePdf(btn){
   const el = $('#pdfsheet'), pages = sheetPages();
@@ -1356,7 +1407,7 @@ const Lab = (function(){
       const renderer = new THREE.WebGLRenderer({antialias:true});
       renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
       renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-      const scene = new THREE.Scene(); scene.background = new THREE.Color(0xEDF1FA);
+      const scene = new THREE.Scene(); scene.background = canvasTex(4, 256, (cx)=>{ const g = cx.createLinearGradient(0,0,0,256); g.addColorStop(0,'#CFE3FA'); g.addColorStop(.55,'#E8F1FB'); g.addColorStop(1,'#F6F2EC'); cx.fillStyle = g; cx.fillRect(0,0,4,256); });
       const camera = new THREE.PerspectiveCamera(42, 1, 0.3, 60);
       const controls = new THREE.OrbitControls(camera, renderer.domElement);
       controls.enablePan = false; controls.enableDamping = true; controls.dampingFactor = .08;
@@ -1396,8 +1447,13 @@ const Lab = (function(){
     });
   }
   function at(o, x, y, z){ o.position.set(x, y, z); return o; }
-  function makeCloud(n, r, spread){ const g = new THREE.Group(); const m = mat(0xFFFFFF,{roughness:.9}); for(let k=0;k<n;k++){ const s = sph(r*(.7 + (k%3)*.18), m, 14); s.position.set((k/(n-1)-.5)*spread, Math.sin(k*1.7)*r*.35, Math.cos(k*2.3)*r*.5); g.add(s); } g.userData.m = m; return g; }
+  function makeCloud(n, r, spread){ const g = new THREE.Group(); const m = mat(0xFFFFFF,{roughness:1, emissive:0xF2F5FB, emissiveIntensity:.18}); const N = Math.round(n*2.2); for(let k=0;k<N;k++){ const t = k/(N-1), j = ((k*37)%10)/10; const sz = r*(.5 + .55*Math.sin(t*Math.PI))*(.85 + j*.3); const s = sph(sz, m, 16); s.position.set((t-.5)*spread + (j-.5)*r*.3, Math.max(-r*.15, Math.sin(t*Math.PI)*r*.42 + (((k*13)%5)-2)*r*.07), (((k*29)%7)-3)/3*r*.55); s.scale.y = .82; g.add(s); } g.userData.m = m; return g; }
 
+  function makeRipples(W, n){ const pool = []; for(let k=0;k<n;k++){ const r = new THREE.Mesh(new THREE.RingGeometry(.06,.085,24), new THREE.MeshBasicMaterial({color:0xFFFFFF, transparent:true, opacity:0, depthWrite:false})); r.rotation.x = -Math.PI/2; r.visible = false; r.userData.t = 0; W.add(r); pool.push(r); }
+    return { spawn(x,y,z){ const r = pool.find(p=>!p.visible); if(!r) return; r.position.set(x,y,z); r.userData.t = 0; r.visible = true; },
+      step(dt){ pool.forEach(r=>{ if(!r.visible) return; const u = r.userData; u.t += dt; const f = u.t/.6; if(f >= 1){ r.visible = false; return; } r.scale.setScalar(1 + f*3); r.material.opacity = .7*(1-f); }); } }; }
+  function waveSurface(w, d){ const g = new THREE.PlaneGeometry(w, d, 28, 12); const m = new THREE.Mesh(g, new THREE.MeshStandardMaterial({color:0x6FA6EE, transparent:true, opacity:.8, roughness:.12, metalness:.15, depthWrite:false})); m.rotation.x = -Math.PI/2; m.userData.base = g.attributes.position.array.slice(); return m; }
+  function waveStep(m, t, amp){ const p = m.geometry.attributes.position, b = m.userData.base; for(let i=0;i<p.count;i++){ const x = b[i*3], y = b[i*3+1]; p.array[i*3+2] = amp*(Math.sin(x*5 + t*.0021) + .6*Math.sin(y*7 - t*.0017) + .3*Math.sin((x+y)*11 + t*.004)); } p.needsUpdate = true; m.geometry.computeVertexNormals(); }
   /* ----- part setup ----- */
   const defaults = i => [
     {lamp:false, ice:false, vapor:0, cloud:0, raining:false, rainT:0, wet:0, runoff:0, sea:1},
@@ -1428,6 +1484,7 @@ const Lab = (function(){
     tank.add(at(box(TK.w+.06,.04,TK.d+.06, edge), 0,.02,0));
     const lid = box(TK.w+.06,.04,TK.d+.06, GLASS(.3)); lid.position.y = TK.h + .02; tank.add(lid);
     const sea = box(SEA.x1 - SEA.x0, .4, TK.d - .1, TRANS(0x3E7FE0, .7)); sea.position.set((SEA.x0+SEA.x1)/2, .24, 0); tank.add(sea); P.sea = sea;
+    const wv = waveSurface(SEA.x1 - SEA.x0 - .02, TK.d - .12); wv.position.set((SEA.x0+SEA.x1)/2, .45, 0); tank.add(wv); P.wave = wv;
     const sand = box(SEA.x1 - SEA.x0, .04, TK.d - .1, mat(0xE8D4A2)); sand.position.set((SEA.x0+SEA.x1)/2, .06, 0); tank.add(sand);
     const land = box(2.2, .5, TK.d - .1, mat(0x8BC97A,{roughness:.9})); land.position.set(1.05, .29, 0); tank.add(land);
     const mt = new THREE.Mesh(new THREE.ConeGeometry(.8, 1.05, 7), mat(0x6FB06A,{roughness:.9, flatShading:true})); mt.position.set(1.35, .54 + .52, -.15); tank.add(mt);
@@ -1447,7 +1504,8 @@ const Lab = (function(){
     // vapor, cloud, rain
     P.vap = []; for(let k=0;k<22;k++){ const m = sph(.06, TRANS(0xFFFFFF, 0), 8); m.userData.t = k/22*1.8; m.userData.x = SEA.x0 + .2 + Math.random()*(SEA.x1-SEA.x0-.4); m.userData.z = (Math.random()-.5)*1.6; m.visible = false; W.add(m); P.vap.push(m); }
     const cl = makeCloud(7, .3, 1.6); cl.position.set(1.0, y0 + TK.h - .3, 0); cl.scale.setScalar(.001); W.add(cl); P.cloud = cl;
-    P.rain = []; for(let k=0;k<30;k++){ const d = sph(.025, TRANS(0x3E7FE0, .85), 6); d.scale.set(1,3,1); d.visible = false; d.userData.v = 0; W.add(d); P.rain.push(d); }
+    P.rain = []; for(let k=0;k<40;k++){ const d = cyl(.009,.009,.2, TRANS(0x5B8FE0, .6), 5); d.visible = false; d.userData.v = 0; W.add(d); P.rain.push(d); }
+    P.rip = makeRipples(W, 14);
     P.labels.push({obj:lamp, dy:.6, text:()=>s.lamp ? 'ดวงอาทิตย์ (ไฟ) ส่องทะเลอยู่' : 'ดวงอาทิตย์ (ลากไปเหนือทะเล)'});
     P.labels.push({obj:ice, dy:.4, text:()=>s.ice ? 'ถุงน้ำแข็งทำให้ฝาเย็น' : 'ถุงน้ำแข็ง (ลากไปวางบนฝาเหนือภูเขา)'});
     P.labels.push({obj:sea, dy:.35, text:()=>'Sea · ทะเล'});
@@ -1458,7 +1516,7 @@ const Lab = (function(){
     const s = P.s;
     P.lamp.userData.light.intensity = s.lamp ? 1.2 : .25;
     if(s.ice) P.ice.position.set(1.1, TABLE_Y + TK.h + .05, 0);
-    P.sea.scale.y = s.sea; P.sea.position.y = .04 + .2*s.sea;
+    P.sea.scale.y = s.sea; P.sea.position.y = .04 + .2*s.sea; P.wave.position.y = .05 + .4*s.sea;
     P.cloud.scale.set(Math.max(.001, s.cloud), Math.max(.001, s.cloud*.8), Math.max(.001, s.cloud));
     P.cloud.userData.m.color.setHex(s.cloud > .8 ? 0xC9CFDD : 0xFFFFFF);
     P.river.material.opacity = Math.min(.8, s.wet*1.2);
@@ -1477,7 +1535,8 @@ const Lab = (function(){
       if(!u.live){ m.visible = false; return; } const f = u.t/1.8; m.visible = true;
       const tx = s.ice ? .6 : u.x; m.position.set(u.x + (tx - u.x)*f*f, TABLE_Y + .45 + f*1.4, u.z*(1-f*.5)); m.material.opacity = .55*(1 - f*.6); m.scale.setScalar(.7 + f); });
     P.rain.forEach(d=>{ if(!d.visible){ if(s.raining && Math.random() < dt*6){ d.visible = true; d.position.set(.4 + Math.random()*1.4, P.cloud.position.y - .2, (Math.random()-.5)*1.2); d.userData.v = 0; } return; }
-      d.userData.v += 9*dt; d.position.y -= d.userData.v*dt; if(d.position.y < TABLE_Y + .6) d.visible = false; });
+      d.userData.v += 9*dt; d.position.y -= d.userData.v*dt; if(d.position.y < TABLE_Y + .62){ d.visible = false; if(Math.random() < .5) P.rip.spawn(d.position.x, TABLE_Y + .58, d.position.z); } });
+    P.rip.step(dt); waveStep(P.wave, t, s.lamp ? .012 : .007);
     P.river.material.color.setHex(0x3E7FE0); P.river.scale.x = 1 + Math.sin(t/200)*.02;
     syncP1();
   }
@@ -1550,7 +1609,7 @@ const Lab = (function(){
     const pole = new THREE.Group(); pole.add(at(cyl(.035,.035,3.0, mat(0x9AA3B5),10), 0,1.5 + .9 - .1,0));
     for(let km=0; km<=10; km+=2){ const t = textPlane(km+' กม.', '#7A8399', .5, .2, false); t.position.set(-.38, KM_Y(km) - y0, 0); pole.add(t); }
     pole.position.set(-3.2, y0, 0); W.add(pole);
-    const puddle = cyl(1, 1, .02, TRANS(0x3E7FE0, .7), 32); puddle.position.set(.3, y0 + .11, .2); puddle.scale.set(.001,1,.001); W.add(puddle); P.puddle = puddle;
+    P.rip = makeRipples(W, 16); const puddle = cyl(1, 1, .02, TRANS(0x3E7FE0, .7), 32); puddle.position.set(.3, y0 + .11, .2); puddle.scale.set(.001,1,.001); W.add(puddle); P.puddle = puddle;
     const snow = box(6.4,.06,3.2, mat(0xFFFFFF,{roughness:1})); snow.position.set(.3, y0 + .1, 0); snow.scale.y = .01; snow.visible = false; W.add(snow); P.snowL = snow;
     P.hailP = []; for(let k=0;k<28;k++){ const h = sph(.06, mat(0xEAF7FF,{roughness:.3}), 10); h.visible = false; h.position.set(-1.2 + Math.random()*3, y0 + .16, -.8 + Math.random()*1.6); W.add(h); P.hailP.push(h); }
     const cloud = makeCloud(9, .42, 2.6); cloud.userData.id = 'cloud'; cloud.position.set(.3, KM_Y(s.km), 0); W.add(cloud); P.cloud = cloud;
@@ -1611,6 +1670,7 @@ const Lab = (function(){
     P.cubes = []; for(let k=0;k<7;k++){ const c = box(.24,.24,.24, TRANS(0xEAF7FF, .92)); c.userData.p = [Math.cos(k*.9)*.24*(k%3?1:.3), .14 + Math.floor(k/3)*.22, Math.sin(k*.9)*.24*(k%3?1:.3)]; c.rotation.set(k*.4, k*.7, 0); bk.add(c); P.cubes.push(c); }
     const th = new THREE.Group(); th.add(at(cyl(.025,.025,1.5, GLASS(.6),10), 0,.75,0)); th.add(at(sph(.05, mat(0xE53935),10), 0,.06,0)); const col = cyl(.013,.013,1, mat(0xE53935),8); th.add(col); th.userData.col = col; th.position.set(-.28, .05, -.2); th.rotation.z = .12; bk.add(th); P.th4 = th;
     bk.position.set(BK.x, BASE_Y, BK.z); W.add(bk); P.beaker = bk;
+    P.bub = []; for(let k=0;k<26;k++){ const b = sph(.028 + (k%3)*.01, TRANS(0xFFFFFF, .55), 8); b.visible = false; b.userData = {y:0, x:0, z:0, v:0}; bk.add(b); P.bub.push(b); }
     P.steam = []; for(let k=0;k<18;k++){ const m = sph(.09, TRANS(0xFFFFFF, 0), 10); m.userData = {t:k/18*2, phase:k*1.3}; m.visible = false; W.add(m); P.steam.push(m); }
     const lid = new THREE.Group(); lid.userData.id = 'lid'; lid.add(box(1.4,.05,1.4, GLASS(.45))); lid.add(at(box(1.4,.02,.04, mat(0x7CC4FF)), 0,.03,.68));
     P.drops4 = []; for(let k=0;k<36;k++){ const d = sph(.03, TRANS(0x6FB2F0, .9), 6); d.scale.y = 1.3; d.position.set(-.55 + (k%6)*.22, -.05, -.55 + Math.floor(k/6)*.22); d.visible = false; lid.add(d); P.drops4.push(d); }
@@ -1702,13 +1762,15 @@ const Lab = (function(){
     else if(P.i===2){ ['rain','snow','hail'].forEach(k=>{ if(s.made[k]) set(k); }); }
     else if(P.i===3){ ['melt','evap','cond','freeze'].forEach(k=>{ if(s.made[k]) set(k); }); }
     else { ['dew','frost','subl'].forEach(k=>{ if(s.made[k]) set(k); }); if(PROCS.every(x=>s.sort[x[0]])) set('sort'); }
+    if(ch) SFX.ok();
     return ch;
   }
   function refresh(){
     check();
     const m = S.miss[P.i];
-    if(PARTS[P.i].miss.every(x=>m[x[0]]) && eqDone(P.i) && !S.labDone[P.i]){ S.labDone[P.i] = true; P.celebrate = true; toast(P.i<PARTS.length-1 ? `${PARTS[P.i].k}เสร็จแล้ว! ปลดล็อก${PARTS[P.i+1].k}` : 'ทดลองครบทุกตอนแล้ว! ปลดล็อกแบบทดสอบหลังเรียน'); renderRail(); }
+    if(PARTS[P.i].miss.every(x=>m[x[0]]) && eqDone(P.i) && !S.labDone[P.i]){ S.labDone[P.i] = true; P.celebrate = true; SFX.done(); toast(P.i<PARTS.length-1 ? `${PARTS[P.i].k}เสร็จแล้ว! ปลดล็อก${PARTS[P.i+1].k}` : 'ทดลองครบทุกตอนแล้ว! ปลดล็อกแบบทดสอบหลังเรียน'); renderRail(); }
     try { S.ps = S.ps || {}; S.ps[P.i] = JSON.parse(JSON.stringify(P.s)); } catch(e){}
+    if(P.warn && P.warn !== P.lastWarn) SFX.bad(); P.lastWarn = P.warn;
     save(); refreshUI();
   }
   function mascotSay(){ if(P && P.mg && Date.now() - P.mg.t < 15000 && P.mg.t > (window.__mgClr || 0)) return ['think', P.mg.msg];
@@ -1897,9 +1959,9 @@ const Lab = (function(){
     };
     el.addEventListener('pointerup', end); el.addEventListener('pointercancel', end);
   }
-  function dragStart(id){ if(id==='ice') P.s.ice = false; if(id==='lamp') P.s.lamp = false; if(id==='lid') P.s.lid = false; }
+  function dragStart(id){ SFX.pick(); if(id==='ice') P.s.ice = false; if(id==='lamp') P.s.lamp = false; if(id==='lid') P.s.lid = false; }
   function drop(id, g){
-    const s = P.s;
+    const s = P.s; SFX.drop();
     if(id==='lamp'){ const over = g.position.x > SEA.x0 - .3 && g.position.x < SEA.x1 + .2 && Math.abs(g.position.z) < 1.2; if(over) setLamp(true); else { s.lamp = false; if(Math.abs(g.position.x) < 2.4 && Math.abs(g.position.z) < 1.2) P.warn = null; syncP1(); refresh(); } return; }
     if(id==='ice'){ const over = g.position.x > -.2 && g.position.x < 2.3 && Math.abs(g.position.z) < 1.2; if(over) setIce(true); else { if(Math.abs(g.position.x) < 2.3 && Math.abs(g.position.z) < 1.1) P.warn = 'วางผิดที่ ถุงน้ำแข็งควรอยู่บนฝาตู้เหนือภูเขา ไม่ใช่เหนือทะเล ลองลากใหม่นะ'; setIce(false); } return; }
     if(id==='lid'){ if(xz(g, BK.x, BK.z) < .9) setLid(true); else { if(xz(g, BK.x, BK.z) < 2) P.warn = 'วางยังไม่ตรง ลากแผ่นกระจกไปไว้เหนือปากบีกเกอร์พอดี ๆ นะ'; setLid(false); } return; }
@@ -1938,6 +2000,7 @@ const Lab = (function(){
         uiT += dt; if(uiT > .3){ uiT = 0; if(check()) refresh(); }
       }
       if(P.i===2){
+        P.rip.step(dt);
         P.arrows.forEach((a,k)=>{ if(!a.visible) return; a.userData.t = (a.userData.t + dt*.6) % 1; const f = a.userData.t; a.position.set(.3 + (k-1.5)*.7, TABLE_Y + .4 + f*(P.cloud.position.y - TABLE_Y - .8), .9); a.material.opacity = .9*(1 - f); });
         if(P.fallT > 0){ P.fallT -= dt; if(P.fallT <= 0) refreshUI(); }
         const type = P.fallType, gy = TABLE_Y + .13;
@@ -1949,21 +2012,26 @@ const Lab = (function(){
           if(u.type==='snow'){ d.position.y -= u.v*dt; d.position.x += Math.sin(t/300 + d.position.z*5)*dt*.3; }
           else { u.v += (u.type==='hail' ? 12 : 8)*dt; d.position.y -= u.v*dt; }
           if(d.position.y <= gy){ d.visible = false;
-            if(u.type==='rain') s.puddle = Math.min(1, s.puddle + .01);
+            if(u.type==='rain'){ s.puddle = Math.min(1, s.puddle + .01); if(Math.random() < .35) P.rip.spawn(d.position.x, TABLE_Y + .125, d.position.z); }
             else if(u.type==='snow') s.snow = Math.min(1, s.snow + .012);
-            else { const h = P.hailP.find(x=>!x.visible); if(h){ h.visible = true; h.position.x = d.position.x; h.position.z = d.position.z; } }
+            else { const h = P.hailP.find(x=>!x.visible); if(h){ h.visible = true; h.position.x = d.position.x; h.position.z = d.position.z; } if(Math.random() < .5) SFX.tick(); }
             syncP3(); }
         });
       }
       if(P.i===3){
         stepP4(dt); syncP4(); runSteam(P.steam, P.beaker.position, steaming(), dt, .9);
+        { const top = (1 - s.iceF)*Math.max(.05, s.water*.75), heat = s.mode==='heat' && s.iceF <= 0 && s.T > 75 ? (s.T - 75)/25 : 0;
+          P.bub.forEach(b=>{ const u = b.userData; if(!b.visible){ if(heat > 0 && Math.random() < dt*10*heat){ b.visible = true; u.y = .06; u.x = (Math.random()-.5)*.6; u.z = (Math.random()-.5)*.6; u.v = .35 + heat*.5; } return; }
+            u.y += u.v*dt; u.x += Math.sin(t/120 + u.z*9)*dt*.05; b.position.set(u.x, u.y, u.z); if(u.y >= top){ b.visible = false; if(heat > .6 && Math.random() < .25) SFX.pop(); } });
+          P.water.scale.x = P.water.scale.z = 1 + (heat > .9 ? Math.sin(t/60)*.012 : 0); }
         uiT += dt; if(uiT > .25){ uiT = 0; if(check()) refresh(); else { const nm = nk(mascotSay()[1]); if($('#bubbleMsg') && $('#bubbleMsg').textContent !== nm) refreshUI(); else { const a = $('#t4'); if(a) a.textContent = Math.round(s.T) + ' °C'; const b = $('#ice4B'), bt = $('#ice4T'); if(b){ b.style.width = s.iceF*100 + '%'; bt.textContent = Math.round(s.iceF*100) + '%'; } } } }
       }
       if(P.i===4){
-        stepP5(dt); syncP5();
+        stepP5(dt); syncP5(); P.frost5.forEach((f,k)=>{ if(f.visible) f.material.emissiveIntensity = .35 + .65*Math.max(0, Math.sin(t/260 + k*1.7)); f.rotation.y = t/1500 + k; });
         P.wisp.forEach(m=>{ const u = m.userData; u.t += dt; if(u.t > 2){ u.t -= 2; u.live = sublOn(); } if(u.live === undefined) u.live = sublOn(); if(!u.live){ m.visible = false; return; } const f = u.t/2; m.visible = true; m.position.set(u.x + Math.sin(u.t*2 + u.phase)*.1, TABLE_Y + .55 + f*1.3, u.z); m.scale.setScalar(.5 + f); m.material.opacity = .5*(1 - f); });
         uiT += dt; if(uiT > .3){ uiT = 0; if(check()) refresh(); else { const nm = nk(mascotSay()[1]); if($('#bubbleMsg') && $('#bubbleMsg').textContent !== nm) refreshUI(); } }
       }
+      { const S5 = P.s; const lv = P.i===0 ? {rain:S5.raining ? 1 : 0, hiss:S5.lamp ? 1 : 0} : P.i===1 ? {wind:S5.time==='dawn' ? .5 : S5.time==='night' ? .25 : 0} : P.i===2 ? {rain:P.fallT > 0 && P.fallType==='rain' ? 1 : 0, wind:(P.fallT > 0 && P.fallType!=='rain' ? .7 : 0) + (S5.up ? .4 : 0)} : P.i===3 ? {sizzle:S5.mode==='heat' ? 1 : 0, boil:steaming() ? 1 : S5.mode==='heat' && S5.iceF <= 0 && S5.T > 75 ? .45 : 0, hiss:steaming() ? .8 : 0} : {wind:S5.sun ? .9 : S5.night ? .3 : 0, hiss:sublOn() ? .7 : 0}; SFX.amb(lv); }
       if(P.dirty){ P.dirty = false; refresh(); }
       placeLabels();
     }
@@ -1998,7 +2066,7 @@ const Lab = (function(){
       if(R.ro) R.ro.disconnect(); R.ro = new ResizeObserver(resize); R.ro.observe(box); resize();
       if(!R.active){ R.active = true; requestAnimationFrame(tick); }
     },
-    stop(){ if(R){ R.active = false; if(R.ro) R.ro.disconnect(); } },
+    stop(){ SFX.amb({}); if(R){ R.active = false; if(R.ro) R.ro.disconnect(); } },
     refreshUI(){ if(P){ P.ctrlSig = ''; refreshUI(); } },
     action
   };
