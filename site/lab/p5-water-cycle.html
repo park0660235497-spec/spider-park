@@ -1380,7 +1380,7 @@ const Lab = (function(){
     {pos:V(.2, 4.6, 7.6), tgt:V(.2, 1.2, 0)},
     {pos:V(.1, 4.6, 8.8), tgt:V(.1, 1.1, 0)},
     {pos:V(0, 3.6, 10.2), tgt:V(0, 2.0, 0)},
-    {pos:V(-.9, 3.4, 6.0), tgt:V(-1.3, 1.0, 0)},
+    {pos:V(-.5, 3.4, 6.2), tgt:V(-.85, 1.0, 0)},
     {pos:V(0, 3.8, 7.6), tgt:V(0, 1.0, 0)}
   ];
   function mat(c, o={}){ return new THREE.MeshStandardMaterial(Object.assign({color:c, roughness:.55, metalness:0}, o)); }
@@ -1447,6 +1447,13 @@ const Lab = (function(){
     });
   }
   function at(o, x, y, z){ o.position.set(x, y, z); return o; }
+  function makeTree(sc=1){ const g = new THREE.Group(), bark = mat(0x8D6E4A,{roughness:.95});
+    g.add(at(cyl(.055,.09,.62, bark, 8), 0,.31,0));
+    const b1 = cyl(.022,.034,.3, bark, 6); b1.position.set(.09,.5,0); b1.rotation.z = -.75; g.add(b1);
+    const b2 = cyl(.02,.03,.26, bark, 6); b2.position.set(-.08,.55,.02); b2.rotation.z = .8; g.add(b2);
+    const G = [0x3E8F55, 0x4FA35E, 0x5DB86B, 0x46995A];
+    [[0,.86,0,.34],[.22,.74,.05,.25],[-.21,.76,-.05,.26],[.04,.72,.22,.22],[-.04,1.08,-.02,.22],[.1,.95,-.18,.2]].forEach(([x,y,z,r],k)=>{ const m = new THREE.Mesh(new THREE.IcosahedronGeometry(r,1), mat(G[k%4],{roughness:.9, flatShading:true})); m.position.set(x,y,z); m.rotation.set(k,k*.6,0); g.add(m); });
+    g.scale.setScalar(sc); shadowAll(g); return g; }
   function makeCloud(n, r, spread){ const g = new THREE.Group(); const m = mat(0xFFFFFF,{roughness:1, emissive:0xF2F5FB, emissiveIntensity:.18}); const N = Math.round(n*2.2); for(let k=0;k<N;k++){ const t = k/(N-1), j = ((k*37)%10)/10; const sz = r*(.5 + .55*Math.sin(t*Math.PI))*(.85 + j*.3); const s = sph(sz, m, 16); s.position.set((t-.5)*spread + (j-.5)*r*.3, Math.max(-r*.15, Math.sin(t*Math.PI)*r*.42 + (((k*13)%5)-2)*r*.07), (((k*29)%7)-3)/3*r*.55); s.scale.y = .82; g.add(s); } g.userData.m = m; return g; }
 
   function makeRipples(W, n){ const pool = []; for(let k=0;k<n;k++){ const r = new THREE.Mesh(new THREE.RingGeometry(.06,.085,24), new THREE.MeshBasicMaterial({color:0xFFFFFF, transparent:true, opacity:0, depthWrite:false})); r.rotation.x = -Math.PI/2; r.visible = false; r.userData.t = 0; W.add(r); pool.push(r); }
@@ -1489,6 +1496,7 @@ const Lab = (function(){
     const land = box(2.2, .5, TK.d - .1, mat(0x8BC97A,{roughness:.9})); land.position.set(1.05, .29, 0); tank.add(land);
     const mt = new THREE.Mesh(new THREE.ConeGeometry(.8, 1.05, 7), mat(0x6FB06A,{roughness:.9, flatShading:true})); mt.position.set(1.35, .54 + .52, -.15); tank.add(mt);
     const rock = new THREE.Mesh(new THREE.ConeGeometry(.5, .7, 6), mat(0x8F9AAE,{flatShading:true})); rock.position.set(.65, .54 + .35, -.5); tank.add(rock);
+    [[1.92,.7,.42],[.08,-.72,.38]].forEach(([x,z,k])=>{ const tr = makeTree(k); tr.position.set(x,.54,z); tank.add(tr); });
     const river = box(1.6, .03, .22, TRANS(0x3E7FE0, 0)); river.position.set(.2, .555, .55); river.rotation.y = -.25; tank.add(river); P.river = river;
     tank.position.set(0, y0, 0); shadowAll(tank); W.add(tank); P.tank = tank;
     // sun lamp (floats above)
@@ -1559,7 +1567,7 @@ const Lab = (function(){
     const land = new THREE.Group();
     land.add(at(box(2.4,.14,1.9, mat(0x6FB06A,{roughness:1})), 0,.07,0));
     land.add(at(box(.5,.4,.45, mat(0xF3E3C3)), -.7,.34,-.5)); const roof = new THREE.Mesh(new THREE.ConeGeometry(.42,.3,4), mat(0xE25555)); roof.position.set(-.7,.69,-.5); roof.rotation.y = Math.PI/4; land.add(roof);
-    [[.75,-.55],[.95,.1],[.3,-.65]].forEach(([x,z])=>{ land.add(at(cyl(.04,.05,.35, mat(0x8D6E4A),8), x,.3,z)); land.add(at(sph(.22, mat(0x3E8F55,{roughness:.9}),12), x,.6,z)); });
+    [[.78,-.55],[1.0,-.2],[.3,-.68]].forEach(([x,z],k)=>{ const tr = makeTree(.5 + k*.06); tr.position.set(x,.14,z); land.add(tr); });
     P.dewG = []; for(let k=0;k<44;k++){ const x = -1.05 + (k%11)*.21, z = .1 + Math.floor(k/11)*.2; const bl = new THREE.Mesh(new THREE.ConeGeometry(.03,.16,5), mat(0x4FA35E)); bl.position.set(x, .22, z); land.add(bl); const d = sph(.025, TRANS(0xCFE8FF, .95), 6); d.position.set(x, .31, z); d.visible = false; land.add(d); P.dewG.push(d); }
     P.fogL = []; for(let k=0;k<7;k++){ const f = sph(.6, TRANS(0xFFFFFF, 0), 16); f.scale.set(1.4,.3,1.0); f.position.set(-.8 + (k%4)*.55, .32 + (k%2)*.1, -.4 + Math.floor(k/4)*.7); land.add(f); P.fogL.push(f); }
     const clock = new THREE.Group(); clock.userData.id = 'clock'; const face = sph(.2, new THREE.MeshStandardMaterial({color:0xFFC94D, emissive:0xFFB000, emissiveIntensity:.6}), 18); clock.add(face); clock.userData.face = face; clock.position.set(0, 1.55, -.6); land.add(clock); P.clock = clock;
@@ -1605,7 +1613,7 @@ const Lab = (function(){
   function buildP3(){
     const W = R.world, s = P.s, y0 = TABLE_Y;
     const gr = box(6.4,.1,3.2, mat(0x7BC47F,{roughness:1})); gr.position.set(.3, y0 + .05, 0); gr.receiveShadow = true; W.add(gr); P.ground = gr;
-    [[-1.5,-1],[2.6,-.9],[1.9,1.0],[-2.0,1.1]].forEach(([x,z],k)=>{ if(k%2){ W.add(at(box(.5,.4,.45, mat(0xF3E3C3)), x, y0+.3, z)); const rf = new THREE.Mesh(new THREE.ConeGeometry(.42,.3,4), mat(0x5B8DEF)); rf.position.set(x, y0+.65, z); rf.rotation.y = Math.PI/4; W.add(rf); } else { W.add(at(cyl(.05,.06,.4, mat(0x8D6E4A),8), x, y0+.3, z)); W.add(at(sph(.28, mat(0x3E8F55,{roughness:.9}),12), x, y0+.65, z)); } });
+    [[-1.5,-1],[2.6,-.9],[1.9,1.0],[-2.0,1.1]].forEach(([x,z],k)=>{ if(k%2){ W.add(at(box(.5,.4,.45, mat(0xF3E3C3)), x, y0+.3, z)); const rf = new THREE.Mesh(new THREE.ConeGeometry(.42,.3,4), mat(0x5B8DEF)); rf.position.set(x, y0+.65, z); rf.rotation.y = Math.PI/4; W.add(rf); } else { const tr = makeTree(.72); tr.position.set(x, y0 + .1, z); W.add(tr); } });
     const pole = new THREE.Group(); pole.add(at(cyl(.035,.035,3.0, mat(0x9AA3B5),10), 0,1.5 + .9 - .1,0));
     for(let km=0; km<=10; km+=2){ const t = textPlane(km+' กม.', '#7A8399', .5, .2, false); t.position.set(-.38, KM_Y(km) - y0, 0); pole.add(t); }
     pole.position.set(-3.2, y0, 0); W.add(pole);
@@ -1672,9 +1680,9 @@ const Lab = (function(){
     bk.position.set(BK.x, BASE_Y, BK.z); W.add(bk); P.beaker = bk;
     P.bub = []; for(let k=0;k<26;k++){ const b = sph(.028 + (k%3)*.01, TRANS(0xFFFFFF, .55), 8); b.visible = false; b.userData = {y:0, x:0, z:0, v:0}; bk.add(b); P.bub.push(b); }
     P.steam = []; for(let k=0;k<18;k++){ const m = sph(.09, TRANS(0xFFFFFF, 0), 10); m.userData = {t:k/18*2, phase:k*1.3}; m.visible = false; W.add(m); P.steam.push(m); }
-    const lid = new THREE.Group(); lid.userData.id = 'lid'; lid.add(box(1.4,.05,1.4, GLASS(.45))); lid.add(at(box(1.4,.02,.04, mat(0x7CC4FF)), 0,.03,.68));
-    P.drops4 = []; for(let k=0;k<36;k++){ const d = sph(.03, TRANS(0x6FB2F0, .9), 6); d.scale.y = 1.3; d.position.set(-.55 + (k%6)*.22, -.05, -.55 + Math.floor(k/6)*.22); d.visible = false; lid.add(d); P.drops4.push(d); }
-    lid.userData.home = V(.8, y0 + .05, 1.0); lid.position.copy(lid.userData.home); W.add(lid); P.lid = lid;
+    const lid = new THREE.Group(); lid.userData.id = 'lid'; lid.add(box(1.2,.05,1.2, GLASS(.45))); lid.add(at(box(1.2,.02,.04, mat(0x7CC4FF)), 0,.03,.58));
+    P.drops4 = []; for(let k=0;k<36;k++){ const d = sph(.03, TRANS(0x6FB2F0, .9), 6); d.scale.y = 1.3; d.position.set(-.5 + (k%6)*.2, -.05, -.5 + Math.floor(k/6)*.2); d.visible = false; lid.add(d); P.drops4.push(d); }
+    lid.userData.home = V(1.0, y0 + .05, .15); lid.position.copy(lid.userData.home); W.add(lid); P.lid = lid;
     P.labels.push({obj:bk, dy:BK.h + .35, text:()=>{ const st = STATE(); return `${st[0]} · ${st[1]} · ${Math.round(P.s.T)} °C`; }});
     P.labels.push({obj:plate, dy:.05, text:()=>P.s.mode==='heat' ? 'กำลังให้ความร้อน (Heating)' : P.s.mode==='cool' ? 'กำลังทำให้เย็น (Cooling)' : 'แผ่นให้ความร้อน/ทำความเย็น'});
     P.labels.push({obj:lid, dy:.35, text:()=>P.s.lid ? (P.s.lidDrops > .1 ? 'หยดน้ำเกาะใต้กระจก (Condensation)' : 'แผ่นกระจกเย็น') : 'แผ่นกระจกเย็น (ลากไปวางเหนือบีกเกอร์)'});
@@ -1710,15 +1718,15 @@ const Lab = (function(){
   function buildP5(){
     const W = R.world, s = P.s, y0 = TABLE_Y;
     W.add(at(box(6.6,.1,3.4, mat(0x7BC47F,{roughness:1})), .2, y0 + .05, 0));
-    const mt = new THREE.Mesh(new THREE.ConeGeometry(1.6, 2.4, 7), mat(0x9AA6C2,{flatShading:true})); mt.position.set(-1.8, y0 + 1.25, -1.1); W.add(mt);
-    const cap = new THREE.Mesh(new THREE.ConeGeometry(.55, .8, 7), mat(0xFFFFFF,{flatShading:true})); cap.position.set(-1.8, y0 + 2.06, -1.1); W.add(cap); P.mt = mt;
+    const mt = new THREE.Mesh(new THREE.ConeGeometry(1.35, 2.4, 7), mat(0x9AA6C2,{flatShading:true})); mt.position.set(-2.45, y0 + 1.25, -1.35); W.add(mt);
+    const cap = new THREE.Mesh(new THREE.ConeGeometry(.46, .8, 7), mat(0xFFFFFF,{flatShading:true})); cap.position.set(-2.45, y0 + 2.06, -1.35); W.add(cap); P.mt = mt;
     P.blades = []; P.dew5 = []; P.frost5 = [];
     for(let k=0;k<36;k++){ const x = -1.2 + (k%9)*.36, z = -.1 + Math.floor(k/9)*.36; const b = new THREE.Mesh(new THREE.ConeGeometry(.045,.42,5), mat(0x4FA35E)); b.position.set(x, y0 + .3, z); b.rotation.z = (k%3-1)*.15; W.add(b);
       const d = sph(.045, TRANS(0x9CC8FF, .9), 8); d.position.set(x + (k%3-1)*.03, y0 + .52, z); d.visible = false; W.add(d); P.dew5.push(d);
-      const f = new THREE.Mesh(new THREE.OctahedronGeometry(.13), mat(0xF4FAFF,{roughness:.2, emissive:0xBFDFFF, emissiveIntensity:.5})); f.position.set(x + (k%3-1)*.03, y0 + .52, z); f.visible = false; W.add(f); P.frost5.push(f); }
+      const f = new THREE.Mesh(new THREE.OctahedronGeometry(.085), mat(0xF4FAFF,{roughness:.2, emissive:0xBFDFFF, emissiveIntensity:.5})); f.position.set(x + (k%3-1)*.03, y0 + .52, z); f.visible = false; W.add(f); P.frost5.push(f); }
     const bench = new THREE.Group(); bench.add(at(box(1.3,.08,.6, mat(0xA0764F)), 0,.5,0)); [[-.55,-.22],[-.55,.22],[.55,-.22],[.55,.22]].forEach(([x,z])=>bench.add(at(box(.07,.5,.07, mat(0x8D6E4A)), x,.25,z)));
     const fl = box(1.3,.02,.6, new THREE.MeshStandardMaterial({color:0xFFFFFF, transparent:true, opacity:0, roughness:.3})); fl.position.y = .55; bench.add(fl); P.benchFrost = fl;
-    bench.position.set(2.1, y0, .4); shadowAll(bench); W.add(bench); P.bench = bench;
+    bench.position.set(2.2, y0, 1.3); [[1.25,-1.2,.62],[2.45,-1.35,.7],[-.6,-1.05,.5]].forEach(([x,z,k])=>{ const tr = makeTree(k); tr.position.set(x, y0 + .1, z); W.add(tr); }); shadowAll(bench); W.add(bench); P.bench = bench;
     const sun = sph(.32, new THREE.MeshStandardMaterial({color:0xFFC94D, emissive:0xFFB000, emissiveIntensity:.9}), 22); sun.userData.id = 'sun5'; W.add(sun); P.sun5 = sun;
     const th = new THREE.Group(); th.add(at(cyl(.035,.035,.8, GLASS(.6),10), 0,.4,0)); th.add(at(sph(.07, mat(0xE53935),10), 0,.06,0)); const col = cyl(.018,.018,1, mat(0xE53935),8); th.add(col); th.userData.col = col; th.position.set(3.0, y0 + .1, -.8); W.add(th); P.th5 = th;
     P.wisp = []; for(let k=0;k<14;k++){ const m = sph(.09, TRANS(0xFFFFFF, 0), 10); m.userData = {t:k/14*2, phase:k*1.7, x:-1.2 + (k%7)*.5, z:-.1 + (k%3)*.4}; m.visible = false; W.add(m); P.wisp.push(m); }
