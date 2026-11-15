@@ -486,7 +486,7 @@ const CONF = {
   title:'วัฏจักรน้ำ', short:'ป.5 วัฏจักรน้ำ', subject:'วิทยาศาสตร์ ป.5',
   tags:['วิทยาศาสตร์ ป.5','โลกและอวกาศ','ห้องแลป 3 มิติ'],
   sub:'สร้างแบบจำลองวัฏจักรน้ำในตู้กระจก ดูการเกิดน้ำค้าง หมอก และเมฆ ปรับเมฆให้เกิดฝน หิมะ ลูกเห็บ ทดลองเปลี่ยนสถานะของน้ำ และดูการเกิดน้ำค้างแข็ง พร้อมคำศัพท์ภาษาอังกฤษ',
-  key:'parkilab-p5-water-v2', file:'ParK_iLab-P5-watercycle-worksheet.pdf',
+  key:'parkilab-p5-water-v3', file:'ParK_iLab-P5-watercycle-worksheet.pdf',
   hint:'ลากโคมไฟ ถุงน้ำแข็ง ก้อนอากาศ หรือก้อนเมฆไปวาง · แตะเมฆเพื่อให้ตก · ลากพื้นที่ว่างเพื่อหมุนมุมมอง',
   observe:'ทำตามภารกิจ สังเกตว่าน้ำเปลี่ยนสถานะตรงไหน เพราะได้รับหรือสูญเสียความร้อน',
   guide:[
@@ -507,7 +507,12 @@ const QUIZ = [
   {q:'แก้วใส่น้ำแข็งมีหยดน้ำเกาะด้านนอก หยดน้ำมาจากไหน', o:['ไอน้ำในอากาศควบแน่นที่ผิวแก้วเย็น','น้ำในแก้วซึมผ่านแก้วออกมาข้างนอก','น้ำแข็งละลายแล้วทะลุผนังแก้ว','ความเย็นกลายเป็นน้ำเกาะที่แก้ว'], a:0, why:'ผิวแก้วเย็น ไอน้ำในอากาศรอบแก้วจึงควบแน่นเป็นหยดน้ำเกาะด้านนอก'},
   {q:'หิมะตกลงมาถึงพื้นได้เมื่อใด', o:['อากาศใกล้พื้นดินร้อนจัด','อากาศใกล้พื้นเย็นจัด หิมะจึงไม่ละลาย','มีลมพัดแรงมากมาจากทะเล','มีแดดจัดและท้องฟ้าโปร่งใส'], a:1, why:'ถ้าอากาศใกล้พื้นเย็นจัด ผลึกน้ำแข็งจากเมฆจะไม่ละลายระหว่างตก จึงตกลงมาเป็นหิมะ'},
   {q:'ลูกเห็บเกิดจากอะไร', o:['หิมะละลายแล้วแข็งตัวใหม่บนพื้น','น้ำค้างบนใบไม้แข็งตัวตอนเช้า','ลมพาหยดน้ำขึ้นไปแข็งตัวซ้ำหลายรอบในเมฆ','หมอกรวมตัวกันจนกลายเป็นก้อนแข็ง'], a:2, why:'ในเมฆก้อนใหญ่ที่มีลมพัดขึ้นแรง หยดน้ำถูกพาขึ้นลงจนแข็งตัวพอกเป็นก้อนน้ำแข็งใหญ่ แล้วตกลงมาเป็นลูกเห็บ'},
-  {q:'ข้อใดช่วยประหยัดน้ำ', o:['เปิดน้ำทิ้งไว้ขณะแปรงฟัน','ปิดก๊อกขณะแปรงฟัน ใช้แก้วรองน้ำ','ล้างรถด้วยสายยางทุกวัน','อาบน้ำนาน ๆ ให้สะอาด'], a:1, why:'ปิดก๊อกเมื่อไม่ใช้และรองน้ำใส่แก้ว ช่วยประหยัดน้ำจืดที่มีอยู่น้อย'}
+  {q:'ข้อใดช่วยประหยัดน้ำ', o:['เปิดน้ำทิ้งไว้ขณะแปรงฟัน','ปิดก๊อกขณะแปรงฟัน ใช้แก้วรองน้ำ','ล้างรถด้วยสายยางทุกวัน','อาบน้ำนาน ๆ ให้สะอาด'], a:1, why:'ปิดก๊อกเมื่อไม่ใช้และรองน้ำใส่แก้ว ช่วยประหยัดน้ำจืดที่มีอยู่น้อย'},
+  {q:'คำว่า Evaporation แปลว่าอะไร', say:['Evaporation'], o:['การหลอมเหลว','การระเหย','การควบแน่น','การแข็งตัว'], a:1, why:'Evaporation (อี-แวพ-พอ-เร-ชัน) คือ การระเหย น้ำได้รับความร้อนแล้วกลายเป็นไอน้ำ'},
+  {q:'ไอน้ำเย็นลงจนกลายเป็นหยดน้ำ ภาษาอังกฤษเรียกว่าอะไร', say:['Freezing','Melting','Condensation','Sublimation'], o:['Freezing','Melting','Condensation','Sublimation'], a:2, why:'Condensation คือ การควบแน่น ไอน้ำเสียความร้อนแล้วกลายเป็นหยดน้ำ เช่น เมฆ หมอก น้ำค้าง'},
+  {q:'คำว่า Frost หมายถึงข้อใด', say:['Frost'], o:['น้ำค้าง','หมอก','ลูกเห็บ','น้ำค้างแข็ง'], a:3, why:'Frost คือ น้ำค้างแข็ง เกล็ดน้ำแข็งที่เกาะยอดหญ้าเมื่ออากาศต่ำกว่า 0 °C ส่วนน้ำค้างคือ Dew'},
+  {q:'น้ำแข็งละลายเป็นน้ำ ภาษาอังกฤษเรียกว่าอะไร', say:['Freezing','Melting','Deposition','Evaporation'], o:['Freezing','Melting','Deposition','Evaporation'], a:1, why:'Melting คือ การหลอมเหลว ของแข็งได้รับความร้อนแล้วเป็นของเหลว ส่วน Freezing คือ การแข็งตัว'},
+  {q:'Sublimation คือการเปลี่ยนสถานะแบบใด', say:['Sublimation'], o:['ของเหลว → ของแข็ง','แก๊ส → ของเหลว','ของแข็ง → ของเหลว','ของแข็ง → แก๊ส'], a:3, why:'Sublimation คือ การระเหิด ของแข็งกลายเป็นแก๊สโดยตรง ไม่เป็นของเหลวก่อน'}
 ];
 
 const PARTS = [
@@ -736,6 +741,7 @@ document.getElementById('main').addEventListener('click', e=>{
   if(act==='rf') rfPick(v);
   if(act==='cardPng') cardPng(a);
   if(act==='lab' && (PD || CONF.uni) && /^eqr?:/.test(String(v))){ const sv = String(v); if(sv.startsWith('eqr:')) eqReason(sv.slice(4)); else eqAnswer(sv.slice(3)); eqFinish(); Lab.refreshUI(); eqRender(); const fb = document.querySelector('.eqb.flash'); if(fb) flashEl(fb); return; }
+  if(act==='say'){ try{ const u = new SpeechSynthesisUtterance(v); u.lang = 'en-US'; u.rate = .8; const vs = speechSynthesis.getVoices().filter(x=>/^en/i.test(x.lang)); if(vs.length) u.voice = vs.find(x=>/en-US/i.test(x.lang)) || vs[0]; speechSynthesis.cancel(); speechSynthesis.speak(u); } catch(_){ toast('อุปกรณ์นี้อ่านออกเสียงไม่ได้'); } return; }
   if(act==='lab') Lab.action(v, a);
   if(act==='labels'){ ui.noLabels = !ui.noLabels; const l = $('#labels'); if(l) l.hidden = ui.noLabels; a.style.opacity = ui.noLabels ? .45 : 1; a.setAttribute('aria-pressed', String(!ui.noLabels)); }
   if(act==='calc') calcKey(a.dataset.k, a);
@@ -814,7 +820,7 @@ function vQuiz(kind){
       <h1 style="font-size:22px">ข้อ ${ui.q+1} จาก ${NQ}</h1>${isPre && !S.pre.skip ? `<button class="btn ghost sm" type="button" data-act="skipPre" style="margin-top:6px">ข้ามไปก่อน ทำทีหลังได้ ${ICON.arrow}</button>` : ''}</div>
       <div class="qdots" role="group" aria-label="ไปที่ข้อ">${st.a.map((x,i)=>`<button type="button" class="qdot ${x!==null?'ans':''} ${i===ui.q?'cur':''}" data-act="q" data-v="${i}" aria-label="ข้อ ${i+1}">${i+1}</button>`).join('')}</div></div>
     <section class="card pad" style="display:flex;flex-direction:column;gap:20px">
-      <h2 class="qtext">${esc(it.q)}</h2>${fig}
+      <h2 class="qtext">${esc(it.q)}</h2>${it.say ? `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:-8px">${it.say.map(w=>`<button class="chip" type="button" data-act="say" data-v="${w}" style="display:inline-flex;align-items:center;gap:6px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>ฟังเสียง ${w}</button>`).join('')}</div>` : ''}${fig}
       <div class="opts" role="radiogroup" aria-label="ตัวเลือก">${[0,1,2,3].map(j=>`<button type="button" role="radio" class="opt ${it.pics?'pic':''}" aria-checked="${st.a[ui.q]===j}" data-act="ans" data-v="${j}">${optHTML(it,j)}</button>`).join('')}</div>
     </section>
     <div class="row spread">
