@@ -486,8 +486,9 @@ const CONF = {
   title:'ส่วนต่าง ๆ ของพืชดอก', short:'ป.4 ส่วนต่าง ๆ ของพืชดอก', subject:'วิทยาศาสตร์ ป.4',
   tags:['วิทยาศาสตร์ ป.4','สิ่งมีชีวิตกับกระบวนการดำรงชีวิต','ห้องแลป 3 มิติ'],
   sub:'ติดป้ายชื่อราก ลำต้น ใบ ดอก ปักดอกไม้สีขาวในน้ำสีเพื่อดูการลำเลียงน้ำของลำต้น พาผึ้งไปผสมเกสรจนดอกกลายเป็นผลที่มีเมล็ด ทดลองว่าพืชต้องการน้ำและแสง และดูส่วนประกอบของดอก พร้อมคำศัพท์ภาษาอังกฤษ',
-  key:'parkilab-p4-plant-v2', file:'ParK_iLab-P4-plant-parts-worksheet.pdf',
+  key:'parkilab-p4-plant-v3', file:'ParK_iLab-P4-plant-parts-worksheet.pdf',
   hint:'ลากป้ายชื่อไปวางที่ส่วนของพืช · ลากหลอดหยดสีไปที่บีกเกอร์ ลากดอกไม้ไปปักในบีกเกอร์ · ลากผึ้งไปที่เกสร',
+  hints:['ลากป้ายชื่อไปวางที่ส่วนของพืช (หรือแตะป้าย แล้วแตะส่วนของพืช)','ลากหลอดหยดสีไปที่บีกเกอร์ · ลากดอกไม้ไปปักในบีกเกอร์','ลากผึ้งไปที่อับเรณู แล้วไปที่ยอดเกสร','ลากบัวรดน้ำไปรดกระถาง · ลากกล่องทึบไปครอบกระถาง','ลากป้ายชื่อไปวางที่ส่วนของดอก (หรือแตะป้าย แล้วแตะส่วนของดอก) · ลากมีดไปผ่าดอก'],
   observe:'สังเกตตำแหน่งของแต่ละส่วน สีของกลีบดอกและเนื้อลำต้นที่เปลี่ยนไป และการเปลี่ยนแปลงของดอกหลังการผสมเกสร',
   guide:[
     {h:'จุดประสงค์', li:['ระบุส่วนต่าง ๆ ของพืชดอก ได้แก่ ราก ลำต้น ใบ และดอก','บรรยายหน้าที่ของราก ลำต้น ใบ และดอกของพืชดอก','ใช้หลักฐานจากการทดลองอธิบายการลำเลียงน้ำของลำต้น','ทดลองและอธิบายว่าพืชต้องการน้ำและแสงเพื่อการเจริญเติบโต','ระบุส่วนประกอบของดอก ได้แก่ กลีบเลี้ยง กลีบดอก เกสรเพศผู้ และเกสรเพศเมีย','ใช้คำศัพท์ภาษาอังกฤษเกี่ยวกับพืชดอกได้']},
@@ -525,12 +526,12 @@ const PARTS = [
   {k:'ตอนที่ 3', t:'ดอกกับการสืบพันธุ์', d:'พาผึ้งไปเก็บละอองเรณูที่อับเรณู แล้วนำไปที่ยอดเกสร ให้เวลาผ่านไปจนดอกเจริญเป็นผล แล้วผ่าผลดูเมล็ด', time:'ประมาณ 15 นาที', bg:'#FFF4D6',
    pred:{q:'ถ้าดอกไม่ได้รับละอองเรณูเลย จะเกิดผลหรือไม่', o:['ไม่เกิดผล','เกิดผลตามปกติ','เกิดผลที่ใหญ่กว่าเดิม']},
    miss:[['pollen','ให้ผึ้งเก็บละอองเรณู'],['poll','พาผึ้งไปผสมเกสรที่ยอดเกสร'],['fruit','รอจนเกิดผล แล้วผ่าดูเมล็ด']]},
-  {k:'ตอนที่ 4', t:'พืชต้องการน้ำและแสง', d:'จัดกระถาง 3 ใบ ได้ทั้งน้ำและแสง ขาดน้ำ และขาดแสง ให้เวลาผ่านไป แล้วเปรียบเทียบการเจริญเติบโต', time:'ประมาณ 15 นาที', bg:'#E8F4FD',
+  {k:'ตอนที่ 4', t:'พืชต้องการน้ำและแสง', d:'ลากบัวรดน้ำไปรดกระถาง ลากกล่องทึบไปครอบบังแสง จัด 3 แบบ: ได้ทั้งน้ำและแสง ขาดน้ำ ขาดแสง ให้เวลาผ่านไป แล้วเปรียบเทียบการเจริญเติบโต', time:'ประมาณ 15 นาที', bg:'#E8F4FD',
    pred:{q:'ต้นไม้ที่ได้น้ำแต่อยู่ในกล่องทึบไม่มีแสง จะเป็นอย่างไร', o:['ต้นผอม ใบซีดเหลือง','เขียวดีเหมือนต้นปกติ','ตายทันทีในวันแรก']},
-   miss:[['setup','จัดกระถาง: ครบทั้งน้ำและแสง / ขาดน้ำ / ขาดแสง'],['days','ให้เวลาผ่านไปอย่างน้อย 7 วัน'],['measure','แตะดูกระถางครบทั้ง 3 ใบ'],['pick','เลือกกระถางที่เจริญเติบโตดีที่สุด']]},
-  {k:'ตอนที่ 5', t:'ส่วนประกอบของดอก', d:'ติดป้ายกลีบเลี้ยง กลีบดอก เกสรเพศผู้ เกสรเพศเมีย แตะอ่านหน้าที่ แล้วแยกส่วนดอกออกเป็นชั้น ๆ', time:'ประมาณ 15 นาที', bg:'#F3EDFC',
+   miss:[['setup','รดน้ำ/ครอบกล่อง ให้ได้ 3 แบบ: น้ำ+แสง / ขาดน้ำ / ขาดแสง'],['days','ให้เวลาผ่านไปอย่างน้อย 7 วัน'],['measure','แตะดูกระถางครบทั้ง 3 ใบ'],['pick','เลือกกระถางที่เจริญเติบโตดีที่สุด']]},
+  {k:'ตอนที่ 5', t:'ส่วนประกอบของดอก', d:'ลากป้ายชื่อไปวางที่ส่วนของดอกชบา: กลีบเลี้ยง กลีบดอก เกสรเพศผู้ เกสรเพศเมีย แล้วใช้มีดผ่าดอกดูรังไข่ข้างใน', time:'ประมาณ 15 นาที', bg:'#F3EDFC',
    pred:{q:'ส่วนใดของดอกที่อยู่นอกสุดและมีสีเขียว', o:['กลีบเลี้ยง','กลีบดอก','เกสรเพศเมีย']},
-   miss:[['tag','ติดป้ายส่วนประกอบของดอกครบ 4 ส่วน'],['look','แตะอ่านหน้าที่ครบ 4 ส่วน'],['explode','แยกส่วนดอก ดูเรียงจากนอกเข้าใน']]}
+   miss:[['tag','ลากป้ายชื่อไปวางที่ส่วนของดอกครบ 4 ส่วน'],['cut','ลากมีดไปผ่าดอก ดูข้างใน'],['ovary','ลากป้าย “รังไข่” ไปวางในดอกที่ผ่าแล้ว']]}
 ];
 const PART_ART = [
   `<svg width="200" height="110" viewBox="0 0 200 110" aria-hidden="true"><rect x="70" y="72" width="60" height="34" rx="6" fill="#C9A06B"/><path d="M100 72 V22" stroke="#3BA55C" stroke-width="5"/><ellipse cx="80" cy="50" rx="18" ry="6" fill="#4CB86A" transform="rotate(-20 80 50)"/><ellipse cx="120" cy="40" rx="18" ry="6" fill="#4CB86A" transform="rotate(20 120 40)"/>${[0,72,144,216,288].map(a=>`<ellipse cx="100" cy="12" rx="8" ry="4" fill="#F48FB1" transform="rotate(${a} 100 20)"/>`).join('')}<circle cx="100" cy="20" r="5" fill="#F2C94C"/><path d="M100 80 l-10 18 M100 80 l10 18 M100 80 v22" stroke="#8C6A43" stroke-width="2"/></svg>`,
@@ -567,7 +568,7 @@ const SHEET = [
     ['p5c','เกสรเพศผู้ (Stamen)','.....................................................'],
     ['p5d','เกสรเพศเมีย (Pistil)','.....................................................']], concl:'p5s', cq:'วาดดอกไม้ 1 ดอก ชี้บอกส่วนประกอบทั้ง 4 ส่วน เขียนชื่อภาษาไทยและภาษาอังกฤษ'}
 ];
-const GUIDE = [{"tag": ["[data-v^=\"sel:\"]", "เลือกป้ายชื่อ แล้วกดส่วนของพืชที่ตรงกัน ให้ครบ 4 ส่วนครับ", [], ""], "look": ["[data-v^=\"look:\"]", "แตะดูหน้าที่ของ ราก ลำต้น ใบ ดอก ให้ครบครับ", [], ""], "q1": ["[data-v^=\"ans:q1:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"], "q2": ["[data-v^=\"ans:q2:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"]}, {"setup": ["dye", "กด “หยดสี” แล้วปักดอกไม้ลงในบีกเกอร์ทั้ง 2 ใบครับ", ["หยดสีลงน้ำ", "ปักดอกไม้ในบีกเกอร์ใบที่ 1", "ปักดอกไม้ในบีกเกอร์ใบที่ 2"], ""], "wait": ["[data-v^=\"hr:\"]", "กดเลื่อนเวลาให้ผ่านไปอย่างน้อย 4 ชั่วโมงครับ", [], ""], "cut": ["cut", "กด “ตัดลำต้น” แล้วดูสีภายในครับ", [], ""], "q": ["[data-v^=\"ans:q:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"]}, {"pollen": ["[data-v^=\"bee:\"]", "พาผึ้งไปที่อับเรณูเพื่อเก็บละอองเรณูครับ", [], ""], "poll": ["[data-v^=\"bee:\"]", "พาผึ้งไปที่ยอดเกสรเพศเมียครับ", [], ""], "fruit": ["week", "กดเลื่อนเวลาจนเกิดผล แล้วกด “ผ่าผล” ครับ", ["เลื่อนเวลาหลายสัปดาห์", "กดผ่าผล ดูเมล็ด"], ""], "q": ["[data-v^=\"ans:qf:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"]}, {"setup": ["[data-v^=\"cw:\"]", "กดปุ่ม น้ำ/แสง ให้กระถางทั้ง 3 ใบต่างกันครับ", [], ""], "days": ["day:3", "กด +3 วัน ให้เวลาผ่านไปอย่างน้อย 7 วันครับ", [], ""], "measure": ["[data-v^=\"see:\"]", "กดดูกระถางทั้ง 3 ใบครับ", [], ""], "pick": ["[data-v^=\"pick:\"]", "เลือกกระถางที่ต้นไม้เจริญเติบโตดีที่สุดครับ", [], ""]}, {"tag": ["[data-v^=\"fsel:\"]", "เลือกป้ายชื่อ แล้วแตะส่วนของดอกที่ตรงกันครับ", [], ""], "look": ["[data-v^=\"flook:\"]", "แตะอ่านหน้าที่ของทั้ง 4 ส่วนครับ", [], ""], "explode": ["explode", "กด “แยกส่วนดอก” ครับ", [], ""]}];
+const GUIDE = [{"tag": ["[data-v^=\"sel:\"]", "เลือกป้ายชื่อ แล้วกดส่วนของพืชที่ตรงกัน ให้ครบ 4 ส่วนครับ", [], ""], "look": ["[data-v^=\"look:\"]", "แตะดูหน้าที่ของ ราก ลำต้น ใบ ดอก ให้ครบครับ", [], ""], "q1": ["[data-v^=\"ans:q1:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"], "q2": ["[data-v^=\"ans:q2:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"]}, {"setup": ["dye", "กด “หยดสี” แล้วปักดอกไม้ลงในบีกเกอร์ทั้ง 2 ใบครับ", ["หยดสีลงน้ำ", "ปักดอกไม้ในบีกเกอร์ใบที่ 1", "ปักดอกไม้ในบีกเกอร์ใบที่ 2"], ""], "wait": ["[data-v^=\"hr:\"]", "กดเลื่อนเวลาให้ผ่านไปอย่างน้อย 4 ชั่วโมงครับ", [], ""], "cut": ["cut", "กด “ตัดลำต้น” แล้วดูสีภายในครับ", [], ""], "q": ["[data-v^=\"ans:q:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"]}, {"pollen": ["[data-v^=\"bee:\"]", "พาผึ้งไปที่อับเรณูเพื่อเก็บละอองเรณูครับ", [], ""], "poll": ["[data-v^=\"bee:\"]", "พาผึ้งไปที่ยอดเกสรเพศเมียครับ", [], ""], "fruit": ["week", "กดเลื่อนเวลาจนเกิดผล แล้วกด “ผ่าผล” ครับ", ["เลื่อนเวลาหลายสัปดาห์", "กดผ่าผล ดูเมล็ด"], ""], "q": ["[data-v^=\"ans:qf:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"]}, {"setup": ["[data-v^=\"cw:\"]", "ลากบัวรดน้ำไปรดกระถาง 2 ใบ แล้วลากกล่องทึบไปครอบ 1 ใบที่รดน้ำแล้ว (หรือกดปุ่มสำรองด้านล่าง) ครับ", [], ""], "days": ["day:3", "กด +3 วัน ให้เวลาผ่านไปอย่างน้อย 7 วันครับ", [], ""], "measure": ["[data-v^=\"see:\"]", "แตะกระถางทีละใบ (กระถางในกล่อง ให้แตะที่กล่องเพื่อยกออก) ครับ", [], ""], "pick": ["[data-v^=\"pick:\"]", "เลือกกระถางที่ต้นไม้เจริญเติบโตดีที่สุดครับ", [], ""]}, {"tag": ["", "ลากป้ายชื่อจากกระดานทางซ้ายไปวางที่ส่วนของดอกชบา หรือแตะป้าย แล้วแตะส่วนของดอกครับ", [], "ลากป้ายชื่อจากกระดานทางซ้ายไปวางที่ส่วนของดอกชบา หรือแตะป้าย แล้วแตะส่วนของดอกครับ"], "cut": ["fcut", "ลากมีดไปที่ดอกชบา หรือกดปุ่ม “ผ่าดอก” ครับ", [], "ติดป้ายให้ครบ 4 ส่วนก่อน แล้วค่อยลากมีดไปผ่าดอกครับ"], "ovary": ["", "ลากป้าย “รังไข่” ไปวางที่ส่วนพองโคนเกสรเพศเมีย ในดอกที่ผ่าแล้วครับ", [], "ผ่าดอกก่อน แล้วลากป้าย “รังไข่” ไปวางที่ส่วนพองโคนเกสรเพศเมียครับ"]}];
 const ENDQ = [
  [{k:'root', q:'{n}แตะดูราก รากทำหน้าที่อะไร', o:[['food','สร้างอาหารให้ต้นพืช'],['water','ดูดน้ำและยึดลำต้น'],['seed','สร้างผลและเมล็ด']], a:'water',
    h:['รากอยู่ใต้ดิน ใต้ดินมีอะไรที่พืชต้องการ','แตะที่รากแล้วอ่านหน้าที่อีกครั้ง'], why:'รากดูดน้ำและแร่ธาตุจากดิน และยึดลำต้นไว้กับดิน'},
@@ -602,13 +603,13 @@ const ENDQ = [
   {k:'need', q:'การทดลองนี้สรุปได้ว่าพืชต้องการอะไรเพื่อเจริญเติบโต', o:[['wl','น้ำและแสง (Water & Sunlight)'],['w','น้ำอย่างเดียว (Water)'],['l','แสงอย่างเดียว (Sunlight)']], a:'wl',
    h:['ขาดอย่างใดอย่างหนึ่ง ต้นไม้เป็นอย่างไร','มีแค่กระถางเดียวที่โตดี'], why:'ขาดน้ำหรือขาดแสงอย่างใดอย่างหนึ่ง พืชก็เจริญเติบโตไม่ดี พืชจึงต้องการทั้งน้ำและแสง'}],
  [{k:'sepal', q:'ส่วนสีเขียวที่อยู่นอกสุดของดอก ห่อหุ้มดอกตูมไว้ คืออะไร', o:[['sepal','กลีบเลี้ยง (Sepal)'],['petal','กลีบดอก (Petal)'],['leaf','ใบ (Leaf)']], a:'sepal',
-   h:['อยู่ใต้กลีบดอก สีเขียว','แตะชั้นนอกสุดแล้วอ่านหน้าที่'], why:'กลีบเลี้ยงอยู่นอกสุด สีเขียว ห่อหุ้มป้องกันดอกตอนยังเป็นดอกตูม'},
+   h:['อยู่ใต้กลีบดอก สีเขียว','ดูป้ายกลีบเลี้ยงที่วางไว้บนดอกชบา'], why:'กลีบเลี้ยงอยู่นอกสุด สีเขียว ห่อหุ้มป้องกันดอกตอนยังเป็นดอกตูม'},
   {k:'petal', q:'{n}คิดว่ากลีบดอกสีสวยมีประโยชน์อย่างไร', o:[['bee','ล่อแมลงมาช่วยผสมเกสร'],['food','สร้างอาหารให้ต้นพืช'],['water','ดูดน้ำเข้าสู่ดอก']], a:'bee',
    h:['ใครชอบมาตอมดอกไม้สีสวย','นึกถึงผึ้งในตอนที่ 3'], why:'กลีบดอกมีสีสวยและกลิ่นหอม ล่อแมลงให้มาช่วยผสมเกสร'},
   {k:'stamen', q:'เกสรเพศผู้ (Stamen) ทำหน้าที่อะไร', o:[['pollen','สร้างละอองเรณู'],['fruit','เจริญเป็นผล'],['protect','ห่อหุ้มดอกตูม']], a:'pollen',
    h:['ปลายเกสรเพศผู้มีอับเรณูสีเหลือง','ผึ้งได้อะไรจากอับเรณู'], why:'เกสรเพศผู้มีอับเรณูที่สร้างละอองเรณู (Pollen)'},
-  {k:'pistil', q:'หลังผสมเกสร ส่วนโคนของเกสรเพศเมีย (Pistil) จะเจริญเป็นอะไร', o:[['fruit','ผล (Fruit)'],['root','ราก (Root)'],['petal','กลีบดอก (Petal)']], a:'fruit',
-   h:['ทบทวนตอนที่ 3 หลังผึ้งผสมเกสร','ส่วนที่พองโตขึ้นและมีเมล็ดอยู่ข้างใน'], why:'ส่วนโคนของเกสรเพศเมียเจริญเป็นผล ภายในมีเมล็ด'}]
+  {k:'pistil', q:'{n}ผ่าดอกดูรังไข่ (Ovary) ที่โคนเกสรเพศเมีย หลังผสมเกสรรังไข่จะเจริญเป็นอะไร', o:[['fruit','ผล (Fruit)'],['root','ราก (Root)'],['petal','กลีบดอก (Petal)']], a:'fruit',
+   h:['ทบทวนตอนที่ 3 หลังผึ้งผสมเกสร','ข้างในรังไข่มีออวุล ซึ่งจะเจริญเป็นเมล็ด'], why:'รังไข่ที่โคนเกสรเพศเมียเจริญเป็นผล ออวุลข้างในเจริญเป็นเมล็ด'}]
 ];
 
 const PD = !CONF.uni && /ป\.\d|ม\.1(?!\d)/.test(CONF.subject || ''), NOG = CONF.uni || PD, MD = !!CONF.uni && !!CONF.resCard, MDC = CONF.resCard==='C';
@@ -1137,7 +1138,7 @@ function vLab(){
     </header>
     <div class="labgrid">
       ${PD ? '<div class="pdwrap" id="pdwrap">' : ''}<section class="stage" id="stage"${MDC ? ' data-mdc' : ''} aria-label="โต๊ะทดลอง 3 มิติ">
-        <div class="hint">${ICON.move}<span>${CONF.hint}</span></div>
+        <div class="hint">${ICON.move}<span>${(CONF.hints || [])[ui.part] || CONF.hint}</span></div>
         <div class="camctl">
 ${CONF.hs ? '' : `${PD ? '' : `          <button class="ibtn" type="button" data-act="lab" data-v="camL" aria-label="หมุนมุมมองไปทางซ้าย">${ICON.rotL}</button>
           <button class="ibtn" type="button" data-act="lab" data-v="camR" aria-label="หมุนมุมมองไปทางขวา">${ICON.rotR}</button>`}
@@ -1386,8 +1387,8 @@ const Lab = (function(){
     {pos:V(0,1.9,5.6), tgt:V(-.1,1.05,0)},
     {pos:V(.3,2.2,5.2), tgt:V(.3,.8,0)},
     {pos:V(.3,2.9,3.6), tgt:V(.1,1.25,0)},
-    {pos:V(0,2.6,5.9), tgt:V(0,.95,0)},
-    {pos:V(0,1.85,2.45), tgt:V(0,1.3,0)}
+    {pos:V(0,2.55,5.1), tgt:V(0,.9,-.15)},
+    {pos:V(0,2.05,4.3), tgt:V(0,1.3,0)}
   ];
   function mat(c, o={}){ return new THREE.MeshStandardMaterial(Object.assign({color:c, roughness:.55, metalness:0}, o)); }
   const METAL = () => mat(0xB9C0CE, {metalness:.8, roughness:.3});
@@ -1412,7 +1413,7 @@ const Lab = (function(){
     try{
       const renderer = new THREE.WebGLRenderer({antialias:true});
       renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
-      renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      renderer.shadowMap.enabled = true; renderer.localClippingEnabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
       const scene = new THREE.Scene(); scene.background = canvasTex(4, 256, (cx)=>{ const g = cx.createLinearGradient(0,0,0,256); g.addColorStop(0,'#CFE3FA'); g.addColorStop(.55,'#E8F1FB'); g.addColorStop(1,'#F6F2EC'); cx.fillStyle = g; cx.fillRect(0,0,4,256); });
       const camera = new THREE.PerspectiveCamera(42, 1, 0.3, 60);
       const controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -1496,13 +1497,16 @@ const Lab = (function(){
   const FL = {x:-.1, z:-.1};
 
   /* ----- part setup ----- */
-  const defaults = i => ({wrong:0, ans:{}, tag:{}, look:{}, dye:false, inB:{}, hrs:0, u:{f1:0, f2:0}, cut:false, pollen:false, poll:false, wk:0, open:false, cond:{A:{w:true,l:true},B:{w:true,l:true},C:{w:true,l:true}}, day:0, seen:{}, pick:null, ftag:{}, flook:{}, exp:false});
+  const defaults = i => ({wrong:0, ans:{}, tag:{}, look:{}, dye:false, inB:{}, hrs:0, u:{f1:0, f2:0}, cut:false, pollen:false, poll:false, wk:0, open:false, cond:{A:{w:false,l:true},B:{w:false,l:true},C:{w:false,l:true}}, day:0, seen:{}, pick:null, ftag:{}, cut:false, cutDone:false});
   const restoreS = i => { const s = defaults(i); try { if(S.ps && S.ps[i]) Object.assign(s, JSON.parse(JSON.stringify(S.ps[i]))); } catch(e){} return s; };
   const fresh = i => ({i, s:restoreS(i), labels:[], celebrate:false, dirty:false, ctrlSig:'', warn:null, sel:null});
   function clearWorld(){ while(R.world.children.length) R.world.remove(R.world.children[0]); }
+  function camHome(){ const cam = CAMS[P.i], st = $('#stage'), w = st ? st.clientWidth : 1000; const t = cam.tgt.clone(), off = cam.pos.clone().sub(cam.tgt);
+    if(w < 640 && P.i >= 3){ off.multiplyScalar(1.2); t.x += .3; }
+    R.controls.target.copy(t); R.camera.position.copy(t).add(off); }
   function build(){
     clearWorld(); P.labels = []; P.ctrlSig = ''; P.items = {}; P.sel = null;
-    const cam = CAMS[P.i]; R.controls.minDistance = P.i===4 ? 1.6 : 3; R.camera.position.copy(cam.pos); R.controls.target.copy(cam.tgt);
+    R.controls.minDistance = P.i===4 ? 1.6 : 3; camHome();
     if(P.i===0) buildP1(); else if(P.i===1) buildP2(); else if(P.i===2) buildP3(); else if(P.i===3) buildP4(); else buildP5();
     labelsDOM(); sync(); refresh();
   }
@@ -1637,88 +1641,237 @@ const Lab = (function(){
     [['Stem','ลำต้น'],['Petal','กลีบดอก'],['Flower','ดอก']],
     [['Pollen','ละอองเรณู'],['Pollination','การถ่ายเรณู'],['Fruit','ผล'],['Seed','เมล็ด']],
     [['Water','น้ำ'],['Sunlight','แสงแดด'],['Leaf','ใบ'],['Stem','ลำต้น'],['Root','ราก']],
-    [['Sepal','กลีบเลี้ยง'],['Petal','กลีบดอก'],['Stamen','เกสรเพศผู้'],['Pistil','เกสรเพศเมีย'],['Pollen','ละอองเรณู']]
+    [['Sepal','กลีบเลี้ยง'],['Petal','กลีบดอก'],['Stamen','เกสรเพศผู้'],['Pistil','เกสรเพศเมีย'],['Ovary','รังไข่'],['Pollen','ละอองเรณู']]
   ];
   function vocabBox(i){ const L = VOC[i] || []; if(!L.length) return '';
     return `<div style="flex-basis:100%;display:flex;flex-direction:column;gap:6px;margin-top:4px"><h2 style="margin:0">คำศัพท์ Vocabulary <span class="note" style="font-weight:400">แตะเพื่อฟังเสียง</span></h2><div style="display:flex;gap:6px;flex-wrap:wrap">${L.map(([e,t])=>`<button class="chip" type="button" data-act="say" data-v="${e}" style="display:inline-flex;align-items:center;gap:6px">${SPK}<b>${e}</b><span style="font-weight:400">${t}</span></button>`).join('')}</div></div>`; }
 
   /* ===== part 4: plants need water and light ===== */
-  const POTS = [{id:'A', x:-1.7}, {id:'B', x:0}, {id:'C', x:1.7}];
+  const POTS = [{id:'A', x:-1.15}, {id:'B', x:0}, {id:'C', x:1.15}];
+  const TOOL = {can:V(-2.0, TABLE_Y, .8), box:V(-2.05, TABLE_Y, -1.25)};
   const condOf = c => c.w && c.l ? 'full' : c.w ? 'dark' : c.l ? 'dry' : 'none';
   const CONDN = {full:'น้ำ ✓ แสง ✓', dark:'น้ำ ✓ แสง ✗', dry:'น้ำ ✗ แสง ✓', none:'น้ำ ✗ แสง ✗'};
   function setupOK(){ const cs = POTS.map(p=>condOf(P.s.cond[p.id])); return ['full','dark','dry'].every(c=>cs.includes(c)); }
   function growth(id){ const c = condOf(P.s.cond[id]), d = P.s.day, k = Math.min(1, d/7);
     if(c==='full') return {H:.32 + .055*Math.min(d,10), leaf:.75 + .045*Math.min(d,10), col:0x3E9E57, thin:1, droop:0, tilt:0, cm:Math.round((.32 + .055*Math.min(d,10))*30)};
-    if(c==='dark') return {H:.32 + .08*Math.min(d,10), leaf:.75 - .03*Math.min(d,7), col:lerpC(0x3E9E57, 0xE6DC7A, k), thin:.62, droop:.12*k, tilt:0, cm:Math.round((.32 + .08*Math.min(d,10))*30)};
+    if(c==='dark') return {H:.32 + .065*Math.min(d,10), leaf:.75 - .03*Math.min(d,7), col:lerpC(0x3E9E57, 0xE6DC7A, k), thin:.62, droop:.12*k, tilt:0, cm:Math.round((.32 + .065*Math.min(d,10))*30)};
     const H = .32 + .015*Math.min(d,2); return {H, leaf:.75, col:lerpC(c==='dry' ? 0x3E9E57 : 0xB9C97A, 0x9C7444, Math.min(1, Math.max(0, (d-1)/5))), thin:1, droop:Math.min(1.1, d*.2), tilt:Math.min(.35, d*.06), cm:Math.round(H*30)}; }
   function lerpC(a, b, t){ const ca = new THREE.Color(a), cb = new THREE.Color(b); return ca.lerp(cb, t).getHex(); }
+  let SOILTEX = null;
+  function soilTex(){ if(SOILTEX) return SOILTEX; SOILTEX = canvasTex(128, 128, (x)=>{ x.fillStyle = '#fff'; x.fillRect(0,0,128,128); for(let k=0;k<700;k++){ const v = 150 + Math.floor(rnd(k*3.1)*105); x.fillStyle = `rgb(${v},${v},${v})`; const r = .6 + rnd(k*7.7)*1.8; x.beginPath(); x.arc(rnd(k*1.3)*128, rnd(k*2.9)*128, r, 0, 7); x.fill(); } }); return SOILTEX; }
+  function makePot(sc=1){
+    const g = new THREE.Group(), pm = mat(0xD48A5E,{roughness:.9, side:THREE.DoubleSide});
+    g.add(at(cyl(.36,.27,.55, pm, 32, true), 0,.275,0));
+    const rim = new THREE.Mesh(new THREE.TorusGeometry(.36,.035,10,32), mat(0xC97D52,{roughness:.9})); rim.rotation.x = Math.PI/2; rim.position.y = .55; g.add(rim);
+    g.add(at(cyl(.27,.27,.02, pm, 32), 0,.01,0));
+    g.add(at(cyl(.41,.37,.04, mat(0xC2774C,{roughness:.9}), 32), 0,.02,0));
+    const soil = cyl(.335,.335,.03, new THREE.MeshStandardMaterial({color:0x6B4A30, map:soilTex(), roughness:1}), 32); soil.position.y = .49; g.add(soil);
+    g.scale.setScalar(sc); return {g, soil};
+  }
+  function makeCan(){
+    const g = new THREE.Group(), bm = mat(0x86BEDD,{roughness:.35, metalness:.25});
+    g.add(at(cyl(.16,.18,.32, bm, 28), 0,.16,0));
+    g.add(at(cyl(.165,.165,.02, mat(0x6FA9CC,{roughness:.35, metalness:.25}), 28), 0,.31,0));
+    const sp = new THREE.Group(); sp.position.set(.14,.09,0); sp.rotation.z = -.97; g.add(sp);
+    sp.add(at(cyl(.018,.032,.46, bm, 10), 0,.23,0));
+    sp.add(at(cyl(.052,.026,.05, mat(0x5C93B5,{roughness:.4, metalness:.3}), 16), 0,.47,0));
+    const tip = new THREE.Object3D(); tip.position.y = .5; sp.add(tip);
+    const hd = new THREE.Mesh(new THREE.TorusGeometry(.13,.017,8,20,Math.PI), bm); hd.position.set(-.04,.3,0); g.add(hd);
+    g.add(hitBox(.7,.55,.42,.22)); g.userData.tip = tip; return g;
+  }
+  function makeDarkBox(){
+    const g = new THREE.Group(), cm = mat(0xC49A6C,{roughness:.95});
+    g.add(at(box(.84,1.6,.84, cm), 0,.8,0));
+    g.add(at(box(.86,.012,.22, mat(0xE2CFA4,{roughness:.8})), 0,1.606,0));
+    [-.421,.421].forEach(z=>g.add(at(box(.86,.05,.01, mat(0xB08458,{roughness:.95})), 0,1.32,z)));
+    const t = textPlane('กล่องทึบ', '#8A6440', .58,.2, false); t.position.set(0,1.0,.425); g.add(t);
+    return g;
+  }
   function buildP4(){
     const W = R.world, s = P.s; P.pots = {};
     POTS.forEach(p=>{
-      const g = new THREE.Group(); g.userData.id = 'pot:' + p.id;
-      const pm = mat(0xD9895B,{roughness:.85}); g.add(at(cyl(.36,.27,.55, pm, 28), 0,.275,0)); const rim = new THREE.Mesh(new THREE.TorusGeometry(.36,.04,8,28), pm); rim.rotation.x = Math.PI/2; rim.position.y = .55; g.add(rim);
-      g.add(at(cyl(.4,.4,.03, mat(0xC97B4E),28), 0,.015,0));
-      const soil = cyl(.33,.33,.04, mat(0x5A3E28,{roughness:1}), 28); soil.position.y = .53; g.add(soil);
-      const plant = new THREE.Group(); plant.position.y = .55; g.add(plant);
+      const {g, soil} = makePot(); g.userData.id = 'pot:' + p.id;
+      const plant = new THREE.Group(); plant.position.y = .5; g.add(plant);
       const sm = mat(0x4E9E57), lm = mat(0x3E9E57,{side:THREE.DoubleSide});
       const stem = cyl(.022,.03,1, sm, 8); plant.add(stem);
       const leaves = []; [[.35,0],[.35,Math.PI],[.62,Math.PI/2],[.62,-Math.PI/2],[.88,.4],[.88,Math.PI+.4]].forEach(([f,ry])=>{ const l = makeLeaf(.2,.08, lm, .3); l.userData = {f, ry}; plant.add(l); leaves.push(l); });
       const top = makeLeaf(.12,.05, lm, .1); top.rotation.z = 1.2; plant.add(top);
-      const cover = box(.95,1.75,.95, new THREE.MeshStandardMaterial({color:0x8A6A4A, transparent:true, opacity:.55, roughness:.9, depthWrite:false})); cover.position.y = .875; g.add(cover);
-      const sunL = sph(.14, new THREE.MeshStandardMaterial({color:0xFFC94D, emissive:0xFFB000, emissiveIntensity:.9}), 16); sunL.position.set(0, 1.95, -.45); g.add(sunL); const anc = new THREE.Object3D(); anc.position.set(0, 2.3, .2); g.add(anc);
-      const drop = sph(.06, TRANS(0x5B9BEA,.85), 10); drop.scale.y = 1.4; drop.position.set(.24, .66, .2); g.add(drop);
-      g.add(hitBox(.9,1.8,.9,.9));
+      const anc = new THREE.Object3D(); anc.position.set(0, 2.15, .2); g.add(anc);
+      g.add(hitBox(.8,1.5,.8,.75));
       g.position.set(p.x, TABLE_Y, 0); shadowAll(g); W.add(g);
-      P.pots[p.id] = {g, plant, stem, leaves, top, sm, lm, soil, cover, sunL, drop};
+      P.pots[p.id] = {g, plant, stem, leaves, top, sm, lm, soil};
       P.labels.push({obj:anc, dy:0, text:()=>`กระถาง ${p.id}`});
     });
-    const dAnc = new THREE.Object3D(); dAnc.position.set(0, TABLE_Y + 2.8, .2); W.add(dAnc); P.labels.push({obj:dAnc, dy:0, text:()=>`วันที่ ${s.day}`});
+    const sun = new THREE.Group(); sun.add(sph(.3, new THREE.MeshBasicMaterial({color:0xFFD45C}), 24)); const halo = new THREE.Mesh(new THREE.CircleGeometry(.62, 32), new THREE.MeshBasicMaterial({color:0xFFE9A8, transparent:true, opacity:.35, depthWrite:false})); halo.position.z = -.05; sun.add(halo);
+    sun.position.set(-2.7, 3.35, -2.4); sun.lookAt(R.camera.position); W.add(sun);
+    const can = item('can', makeCan(), TOOL.can); P.canTip = can.userData.tip;
+    P.drops = []; for(let k=0;k<16;k++){ const d = sph(.02, TRANS(0x6FB7F0,.85), 8); d.scale.y = 1.6; d.visible = false; W.add(d); P.drops.push(d); }
+    const bx = item('box', makeDarkBox(), TOOL.box);
+    P.labels.push({obj:can, dy:.62, text:()=>s.day ? '' : 'บัวรดน้ำ'});
+    const dAnc = new THREE.Object3D(); dAnc.position.set(0, TABLE_Y + 2.65, .2); W.add(dAnc); P.labels.push({obj:dAnc, dy:0, text:()=>`วันที่ ${s.day}`});
     syncP4();
   }
+  const covered = () => (POTS.find(p=>!P.s.cond[p.id].l) || {}).id;
   function syncP4(){ const s = P.s; if(!P.pots) return;
     POTS.forEach(p=>{ const o = P.pots[p.id], c = s.cond[p.id], gr = growth(p.id);
       o.stem.scale.set(gr.thin, gr.H, gr.thin); o.stem.position.y = gr.H/2; o.sm.color.setHex(lerpC(0x4E9E57, gr.col, .6)); o.lm.color.setHex(gr.col);
       o.leaves.forEach(l=>{ l.position.y = gr.H*l.userData.f; l.rotation.set(0, l.userData.ry, .35 - gr.droop); l.scale.setScalar(gr.leaf); });
       o.top.position.y = gr.H; o.plant.rotation.z = gr.tilt;
-      o.cover.visible = !c.l; o.sunL.visible = c.l; o.drop.visible = c.w;
-      o.soil.material.color.setHex(c.w ? 0x5A3E28 : (s.day >= 2 ? 0xC2A27A : 0x7A5A3A)); });
+      o.soil.material.color.setHex(c.w ? 0x5A3C26 : (s.day >= 2 ? 0xD8BC92 : 0x9C7A55)); o.soil.material.roughness = c.w ? .55 : 1; });
+    const b = P.items && P.items.box; if(b && !(drag && drag.g===b)){ const id = covered(); if(id){ const p = POTS.find(q=>q.id===id); b.userData.home = s.seen[id] ? TOOL.box.clone() : V(p.x, TABLE_Y, 0); } else b.userData.home = TOOL.box.clone(); goHome(b); }
   }
-  function toggleCond(id, k){ const s = P.s; if(s.day > 0){ P.warn = 'เริ่มทดลองไปแล้ว เปลี่ยนเงื่อนไขไม่ได้ ถ้าจะจัดใหม่ กด "เริ่มใหม่" นะครับ'; return; } s.cond[id][k] = !s.cond[id][k]; const c = condOf(s.cond[id]); P.say = `กระถาง ${id}: ${CONDN[c]}`; if(c==='none') P.say += ' (ขาดทั้งน้ำและแสง จะเทียบไม่ได้ว่าเพราะอะไร ลองให้ขาดทีละอย่าง)'; }
-  function addDays(n){ const s = P.s; if(!setupOK()){ P.warn = 'จัดกระถางให้ครบ 3 แบบก่อน: ได้ทั้งน้ำและแสง 1 ใบ ขาดน้ำ 1 ใบ ขาดแสง 1 ใบ'; return; } s.day = Math.min(10, s.day + n); P.say = s.day >= 7 ? `ผ่านไป ${s.day} วันแล้ว แตะดูกระถางทีละใบ เปรียบเทียบความสูงและสีใบ` : `ผ่านไป ${s.day} วัน สังเกตต้นไม้แต่ละกระถาง`; }
+  function waterPot(id){ const s = P.s; if(s.day > 0){ P.warn = 'เริ่มทดลองไปแล้ว เปลี่ยนเงื่อนไขไม่ได้ ถ้าจะจัดใหม่ กด "เริ่มใหม่" นะครับ'; return false; }
+    if(s.cond[id].w){ P.say = `กระถาง ${id} รดน้ำแล้วครับ (ให้กระถางหนึ่งไม่ได้รดน้ำ ไว้เปรียบเทียบ)`; return false; }
+    s.cond[id].w = true; P.pour = {id, t:0}; P.say = `รดน้ำ (Water) กระถาง ${id} แล้ว · ` + setupMsg(); return true; }
+  function coverPot(id){ const s = P.s; if(s.day > 0){ P.warn = 'เริ่มทดลองไปแล้ว เปลี่ยนเงื่อนไขไม่ได้ ถ้าจะจัดใหม่ กด "เริ่มใหม่" นะครับ'; return; }
+    POTS.forEach(p=>{ s.cond[p.id].l = p.id!==id; }); P.say = `ครอบกล่องทึบกระถาง ${id} แล้ว ต้นในกล่องไม่ได้รับ Sunlight (แสงแดด) · ` + setupMsg(); }
+  function uncover(){ const s = P.s; if(s.day > 0) return; POTS.forEach(p=>{ s.cond[p.id].l = true; }); P.say = 'ยกกล่องทึบออกแล้ว ทุกกระถางได้รับแสง'; }
+  function setupMsg(){ const s = P.s, cs = POTS.map(p=>condOf(s.cond[p.id]));
+    if(setupOK()) return 'จัดครบ 3 แบบแล้ว! กดให้เวลาผ่านไปได้เลย';
+    if(cs.includes('none')) return 'มีกระถางที่ขาดทั้งน้ำและแสง จะบอกไม่ได้ว่าเพราะอะไร ให้ขาดทีละอย่าง';
+    const need = []; if(!cs.includes('full')) need.push('ได้ทั้งน้ำและแสง'); if(!cs.includes('dry')) need.push('ไม่รดน้ำ'); if(!cs.includes('dark')) need.push('รดน้ำแต่ครอบกล่อง');
+    return 'ยังขาดกระถางแบบ: ' + need.join(', '); }
+  function toggleCond(id, k){ const s = P.s; if(s.day > 0){ P.warn = 'เริ่มทดลองไปแล้ว เปลี่ยนเงื่อนไขไม่ได้ ถ้าจะจัดใหม่ กด "เริ่มใหม่" นะครับ'; return; }
+    if(k==='w'){ if(s.cond[id].w){ s.cond[id].w = false; P.say = `กระถาง ${id} ไม่รดน้ำ · ` + setupMsg(); } else waterPot(id); }
+    else { if(s.cond[id].l) coverPot(id); else uncover(); } }
+  function addDays(n){ const s = P.s; if(!setupOK()){ P.warn = 'จัดกระถางให้ครบ 3 แบบก่อน: ได้ทั้งน้ำและแสง 1 ใบ ไม่รดน้ำ 1 ใบ รดน้ำแต่ครอบกล่องทึบ 1 ใบ'; return; } s.day = Math.min(10, s.day + n); P.say = s.day >= 7 ? `ผ่านไป ${s.day} วันแล้ว (รดน้ำทุกวัน) แตะดูกระถางทีละใบ กระถางในกล่องให้แตะที่กล่องเพื่อยกออก` : `ผ่านไป ${s.day} วัน สังเกตต้นไม้แต่ละกระถาง`; }
   function seePot(id){ const s = P.s; if(s.day < 7){ P.warn = 'ให้เวลาผ่านไปอย่างน้อย 7 วันก่อน แล้วค่อยดูผล'; return; } s.seen[id] = 1; const c = condOf(s.cond[id]), gr = growth(id);
-    P.say = `กระถาง ${id} (${CONDN[c]}): สูงประมาณ ${gr.cm} ซม. ` + (c==='full' ? 'ใบเขียว ลำต้นแข็งแรง ตั้งตรง' : c==='dark' ? 'ลำต้นผอมยืดยาว ใบซีดเหลือง เพราะไม่มี Sunlight (แสงแดด)' : 'เหี่ยว ใบเหลืองน้ำตาล ดินแห้ง เพราะไม่ได้ Water (น้ำ)'); }
+    P.say = `กระถาง ${id} (${CONDN[c]}): สูงประมาณ ${gr.cm} ซม. ` + (c==='full' ? 'ใบเขียว ลำต้นแข็งแรง ตั้งตรง' : c==='dark' ? 'ยกกล่องออกแล้ว: ลำต้นผอมยืดยาว ใบซีดเหลือง เพราะไม่มี Sunlight (แสงแดด)' : 'เหี่ยว ใบเหลืองน้ำตาล ดินแห้ง เพราะไม่ได้ Water (น้ำ)'); }
   function pickPot(id){ const s = P.s, c = condOf(s.cond[id]);
     if(c==='full'){ s.pick = id; P.say = `ถูกต้อง! กระถาง ${id} ได้รับทั้ง Water และ Sunlight จึงเจริญเติบโตดีที่สุด`; }
     else { s.wrong += 1; P.warn = c==='dark' ? `ยังไม่ถูก กระถาง ${id} สูงก็จริง แต่ลำต้นผอมและใบซีดเหลือง เพราะขาดแสง ดูสีใบและความแข็งแรงด้วย` : `ยังไม่ถูก กระถาง ${id} เหี่ยวและใบเหลืองน้ำตาล เพราะขาดน้ำ ลองเทียบกับกระถางอื่น`; } }
-
-  /* ===== part 5: parts of a flower ===== */
-  const FN = {sepal:'กลีบเลี้ยง', petal:'กลีบดอก', stamen:'เกสรเพศผู้', pistil:'เกสรเพศเมีย'}, FK = Object.keys(FN), FE = {sepal:'Sepal', petal:'Petal', stamen:'Stamen', pistil:'Pistil'};
-  const FC = {sepal:'#4E9E57', petal:'#E2649A', stamen:'#C99A12', pistil:'#2F8F6A'};
-  const FFUN = {sepal:'กลีบเลี้ยง (Sepal): อยู่นอกสุด สีเขียว ห่อหุ้มป้องกันดอกตอนเป็นดอกตูม', petal:'กลีบดอก (Petal): สีสวย มีกลิ่น ล่อแมลงให้มาช่วยผสมเกสร', stamen:'เกสรเพศผู้ (Stamen): ปลายมีอับเรณู สร้างละอองเรณู (Pollen)', pistil:'เกสรเพศเมีย (Pistil): ยอดเกสรรับละอองเรณู ส่วนโคนเจริญเป็นผล (Fruit)'};
-  const FEX = {sepal:-.42, petal:-.15, stamen:.3, pistil:.72};
-  function buildP5(){
-    const W = R.world, s = P.s, root = new THREE.Group(); P.fp = {};
-    root.add(at(cyl(.05,.065,1.0, mat(0x4E9E57), 10), 0,.5,0));
-    const L = makeLeaf(.4,.14, mat(0x4CB86A,{side:THREE.DoubleSide})); L.position.y = .25; L.rotation.z = .25; root.add(L);
-    const mk = id => { const g = new THREE.Group(); g.position.y = 1.08; root.add(g); P.fp[id] = g; return g; };
-    const sg = mk('sepal'), sm = mat(0x6CBF6E,{side:THREE.DoubleSide}); for(let k=0;k<5;k++){ const l = makeLeaf(.3,.11, sm, .15); l.rotation.set(0, k/5*Math.PI*2 + .3, -.35); sg.add(l); } sg.add(at(sph(.11, mat(0x5CB85C), 14), 0,-.02,0));
-    const pg = mk('petal'), pm = mat(0xF7A8C4,{roughness:.45, side:THREE.DoubleSide}); for(let k=0;k<5;k++){ const l = makeLeaf(.42,.2, pm, -.25); l.rotation.set(0, k/5*Math.PI*2 + .95, .55); l.position.y = .04; pg.add(l); }
-    const stg = mk('stamen'); for(let k=0;k<6;k++){ const a = k/6*Math.PI*2, x = Math.cos(a), z = Math.sin(a); const f = cyl(.008,.01,.32, mat(0xF0E6C8), 6); f.position.set(x*.07, .2, z*.07); f.rotation.set(z*.45, 0, -x*.45); stg.add(f); const an = ellip(.04,.028,.028, mat(0xF2C94C,{roughness:.7}), 10); an.position.set(x*.14, .34, z*.14); stg.add(an); }
-    const pig = mk('pistil'); pig.add(at(ellip(.08,.1,.08, mat(0x8CD39A,{roughness:.4}), 16), 0,.08,0)); pig.add(at(cyl(.018,.024,.34, mat(0x7FCB8E), 8), 0,.33,0)); pig.add(at(sph(.045, mat(0x3BA55C), 12), 0,.52,0));
-    FK.forEach(k=>{ const g = P.fp[k]; g.add(k==='pistil' ? hitBox(.22,.6,.22,.3) : k==='stamen' ? hitBox(.36,.18,.36,.32) : k==='petal' ? hitBox(.95,.12,.95,.12) : hitBox(.75,.1,.75,-.08)); idTag(g, 'fp:' + k); });
-    root.position.set(0, TABLE_Y, 0); shadowAll(root); W.add(root); P.flower5 = root;
-    const AN = {sepal:V(.3,-.06,.12), petal:V(.4,.13,.1), stamen:V(.13,.36,.08), pistil:V(0,.5,0)};
-    FK.forEach(k=>{ const o = new THREE.Object3D(); o.position.copy(AN[k]); P.fp[k].add(o); P.labels.push({obj:o, dy:0, text:()=>s.ftag[k] ? '' : '?'}); const o2 = new THREE.Object3D(); o2.position.copy(AN[k]).add(V(k==='stamen' ? .2 : k==='pistil' ? .22 : 0, 0, 0)); P.fp[k].add(o2); P.labels.push({obj:o2, dy:0, text:()=>s.ftag[k] ? `${FN[k]} ${FE[k]}` : ''}); });
-    syncP5();
+  const _tv = new THREE.Vector3();
+  function tickP4(dt){
+    const pr = P.pour, can = P.items.can; if(!pr || !can){ return; }
+    if(drag && drag.g===can){ return; }
+    pr.t += dt; const pot = POTS.find(p=>p.id===pr.id);
+    const k = Math.min(1, pr.t/.4), tilt = pr.t < 1.7 ? -.62*k : -.62*Math.max(0, 1 - (pr.t - 1.7)/.3);
+    can.rotation.z = tilt; can.updateMatrixWorld(true); P.canTip.getWorldPosition(_tv);
+    const want = V(pot.x + .02, TABLE_Y + 1.12, .05); can.position.add(want.sub(_tv).multiplyScalar(Math.min(1, dt*9)));
+    const soilY = TABLE_Y + .52, on = pr.t > .35 && pr.t < 1.75;
+    P.canTip.getWorldPosition(_tv);
+    P.drops.forEach((d,j)=>{ if(!on){ d.visible = false; return; } const u = (pr.t*2.4 + j/P.drops.length) % 1; d.visible = true; d.position.set(_tv.x + .05*u + Math.sin(j*2.3)*.03*u, _tv.y - (_tv.y - soilY)*u, _tv.z + Math.cos(j*1.7)*.03*u); });
+    if(pr.t > 2.05){ P.pour = null; can.rotation.z = 0; goHome(can); P.drops.forEach(d=>d.visible = false); }
   }
-  function syncP5(){ if(!P.fp) return; FK.forEach(k=>{ P.fp[k].userData.ty = 1.08 + (P.s.exp ? FEX[k] : 0); }); }
-  function fTag(k, tgt){ const s = P.s; if(k===tgt){ s.ftag[k] = 1; P.say = `ถูกต้อง! ส่วนนี้คือ${FN[k]} ภาษาอังกฤษคือ ${FE[k]}`; } else { s.wrong += 1; P.warn = `ป้าย "${FN[k]}" ยังไม่ใช่ส่วนนี้ ${k==='sepal' ? 'กลีบเลี้ยงอยู่นอกสุด สีเขียว ใต้กลีบดอก' : k==='petal' ? 'กลีบดอกเป็นแผ่นสีชมพูที่ใหญ่ที่สุด' : k==='stamen' ? 'เกสรเพศผู้เป็นก้านเล็ก ๆ ปลายสีเหลืองหลายอันรอบ ๆ' : 'เกสรเพศเมียอยู่ตรงกลางสุด มีอันเดียว'} ลองใหม่นะ`; } }
-  function fLook(k){ P.s.flook[k] = 1; P.say = FFUN[k]; }
+
+  /* ===== part 5: parts of a flower (hibiscus) ===== */
+  const FN = {sepal:'กลีบเลี้ยง', petal:'กลีบดอก', stamen:'เกสรเพศผู้', pistil:'เกสรเพศเมีย', ovary:'รังไข่'}, FK = ['sepal','petal','stamen','pistil'], FE = {sepal:'Sepal', petal:'Petal', stamen:'Stamen', pistil:'Pistil', ovary:'Ovary'};
+  const FC = {sepal:'#4E8F3A', petal:'#D9304F', stamen:'#C08A0A', pistil:'#8E1D52', ovary:'#5E8A1E'};
+  const FFUN = {sepal:'กลีบเลี้ยง (Sepal): อยู่นอกสุด สีเขียว ห่อหุ้มป้องกันดอกตอนเป็นดอกตูม', petal:'กลีบดอก (Petal): สีสวย มีกลิ่น ล่อแมลงให้มาช่วยผสมเกสร', stamen:'เกสรเพศผู้ (Stamen): ปลายมีอับเรณูสีเหลือง สร้างละอองเรณู (Pollen)', pistil:'เกสรเพศเมีย (Pistil): ยอดเกสรรับละอองเรณู โคนเป็นรังไข่ที่เจริญเป็นผล', ovary:'รังไข่ (Ovary): อยู่โคนเกสรเพศเมีย ข้างในมีออวุล (Ovule) รังไข่เจริญเป็นผล ออวุลเจริญเป็นเมล็ด'};
+  const FHINT = {sepal:'กลีบเลี้ยงเป็นแฉกสีเขียวเล็ก ๆ อยู่ใต้กลีบดอก', petal:'กลีบดอกเป็นแผ่นสีแดงขนาดใหญ่ 5 กลีบ', stamen:'เกสรเพศผู้คือเม็ดสีเหลืองจำนวนมากรอบก้านที่ยื่นออกมา', pistil:'เกสรเพศเมียอยู่ปลายสุดของก้านที่ยื่นออกมา ยอดเป็นปุ่มสีแดงเข้ม 5 ปุ่ม', ovary:'รังไข่คือส่วนที่พองอยู่โคนเกสรเพศเมีย ข้างในมีเม็ดสีขาว'};
+  const HOLD = ['stamen','sepal','pistil','petal'];
+  const CARD_X = 1.08, LX = -1.15, SLOT = j => 1.78 - j*.36;
+  const FSPOT = {pistil:V(CARD_X, SLOT(0), .16), stamen:V(CARD_X, SLOT(1), .16), petal:V(CARD_X, SLOT(2), .16), sepal:V(CARD_X, SLOT(3), .16), ovary:V(LX, SLOT(2), .16)};
+  const FBASE = V(0, TABLE_Y + 1.12, 0);
+  function makeFCard(k){ const g = new THREE.Group();
+    const tex = canvasTex(512, 260, (x, cw, ch)=>{ x.fillStyle = FC[k]; x.beginPath(); x.roundRect ? x.roundRect(4,4,cw-8,ch-8,26) : x.rect(4,4,cw-8,ch-8); x.fill(); x.fillStyle = '#fff'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.font = `600 ${FN[k].length > 8 ? 80 : 92}px Mitr, Anuphan, sans-serif`; x.fillText(FN[k], cw/2, ch*.38); x.font = '500 62px Mitr, Anuphan, sans-serif'; x.fillText(FE[k], cw/2, ch*.76); });
+    const c = new THREE.Mesh(new THREE.PlaneGeometry(.62,.32), new THREE.MeshStandardMaterial({map:tex, roughness:.8, polygonOffset:true, polygonOffsetFactor:-2, polygonOffsetUnits:-4})); c.position.y = .16; g.add(c); g.add(at(box(.64,.34,.02, mat(0xFFFFFF)), 0,.16,-.012)); g.add(at(hitBox(.66,.36,.08,0), 0,.16,0)); return g; }
+  let PETG = null;
+  function petalGeo(){ if(PETG) return PETG; const L = .5, Wd = .34, sh = new THREE.Shape();
+    sh.moveTo(0,0); sh.bezierCurveTo(L*.18, Wd*.1, L*.42, Wd*.62, L*.82, Wd*.52); sh.bezierCurveTo(L*1.03, Wd*.44, L*1.06, -Wd*.08, L*.92, -Wd*.38); sh.bezierCurveTo(L*.62, -Wd*.62, L*.22, -Wd*.18, 0, 0);
+    const g = new THREE.ShapeGeometry(sh, 28), p = g.attributes.position, col = [], cDark = new THREE.Color(0x6E0A24), cMid = new THREE.Color(0xD92A48), cTip = new THREE.Color(0xF2566E), c = new THREE.Color();
+    for(let i=0;i<p.count;i++){ const x = p.getX(i), y = p.getY(i), u = x/L;
+      const h = L*(.62*u - .30*u*u*u) + 1.2*y*y + .018*Math.sin(y*38 + u*9)*u*u;
+      p.setXYZ(i, x, h, y);
+      const e = Math.min(1, Math.max(0, (u - .08)/.22)); c.copy(cDark).lerp(cMid, e*e*(3 - 2*e)).lerp(cTip, Math.max(0, u - .6)*.9); const vein = 1 - .06*Math.abs(Math.sin(y*70 + u*4)); col.push(c.r*vein, c.g*vein, c.b*vein); }
+    g.setAttribute('color', new THREE.Float32BufferAttribute(col, 3)); g.computeVertexNormals(); PETG = g; return g; }
+  function hibiscus(M, withHits){
+    const g = new THREE.Group(), parts = {}; const mk = k => { const q = new THREE.Group(); g.add(q); parts[k] = q; return q; };
+    const sg = mk('sepal'), smat = M(0x5E9A45,{roughness:.6, side:THREE.DoubleSide});
+    for(let k=0;k<5;k++){ const l = makeLeaf(.17,.05, smat, -.05); const w = new THREE.Group(); w.rotation.y = k/5*Math.PI*2 + .6; l.rotation.z = 1.05; w.add(l); sg.add(w); }
+    for(let k=0;k<7;k++){ const b = cyl(.005,.009,.11, M(0x6FA84E), 5); const w = new THREE.Group(); w.rotation.y = k/7*Math.PI*2; b.position.set(.05,-.035,0); b.rotation.z = 1.9; w.add(b); sg.add(w); }
+    sg.add(at(ellip(.055,.05,.055, M(0x5E9A45,{roughness:.6}), 16), 0,.0,0));
+    const pg = mk('petal'), pmat = M(0xffffff,{vertexColors:true, roughness:.5, side:THREE.DoubleSide});
+    for(let k=0;k<5;k++){ const m = new THREE.Mesh(petalGeo(), pmat); const w = new THREE.Group(); w.rotation.y = k/5*Math.PI*2; m.position.set(.02,.04,0); m.rotation.x = .28; w.add(m); pg.add(w); }
+    const pig = mk('pistil'), ov = new THREE.Group(); pig.add(ov);
+    ov.add(at(ellip(.065,.085,.065, M(0x9BCB6A,{roughness:.45, side:THREE.DoubleSide}), 18), 0,.06,0));
+    for(let k=0;k<10;k++){ const a = k/5*Math.PI, r = .03; ov.add(at(sph(.014, M(0xFFFBEA,{roughness:.5}), 8), Math.cos(a)*r, .045 + (k%2)*.03, Math.sin(a)*r)); }
+    pig.add(at(cyl(.006,.006,.62, M(0xF6E7A0,{side:THREE.DoubleSide}), 6), 0,.42,0));
+    for(let k=0;k<5;k++){ const a = k/5*Math.PI*2, w = new THREE.Group(); w.position.y = .72; w.rotation.y = a; const br = cyl(.005,.006,.07, M(0xC23A5C), 5); br.position.set(.022,.022,0); br.rotation.z = -.85; w.add(br); w.add(at(sph(.019, M(0x8E1D52,{roughness:.9}), 10), .05,.045,0)); pig.add(w); }
+    const stg = mk('stamen');
+    stg.add(at(cyl(.016,.024,.6, M(0xE4566E,{roughness:.45, side:THREE.DoubleSide}), 12, true), 0,.38,0));
+    for(let k=0;k<30;k++){ const y = .4 + rnd(k*4.1)*.27, a = rnd(k*9.3)*Math.PI*2, w = new THREE.Group(); w.position.y = y; w.rotation.y = a; const st = cyl(.003,.003,.04, M(0xF2D27A), 4); st.rotation.z = -1.2; st.position.x = .032; w.add(st); w.add(at(ellip(.013,.009,.009, M(0xF5C33B,{roughness:.8}), 8), .052,.01,0)); stg.add(w); }
+    if(withHits){ sg.add(hitBox(.3,.09,.3,.005)); stg.add(hitBox(.13,.3,.13,.53)); pig.add(hitBox(.17,.12,.17,.76)); }
+    return {g, parts, ov};
+  }
+  let SECT = null;
+  function secTex(){ if(SECT) return SECT; SECT = canvasTex(80, 404, (x, w, h)=>{ const Y = v => h - (v + .04)/.86*h, sx = w/.17;
+      x.clearRect(0,0,w,h);
+      x.fillStyle = '#E4566E'; x.fillRect(w/2 - .024*sx, Y(.68), .048*sx, Y(.1) - Y(.68));
+      x.fillStyle = '#F7C6CF'; x.fillRect(w/2 - .012*sx, Y(.68), .024*sx, Y(.1) - Y(.68));
+      x.fillStyle = '#F2D86A'; x.fillRect(w/2 - .006*sx, Y(.74), .012*sx, Y(.1) - Y(.74));
+      x.fillStyle = '#7DB04E'; x.beginPath(); x.ellipse(w/2, Y(.06), .068*sx, .088/.86*h, 0, 0, 7); x.fill();
+      x.fillStyle = '#D9EDB8'; x.beginPath(); x.ellipse(w/2, Y(.06), .056*sx, .074/.86*h, 0, 0, 7); x.fill();
+      x.fillStyle = '#FFFFFF'; x.strokeStyle = '#9BB77A'; x.lineWidth = 1.5; [[-.025,.03],[.025,.03],[-.025,.07],[.025,.07],[0,.05],[0,.1],[-.02,.11],[.02,.11]].forEach(([dx,dy])=>{ x.beginPath(); x.arc(w/2 + dx*sx, Y(dy), .011*sx, 0, 7); x.fill(); x.stroke(); }); }); return SECT; }
+  function fAnchor(k){ return {sepal:V(.13,.06,.05), petal:V(.36,.2,.12), stamen:V(.05,.52,.02), pistil:V(.03,.78,0)}[k]; }
+  function buildP5(){
+    const W = R.world, s = P.s; P.fp = {}; P.fcards = {}; P.flines = {};
+    const pot = makePot(.85); pot.g.position.set(0, TABLE_Y, 0); W.add(pot.g);
+    const curve = new THREE.CatmullRomCurve3([V(0,.42,0), V(.04,.7,-.03), V(-.03,.95,.02), V(0, FBASE.y - TABLE_Y + .02, 0)]);
+    const stem = new THREE.Mesh(new THREE.TubeGeometry(curve, 24, .026, 8, false), mat(0x4F7F3A,{roughness:.6})); stem.position.y = TABLE_Y; W.add(stem);
+    const lm = mat(0x2F6E32,{roughness:.35, side:THREE.DoubleSide});
+    [[.68,.4,.1],[.86,2.7,-.1],[1.0,-1.1,.15]].forEach(([y,ry,rz],j)=>{ const l = makeLeaf(.34 - j*.03,.16, lm, .22); const w = new THREE.Group(); w.position.set(0, TABLE_Y + y, 0); w.rotation.y = ry; l.rotation.z = .35 + rz; w.add(l); W.add(w); });
+    const pivot = new THREE.Group(); pivot.position.copy(FBASE); W.add(pivot); P.fpiv = pivot;
+    const tiltG = () => { const t = new THREE.Group(); t.rotation.set(.5, 0, -.32); return t; };
+    const intact = tiltG(); pivot.add(intact); const H = hibiscus(mat, true); intact.add(H.g); P.fIntact = intact;
+    FK.forEach(k=>{ P.fp[k] = H.parts[k]; idTag(H.parts[k], 'fp:' + k); const a = new THREE.Object3D(); a.position.copy(fAnchor(k)); H.parts[k].add(a); P.fp[k].userData.anc = a; });
+    P.halves = [-1, 1].map(sd=>{ const plane = new THREE.Plane(V(-sd,0,0), 0), lp = plane.clone(); const wrap = new THREE.Group(); pivot.add(wrap); const t = tiltG(); wrap.add(t);
+      const Mc = (c, o={}) => mat(c, Object.assign({}, o, {side:THREE.DoubleSide, clippingPlanes:[plane], clipShadows:true}));
+      const h = hibiscus(Mc, false); t.add(h.g); const cap = new THREE.Mesh(new THREE.PlaneGeometry(.17,.86), new THREE.MeshStandardMaterial({map:secTex(), transparent:true, roughness:.7, side:THREE.DoubleSide, polygonOffset:true, polygonOffsetFactor:-1})); cap.rotation.y = Math.PI/2; cap.position.set(sd*.002, .39, 0); h.g.add(cap); idTag(h.ov, 'ov'); h.ov.add(hitBox(.14,.16,.14,.06)); const oa = new THREE.Object3D(); oa.position.set(0,.06,0); h.ov.add(oa);
+      wrap.visible = false; return {sd, wrap, inner:t, plane, lp, oa}; });
+    const board = new THREE.Group(); board.add(at(box(.8,1.62,.05, mat(0xD2B48A,{roughness:.95})), 0, (SLOT(3) + SLOT(0) + .32)/2 , 0)); [-.3,.3].forEach(x=>board.add(at(cyl(.025,.025, SLOT(3) - .1, mat(0x9C7A55)), x, (SLOT(3) - .1)/2, -.04)));
+    board.position.set(LX, 0, .1); shadowAll(board); W.add(board);
+    [...FK, 'ovary'].forEach(k=>{ const home = k==='ovary' ? V(LX, SLOT(0), .16) : V(LX, SLOT(HOLD.indexOf(k)), .16); const c = item('k:' + k, makeFCard(k), home); c.userData.home0 = home.clone(); P.fcards[k] = c;
+      const ln = new THREE.Line(new THREE.BufferGeometry().setFromPoints([V(0,0,0), V(0,0,0)]), new THREE.LineBasicMaterial({color:0x2B3150})); ln.frustumCulled = false; W.add(ln);
+      const dot = sph(.022, mat(0xFFFFFF,{emissive:0xFFFFFF, emissiveIntensity:.3}), 10); W.add(dot); P.flines[k] = {ln, dot}; });
+    const kn = new THREE.Group(); kn.add(at(box(.3,.045,.07, mat(0xF2994A,{roughness:.5})), -.13,.03,0)); const bl = new THREE.Mesh(new THREE.ShapeGeometry((()=>{ const sh = new THREE.Shape(); sh.moveTo(0,-.03); sh.lineTo(.26,-.03); sh.lineTo(.3,.0); sh.lineTo(0,.035); sh.lineTo(0,-.03); return sh; })()), mat(0xD5DBE6,{metalness:.8, roughness:.25, side:THREE.DoubleSide})); bl.rotation.x = -Math.PI/2; bl.position.y = .03; kn.add(bl); kn.add(hitBox(.66,.12,.2,.04));
+    W.add(at(box(.9,.03,.5, mat(0xE9E2D2,{roughness:.8})), 1.12, TABLE_Y + .015, .02));
+    item('knife', kn, V(1.1, TABLE_Y + .02, .02)); P.labels.push({obj:kn, dy:.1, text:()=>s.cutDone ? '' : 'มีดผ่าดอก'});
+    const ovl = new THREE.Object3D(); P.halves[1].oa.add(ovl); P.labels.push({obj:ovl, dy:-.06, text:()=>s.ftag.ovary && P.vc ? 'ออวุล Ovule → เมล็ด' : ''});
+    shadowAll(pivot); P.cutP = s.cut ? 1 : 0; P.knifeT = null; syncP5();
+  }
+  function syncP5(){ if(!P.fp) return; const s = P.s; P.vc = !!s.cut && (P.knifeT==null || P.knifeT > .55);
+    [...FK, 'ovary'].forEach(k=>{ const c = P.fcards[k]; if(!c) return; const tg = !!s.ftag[k];
+      c.userData.home = tg ? FSPOT[k].clone() : c.userData.home0.clone();
+      c.visible = k==='ovary' ? P.vc : !P.vc;
+      if(!(drag && drag.g===c)) goHome(c);
+      c.scale.setScalar(P.sel===k && !tg ? 1.12 : 1); });
+  }
+  const _a = new THREE.Vector3(), _b = new THREE.Vector3();
+  function fLines(){ const s = P.s; [...FK, 'ovary'].forEach(k=>{ const L = P.flines[k], c = P.fcards[k]; const on = !!s.ftag[k] && c.visible && !(drag && drag.g===c);
+      L.ln.visible = L.dot.visible = on; if(!on) return;
+      if(k==='ovary') P.halves[0].oa.getWorldPosition(_a); else P.fp[k].userData.anc.getWorldPosition(_a);
+      _b.copy(c.position).add(V(k==='ovary' ? .31 : -.31, .16, 0)); L.dot.position.copy(_a); const p = L.ln.geometry.attributes.position; p.setXYZ(0, _b.x, _b.y, _b.z); p.setXYZ(1, _a.x, _a.y, _a.z); p.needsUpdate = true; }); }
+  function tickP5(dt){ if(!P.fp) return; const s = P.s;
+    if(P.knifeT!=null){ const kn = P.items.knife; P.knifeT += dt; const u = Math.min(1, P.knifeT/.75);
+      if(!(drag && drag.g===kn)){ kn.rotation.set(0, 0, -Math.PI/2); kn.position.set(.05, FBASE.y + 1.0 - 1.2*u, .1); }
+      if(P.knifeT > 1.0){ P.knifeT = null; kn.rotation.set(0,0,0); goHome(kn); } }
+    const vc = !!s.cut && (P.knifeT==null || P.knifeT > .55); if(vc !== P.vc) syncP5();
+    P.cutP += ((vc ? 1 : 0) - P.cutP)*Math.min(1, dt*3.2); if(Math.abs((vc ? 1 : 0) - P.cutP) < .002) P.cutP = vc ? 1 : 0;
+    const e = P.cutP*P.cutP*(3 - 2*P.cutP), show = vc || P.cutP > .002;
+    P.fIntact.visible = !show;
+    P.halves.forEach(h=>{ h.wrap.visible = show; h.wrap.position.set(h.sd*.5*e, .05*e, .55*e); h.wrap.scale.setScalar(1 + .45*e); h.wrap.rotation.y = -h.sd*1.05*e; h.wrap.updateMatrixWorld(true); h.plane.copy(h.lp).applyMatrix4(h.inner.matrixWorld); });
+    fLines();
+  }
+  function fTag(k, tgt){ const s = P.s, c = P.fcards && P.fcards[k];
+    if(k===tgt){ s.ftag[k] = 1; P.sel = null; P.say = `ถูกต้อง! ${FFUN[k]}`; SFX.speak(FE[k]); }
+    else { s.wrong += 1; P.warn = `ป้าย "${FN[k]}" ยังไม่ใช่ส่วนนี้ ${FHINT[k]} ลองใหม่นะ`; }
+    if(c) syncP5(); }
+  function doCut(){ const s = P.s; if(!FK.every(k=>s.ftag[k])){ P.warn = 'ติดป้ายส่วนประกอบของดอกให้ครบ 4 ส่วนก่อน แล้วค่อยผ่าดอกนะครับ'; return; }
+    if(s.cut){ P.say = 'ผ่าดอกแล้วครับ ดูข้างในเกสรเพศเมีย'; return; }
+    s.cut = true; s.cutDone = true; P.knifeT = 0; SFX.drop();
+    P.say = s.ftag.ovary ? 'ผ่าดอกอีกครั้ง ดูรังไข่และออวุลข้างใน' : 'ผ่าดอกชบาตามยาวแล้ว! ก้านเกสรเพศเมียยาวลงไปถึงส่วนที่พองอยู่โคนดอก ลากป้าย "รังไข่ Ovary" ไปวางที่ส่วนนั้น'; }
+  function partAt(cx, cy){ pick({clientX:cx, clientY:cy}); const hs = R.raycaster.intersectObjects(R.world.children, true);
+    const out = []; for(const h of hs){ let o = h.object, vis = true; for(let q = o; q; q = q.parent) if(!q.visible){ vis = false; break; } if(!vis) continue; const r = rootOf(o); if(!r) continue; const id = r.userData.id, k = id.startsWith('fp:') ? id.slice(3) : id==='ov' ? 'ovary' : null; if(k && !out.includes(k)) out.push(k); }
+    return out; }
+  function nearPart(cx, cy, lim){ let best = null, bd = lim; const L = P.vc ? [['ovary', P.halves[0].oa], ['ovary', P.halves[1].oa]] : FK.map(k=>[k, P.fp[k].userData.anc]);
+    L.forEach(([k,o])=>{ o.getWorldPosition(_a); const p = scr(_a), d = Math.hypot(p.x - cx, p.y - cy); if(d < bd){ bd = d; best = k; } }); return best; }
 
   /* ----- drop targets (screen space) ----- */
   function targets(){
     if(P.i===0) return PK.map(k=>[k, PT[k]]);
     if(P.i===1) return BK.map((b,j)=>['b'+j, V(b.x, TABLE_Y + .6, b.z)]);
+    if(P.i===3) return POTS.map(p=>[p.id, V(p.x, TABLE_Y + .6, 0)]);
     if(P.i!==2) return [];
     const f = P.flower.position; const T = P.anth.map(a=>{ const v = new THREE.Vector3(); a.getWorldPosition(v); return ['anth', v]; }); const sv = new THREE.Vector3(); P.stig.getWorldPosition(sv); T.push(['stig', sv]); return T;
   }
@@ -1731,6 +1884,12 @@ const Lab = (function(){
       if(d.id==='drop'){ if(best==='b1'){ s.dye = true; P.say = 'หยดสีแดงลงบีกเกอร์ B แล้ว น้ำกลายเป็นสีแดง'; } else if(best==='b0'){ P.warn = 'บีกเกอร์ A ใช้เป็นชุดควบคุม (น้ำเปล่า) ให้หยดสีที่บีกเกอร์ B'; } }
       else if(best) setFlower(d.id, +best.slice(1)); else { delete s.inB[d.id]; }
     } else if(P.i===2){ if(best) beeTo(best); goHome(d.g); }
+    else if(P.i===3){ const b2 = bestTarget(d.cx, d.cy, lim*1.8);
+      if(d.id==='can'){ if(!(b2 && waterPot(b2))) goHome(d.g); }
+      else if(d.id==='box'){ if(b2) coverPot(b2); else uncover(); } }
+    else if(P.i===4){
+      if(d.id==='knife'){ const f = scr(V(0, FBASE.y + .3, 0)); if(Math.hypot(f.x - d.cx, f.y - d.cy) < lim*2.4) doCut(); else P.say = 'ลากมีดไปวางที่ดอกชบาเพื่อผ่าดอก'; if(P.knifeT==null) goHome(d.g); }
+      else { const k = d.id.slice(2), hs = partAt(d.cx, d.cy), t = hs.includes(k) ? k : (hs[0] || nearPart(d.cx, d.cy, lim)); if(t) fTag(k, t); else P.say = 'วางป้ายให้ตรงส่วนของดอกนะครับ'; } }
     SFX.drop(); sync(); refresh();
   }
 
@@ -1746,7 +1905,7 @@ const Lab = (function(){
     else if(P.i===1){ if(s.dye && s.inB.f1!==undefined && s.inB.f2!==undefined) set('setup'); if(s.hrs >= 4) set('wait'); if(s.cut) set('cut'); if(s.ans.q) set('q'); }
     else if(P.i===2){ if(s.pollen) set('pollen'); if(s.poll) set('poll'); if(s.open) set('fruit'); if(s.ans.qf) set('q'); }
     else if(P.i===3){ if(setupOK()) set('setup'); if(s.day >= 7 && setupOK()) set('days'); if(s.day >= 7 && POTS.every(p=>s.seen[p.id])) set('measure'); if(s.pick) set('pick'); }
-    else { if(FK.every(k=>s.ftag[k])) set('tag'); if(FK.every(k=>s.flook[k])) set('look'); if(s.exp) set('explode'); }
+    else { if(FK.every(k=>s.ftag[k])) set('tag'); if(s.cutDone) set('cut'); if(s.ftag.ovary) set('ovary'); }
     if(ch) SFX.ok();
     return ch;
   }
@@ -1778,17 +1937,17 @@ const Lab = (function(){
       return ['yay','ลำต้นลำเลียงน้ำจากล่างขึ้นไปถึงใบและดอก'];
     }
     if(P.i===3){
-      if(!m.setup) return ['think','Plants need... อะไรบ้างนะ? กดปุ่ม น้ำ/แสง จัดกระถาง 3 ใบให้ต่างกัน: ได้ทั้งน้ำและแสง 1 ใบ ขาดน้ำ 1 ใบ ขาดแสง 1 ใบ'];
+      if(!m.setup) return ['think','Plants need... อะไรบ้างนะ? ลากบัวรดน้ำไปรดกระถาง 2 ใบ แล้วลากกล่องทึบไปครอบ 1 ใบที่รดน้ำแล้ว จะได้ 3 แบบ: น้ำ+แสง / ขาดน้ำ / ขาดแสง'];
       if(!m.days) return ['think', s.day ? `ผ่านไป ${s.day} วันแล้ว ให้เวลาผ่านไปจนครบ 7 วัน` : 'จัดกระถางครบแล้ว! กดให้เวลาผ่านไป แล้วสังเกตต้นไม้'];
-      if(!m.measure){ const left = POTS.filter(p=>!s.seen[p.id]).map(p=>p.id); return ['think', `แตะดูกระถางทีละใบ (เหลือ ${left.join(', ')}) เทียบความสูงและสีใบ`]; }
+      if(!m.measure){ const left = POTS.filter(p=>!s.seen[p.id]).map(p=>p.id); return ['think', `แตะดูกระถางทีละใบ (เหลือ ${left.join(', ')}) กระถางในกล่องให้แตะกล่องเพื่อยกออก`]; }
       if(!m.pick) return ['think','กระถางไหนเจริญเติบโตดีที่สุด? ดูทั้งความสูง สีใบ และความแข็งแรง'];
       return ['yay','พืชต้องการทั้ง Water (น้ำ) และ Sunlight (แสงแดด) เพื่อเจริญเติบโต'];
     }
     if(P.i===4){
-      if(!m.tag){ const left = FK.filter(k=>!s.ftag[k]); return ['think', `เลือกป้ายชื่อ แล้วแตะส่วนของดอกที่ตรงกัน (เหลือ ${left.map(k=>FN[k]).join(', ')})`]; }
-      if(!m.look){ const left = FK.filter(k=>!s.flook[k]); return ['think', `แตะส่วนของดอกเพื่ออ่านหน้าที่ (เหลือ ${left.map(k=>FN[k]).join(', ')})`]; }
-      if(!m.explode) return ['think','กด "แยกส่วนดอก" ดูว่าส่วนประกอบเรียงจากนอกเข้าในอย่างไร'];
-      return ['yay','จากนอกเข้าใน: Sepal กลีบเลี้ยง → Petal กลีบดอก → Stamen เกสรเพศผู้ → Pistil เกสรเพศเมีย'];
+      if(!m.tag){ const left = FK.filter(k=>!s.ftag[k]); return ['think', `นี่คือดอกชบา (Hibiscus) ลากป้ายชื่อจากกระดานไปวางที่ส่วนของดอก (เหลือ ${left.map(k=>FN[k]).join(', ')})`]; }
+      if(!m.cut) return ['think','ติดป้ายครบแล้ว! ลากมีดไปที่ดอก เพื่อผ่าดูข้างในเกสรเพศเมีย'];
+      if(!m.ovary) return ['think', s.cut ? 'ลากป้าย "รังไข่ Ovary" ไปวางที่ส่วนพองโคนเกสรเพศเมีย' : 'กดปุ่ม "ผ่าดอก" เพื่อดูข้างในอีกครั้ง'];
+      return ['yay','รังไข่ (Ovary) เจริญเป็นผล (Fruit) ออวุล (Ovule) ข้างในเจริญเป็นเมล็ด (Seed)'];
     }
     if(!m.pollen) return ['think','ลากผึ้ง (Bee) ไปที่อับเรณู (ปลายเกสรสีเหลืองรอบ ๆ)'];
     if(!m.poll) return ['think', s.wk ? 'ดอกนี้ไม่ได้ผสมเกสร กดเริ่มตอนนี้ใหม่' : 'พาผึ้งที่มีละอองเรณูไปที่ยอดเกสรตรงกลางดอก'];
@@ -1837,20 +1996,20 @@ const Lab = (function(){
     } else if(P.i===3){
       sig = JSON.stringify(['p3', s.cond, s.day, s.seen, s.pick]);
       const ok = setupOK();
-      ctrls = `<div style="flex-basis:100%;display:flex;flex-direction:column;gap:6px"><h2 style="margin:0">จัดกระถาง ${s.day ? '(เริ่มทดลองแล้ว)' : '(กดเพื่อเปลี่ยน)'}</h2>${POTS.map(p=>{ const c = s.cond[p.id]; return `<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap"><b style="min-width:72px">กระถาง ${p.id}</b>${B('cw:'+p.id+':w', c.w ? 'รดน้ำ ✓' : 'ไม่รดน้ำ ✗', c.w)}${B('cw:'+p.id+':l', c.l ? 'มีแสง ✓' : 'ไม่มีแสง ✗', c.l)}${s.day >= 7 ? B('see:'+p.id, 'ดูกระถาง ' + p.id, !s.seen[p.id]) : ''}</div>`; }).join('')}</div>
-        <div class="row" style="gap:6px">${ok && s.day < 10 ? B('day:1','+1 วัน') + B('day:3','+3 วัน', true) : ''}${B('resetPart','เริ่มใหม่')}</div>
-        ${s.day >= 7 && POTS.every(p=>s.seen[p.id]) ? `<div style="flex-basis:100%;display:flex;flex-direction:column;gap:6px"><h2 style="margin:0">กระถางไหนเจริญเติบโตดีที่สุด</h2>${s.pick ? done('กระถาง ' + s.pick) : `<div class="row" style="gap:6px">${POTS.map(p=>B('pick:'+p.id, 'กระถาง ' + p.id)).join('')}</div>`}</div>` : ''}`;
-      res = `<h2>ผลการสังเกต · วันที่ ${s.day}</h2>${grid('auto 1fr auto auto', `<b>กระถาง</b><b>เงื่อนไข</b><b>สูง</b><b>ใบ</b>${POTS.map(p=>{ const c = condOf(s.cond[p.id]), gr = growth(p.id), show = s.day >= 7 ? s.seen[p.id] : s.day > 0; return `<span>${p.id}</span><span>${CONDN[c]}</span><span>${show ? gr.cm + ' ซม.' : '–'}</span><span>${show ? (c==='full' ? 'เขียว' : c==='dark' ? 'ซีดเหลือง' : 'เหลืองน้ำตาล') : '–'}</span>`; }).join('')}`)}`;
+      const tbl = grid('auto auto auto auto', `<b>กระถาง</b><b>เงื่อนไข</b><b>สูง</b><b>ใบ</b>${POTS.map(p=>{ const c = condOf(s.cond[p.id]), gr = growth(p.id), show = s.day >= 7 ? s.seen[p.id] : s.day > 0; return `<span>${p.id}</span><span>${CONDN[c]}</span><span>${show ? gr.cm + ' ซม.' : '–'}</span><span>${show ? (c==='full' ? 'เขียว' : c==='dark' ? 'ซีดเหลือง' : 'เหลืองน้ำตาล') : '–'}</span>`; }).join('')}`);
+      ctrls = `<div style="flex-basis:100%;display:flex;flex-direction:column;gap:6px"><h2 style="margin:0">ผลการสังเกต · วันที่ ${s.day}</h2>${tbl}</div>
+        <div class="row" style="gap:6px">${ok && s.day < 10 ? B('day:1','+1 วัน') + B('day:3','+3 วัน', true) : ''}${s.day >= 7 ? POTS.map(p=>B('see:'+p.id, 'ดูกระถาง ' + p.id, !s.seen[p.id])).join('') : ''}${B('resetPart','เริ่มใหม่')}</div>
+        ${s.day >= 7 && POTS.every(p=>s.seen[p.id]) ? `<div style="flex-basis:100%;display:flex;flex-direction:column;gap:6px"><h2 style="margin:0">กระถางไหนเจริญเติบโตดีที่สุด</h2>${s.pick ? done('กระถาง ' + s.pick) : `<div class="row" style="gap:6px">${POTS.map(p=>B('pick:'+p.id, 'กระถาง ' + p.id)).join('')}</div>`}</div>` : ''}
+        ${!s.day ? `<details style="flex-basis:100%"><summary class="note" style="cursor:pointer">ปุ่มสำรอง (ถ้าลากไม่ได้)</summary><div style="display:flex;flex-direction:column;gap:6px;margin-top:6px">${POTS.map(p=>{ const c = s.cond[p.id]; return `<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap"><b style="min-width:72px">กระถาง ${p.id}</b>${B('cw:'+p.id+':w', c.w ? 'รดน้ำแล้ว ✓' : 'รดน้ำ', c.w)}${B('cw:'+p.id+':l', c.l ? 'ครอบกล่อง' : 'ครอบกล่องแล้ว ✓', !c.l)}</div>`; }).join('')}</div></details>` : ''}`;
     } else {
-      sig = JSON.stringify(['p4', s.ftag, s.flook, s.exp, P.sel]);
-      const left = FK.filter(k=>!s.ftag[k]);
-      ctrls = (left.length ? `<h2>ติดป้าย (แตะป้าย แล้วแตะส่วนของดอก)</h2><div class="row" style="gap:6px">${left.map(k=>B('fsel:'+k, FN[k] + ' ' + FE[k], P.sel===k)).join('')}</div>` : '')
-        + `<h2 style="margin-top:6px">อ่านหน้าที่</h2><div class="row" style="gap:6px">${FK.map(k=>B('flook:'+k, FN[k], s.flook[k])).join('')}</div>`
-        + `<div class="row" style="gap:6px">${B('explode', s.exp ? 'รวมส่วนดอกกลับ' : 'แยกส่วนดอก', !s.exp)}${B('resetPart','เริ่มใหม่')}</div>`;
-      res = `<h2>ส่วนประกอบของดอก</h2>${grid('auto 1fr', FK.map(k=>`<b style="color:${FC[k]}">${FN[k]}<br><small>${FE[k]}</small></b><span>${s.flook[k] ? FFUN[k].split(': ')[1] : (s.ftag[k] ? 'แตะดู' : '–')}</span>`).join(''))}`;
+      sig = JSON.stringify(['p4', s.ftag, s.cut, s.cutDone]);
+      const rows = [...FK, ...(s.cutDone ? ['ovary'] : [])];
+      const tbl = grid('auto 1fr', rows.map(k=>`<b style="color:${FC[k]}">${FN[k]} <small>${FE[k]}</small></b><span>${s.ftag[k] ? FFUN[k].split(': ')[1] : '–'}</span>`).join(''));
+      ctrls = `<div style="flex-basis:100%;display:flex;flex-direction:column;gap:6px"><h2 style="margin:0">ส่วนประกอบของดอกชบา</h2>${tbl}</div>
+        <div class="row" style="gap:6px">${FK.every(k=>s.ftag[k]) ? B('fcut', s.cut ? 'รวมดอกกลับ' : 'ผ่าดอก', !s.cut && !s.cutDone) : ''}${B('resetPart','เริ่มใหม่')}</div>`;
     }
     ctrls += vocabBox(P.i);
-    if(res){ const r = $('#pRes'); if(r.dataset.h !== res){ r.innerHTML = res; r.dataset.h = res; } }
+    { const r = $('#pRes'); if(r && (r.dataset.h || '') !== res){ r.innerHTML = res; r.dataset.h = res; } }
     if(sig !== P.ctrlSig || !$('#pCtrl').innerHTML){ $('#pCtrl').innerHTML = ctrls; P.ctrlSig = sig; }
     const doneP = S.labDone[P.i];
     const nextBtn = doneP ? nextPartBtn(P.i) : '';
@@ -1865,7 +2024,7 @@ const Lab = (function(){
     if(!P) return; const s = P.s;
     if(v==='camL') camRotate(-Math.PI/7); else if(v==='camR') camRotate(Math.PI/7);
     else if(v==='zin') camZoom(.82); else if(v==='zout') camZoom(1.2);
-    else if(v==='camReset'){ R.camera.position.copy(CAMS[P.i].pos); R.controls.target.copy(CAMS[P.i].tgt); }
+    else if(v==='camReset') camHome();
     else if(v==='resetPart'){ if(S.ps) delete S.ps[P.i]; P = fresh(P.i); build(); }
     else if(v.startsWith('sel:')){ const k = v.slice(4); P.sel = P.sel===k ? null : k; act(()=>{ P.say = P.sel ? `แตะที่ส่วนของต้นพืชที่เป็น "${PN[k]}"` : null; }); }
     else if(v.startsWith('place:')){ const [,k,t] = v.split(':'); act(()=>placeCard(k, t)); }
@@ -1882,17 +2041,16 @@ const Lab = (function(){
     else if(v.startsWith('day:')) act(()=>addDays(+v.slice(4)));
     else if(v.startsWith('see:')) act(()=>seePot(v.slice(4)));
     else if(v.startsWith('pick:')) act(()=>pickPot(v.slice(5)));
-    else if(v.startsWith('fsel:')){ const k = v.slice(5); P.sel = P.sel===k ? null : k; act(()=>{ P.say = P.sel ? `แตะที่ส่วนของดอกที่เป็น "${FN[k]}"` : null; }); }
+    else if(v.startsWith('fsel:')){ const k = v.slice(5); P.sel = P.sel===k ? null : k; act(()=>{ P.say = P.sel ? `เลือกป้าย "${FN[k]}" แล้ว แตะส่วนของดอกที่ตรงกัน` : null; }); }
     else if(v.startsWith('fplace:')){ const [,k,t] = v.split(':'); act(()=>fTag(k, t)); }
-    else if(v.startsWith('flook:')) act(()=>fLook(v.slice(6)));
-    else if(v==='explode') act(()=>{ s.exp = !s.exp; { const dy = s.exp ? .12 : -.12, off = R.camera.position.clone().sub(R.controls.target).multiplyScalar(s.exp ? 1.3 : 1/1.3); R.controls.target.y += dy; R.camera.position.copy(R.controls.target).add(off); } P.say = s.exp ? 'แยกส่วนดอกแล้ว: ล่างสุด Sepal (กลีบเลี้ยง) → Petal (กลีบดอก) → Stamen (เกสรเพศผู้) → บนสุด Pistil (เกสรเพศเมีย) อยู่ในสุด' : 'รวมส่วนดอกกลับแล้ว'; });
+    else if(v==='fcut') act(()=>{ if(s.cut){ s.cut = false; P.say = 'รวมดอกกลับแล้ว'; } else doCut(); });
   }
 
   /* ----- pointer ----- */
   let drag = null; const ndc = new THREE.Vector2();
   function pick(e){ const r = R.renderer.domElement.getBoundingClientRect(); ndc.set(((e.clientX-r.left)/r.width)*2-1, -((e.clientY-r.top)/r.height)*2+1); R.raycaster.setFromCamera(ndc, R.camera); }
   function rootOf(o){ while(o){ if(o.userData.id) return o; if(o.userData.pid) return {userData:{id:o.userData.pid}, isTap:true}; o = o.parent; } return null; }
-  const movable = id => !!(P.items && P.items[id]) && !(P.i===0 && P.s.tag[id.slice(2)]);
+  const movable = id => !!(P.items && P.items[id]) && !(P.i===0 && P.s.tag[id.slice(2)]) && !(P.i===4 && id.startsWith('k:') && P.s.ftag[id.slice(2)]) && !(P.i===4 && id==='knife' && P.knifeT!=null) && !(P.i===3 && (P.s.day > 0 || (id==='can' && P.pour)));
   function bindPointer(){
     const el = R.renderer.domElement;
     el.addEventListener('pointerdown', e=>{
@@ -1924,7 +2082,11 @@ const Lab = (function(){
   }
   function tap(id, d){
     if(id.startsWith('pot:')){ act(()=>seePot(id.slice(4))); return; }
-    if(id.startsWith('fp:')){ const k = id.slice(3); if(P.sel){ const sk = P.sel; P.sel = null; act(()=>fTag(sk, k)); } else act(()=>fLook(k)); return; }
+    if(id.startsWith('fp:') || id==='ov'){ const k = id==='ov' ? 'ovary' : id.slice(3); if(P.sel){ const sk = P.sel, hs = d ? partAt(d.cx, d.cy) : []; act(()=>fTag(sk, hs.includes(sk) ? sk : k)); } else if(P.s.ftag[k]) act(()=>{ P.say = FFUN[k]; }); else toast('ลากป้ายชื่อมาวางที่ส่วนนี้ หรือแตะป้ายก่อน แล้วแตะส่วนนี้'); return; }
+    if(id.startsWith('k:')){ const k = id.slice(2); if(P.s.ftag[k]){ act(()=>{ P.say = FFUN[k]; }); return; } P.sel = P.sel===k ? null : k; act(()=>{ P.say = P.sel ? `เลือกป้าย "${FN[k]} ${FE[k]}" แล้ว แตะส่วนของดอกที่ตรงกัน` : null; }); return; }
+    if(id==='knife'){ toast('ลากมีดไปที่ดอกชบาเพื่อผ่าดอก'); return; }
+    if(id==='can'){ toast(P.s.day ? 'เริ่มทดลองแล้ว (รดน้ำทุกวัน)' : 'ลากบัวรดน้ำไปที่กระถาง'); return; }
+    if(id==='box'){ const c = covered(); if(P.s.day >= 7 && c) act(()=>seePot(c)); else toast(P.s.day ? 'ให้เวลาผ่านไปครบ 7 วันก่อน แล้วค่อยยกกล่องออกดู' : 'ลากกล่องทึบไปครอบกระถาง'); return; }
     if(id.startsWith('part:')){ const k = id.slice(5); if(P.sel){ const sk = P.sel; P.sel = null; act(()=>placeCard(sk, k)); } else act(()=>lookPart(k)); return; }
     if(id.startsWith('c:')){ action('sel:' + id.slice(2)); return; }
     if(id==='drop'){ toast('ลากหลอดหยดไปที่บีกเกอร์ B'); return; }
@@ -1942,9 +2104,9 @@ const Lab = (function(){
     if(P){
       if(P.i===2 && P.wings){ P.wings.forEach((w,k)=>{ w.rotation.x = (k ? 1 : -1)*(.5 + Math.sin(tt*40)*.4); }); }
       if(P.i===2 && P.s.open && P.flower) P.seeds.rotation.y += dt*.4;
-      if(P.i===4 && P.fp) FK.forEach(k=>{ const g = P.fp[k], ty = g.userData.ty || 1.08; g.position.y += (ty - g.position.y)*Math.min(1, dt*5); });
-      if(P.i===3 && P.pots) POTS.forEach((p,k)=>{ const o = P.pots[p.id]; if(o.sunL.visible) o.sunL.rotation.y += dt; if(o.drop.visible){ o.drop.position.y = .66 + Math.abs(Math.sin(tt*2 + k))*.08; } });
-      SFX.amb(P.i===2 && !P.s.wk ? {buzz:(drag && drag.id==='bee') ? 1 : .35} : P.i===3 ? {wind:.18} : {});
+      if(P.i===4) tickP5(dt);
+      if(P.i===3) tickP4(dt);
+      SFX.amb(P.i===2 && !P.s.wk ? {buzz:(drag && drag.id==='bee') ? 1 : .35} : P.i===3 ? {wind:.18, rain:P.pour && P.pour.t > .35 && P.pour.t < 1.75 ? .7 : 0} : {});
       uiT += dt; if(uiT > .3){ uiT = 0; if(check()) refresh(); else refreshUI(); }
       if(P.dirty){ P.dirty = false; refresh(); }
       placeLabels();
