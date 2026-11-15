@@ -485,12 +485,13 @@ function moodOf(mood, msg){
 const CONF = {
   title:'การจำแนกสิ่งมีชีวิต', short:'ป.4 การจำแนกสิ่งมีชีวิต', subject:'วิทยาศาสตร์ ป.4',
   tags:['วิทยาศาสตร์ ป.4','สิ่งมีชีวิตกับกระบวนการดำรงชีวิต','ห้องแลป 3 มิติ'],
-  sub:'ตรวจดูลักษณะของสิ่งมีชีวิต แล้วจัดเป็นพืช สัตว์ และสิ่งที่ไม่ใช่พืชและสัตว์ แยกพืชดอกกับพืชไม่มีดอก และส่องเครื่องเอกซเรย์แยกสัตว์มีกระดูกสันหลังกับไม่มีกระดูกสันหลัง',
-  key:'parkilab-p4-classify-v1', file:'ParK_iLab-P4-classification-worksheet.pdf',
+  sub:'ตรวจดูลักษณะของสิ่งมีชีวิต แล้วจัดเป็นพืช สัตว์ และสิ่งที่ไม่ใช่พืชและสัตว์ แยกพืชดอกกับพืชไม่มีดอก ส่องเอกซเรย์แยกสัตว์มีและไม่มีกระดูกสันหลัง จัดสัตว์มีกระดูกสันหลัง 5 กลุ่ม และใช้แผนภาพใช่/ไม่ใช่จำแนกสัตว์',
+  key:'parkilab-p4-classify-v2', file:'ParK_iLab-P4-classification-worksheet.pdf',
   hint:'แตะสิ่งมีชีวิตเพื่อดูลักษณะ · ลากไปวางในถาดกลุ่มที่ถูกต้อง · ตอนที่ 3 ลากสัตว์ไปที่เครื่องเอกซเรย์ก่อน',
+  hints:['แตะสิ่งมีชีวิตเพื่อดูลักษณะ · ลากไปวางในถาดกลุ่มที่ถูกต้อง','แตะพืชเพื่อดูว่ามีดอกหรือไม่ · ลากไปวางในถาด','ลากสัตว์ไปที่เครื่องเอกซเรย์ก่อน แล้วลากลงถาด','ลากสัตว์ไปวางบนแท่นสังเกต ดูผิว การหายใจ การออกลูก แล้วลากลงถาด 5 กลุ่ม','ลากสัตว์ไปที่ช่อง “เริ่ม” แล้วลากไปตามลูกศร ใช่ (เขียว) หรือ ไม่ใช่ (แดง)'],
   observe:'สังเกตว่าสิ่งมีชีวิตสร้างอาหารเองได้หรือไม่ เคลื่อนที่ได้หรือไม่ มีดอกหรือไม่ และมีกระดูกสันหลังหรือไม่ แล้วใช้เป็นเกณฑ์ในการจัดกลุ่ม',
   guide:[
-    {h:'จุดประสงค์', li:['จำแนกสิ่งมีชีวิตเป็นกลุ่มพืช กลุ่มสัตว์ และกลุ่มที่ไม่ใช่พืชและสัตว์','จำแนกพืชออกเป็นพืชดอกและพืชไม่มีดอก','จำแนกสัตว์ออกเป็นสัตว์มีกระดูกสันหลังและสัตว์ไม่มีกระดูกสันหลัง']},
+    {h:'จุดประสงค์', li:['จำแนกสิ่งมีชีวิตเป็นกลุ่มพืช กลุ่มสัตว์ และกลุ่มที่ไม่ใช่พืชและสัตว์','จำแนกพืชออกเป็นพืชดอกและพืชไม่มีดอก','บรรยายลักษณะของสัตว์มีกระดูกสันหลัง 5 กลุ่ม: ปลา สะเทินน้ำสะเทินบก เลื้อยคลาน นก เลี้ยงลูกด้วยน้ำนม','ใช้แผนภาพแบบใช่/ไม่ใช่ในการจำแนกสัตว์','จำแนกสัตว์ออกเป็นสัตว์มีกระดูกสันหลังและสัตว์ไม่มีกระดูกสันหลัง']},
     {h:'ใช้ห้องแลป 3 มิติอย่างไร', li:['<b>แตะ</b>สิ่งมีชีวิตเพื่ออ่านลักษณะสำคัญ','<b>ลาก</b>สิ่งมีชีวิตไปวางในถาดของกลุ่มที่ถูกต้อง','ตอนที่ 3 <b>ลากสัตว์ไปวางบนเครื่องเอกซเรย์</b> เพื่อดูโครงร่างภายในก่อนจัดกลุ่ม']},
     'POE',
     {h:'ข้อควรระวัง (เมื่อสำรวจจริง)', li:['ไม่จับสัตว์ที่อาจกัดหรือต่อย และไม่ทำร้ายสิ่งมีชีวิต','ไม่ชิมเห็ดหรือพืชที่ไม่รู้จัก บางชนิดมีพิษ','ล้างมือหลังสำรวจสิ่งมีชีวิต']}
@@ -507,7 +508,12 @@ const QUIZ = [
   {q:'สัตว์ใดเป็นสัตว์ไม่มีกระดูกสันหลัง', o:['ปู','ปลา','นก','แมว'], a:0, why:'ปูมีเปลือกแข็งหุ้มภายนอก แต่ไม่มีกระดูกสันหลัง'},
   {q:'ข้อใดจัดกลุ่มได้ถูกต้อง', o:['ปลา นก แมว – สัตว์มีกระดูกสันหลัง','หอยทาก ปู – สัตว์มีกระดูกสันหลัง','เห็ด รา – พืชไม่มีดอก','เฟิร์น มอส – พืชดอก'], a:0, why:'ปลา นก และแมวมีกระดูกสันหลัง ส่วนหอยทากและปูไม่มี เห็ดและราไม่ใช่พืช เฟิร์นและมอสไม่มีดอก'},
   {q:'มอสจัดเป็นพืชกลุ่มใด', o:['พืชไม่มีดอก','พืชดอก','สัตว์','ไม่ใช่พืช'], a:0, why:'มอสเป็นพืชขนาดเล็ก มีสีเขียว ไม่มีดอก สืบพันธุ์ด้วยสปอร์'},
-  {q:'การจำแนกสิ่งมีชีวิตต้องทำอย่างไรก่อนเป็นอันดับแรก', o:['กำหนดเกณฑ์ที่ใช้ในการจัดกลุ่ม','ตั้งชื่อสิ่งมีชีวิตใหม่','วัดน้ำหนัก','นับจำนวนสิ่งมีชีวิต'], a:0, why:'ต้องกำหนดเกณฑ์ เช่น การสร้างอาหาร การมีดอก การมีกระดูกสันหลัง แล้วจึงจัดกลุ่มตามเกณฑ์นั้น'}
+  {q:'การจำแนกสิ่งมีชีวิตต้องทำอย่างไรก่อนเป็นอันดับแรก', o:['กำหนดเกณฑ์ที่ใช้ในการจัดกลุ่ม','ตั้งชื่อสิ่งมีชีวิตใหม่','วัดน้ำหนัก','นับจำนวนสิ่งมีชีวิต'], a:0, why:'ต้องกำหนดเกณฑ์ เช่น การสร้างอาหาร การมีดอก การมีกระดูกสันหลัง แล้วจึงจัดกลุ่มตามเกณฑ์นั้น'},
+  {q:'คำว่า "Mammal" หมายถึงข้อใด', o:['สัตว์เลี้ยงลูกด้วยน้ำนม','สัตว์เลื้อยคลาน','สัตว์สะเทินน้ำสะเทินบก','นก'], a:0, say:['Mammal'], why:'Mammal = สัตว์เลี้ยงลูกด้วยน้ำนม เช่น แมว โลมา ค้างคาว'},
+  {q:'คำว่า "Reptile" หมายถึงข้อใด', o:['ปลา','สัตว์เลื้อยคลาน','นก','แมลง'], a:1, say:['Reptile'], why:'Reptile = สัตว์เลื้อยคลาน เช่น งู เต่า จระเข้'},
+  {q:'คำว่า "Feathers" หมายถึงข้อใด', o:['เกล็ด','เหงือก','ขนนก','กระดูก'], a:2, say:['Feathers'], why:'Feathers = ขนนก มีเฉพาะในนก'},
+  {q:'"กระดูกสันหลัง" ภาษาอังกฤษคือคำใด', o:['Backbone','Shell','Spore','Gills'], a:0, say:['Backbone','Shell','Spore','Gills'], why:'Backbone = กระดูกสันหลัง'},
+  {q:'โลมาอยู่ในน้ำ แต่จัดเป็นสัตว์กลุ่มใด', o:['ปลา','สัตว์เลี้ยงลูกด้วยน้ำนม (Mammal)','สัตว์สะเทินน้ำสะเทินบก','สัตว์เลื้อยคลาน'], a:1, say:['Mammal'], why:'โลมาหายใจด้วยปอด ออกลูกเป็นตัว และเลี้ยงลูกด้วยน้ำนม'}
 ];
 
 const PARTS = [
@@ -519,12 +525,20 @@ const PARTS = [
    miss:[['look','แตะดูพืชครบ 6 ชนิด'],['sort','จัดลงถาดถูกต้องครบ 6 ชนิด']]},
   {k:'ตอนที่ 3', t:'สัตว์มีและไม่มีกระดูกสันหลัง', d:'ลากสัตว์ 8 ชนิดไปส่องเครื่องเอกซเรย์ แล้วจัดลงถาดสัตว์มีกระดูกสันหลังและไม่มีกระดูกสันหลัง', time:'ประมาณ 15 นาที', bg:'#E8F2FE',
    pred:{q:'ปูมีเปลือกแข็ง ปูมีกระดูกสันหลังหรือไม่', o:['ไม่มี','มี','มีบางตัว']},
-   miss:[['scan','ส่องเอกซเรย์ครบ 8 ชนิด'],['sort','จัดลงถาดถูกต้องครบ 8 ชนิด']]}
+   miss:[['scan','ส่องเอกซเรย์ครบ 8 ชนิด'],['sort','จัดลงถาดถูกต้องครบ 8 ชนิด']]},
+  {k:'ตอนที่ 4', t:'สัตว์มีกระดูกสันหลัง 5 กลุ่ม', d:'ลากสัตว์ 11 ชนิดไปวางบนแท่นสังเกต ดูสิ่งปกคลุมร่างกาย การหายใจ การออกลูก แล้วจัดลงถาดปลา สะเทินน้ำสะเทินบก เลื้อยคลาน นก และเลี้ยงลูกด้วยน้ำนม', time:'ประมาณ 15 นาที', bg:'#FFF3E0',
+   pred:{q:'โลมาอยู่ในทะเล โลมาเป็นปลาหรือไม่', o:['ไม่ใช่ปลา','เป็นปลา','เป็นสัตว์สะเทินน้ำสะเทินบก']},
+   miss:[['scan','สังเกตบนแท่นครบ 11 ชนิด'],['sort','จัดลงถาด 5 กลุ่มถูกต้องครบ 11 ชนิด']]},
+  {k:'ตอนที่ 5', t:'แผนภาพจำแนก ใช่/ไม่ใช่', d:'ลากสัตว์ไปเดินตามแผนภาพ ตอบคำถามทีละข้อว่า ใช่ หรือ ไม่ใช่ จนรู้ว่าสัตว์อยู่กลุ่มใด', time:'ประมาณ 10 นาที', bg:'#EAF6FF',
+   pred:{q:'ค้างคาวบินได้ ค้างคาวเป็นนกหรือไม่', o:['ไม่ใช่นก','เป็นนก','เป็นแมลง']},
+   miss:[['key3','ใช้แผนภาพจำแนกสัตว์ได้ 3 ชนิด'],['key6','ใช้แผนภาพจำแนกสัตว์ครบ 6 ชนิด']]}
 ];
 const PART_ART = [
   `<svg width="200" height="110" viewBox="0 0 200 110" aria-hidden="true"><rect x="8" y="60" width="56" height="40" rx="8" fill="#CDEFE0"/><rect x="72" y="60" width="56" height="40" rx="8" fill="#FFD8C9"/><rect x="136" y="60" width="56" height="40" rx="8" fill="#E6DDFB"/><path d="M36 50 V20" stroke="#8C6A43" stroke-width="4"/><circle cx="36" cy="18" r="13" fill="#4CB86A"/><ellipse cx="100" cy="35" rx="18" ry="9" fill="#F2994A"/><path d="M118 35 l10 -8 v16z" fill="#F2994A"/><path d="M150 40 h28 a14 10 0 0 0 -28 0z" fill="#E25555"/><rect x="160" y="40" width="8" height="12" fill="#F4EBD8"/></svg>`,
   `<svg width="200" height="110" viewBox="0 0 200 110" aria-hidden="true"><rect x="20" y="70" width="70" height="32" rx="8" fill="#FBD9E6"/><rect x="110" y="70" width="70" height="32" rx="8" fill="#CDEFE0"/>${[0,72,144,216,288].map(a=>`<ellipse cx="55" cy="22" rx="10" ry="5" fill="#E25555" transform="rotate(${a} 55 32)"/>`).join('')}<path d="M55 40 V66" stroke="#3BA55C" stroke-width="3"/><path d="M145 66 Q140 30 120 20 M145 66 Q150 30 172 22" stroke="#2F9E6E" stroke-width="3" fill="none"/>${[0,1,2,3,4].map(k=>`<ellipse cx="${128+k*8}" cy="${28+k*7}" rx="6" ry="3" fill="#4CB86A"/>`).join('')}</svg>`,
-  `<svg width="200" height="110" viewBox="0 0 200 110" aria-hidden="true"><rect x="50" y="8" width="100" height="62" rx="8" fill="#22305A"/>${[0,1,2,3,4,5,6].map(k=>`<rect x="${64+k*11}" y="36" width="8" height="8" rx="2" fill="#E8F2FE"/>`).join('')}<ellipse cx="100" cy="40" rx="44" ry="16" fill="none" stroke="#8EC5F5" stroke-dasharray="4 3"/><rect x="40" y="76" width="120" height="26" rx="6" fill="#C9D1E3"/></svg>`
+  `<svg width="200" height="110" viewBox="0 0 200 110" aria-hidden="true"><rect x="50" y="8" width="100" height="62" rx="8" fill="#22305A"/>${[0,1,2,3,4,5,6].map(k=>`<rect x="${64+k*11}" y="36" width="8" height="8" rx="2" fill="#E8F2FE"/>`).join('')}<ellipse cx="100" cy="40" rx="44" ry="16" fill="none" stroke="#8EC5F5" stroke-dasharray="4 3"/><rect x="40" y="76" width="120" height="26" rx="6" fill="#C9D1E3"/></svg>`,
+  `<svg width="200" height="110" viewBox="0 0 200 110" aria-hidden="true">${['#D6E6FF','#D6F0E0','#E9F2C9','#DCE8FF','#FFE0D6'].map((c,k)=>`<rect x="${6+k*38}" y="66" width="34" height="36" rx="6" fill="${c}"/>`).join('')}<ellipse cx="40" cy="40" rx="18" ry="8" fill="#F2994A"/><path d="M58 40 l10 -7 v14z" fill="#F2994A"/><ellipse cx="100" cy="38" rx="14" ry="11" fill="#5B8DEF"/><circle cx="112" cy="30" r="7" fill="#5B8DEF"/><path d="M119 30 l8 2 -8 2z" fill="#F2C94C"/><ellipse cx="160" cy="40" rx="22" ry="8" fill="#8FB3D9"/><path d="M138 40 l-8 -7 v14z" fill="#8FB3D9"/></svg>`,
+  `<svg width="200" height="110" viewBox="0 0 200 110" aria-hidden="true"><rect x="8" y="44" width="44" height="24" rx="6" fill="#FFF1B8"/><rect x="78" y="14" width="50" height="24" rx="6" fill="#fff" stroke="#C9D1E3"/><rect x="78" y="72" width="50" height="24" rx="6" fill="#fff" stroke="#C9D1E3"/><rect x="150" y="6" width="44" height="20" rx="6" fill="#E3F0FF"/><rect x="150" y="34" width="44" height="20" rx="6" fill="#E3F0FF"/><path d="M52 56 H64 V26 H78" stroke="#2E9E5B" stroke-width="3" fill="none"/><path d="M64 56 V84 H78" stroke="#D9534F" stroke-width="3" fill="none"/><path d="M128 26 H138 V16 H150 M138 26 V44 H150" stroke="#2E9E5B" stroke-width="3" fill="none"/></svg>`
 ];
 
 const SHEET = [
@@ -542,9 +556,22 @@ const SHEET = [
     ['p3a','สัตว์มีกระดูกสันหลัง','.....................................................'],
     ['p3b','สัตว์ไม่มีกระดูกสันหลัง','.....................................................'],
     ['p3c','สัตว์ที่มีเปลือกแข็งหุ้มตัว','.....................................................'],
-    ['p3d','ปูจัดเป็นสัตว์',['ไม่มีกระดูกสันหลัง','มีกระดูกสันหลัง','ไม่ใช่สัตว์']]], concl:'p3s', cq:'เขียนแผนผังการจำแนกสิ่งมีชีวิตทั้งหมดในแล็บนี้'}
+    ['p3d','ปูจัดเป็นสัตว์',['ไม่มีกระดูกสันหลัง','มีกระดูกสันหลัง','ไม่ใช่สัตว์']]], concl:'p3s', cq:'เขียนแผนผังการจำแนกสิ่งมีชีวิตทั้งหมดในแล็บนี้'},
+  {title:'ตอนที่ 4 สัตว์มีกระดูกสันหลัง 5 กลุ่ม', cols:['กลุ่ม','ชื่อสัตว์ · ลักษณะสำคัญ (ผิว / หายใจ / ออกลูก)'], rows:[
+    ['p4a','ปลา (Fish)','.....................................................'],
+    ['p4b','สัตว์สะเทินน้ำสะเทินบก (Amphibian)','.....................................................'],
+    ['p4c','สัตว์เลื้อยคลาน (Reptile)','.....................................................'],
+    ['p4d','นก (Bird)','.....................................................'],
+    ['p4e','สัตว์เลี้ยงลูกด้วยน้ำนม (Mammal)','.....................................................'],
+    ['p4f','โลมาจัดเป็น',['สัตว์เลี้ยงลูกด้วยน้ำนม','ปลา','สัตว์สะเทินน้ำสะเทินบก']]], concl:'p4s', cq:'สัตว์เลี้ยงลูกด้วยน้ำนมต่างจากสัตว์กลุ่มอื่นอย่างไร'},
+  {title:'ตอนที่ 5 แผนภาพจำแนก ใช่/ไม่ใช่', cols:['สัตว์','กลุ่มที่ได้จากแผนภาพ'], rows:[
+    ['p5a','เพนกวิน','....................................'],
+    ['p5b','ค้างคาว','....................................'],
+    ['p5c','ม้าน้ำ','....................................'],
+    ['p5d','ซาลาแมนเดอร์','....................................'],
+    ['p5e','คำถามแรกของแผนภาพใช้เกณฑ์',['การมีกระดูกสันหลัง','การบินได้','ที่อยู่อาศัย']]], concl:'p5s', cq:'วาดแผนภาพใช่/ไม่ใช่ของตัวเอง เพื่อแยกสัตว์ 4 ชนิดรอบโรงเรียน'}
 ];
-const GUIDE = [{"look": ["[data-v^=\"look:\"]", "แตะดูสิ่งมีชีวิตทีละชนิดให้ครบ 8 ชนิดครับ", [], ""], "sort": ["[data-v^=\"put:\"]", "เลือกสิ่งมีชีวิต แล้วกดถาดที่ถูกต้องครับ", [], ""], "q1": ["[data-v^=\"ans:q1:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"], "q2": ["[data-v^=\"ans:q2:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"]}, {"look": ["[data-v^=\"look:\"]", "แตะดูพืชทีละชนิดให้ครบ 6 ชนิดครับ", [], ""], "sort": ["[data-v^=\"put:\"]", "เลือกพืช แล้วกดถาดที่ถูกต้องครับ", [], ""], "q1": ["[data-v^=\"ans:q1:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"], "q2": ["[data-v^=\"ans:q2:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"]}, {"scan": ["[data-v^=\"scan:\"]", "ส่องเอกซเรย์สัตว์ทีละชนิดให้ครบ 8 ชนิดครับ", [], ""], "sort": ["[data-v^=\"put:\"]", "เลือกสัตว์ แล้วกดถาด “มีกระดูกสันหลัง” หรือ “ไม่มี” ครับ", [], ""], "q1": ["[data-v^=\"ans:q1:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"], "q2": ["[data-v^=\"ans:q2:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"]}];
+const GUIDE = [{"look": ["[data-v^=\"look:\"]", "แตะดูสิ่งมีชีวิตทีละชนิดให้ครบ 8 ชนิดครับ", [], ""], "sort": ["[data-v^=\"put:\"]", "เลือกสิ่งมีชีวิต แล้วกดถาดที่ถูกต้องครับ", [], ""], "q1": ["[data-v^=\"ans:q1:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"], "q2": ["[data-v^=\"ans:q2:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"]}, {"look": ["[data-v^=\"look:\"]", "แตะดูพืชทีละชนิดให้ครบ 6 ชนิดครับ", [], ""], "sort": ["[data-v^=\"put:\"]", "เลือกพืช แล้วกดถาดที่ถูกต้องครับ", [], ""], "q1": ["[data-v^=\"ans:q1:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"], "q2": ["[data-v^=\"ans:q2:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"]}, {"scan": ["[data-v^=\"scan:\"]", "ส่องเอกซเรย์สัตว์ทีละชนิดให้ครบ 8 ชนิดครับ", [], ""], "sort": ["[data-v^=\"put:\"]", "เลือกสัตว์ แล้วกดถาด “มีกระดูกสันหลัง” หรือ “ไม่มี” ครับ", [], ""], "q1": ["[data-v^=\"ans:q1:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"], "q2": ["[data-v^=\"ans:q2:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"]}, {"scan": ["[data-v^=\"scan:\"]", "ลากสัตว์ไปวางบนแท่นสังเกตทีละตัว (หรือเลือกชื่อแล้วกด ‘ส่องดูลักษณะ’) ครับ", [], ""], "sort": ["[data-v^=\"put:\"]", "ดูผิว การหายใจ และการออกลูก แล้วลากลงถาดกลุ่มที่ตรงกันครับ", [], ""]}, {"key3": ["[data-v^=\"kst:\"]", "ลากสัตว์ไปวางที่ช่อง ‘เริ่ม’ แล้วลากไปตามลูกศร ใช่ (เขียว) หรือ ไม่ใช่ (แดง) ทีละคำถามครับ", [], ""], "key6": ["[data-v^=\"kst:\"]", "ทำต่อจนครบ 6 ชนิดครับ", [], ""]}];
 const ENDQ = [
  [{k:'crit', q:'{n}ใช้เกณฑ์ใดแยกพืชออกจากสัตว์', o:[['size','ขนาดของร่างกายใหญ่หรือเล็ก'],['food','การสร้างอาหารเองได้'],['color','สีสันสวยงามของร่างกาย']], a:'food',
    h:['ต้นไม้ตัวเล็กกับตัวใหญ่ก็เป็นพืชเหมือนกัน ขนาดจึงไม่ใช่เกณฑ์','พืชมีสีเขียว ใช้แสงสร้างอาหารเองได้ สัตว์ต้องกินสิ่งอื่น'], why:'พืชสร้างอาหารเองได้ สัตว์ต้องกินสิ่งมีชีวิตอื่นเป็นอาหาร'},
@@ -569,7 +596,19 @@ const ENDQ = [
   {k:'vert', q:'ข้อใดเป็นสัตว์มีกระดูกสันหลังทั้งหมด', o:[['a','ปลา นก กบ แมว'],['b','ปู หอยทาก ผีเสื้อ'],['c','กบ ปู นก ไส้เดือน']], a:'a',
    h:['ดูถาด "มีกระดูกสันหลัง" มีอะไรบ้าง','ปู หอยทาก ผีเสื้อ ไส้เดือนดินไม่มีกระดูกสันหลัง'], why:'ปลา นก กบ และแมวมีกระดูกสันหลังทั้งหมด'},
   {k:'crit', q:'{n}ใช้เกณฑ์ใดจัดกลุ่มสัตว์ในตอนนี้', o:[['legs','จำนวนขาของสัตว์'],['bone','การมีกระดูกสันหลัง'],['home','ที่อยู่อาศัยของสัตว์']], a:'bone',
-   h:['เครื่องเอกซเรย์ใช้ดูอะไรในตัวสัตว์','ถาดทั้งสองถาดชื่ออะไร'], why:'ตอนนี้แบ่งสัตว์ตามการมีกระดูกสันหลัง'}]
+   h:['เครื่องเอกซเรย์ใช้ดูอะไรในตัวสัตว์','ถาดทั้งสองถาดชื่ออะไร'], why:'ตอนนี้แบ่งสัตว์ตามการมีกระดูกสันหลัง'}],
+ [{k:'dolph', q:'{n}ดูโลมาบนแท่นสังเกต แล้วจัดโลมาไว้กลุ่มใด', o:[['fish','ปลา เพราะอยู่ในน้ำ'],['mamm','สัตว์เลี้ยงลูกด้วยน้ำนม'],['amph','สัตว์สะเทินน้ำสะเทินบก']], a:'mamm',
+   h:['โลมาหายใจด้วยอะไร','โลมาออกลูกเป็นตัวและให้นมลูก'], why:'โลมาหายใจด้วยปอด ออกลูกเป็นตัว และเลี้ยงลูกด้วยน้ำนม จึงเป็นสัตว์เลี้ยงลูกด้วยน้ำนม'},
+  {k:'amph', q:'ลักษณะใดเป็นของสัตว์สะเทินน้ำสะเทินบก (Amphibian)', o:[['wet','ผิวหนังเปียกชื้น ไม่มีเกล็ด วางไข่ในน้ำ'],['scale','มีเกล็ดแห้ง วางไข่บนบก'],['feather','มีขนนก ออกเป็นไข่เปลือกแข็ง']], a:'wet',
+   h:['ดูกบและซาลาแมนเดอร์บนแท่นสังเกต','ลูกอ๊อดอยู่ในน้ำ'], why:'สัตว์สะเทินน้ำสะเทินบกมีผิวหนังเปียกชื้น ไม่มีเกล็ด วางไข่ในน้ำ ตอนเล็กใช้เหงือก โตแล้วใช้ปอด'},
+  {k:'bird', q:'{n}ใช้ลักษณะใดบอกว่าเพนกวินเป็นนก ทั้งที่บินไม่ได้', o:[['feather','มีขนนกและออกเป็นไข่เปลือกแข็ง'],['swim','ว่ายน้ำเก่ง'],['cold','อยู่ที่หนาว']], a:'feather',
+   h:['นกทุกชนิดมีอะไรปกคลุมตัว','การบินไม่ใช่เกณฑ์ เพราะค้างคาวก็บินได้'], why:'นกทุกชนิดมีขนนก (feathers) และออกเป็นไข่เปลือกแข็ง เพนกวินจึงเป็นนก'}],
+ [{k:'first', q:'{n}คำถามแรกของแผนภาพแบ่งสัตว์ด้วยเกณฑ์ใด', o:[['bone','การมีกระดูกสันหลัง'],['fly','การบินได้'],['water','การอยู่ในน้ำ']], a:'bone',
+   h:['ดูช่องแรกต่อจาก “เริ่ม”','Backbone = กระดูกสันหลัง'], why:'คำถามแรกแบ่งสัตว์เป็นมีกระดูกสันหลังและไม่มีกระดูกสันหลัง'},
+  {k:'bat', q:'ค้างคาวตอบ “ไม่ใช่” ที่คำถามใด จึงไม่ไปอยู่กลุ่มนก', o:[['feather','มีขนนกไหม'],['bone','มีกระดูกสันหลังไหม'],['gill','หายใจด้วยเหงือกไหม']], a:'feather',
+   h:['ค้างคาวมีขนนกหรือขนธรรมดา','ปีกค้างคาวเป็นแผ่นหนัง'], why:'ค้างคาวไม่มีขนนก มีขน (hair) และเลี้ยงลูกด้วยน้ำนม'},
+  {k:'good', q:'คำถามในแผนภาพใช่/ไม่ใช่ที่ดีควรเป็นอย่างไร', o:[['clear','ตอบได้ชัดเจนว่าใช่หรือไม่ใช่ จากลักษณะที่สังเกตได้'],['opinion','ถามความชอบ เช่น น่ารักไหม'],['many','ตอบได้หลายคำตอบ']], a:'clear',
+   h:['ทุกคนต้องตอบได้เหมือนกัน','“น่ารักไหม” แต่ละคนตอบไม่เหมือนกัน'], why:'คำถามที่ดีต้องใช้ลักษณะที่สังเกตได้ และตอบได้แค่ใช่หรือไม่ใช่'}]
 ];
 
 const PD = !CONF.uni && /ป\.\d|ม\.1(?!\d)/.test(CONF.subject || ''), NOG = CONF.uni || PD, MD = !!CONF.uni && !!CONF.resCard, MDC = CONF.resCard==='C';
@@ -692,6 +731,9 @@ function render(){
 document.getElementById('main').addEventListener('click', e=>{
   const a = e.target.closest('[data-act]'); if(!a || a.disabled) return;
   const act = a.dataset.act, v = a.dataset.v;
+  if(act==='sfx'){ const m = SFX.toggle(); a.innerHTML = m ? SND_OFF : SND_ON; a.setAttribute('aria-label', m ? 'เปิดเสียง' : 'ปิดเสียง'); toast(m ? 'ปิดเสียงแล้ว' : 'เปิดเสียงแล้ว'); return; }
+  if(act==='say'){ SFX.speak(v); return; }
+  if(act!=='ans' && act!=='pred') SFX.click(); else SFX.pick();
   if(act==='go') go(v);
   if(act==='part') go('lab', {part:+v});
   if(act==='ans'){ const st = S[ui.view], q0 = Math.min(NQ - 1, Math.max(0, ui.q)); ui.q = q0; st.a[q0] = +v; st.a.length = NQ; save(); if(q0<NQ-1) { setTimeout(()=>{ if(ui.q===q0){ ui.q = q0 + 1; render(); } }, 180); } render(); }
@@ -786,7 +828,7 @@ function vQuiz(kind){
       <h1 style="font-size:22px">ข้อ ${ui.q+1} จาก ${NQ}</h1>${isPre && !S.pre.skip ? `<button class="btn ghost sm" type="button" data-act="skipPre" style="margin-top:6px">ข้ามไปก่อน ทำทีหลังได้ ${ICON.arrow}</button>` : ''}</div>
       <div class="qdots" role="group" aria-label="ไปที่ข้อ">${st.a.map((x,i)=>`<button type="button" class="qdot ${x!==null?'ans':''} ${i===ui.q?'cur':''}" data-act="q" data-v="${i}" aria-label="ข้อ ${i+1}">${i+1}</button>`).join('')}</div></div>
     <section class="card pad" style="display:flex;flex-direction:column;gap:20px">
-      <h2 class="qtext">${esc(it.q)}</h2>${fig}
+      <h2 class="qtext">${esc(it.q)}</h2>${it.say ? `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:-8px">${it.say.map(w=>`<button class="chip" type="button" data-act="say" data-v="${w}" style="display:inline-flex;align-items:center;gap:6px">${SPK}ฟังเสียง ${w}</button>`).join('')}</div>` : ''}${fig}
       <div class="opts" role="radiogroup" aria-label="ตัวเลือก">${[0,1,2,3].map(j=>`<button type="button" role="radio" class="opt ${it.pics?'pic':''}" aria-checked="${st.a[ui.q]===j}" data-act="ans" data-v="${j}">${optHTML(it,j)}</button>`).join('')}</div>
     </section>
     <div class="row spread">
@@ -854,7 +896,7 @@ function eqSt(i){ S.eq = S.eq || {}; const st = S.eq[i] = S.eq[i] || {a:{}, w:{}
 const eqQOk = (st, q) => st.a[q.k]===q.a && (!q.r || st.r[q.k]===q.ra);
 function eqDone(i){ const st = eqSt(i); return EQ(i).every(q=>eqQOk(st, q)); }
 function eqAnswer(v){ const [i, k, o] = v.split('|'), q = EQ(+i).find(x=>x.k===k), st = eqSt(+i); if(!q || st.a[k]===q.a) return false;
-  st.a[k] = o; if(o!==q.a){ st.w[k] = (st.w[k] || 0) + 1; } else toast(q.r ? 'ข้อสรุปถูกต้อง ต่อไปเลือกเหตุผล' : 'ถูกต้อง เก่งมาก!'); save(); return o===q.a; }
+  st.a[k] = o; if(o!==q.a){ st.w[k] = (st.w[k] || 0) + 1; SFX.bad(); } else SFX.ok(), toast(q.r ? 'ข้อสรุปถูกต้อง ต่อไปเลือกเหตุผล' : 'ถูกต้อง เก่งมาก!'); save(); return o===q.a; }
 function eqReason(v){ const [i, k, o] = v.split('|'), q = EQ(+i).find(x=>x.k===k), st = eqSt(+i); if(!q || !q.r || st.a[k]!==q.a || st.r[k]===q.ra) return false;
   st.r[k] = o; if(o!==q.ra){ st.wr[k] = (st.wr[k] || 0) + 1; } else toast('ถูกต้องทั้งข้อสรุปและเหตุผล'); save(); return o===q.ra; }
 const EQPOS = (()=>{ const m = {}; if(typeof ENDQ==='undefined') return m; let h = 2166136261; for(const ch of String(CONF.key) + 'eq'){ h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619) >>> 0; }
@@ -1098,13 +1140,14 @@ function vLab(){
     </header>
     <div class="labgrid">
       ${PD ? '<div class="pdwrap" id="pdwrap">' : ''}<section class="stage" id="stage"${MDC ? ' data-mdc' : ''} aria-label="โต๊ะทดลอง 3 มิติ">
-        <div class="hint">${ICON.move}<span>${CONF.hint}</span></div>
+        <div class="hint">${ICON.move}<span>${(CONF.hints || [])[ui.part] || CONF.hint}</span></div>
         <div class="camctl">
 ${CONF.hs ? '' : `${PD ? '' : `          <button class="ibtn" type="button" data-act="lab" data-v="camL" aria-label="หมุนมุมมองไปทางซ้าย">${ICON.rotL}</button>
           <button class="ibtn" type="button" data-act="lab" data-v="camR" aria-label="หมุนมุมมองไปทางขวา">${ICON.rotR}</button>`}
           <button class="ibtn" type="button" data-act="lab" data-v="zin" aria-label="ซูมเข้า">${ICON.zin}</button>
           <button class="ibtn" type="button" data-act="lab" data-v="zout" aria-label="ซูมออก">${ICON.zout}</button>`}
           <button class="ibtn" type="button" data-act="lab" data-v="camReset" aria-label="มุมมองเริ่มต้น">${ICON.cube}</button>
+          <button class="ibtn" type="button" data-act="sfx" aria-label="${SFX.muted ? 'เปิดเสียง' : 'ปิดเสียง'}">${SFX.muted ? SND_OFF : SND_ON}</button>
 ${PD ? `          <button class="ibtn" type="button" data-act="guideinfo" aria-label="คู่มือการทำกิจกรรม" style="font-weight:700;font-size:20px;color:var(--primary-d)">ⓘ</button>
           <button class="ibtn" type="button" data-act="full" id="fullBtn" aria-label="ขยายเต็มจอ" style="font-size:20px">⛶</button>` : ''}
 ${CONF.uni ? `          <button class="ibtn" type="button" data-act="whyopen" aria-label="อธิบายการทดลองตอนนี้" style="font-weight:700;font-size:18px;color:var(--primary-d)">ⓘ</button>
@@ -1255,6 +1298,57 @@ function vResult(){
   </div>`;
 }
 
+/* ---------- sound effects + speech (Web Audio, no files) ---------- */
+const SPK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>';
+const SND_ON = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>';
+const SND_OFF = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9l5 6M21 9l-5 6"/></svg>';
+const SFX = (function(){
+  let ac = null, master = null, noise = null, ch = {}, last = {}, muted = false;
+  try { muted = localStorage.getItem('parkilab-sfx-mute') === '1'; } catch(_){}
+  const VOL = .32;
+  function unlock(){
+    if(ac){ if(ac.state === 'suspended') ac.resume(); return; }
+    try {
+      ac = new (window.AudioContext || window.webkitAudioContext)();
+      master = ac.createGain(); master.gain.value = muted ? 0 : VOL; master.connect(ac.destination);
+      const len = ac.sampleRate*2, buf = ac.createBuffer(1, len, ac.sampleRate), d = buf.getChannelData(0);
+      for(let i=0;i<len;i++) d[i] = Math.random()*2 - 1; noise = buf;
+      const mk = (type, freq, q, lfo) => { const src = ac.createBufferSource(); src.buffer = noise; src.loop = true;
+        const f = ac.createBiquadFilter(); f.type = type; f.frequency.value = freq; f.Q.value = q;
+        const g = ac.createGain(); g.gain.value = 0; src.connect(f); f.connect(g); g.connect(master); src.start();
+        if(lfo){ const o = ac.createOscillator(), og = ac.createGain(); o.frequency.value = lfo; og.gain.value = freq*.35; o.connect(og); og.connect(f.frequency); o.start(); }
+        return g; };
+      const buzz = () => { const o = ac.createOscillator(); o.type = 'sawtooth'; o.frequency.value = 210; const v = ac.createOscillator(), vg = ac.createGain(); v.frequency.value = 9; vg.gain.value = 14; v.connect(vg); vg.connect(o.frequency); v.start();
+        const f = ac.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 900; const g = ac.createGain(); g.gain.value = 0; o.connect(f); f.connect(g); g.connect(master); o.start(); return g; };
+      ch = { rain: mk('bandpass', 2600, .6), boil: mk('lowpass', 520, 1.2, 3.1), wind: mk('bandpass', 420, 1.4, .18), hiss: mk('highpass', 5200, .7), sizzle: mk('highpass', 2800, 1.5, 7), buzz: buzz() };
+    } catch(_){ ac = null; }
+  }
+  addEventListener('pointerdown', unlock, {capture:true, passive:true});
+  addEventListener('keydown', unlock, {capture:true});
+  function tone(f0, f1, dur, type='sine', vol=.5, delay=0){
+    if(!ac || muted) return; const t = ac.currentTime + delay, o = ac.createOscillator(), g = ac.createGain();
+    o.type = type; o.frequency.setValueAtTime(f0, t); if(f1) o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + .012); g.gain.exponentialRampToValueAtTime(.001, t + dur);
+    o.connect(g); g.connect(master); o.start(t); o.stop(t + dur + .02);
+  }
+  const AMB = {rain:.5, boil:.9, wind:.55, hiss:.12, sizzle:.18, buzz:.07};
+  return {
+    unlock,
+    get muted(){ return muted; },
+    toggle(){ muted = !muted; try { localStorage.setItem('parkilab-sfx-mute', muted ? '1' : '0'); } catch(_){} if(master) master.gain.setTargetAtTime(muted ? 0 : VOL, ac.currentTime, .05); if(!muted){ unlock(); tone(660, 990, .12, 'sine', .4); } return muted; },
+    click(){ tone(820, 620, .05, 'triangle', .25); },
+    pick(){ tone(380, 620, .09, 'sine', .35); },
+    drop(){ tone(240, 140, .12, 'sine', .45); },
+    ok(){ tone(660, 0, .12, 'sine', .4); tone(990, 0, .18, 'sine', .35, .09); },
+    bad(){ tone(220, 170, .22, 'square', .12); },
+    done(){ [523, 659, 784, 1046].forEach((f,k)=>tone(f, 0, .22, 'triangle', .35, k*.09)); },
+    pop(){ tone(900 + Math.random()*700, 1500, .04, 'sine', .12); },
+    tick(){ tone(2400 + Math.random()*800, 0, .03, 'square', .06); },
+    speak(w){ try{ const u = new SpeechSynthesisUtterance(w); u.lang = 'en-US'; u.rate = .8; const vs = speechSynthesis.getVoices().filter(x=>/^en/i.test(x.lang)); if(vs.length) u.voice = vs.find(x=>/en-US/i.test(x.lang)) || vs[0]; speechSynthesis.cancel(); speechSynthesis.speak(u); } catch(_){ toast('อุปกรณ์นี้อ่านออกเสียงไม่ได้'); } },
+    amb(lv){ if(!ac) return; Object.keys(ch).forEach(k=>{ const v = Math.max(0, Math.min(1, (lv && lv[k]) || 0))*AMB[k]; if(Math.abs((last[k]||0) - v) > .01){ last[k] = v; ch[k].gain.setTargetAtTime(v, ac.currentTime, .25); } }); }
+  };
+})();
+
 /* ---------- PDF ---------- */
 async function makePdf(btn){
   const el = $('#pdfsheet'), pages = sheetPages();
@@ -1294,7 +1388,9 @@ const Lab = (function(){
   const CAMS = [
     {pos:V(0,4.2,5.0), tgt:V(0,0,.25)},
     {pos:V(0,3.6,4.3), tgt:V(0,0,.2)},
-    {pos:V(-.1,4.3,5.3), tgt:V(-.1,0,.35)}
+    {pos:V(-.1,4.3,5.3), tgt:V(-.1,0,.35)},
+    {pos:V(0,6.4,7.0), tgt:V(0,0,.4)},
+    {pos:V(.35,7.8,4.6), tgt:V(.35,0,-.15)}
   ];
   function mat(c, o={}){ return new THREE.MeshStandardMaterial(Object.assign({color:c, roughness:.55, metalness:0}, o)); }
   const METAL = () => mat(0xB9C0CE, {metalness:.8, roughness:.3});
@@ -1412,6 +1508,28 @@ const Lab = (function(){
     else if(k==='snail'){ const b = ellip(.18,.04,.06, G(0xC9B79C), 12); b.position.y = .04; g.add(b); const sh = new THREE.Mesh(new THREE.TorusGeometry(.08,.05,10,20), G(0xB0763E)); sh.position.set(-.02,.14,0); g.add(sh); g.add(at(sph(.05, G(0xB0763E), 10), -.02,.14,0)); [-1,1].forEach(s=>g.add(at(cyl(.006,.006,.08, G(0xC9B79C), 4), .17,.09,.02*s))); }
     else if(k==='butterfly'){ g.add(at(ellip(.015,.015,.12, G(0x2B2A3D), 8), 0,.2,0)); [-1,1].forEach(s=>{ const w = ellip(.12,.01,.1, G(0xF2994A), 12); w.position.set(.12*s,.22,.03); w.rotation.z = .35*s; g.add(w); const w2 = ellip(.08,.01,.07, G(0xF6C063), 10); w2.position.set(.09*s,.2,-.08); w2.rotation.z = .35*s; g.add(w2); }); g.rotation.y = Math.PI/2; const h = new THREE.Group(); h.add(g); return h; }
     else if(k==='crab'){ const b = ellip(.15,.06,.11, G(0xD9534F), 14); b.position.y = .1; g.add(b); [-1,1].forEach(s=>{ for(let q=0;q<3;q++){ const l = cyl(.012,.01,.14, G(0xC9443F), 5); l.position.set(-.06 + q*.06, .06, .14*s); l.rotation.x = .9*s; g.add(l); } const c = sph(.045, G(0xD9534F), 8); c.position.set(.18,.12,.08*s); g.add(c); }); }
+    else if(k==='seahorse'){ const c = G(0xF2B544); const b = new THREE.Group(); for(let q=0;q<9;q++){ const a = q/8, s = sph(.05 - a*.022, c, 10); s.position.set(Math.sin(a*2.6)*.06 - .02, .5 - a*.36 - Math.max(0, a - .7)*.2, 0); b.add(s); }
+      const cu = new THREE.Mesh(new THREE.TorusGeometry(.04, .014, 8, 14, Math.PI*1.4), c); cu.position.set(.02,.1,0); cu.rotation.z = -1.2; b.add(cu);
+      const hd = ellip(.05,.045,.04, c, 10); hd.position.set(-.02,.56,0); b.add(hd); const sn = cyl(.014,.02,.1, c, 8); sn.rotation.z = Math.PI/2; sn.position.set(.06,.55,0); b.add(sn);
+      [-1,1].forEach(s=>b.add(at(sph(.011, G(0x222222), 6), .0,.58,.035*s))); const fn = ellip(.035,.05,.008, G(0xF7D07A), 8); fn.position.set(-.07,.38,0); b.add(fn); g.add(b); }
+    else if(k==='salamander'){ const c = G(0x2F2F3A), sp = G(0xF2C94C); for(let q=0;q<10;q++){ const s = sph(.055 - Math.abs(q - 3)*.005, c, 10); s.scale.y = .6; s.position.set(.2 - q*.05, .05, Math.sin(q*.6)*.03); g.add(s); if(q%2===0 && q < 8){ const d = sph(.02, sp, 6); d.position.set(.2 - q*.05, .085, Math.sin(q*.6)*.03); g.add(d); } }
+      const hd = ellip(.06,.03,.05, c, 10); hd.position.set(.27,.05,0); g.add(hd); [-1,1].forEach(s=>{ g.add(at(sph(.013, G(0x111111), 6), .29,.075,.03*s)); [[.15],[-.08]].forEach(([x])=>{ const l = cyl(.012,.01,.08, c, 5); l.rotation.x = 1.2*s; l.position.set(x,.03,.06*s); g.add(l); }); }); }
+    else if(k==='snake'){ const c = G(0x6E9B3A), b2 = G(0x4E7A2A); for(let q=0;q<16;q++){ const a = q*.55, r = .16 - q*.004, s = sph(.04 - q*.0012, q%3 ? c : b2, 8); s.position.set(Math.cos(a)*r*(1 - q*.03), .04 + (q > 12 ? (q - 12)*.04 : 0), Math.sin(a)*r*(1 - q*.03)); g.add(s); }
+      const hd = ellip(.055,.035,.045, c, 10); hd.position.set(.0,.24,.0); g.add(hd); [-1,1].forEach(s=>g.add(at(sph(.01, G(0x222222), 6), .04,.255,.03*s))); const tg = cyl(.003,.003,.06, G(0xD9534F), 4); tg.rotation.z = Math.PI/2; tg.position.set(.08,.235,0); g.add(tg); }
+    else if(k==='turtle'){ const sh = new THREE.Mesh(new THREE.SphereGeometry(.2, 18, 10, 0, Math.PI*2, 0, Math.PI/2), G(0x6B8E4E)); sh.scale.y = .7; sh.position.y = .07; g.add(sh);
+      for(let q=0;q<7;q++){ const a = q/7*Math.PI*2, p = cyl(.045,.045,.01, G(0x50703A), 6); p.position.set(Math.cos(a)*.1, .07 + .11, Math.sin(a)*.1); p.rotation.set(Math.sin(a)*.5, 0, -Math.cos(a)*.5); g.add(p); } g.add(at(cyl(.05,.05,.012, G(0x50703A), 6), 0,.215,0));
+      g.add(at(cyl(.2,.2,.03, G(0xC9B27A), 18), 0,.07,0)); const hd = ellip(.06,.045,.045, G(0x9DB16A), 10); hd.position.set(.25,.11,0); g.add(hd); [-1,1].forEach(s=>{ g.add(at(sph(.01, G(0x222222), 6), .29,.13,.03*s)); [.12,-.12].forEach(x=>{ const l = ellip(.05,.025,.035, G(0x9DB16A), 8); l.position.set(x,.04,.17*s); g.add(l); }); }); }
+    else if(k==='penguin'){ const bk = G(0x22263A), wh = G(0xF5F5F0); const b = ellip(.12,.2,.11, bk, 16); b.position.y = .22; g.add(b); const bl = ellip(.09,.16,.06, wh, 14); bl.position.set(.06,.2,0); g.add(bl);
+      g.add(at(sph(.08, bk, 12), 0,.44,0)); [-1,1].forEach(s=>{ g.add(at(sph(.016, wh, 6), .06,.46,.035*s)); g.add(at(sph(.008, G(0x111111), 5), .07,.46,.036*s)); const w = ellip(.03,.12,.05, bk, 8); w.position.set(-.01,.24,.11*s); w.rotation.x = .25*s; g.add(w); g.add(at(ellip(.05,.012,.03, G(0xF2994A), 8), .05,.012,.05*s)); });
+      const bk2 = cone(.022,.07, G(0xF2994A), 6); bk2.rotation.z = -Math.PI/2; bk2.position.set(.11,.43,0); g.add(bk2); }
+    else if(k==='dolphin'){ const c = G(0x8FB3D9), b = ellip(.26,.08,.08, c, 18); b.position.y = .22; b.rotation.z = .12; g.add(b); const bl = ellip(.2,.05,.06, G(0xE6EEF7), 14); bl.position.set(.02,.18,0); g.add(bl);
+      const sn = cyl(.022,.035,.1, c, 8); sn.rotation.z = Math.PI/2; sn.position.set(.3,.25,0); g.add(sn); const df = cone(.04,.1, c, 4); df.position.set(-.02,.32,0); df.rotation.z = .5; g.add(df);
+      const tl = ellip(.03,.012,.09, c, 8); tl.position.set(-.27,.18,0); g.add(tl); [-1,1].forEach(s=>{ g.add(at(sph(.011, G(0x222222), 6), .22,.26,.055*s)); const f = ellip(.06,.01,.03, c, 8); f.position.set(.08,.15,.07*s); f.rotation.x = .5*s; g.add(f); }); }
+    else if(k==='bat'){ const c = G(0x5A4A5E), wm = new THREE.MeshStandardMaterial({color:0x4A3C50, roughness:.7, side:THREE.DoubleSide}); g.add(at(ellip(.06,.09,.05, c, 12), 0,.28,0)); g.add(at(sph(.05, c, 10), 0,.4,0));
+      [-1,1].forEach(s=>{ const e = cone(.02,.05, c, 4); e.position.set(0,.46,.03*s); g.add(e); g.add(at(sph(.01, G(0xFFE07A), 5), .045,.41,.02*s));
+        const sh = new THREE.Shape(); sh.moveTo(0,0); sh.lineTo(.12,.1); sh.lineTo(.28,.06); sh.quadraticCurveTo(.22,-.02,.26,-.08); sh.quadraticCurveTo(.16,-.04,.14,-.1); sh.quadraticCurveTo(.08,-.04,0,-.08); sh.lineTo(0,0);
+        const w = new THREE.Mesh(new THREE.ShapeGeometry(sh), wm); w.position.set(0,.3,.04*s); w.rotation.y = s > 0 ? -Math.PI/2 : Math.PI/2; w.rotation.x = .25; g.add(w); }); }
+    else if(k==='catfish'){ const b = ellip(.22,.08,.07, G(0x6E6A63), 16); b.position.y = .14; g.add(b); const t = cone(.07,.12, G(0x5A564F), 4); t.rotation.z = Math.PI/2; t.position.set(-.26,.14,0); g.add(t); [-1,1].forEach(s=>{ g.add(at(sph(.014, G(0x111111), 6), .16,.17,.05*s)); for(let q=0;q<2;q++){ const wk = cyl(.004,.003,.12, G(0x4A463F), 4); wk.rotation.set(.6*s, 0, -1.2 + q*.3); wk.position.set(.25,.12,.03*s); g.add(wk); } }); }
     return g;
   }
 
@@ -1425,34 +1543,145 @@ const Lab = (function(){
      sp:[['hibiscus','ชบา','flower','มีดอกสีแดงขนาดใหญ่'],['rice','ข้าว','flower','มีดอกเล็ก ๆ ที่รวง ดอกเจริญเป็นเมล็ดข้าว'],['mango','มะม่วง','flower','มีช่อดอกเล็ก ๆ สีเหลืองอ่อน ดอกเจริญเป็นผลมะม่วง'],
          ['fern','เฟิร์น','noflower','ไม่มีดอก มีจุดสีน้ำตาลใต้ใบ คือที่เก็บสปอร์ใช้สืบพันธุ์'],['moss','มอส','noflower','ต้นเล็ก ไม่มีดอก สืบพันธุ์ด้วยสปอร์'],['pine','สน','noflower','ไม่มีดอก มีโคน (ลูกสน) ภายในมีเมล็ด']]},
     {trays:[['vert','มีกระดูกสันหลัง','#D6E6FF'],['invert','ไม่มีกระดูกสันหลัง','#FFF1B8']],
-     sp:[['fish','ปลา','vert',''],['bird','นก','vert',''],['frog','กบ','vert',''],['cat','แมว','vert',''],['worm','ไส้เดือนดิน','invert',''],['snail','หอยทาก','invert',''],['butterfly','ผีเสื้อ','invert',''],['crab','ปู','invert','']]}
+     sp:[['fish','ปลา','vert',''],['bird','นก','vert',''],['frog','กบ','vert',''],['cat','แมว','vert',''],['worm','ไส้เดือนดิน','invert',''],['snail','หอยทาก','invert',''],['butterfly','ผีเสื้อ','invert',''],['crab','ปู','invert','']]},
+    {trays:[['fish','ปลา','#D6E6FF'],['amph','สะเทินน้ำสะเทินบก','#D6F0E0'],['rept','เลื้อยคลาน','#E9F2C9'],['bird','นก','#DCE8FF'],['mamm','เลี้ยงลูกด้วยนม','#FFE0D6']],
+     sp:[['fish','ปลาทอง','fish',''],['seahorse','ม้าน้ำ','fish',''],['frog','กบ','amph',''],['salamander','ซาลาแมนเดอร์','amph',''],['snake','งู','rept',''],['turtle','เต่า','rept',''],['bird','นก','bird',''],['penguin','เพนกวิน','bird',''],['cat','แมว','mamm',''],['dolphin','โลมา','mamm',''],['bat','ค้างคาว','mamm','']]},
+    {trays:[], sp:[]}
   ];
+  const TEN = {plant:'Plant', animal:'Animal', other:'Fungus', flower:'Flowering', noflower:'Non-flowering', vert:'Vertebrate', invert:'Invertebrate', fish:'Fish', amph:'Amphibian', rept:'Reptile', bird:'Bird', mamm:'Mammal'};
+  const SCN = () => P.i===2 || P.i===3;
+  const NARROW = () => ($('#stage') || {clientWidth:1000}).clientWidth < 640;
   const XR = {fish:'เห็นกระดูกสันหลังเป็นข้อ ๆ ยาวตลอดลำตัว', bird:'เห็นกระดูกสันหลังและกะโหลกศีรษะ', frog:'เห็นกระดูกสันหลังสั้น ๆ และกระดูกขา', cat:'เห็นกระดูกสันหลังยาวจนถึงหาง', worm:'ไม่พบกระดูก ร่างกายนิ่มเป็นปล้อง ๆ', snail:'ไม่พบกระดูก มีเปลือกแข็งหุ้มภายนอก', butterfly:'ไม่พบกระดูก มีเปลือกแข็งบาง ๆ หุ้มลำตัว', crab:'ไม่พบกระดูกสันหลัง มีเปลือกแข็งหุ้มภายนอก'};
-  const SCAN = {x:-1.55, z:.95};
+  const SCAN = {x:-1.55, z:.95}, SCAN4 = {x:-3.25, z:1.45}; const SCX = () => P.i===3 ? SCAN4 : SCAN;
+
+
+  /* ===== vocabulary ===== */
+  const VOC = [
+    [['Plant','พืช'],['Animal','สัตว์'],['Fungus','เห็ดรา'],['Food','อาหาร'],['Move','เคลื่อนที่']],
+    [['Flower','ดอก'],['Flowering plant','พืชดอก'],['Spore','สปอร์'],['Fern','เฟิร์น'],['Moss','มอส']],
+    [['Backbone','กระดูกสันหลัง'],['Vertebrate','สัตว์มีกระดูกสันหลัง'],['Invertebrate','สัตว์ไม่มีกระดูกสันหลัง'],['Shell','เปลือก'],['X-ray','เอกซเรย์']],
+    [['Fish','ปลา'],['Amphibian','สัตว์สะเทินน้ำสะเทินบก'],['Reptile','สัตว์เลื้อยคลาน'],['Bird','นก'],['Mammal','สัตว์เลี้ยงลูกด้วยน้ำนม'],['Gills','เหงือก'],['Lungs','ปอด'],['Scales','เกล็ด'],['Feathers','ขนนก']],
+    [['Classify','จำแนก'],['Yes','ใช่'],['No','ไม่ใช่'],['Insect','แมลง'],['Backbone','กระดูกสันหลัง'],['Hair','ขน']]
+  ];
+  function vocabBox(i){ const L = VOC[i] || []; if(!L.length) return '';
+    return `<div style="flex-basis:100%;display:flex;flex-direction:column;gap:6px;margin-top:4px"><h2 style="margin:0">คำศัพท์ Vocabulary <span class="note" style="font-weight:400">แตะเพื่อฟังเสียง</span></h2><div style="display:flex;gap:6px;flex-wrap:wrap">${L.map(([e,t])=>`<button class="chip" type="button" data-act="say" data-v="${e}" style="display:inline-flex;align-items:center;gap:6px">${SPK}<b>${e}</b> <span style="color:var(--ink2)">${t}</span></button>`).join('')}</div></div>`; }
+
+  /* ===== part 4: five vertebrate groups ===== */
+  const FEAT = {
+    fish:['เกล็ด','เหงือก','ออกเป็นไข่ในน้ำ','มีครีบ ว่ายน้ำ'],
+    seahorse:['แผ่นแข็งคล้ายเกล็ด','เหงือก','ออกเป็นไข่ (พ่อฟักไข่ในถุงหน้าท้อง)','มีครีบเล็ก ๆ อยู่ในน้ำตลอดชีวิต'],
+    frog:['ผิวหนังเปียกชื้น ไม่มีเกล็ด','ลูกอ๊อดใช้เหงือก โตแล้วใช้ปอดและผิวหนัง','ออกเป็นไข่ในน้ำ ไข่ไม่มีเปลือก','อยู่ได้ทั้งในน้ำและบนบก'],
+    salamander:['ผิวหนังเปียกชื้น ไม่มีเกล็ด','ตอนเล็กใช้เหงือก โตแล้วใช้ปอดและผิวหนัง','ออกเป็นไข่ในน้ำ ไข่ไม่มีเปลือก','มีหาง อยู่ที่ชื้นใกล้น้ำ'],
+    snake:['เกล็ดแห้ง','ปอด','ออกเป็นไข่เปลือกเหนียวบนบก','ไม่มีขา เคลื่อนที่โดยการเลื้อย'],
+    turtle:['เกล็ดแข็งและกระดอง','ปอด','ออกเป็นไข่เปลือกเหนียวบนบก','หดหัวเข้ากระดองได้'],
+    bird:['ขนนก','ปอด','ออกเป็นไข่เปลือกแข็ง','มีปีกและจะงอยปาก'],
+    penguin:['ขนนก','ปอด','ออกเป็นไข่เปลือกแข็ง','มีปีกแต่บินไม่ได้ ว่ายน้ำเก่ง'],
+    cat:['มีขน','ปอด','ออกลูกเป็นตัว เลี้ยงลูกด้วยน้ำนม','มีใบหูและหนวด'],
+    dolphin:['ผิวหนังเรียบ ไม่มีเกล็ด','ปอด (ขึ้นมาหายใจที่ผิวน้ำ)','ออกลูกเป็นตัว เลี้ยงลูกด้วยน้ำนม','อยู่ในน้ำแต่ไม่ใช่ปลา'],
+    bat:['มีขน','ปอด','ออกลูกเป็นตัว เลี้ยงลูกด้วยน้ำนม','บินได้แต่ไม่ใช่นก']
+  };
+  const TRAP = {
+    dolphin:'โลมาอยู่ในน้ำก็จริง แต่หายใจด้วยปอด ออกลูกเป็นตัว และเลี้ยงลูกด้วยน้ำนม',
+    bat:'ค้างคาวบินได้ก็จริง แต่ไม่มีขนนก มีขน ออกลูกเป็นตัว และเลี้ยงลูกด้วยน้ำนม',
+    penguin:'เพนกวินบินไม่ได้และว่ายน้ำเก่ง แต่มีขนนกและออกเป็นไข่เปลือกแข็ง',
+    seahorse:'ม้าน้ำหน้าตาไม่เหมือนปลา แต่อยู่ในน้ำตลอดชีวิต หายใจด้วยเหงือก และมีครีบ',
+    salamander:'ซาลาแมนเดอร์หน้าตาคล้ายจิ้งจก แต่ผิวหนังเปียกชื้น ไม่มีเกล็ด และวางไข่ในน้ำ',
+    turtle:'เต่าบางชนิดอยู่ในน้ำ แต่มีเกล็ดและกระดอง หายใจด้วยปอด และวางไข่บนบก',
+    snake:'งูไม่มีขา แต่มีเกล็ดแห้ง หายใจด้วยปอด และวางไข่บนบก'
+  };
+  function drawFeat(k){ if(!P.xr) return; const c = P.xr.userData.c, x = c.getContext('2d'); x.fillStyle = '#F7FAFF'; x.fillRect(0,0,512,320); x.fillStyle = '#E3ECFB'; x.fillRect(0,0,512,46);
+    x.textAlign = 'left'; x.fillStyle = '#22305A'; x.font = '600 26px Mitr, sans-serif';
+    if(!k){ x.textAlign = 'center'; x.fillText('แท่นสังเกตลักษณะ', 256, 32); x.font = '500 24px Mitr, sans-serif'; x.fillStyle = '#5B6280'; x.fillText('ลากสัตว์มาวางเพื่อดูลักษณะ', 256, 190); P.xr.needsUpdate = true; return; }
+    const sp = SETS[3].sp.find(z=>z[0]===k), f = FEAT[k]; x.textAlign = 'center'; x.fillText(sp[1], 256, 32); x.textAlign = 'left';
+    [['ร่างกายปกคลุมด้วย', f[0]],['หายใจด้วย', f[1]],['การออกลูก', f[2]],['จุดเด่น', f[3]]].forEach(([h,t],j)=>{ const y = 62 + j*64; x.fillStyle = ['#D6F0E0','#DCE8FF','#FFE6D6','#EFE6FF'][j]; x.beginPath(); x.roundRect ? x.roundRect(14,y,484,56,12) : x.rect(14,y,484,56); x.fill();
+      x.fillStyle = '#5B6280'; x.font = '500 18px Mitr, sans-serif'; x.fillText(h, 28, y + 22); x.fillStyle = '#1E2340'; x.font = `600 ${t.length > 30 ? 18 : 22}px Mitr, sans-serif`; x.fillText(t, 28, y + 47); });
+    P.xr.needsUpdate = true; }
+
+  /* ===== part 5: yes/no classification key ===== */
+  const KEYN = {
+    n0:{q:'มีกระดูกสันหลังไหม?', e:'Backbone?', p:[-2.4,-.45], y:'n1', n:'n4'},
+    n1:{q:'มีขนนกไหม?', e:'Feathers?', p:[-.85,-1.2], y:'Lbird', n:'n2'},
+    n2:{q:'มีขนและเลี้ยงลูกด้วยน้ำนมไหม?', e:'Hair & milk?', p:[.7,-.75], y:'Lmamm', n:'n3'},
+    n3:{q:'หายใจด้วยเหงือกตลอดชีวิตไหม?', e:'Gills for life?', p:[2.2,-.3], y:'Lfish', n:'Lamph'},
+    n4:{q:'มีขาเป็นข้อ ๆ ไหม?', e:'Jointed legs?', p:[-.85,.55], y:'Lins', n:'Lworm'}
+  };
+  const KEYL = {Lbird:['นก','Bird',[.7,-1.75]], Lmamm:['สัตว์เลี้ยงลูกด้วยน้ำนม','Mammal',[2.2,-1.2]], Lfish:['ปลา','Fish',[3.55,-.75]], Lamph:['สัตว์สะเทินน้ำสะเทินบก','Amphibian',[3.55,.25]], Lins:['แมลง','Insect',[.7,.35]], Lworm:['ไส้เดือน (ลำตัวนิ่ม)','Worm',[.7,1.15]]};
+  const KSTART = [-3.6,-.45];
+  const KAN = [['penguin','เพนกวิน','Lbird'],['bat','ค้างคาว','Lmamm'],['seahorse','ม้าน้ำ','Lfish'],['salamander','ซาลาแมนเดอร์','Lamph'],['butterfly','ผีเสื้อ','Lins'],['worm','ไส้เดือนดิน','Lworm']];
+  const KWHY = {
+    n0:{penguin:'เพนกวินมีกระดูกสันหลัง', bat:'ค้างคาวมีกระดูกสันหลัง', seahorse:'ม้าน้ำมีกระดูกสันหลัง', salamander:'ซาลาแมนเดอร์มีกระดูกสันหลัง', butterfly:'ผีเสื้อไม่มีกระดูกสันหลัง มีเปลือกแข็งบาง ๆ หุ้มตัว', worm:'ไส้เดือนดินไม่มีกระดูกสันหลัง ตัวนิ่ม'},
+    n1:{penguin:'เพนกวินมีขนนก (feathers) ปกคลุมตัว', bat:'ค้างคาวมีขน (hair) ไม่ใช่ขนนก ปีกเป็นแผ่นหนัง', seahorse:'ม้าน้ำไม่มีขนนก', salamander:'ซาลาแมนเดอร์ไม่มีขนนก ผิวเปียกชื้น'},
+    n2:{bat:'ค้างคาวมีขนและเลี้ยงลูกด้วยน้ำนม', seahorse:'ม้าน้ำไม่มีขนและไม่เลี้ยงลูกด้วยน้ำนม', salamander:'ซาลาแมนเดอร์ไม่มีขน ออกเป็นไข่'},
+    n3:{seahorse:'ม้าน้ำหายใจด้วยเหงือกตลอดชีวิต', salamander:'ซาลาแมนเดอร์ใช้เหงือกตอนเล็ก โตแล้วใช้ปอด จึงไม่ใช่ตลอดชีวิต'},
+    n4:{butterfly:'ผีเสื้อมีขา 6 ขาเป็นข้อ ๆ', worm:'ไส้เดือนดินไม่มีขา'}
+  };
+  const kPath = a => { const L = KAN.find(x=>x[0]===a)[2], out = {}; const walk = (n)=>{ if(n[0]==='L') return n===L; const N = KEYN[n]; if(walk(N.y)){ out[n] = 'y'; return true; } if(walk(N.n)){ out[n] = 'n'; return true; } return false; }; walk('n0'); return out; };
+  const kPos = id => { const p = id==='S' ? KSTART : id[0]==='L' ? KEYL[id][2] : KEYN[id].p; return V(p[0], TABLE_Y + .03, p[1]); };
+  function drawMat(tex){ const c = tex.userData.c, x = c.getContext('2d'), w = c.width, h = c.height, MX = 4.4, MZ = 2.25, X = u => (u + MX)/(2*MX)*w, Z = v => (v + MZ)/(2*MZ)*h;
+    x.fillStyle = '#F3EBDA'; x.fillRect(0,0,w,h); x.strokeStyle = '#E2D5BA'; x.lineWidth = 2; for(let i=0;i<w;i+=64){ x.beginPath(); x.moveTo(i,0); x.lineTo(i,h); x.stroke(); } for(let j=0;j<h;j+=64){ x.beginPath(); x.moveTo(0,j); x.lineTo(w,j); x.stroke(); }
+    const arrow = (a, b, yes, plain) => { const [x1,z1] = [X(a[0]), Z(a[1])], [x2,z2] = [X(b[0]), Z(b[1])]; x.strokeStyle = plain ? '#8A93AE' : yes ? '#2E9E5B' : '#D9534F'; x.lineWidth = 9; x.beginPath(); x.moveTo(x1, z1); x.lineTo(x1 + (x2 - x1)*.5, z1); x.lineTo(x1 + (x2 - x1)*.5, z2); x.lineTo(x2 - 70, z2); x.stroke();
+      x.fillStyle = x.strokeStyle; x.beginPath(); x.moveTo(x2 - 50, z2); x.lineTo(x2 - 80, z2 - 18); x.lineTo(x2 - 80, z2 + 18); x.fill();
+      if(plain) return; const mx = x1 + (x2 - x1)*.5, mz = (z1 + z2)/2; x.beginPath(); x.roundRect ? x.roundRect(mx - 62, mz - 26, 124, 52, 26) : x.rect(mx - 62, mz - 26, 124, 52); x.fill(); x.fillStyle = '#fff'; x.font = '600 30px Mitr, sans-serif'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(yes ? 'ใช่' : 'ไม่ใช่', mx, mz + 2); };
+    arrow(KSTART, KEYN.n0.p, true, true);
+    Object.values(KEYN).forEach(N=>{ arrow(N.p, kPos(N.y).toArray().filter((_,i)=>i!==1), true); arrow(N.p, kPos(N.n).toArray().filter((_,i)=>i!==1), false); });
+    const pad = (p, col, ww) => { const cx = X(p[0]), cz = Z(p[1]); x.fillStyle = col; x.strokeStyle = 'rgba(30,35,64,.45)'; x.lineWidth = 6; x.beginPath(); x.roundRect ? x.roundRect(cx - ww/2, cz - 58, ww, 116, 26) : x.rect(cx - ww/2, cz - 58, ww, 116); x.fill(); x.stroke(); };
+    pad(KSTART, '#FFE58A', 230); x.fillStyle = '#7A5A00'; x.font = '700 46px Mitr, sans-serif'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText('เริ่ม', X(KSTART[0]), Z(KSTART[1]) + 2);
+    Object.values(KEYN).forEach(N=>{ pad(N.p, '#FFFFFF', 270); x.fillStyle = '#3B6FD8'; x.font = '700 64px Mitr, sans-serif'; x.fillText('?', X(N.p[0]), Z(N.p[1]) + 4); });
+    Object.values(KEYL).forEach(([t,e,p])=>pad(p, '#BFD8FF', 270));
+    tex.needsUpdate = true; }
+  function buildKey(){ const W = R.world, s = P.s; s.ok = s.ok || {};
+    const tex = canvasTex(2048, 1048, ()=>{}); drawMat(tex); const mat2 = new THREE.Mesh(new THREE.PlaneGeometry(8.8, 4.5), new THREE.MeshStandardMaterial({map:tex, roughness:.9})); mat2.rotation.x = -Math.PI/2; mat2.position.set(0, TABLE_Y + .012, -.2); mat2.receiveShadow = true; W.add(mat2);
+    P.kq = new THREE.Mesh(new THREE.RingGeometry(.42,.5,36), new THREE.MeshBasicMaterial({color:0xFFC93C, transparent:true, opacity:.9, depthWrite:false})); P.kq.rotation.x = -Math.PI/2; P.kq.visible = false; W.add(P.kq);
+    const narrow = () => ($('#stage') || {clientWidth:1000}).clientWidth < 640;
+    Object.entries(KEYN).forEach(([id,N])=>{ const o = new THREE.Object3D(); o.position.copy(kPos(id)).add(V(0,0,-.1)); W.add(o); P.labels.push({obj:o, dy:0, text:()=>{ if(narrow() && !(s.cur && (s.at===id || KEYN[s.at].y===id || KEYN[s.at].n===id))) return ''; return `${N.q} ${N.e}`; }}); });
+    Object.entries(KEYL).forEach(([id,L])=>{ const o = new THREE.Object3D(); o.position.copy(kPos(id)).add(V(0,0,-.1)); W.add(o); P.labels.push({obj:o, dy:0, text:()=>{ if(narrow() && !(s.cur && (KEYN[s.at].y===id || KEYN[s.at].n===id)) && !KAN.some(a=>s.ok[a[0]] && a[2]===id)) return ''; return `${L[0]} ${L[1]}`; }}); });
+    KAN.forEach(([k,name],j)=>{ const g = new THREE.Group(); const mm = model(k); mm.scale.setScalar(1.1); g.add(mm); g.add(hitBox(.55,.55,.55,.25)); const home = V(-2.9 + j*1.0, TABLE_Y, 2.0); const it = item(k, g, home); P.labels.push({obj:it, dy:.6, text:()=>s.ok[k] ? '' : (s.cur===k ? name + ' ?' : NARROW() ? '' : name)}); });
+    syncKey(); }
+  function syncKey(){ const s = P.s; const leafCount = {};
+    KAN.forEach(([k,,L])=>{ const g = P.items[k]; if(!g || (drag && drag.g===g)) return; if(s.ok[k]){ const n = leafCount[L] = (leafCount[L] || 0) + 1; g.userData.home = kPos(L).add(V(.45, 0, .42)); g.scale.setScalar(.6); }
+      else if(s.cur===k){ g.userData.home = kPos(s.at).add(V(-.98,0,0)); g.scale.setScalar(.85); } else { g.userData.home = V(-2.9 + KAN.findIndex(x=>x[0]===k)*1.0, TABLE_Y, 2.0); g.scale.setScalar(1); } goHome(g); });
+    P.kq.visible = !!s.cur && s.at!=='S'; if(P.kq.visible) P.kq.position.copy(kPos(s.at)).add(V(-.98,.01,0));
+    const key = s.cur ? s.at : '-'; if(P.camKey !== key){ P.camKey = key; if(s.cur){ const t = kPos(s.at).add(V(.9, -TABLE_Y, 0)), nar = ($('#stage') || {clientWidth:1000}).clientWidth < 640; P.camGo = {tgt:t, pos:t.clone().add(nar ? V(0,5.0,2.9) : V(0,4.3,2.6))}; } else if(P.camKey0) P.camGo = camHomeAt(); P.camKey0 = true; } }
+  function kStart(k){ const s = P.s; if(s.ok[k]){ P.say = `${KAN.find(x=>x[0]===k)[1]}จัดกลุ่มแล้ว`; return; } if(s.cur && s.cur!==k){ P.warn = `ใช้แผนภาพกับ${KAN.find(x=>x[0]===s.cur)[1]}ให้เสร็จก่อนนะ`; return; }
+    s.cur = k; s.at = 'n0'; P.say = `เริ่มกับ${KAN.find(x=>x[0]===k)[1]} คำถามแรก: ${KEYN.n0.q} (${KEYN.n0.e}) ลากไปทาง "ใช่" หรือ "ไม่ใช่"`; }
+  function kAnswer(ans){ const s = P.s, k = s.cur; if(!k || s.at[0]!=='n') return; const N = KEYN[s.at], truth = kPath(k)[s.at], nm = KAN.find(x=>x[0]===k)[1];
+    if(ans!==truth){ s.wrong += 1; P.warn = `ยังไม่ถูก ${(KWHY[s.at] || {})[k] || ''} ลองตอบคำถาม "${N.q}" ใหม่`; return; }
+    SFX.pop(); const nid = s.at, nx = ans==='y' ? N.y : N.n; s.at = nx;
+    if(nx[0]==='L'){ s.ok[k] = 1; s.cur = null; s.at = null; const L = KEYL[nx]; SFX.speak(L[1]); P.say = `${nm}อยู่กลุ่ม${L[0]} (${L[1]}) ` + (KAN.every(x=>s.ok[x[0]]) ? '— ครบทุกตัวแล้ว!' : '— ลากสัตว์ตัวต่อไปมาที่ "เริ่ม"'); }
+    else P.say = `ถูกต้อง ${(KWHY[nid] || {})[k] || ''} → คำถามต่อไป: ${KEYN[nx].q} (${KEYN[nx].e})`; }
+  function kDrop(d){ const s = P.s, k = d.id, lim = Math.max(70, R.renderer.domElement.clientWidth*.09);
+    const near = id => { const p = scr(kPos(id)); return Math.hypot(p.x - d.cx, p.y - d.cy); };
+    if(s.cur!==k){ if(near('S') < lim*1.4 || near('n0') < lim*1.4) kStart(k); else P.say = 'ลากสัตว์ไปวางที่ช่อง "เริ่ม" บนแผ่นแผนภาพ'; return; }
+    const N = KEYN[s.at]; if(!N) return; const dy = near(N.y), dn = near(N.n);
+    if(Math.min(dy, dn) > lim*1.6){ P.say = `ลากไปที่ช่องถัดไปตามลูกศร "ใช่" (สีเขียว) หรือ "ไม่ใช่" (สีแดง)`; return; }
+    kAnswer(dy < dn ? 'y' : 'n'); }
 
   /* ----- part setup ----- */
-  const defaults = i => ({wrong:0, ans:{}, look:{}, done:{}, scan:{}});
+  const defaults = i => ({wrong:0, ans:{}, look:{}, done:{}, scan:{}, ok:{}, cur:null, at:null});
   const restoreS = i => { const s = defaults(i); try { if(S.ps && S.ps[i]) Object.assign(s, JSON.parse(JSON.stringify(S.ps[i]))); } catch(e){} return s; };
   const fresh = i => ({i, s:restoreS(i), labels:[], celebrate:false, dirty:false, ctrlSig:'', warn:null, sel:null});
   function clearWorld(){ while(R.world.children.length) R.world.remove(R.world.children[0]); }
   function build(){
     clearWorld(); P.labels = []; P.ctrlSig = ''; P.items = {}; P.sel = null; P.trays = {};
-    const cam = CAMS[P.i]; R.camera.position.copy(cam.pos); R.controls.target.copy(cam.tgt);
-    buildPart(); labelsDOM(); sync(); refresh();
+    camHome();
+    if(P.i===4) buildKey(); else buildPart(); labelsDOM(); sync(); refresh();
   }
   const SET = () => SETS[P.i];
-  function trayPos(j, n){ const w = n===3 ? 1.75 : 2.3; return V(P.i===2 ? .25 + (j - (n-1)/2)*2.3 : (j - (n-1)/2)*w, TABLE_Y, -.95); }
-  function slotPos(g, idx){ const t = P.trays[g], n = SET().trays.length, w = n===3 ? 1.5 : 2.0; const col = idx % 4, row = Math.floor(idx/4); return V(t.x - w/2 + .25 + col*(w - .5)/3, TABLE_Y + .04, t.z - .25 + row*.5); }
-  function homePos(j, n){ const per = n > 6 ? 4 : 3, row = Math.floor(j/per), col = j % per; const sx = P.i===2 ? .75 : 0; return V(sx + (col - (per-1)/2)*(P.i===2 ? .8 : .95), TABLE_Y, .45 + row*.75); }
+  function camHomeAt(){ const cam = CAMS[P.i], st = $('#stage'), w = st ? st.clientWidth : 1000, t = cam.tgt.clone(), off = cam.pos.clone().sub(cam.tgt);
+    if(w < 640 && P.i===4){ off.multiplyScalar(1.12); t.x += .25; } else if(w < 640 && P.i===3){ off.multiplyScalar(1.25); t.x -= .3; } return {tgt:t, pos:t.clone().add(off)}; }
+  function camHome(){ const c = camHomeAt(); R.controls.target.copy(c.tgt); R.camera.position.copy(c.pos); }
+  function trayPos(j, n){ const w = n===5 ? 1.68 : n===3 ? 1.75 : 2.3; return V(P.i===2 ? .25 + (j - (n-1)/2)*2.3 : (j - (n-1)/2)*w, TABLE_Y, n===5 ? -1.1 : -.95); }
+  function slotPos(g, idx){ const t = P.trays[g], n = SET().trays.length, w = n===5 ? 1.35 : n===3 ? 1.5 : 2.0; const col = idx % 4, row = Math.floor(idx/4); return V(t.x - w/2 + .25 + col*(w - .5)/3, TABLE_Y + .04, t.z - .25 + row*.5); }
+  function homePos(j, n){ const per = n > 6 ? 4 : 3, row = Math.floor(j/per), col = j % per; const sx = P.i===3 ? 1.0 : SCN() ? .75 : 0; return V(sx + (col - (per-1)/2)*(P.i===3 ? 1.02 : SCN() ? .8 : .95), TABLE_Y, (P.i===3 ? .3 : .45) + row*(P.i===3 ? .72 : .75)); }
   function buildPart(){
     const W = R.world, s = P.s, set = SET(), n = set.trays.length;
-    set.trays.forEach(([k, name, c], j)=>{ const p = trayPos(j, n), w = n===3 ? 1.6 : 2.1; const t = new THREE.Group(); t.add(at(box(w,.05,1.15, mat(new THREE.Color(c), {roughness:.9})), 0,.025,0)); [[0,.6],[0,-.6]].forEach(([x,z])=>t.add(at(box(w,.12,.04, mat(new THREE.Color(c).multiplyScalar(.9))), x,.06,z))); [[w/2,0],[-w/2,0]].forEach(([x,z])=>t.add(at(box(.04,.12,1.15, mat(new THREE.Color(c).multiplyScalar(.9))), x,.06,z)));
-      t.position.copy(p); W.add(t); P.trays[k] = p; P.labels.push({obj:t, dy:.15, text:()=>`${name} (${set.sp.filter(x=>x[2]===k && s.done[x[0]]).length})`}); });
-    set.sp.forEach(([k, name, grp], j)=>{ const g = new THREE.Group(); const mm = model(k); mm.scale.setScalar(1.5); g.add(mm); g.add(hitBox(.7,.7,.7,.3)); const home = homePos(j, set.sp.length); const it = item(k, g, home); P.labels.push({obj:it, dy:.5, text:()=>s.done[k] ? '' : name + (P.i===2 && s.scan[k] ? ' ✓X' : '')}); });
-    if(P.i===2){ const sc = new THREE.Group(); sc.add(at(box(1.2,.12,1.0, mat(0xC9D1E3)), 0,.06,0)); sc.add(at(box(1.0,.02,.8, mat(0x9AB4D8,{emissive:0x5B8DEF, emissiveIntensity:.25})), 0,.13,0)); sc.add(at(box(.08,1.2,.08, mat(0x5B6280)), -.56,.6,-.45));
+    set.trays.forEach(([k, name, c], j)=>{ const p = trayPos(j, n), w = n===5 ? 1.52 : n===3 ? 1.6 : 2.1; const t = new THREE.Group(); t.add(at(box(w,.05,1.15, mat(new THREE.Color(c), {roughness:.9})), 0,.025,0)); [[0,.6],[0,-.6]].forEach(([x,z])=>t.add(at(box(w,.12,.04, mat(new THREE.Color(c).multiplyScalar(.9))), x,.06,z))); [[w/2,0],[-w/2,0]].forEach(([x,z])=>t.add(at(box(.04,.12,1.15, mat(new THREE.Color(c).multiplyScalar(.9))), x,.06,z)));
+      t.position.copy(p); W.add(t); P.trays[k] = p; P.labels.push({obj:t, dy:.15, text:()=>P.i===3 ? (NARROW() ? TEN[k] : `${TEN[k]} (${set.sp.filter(x=>x[2]===k && s.done[x[0]]).length})`) : `${name} ${TEN[k] || ''} (${set.sp.filter(x=>x[2]===k && s.done[x[0]]).length})`}); });
+    set.sp.forEach(([k, name, grp], j)=>{ const g = new THREE.Group(); const mm = model(k); mm.scale.setScalar(1.5); g.add(mm); g.add(hitBox(.7,.7,.7,.3)); const home = homePos(j, set.sp.length); const it = item(k, g, home); P.labels.push({obj:it, dy:.5, text:()=>s.done[k] || (P.i===3 && NARROW() && P.sel!==k && !it.userData.onScan && !(drag && drag.id===k)) ? '' : name + (SCN() && s.scan[k] ? ' ✓' : '')}); });
+    if(SCN()){ const sc = new THREE.Group(); sc.add(at(box(1.2,.12,1.0, mat(0xC9D1E3)), 0,.06,0)); sc.add(at(box(1.0,.02,.8, mat(0x9AB4D8,{emissive:0x5B8DEF, emissiveIntensity:.25})), 0,.13,0)); sc.add(at(box(.08,1.2,.08, mat(0x5B6280)), -.56,.6,-.45));
       const scr2 = canvasTex(512, 320, x=>{ x.fillStyle = '#16213E'; x.fillRect(0,0,512,320); });
       P.xr = scr2; const pl = new THREE.Mesh(new THREE.PlaneGeometry(1.15,.72), new THREE.MeshBasicMaterial({map:scr2})); pl.position.set(0,1.32,-.45); sc.add(pl); sc.add(at(box(1.22,.8,.04, mat(0x5B6280)), 0,1.32,-.48));
-      sc.position.set(SCAN.x, TABLE_Y, SCAN.z); W.add(sc); P.labels.push({obj:sc, dy:1.8, text:()=>'เครื่องเอกซเรย์ (ลากสัตว์มาวาง)'}); drawXR(null); }
+      sc.position.set(SCX().x, TABLE_Y, SCX().z); W.add(sc); P.labels.push({obj:sc, dy:P.i===3 ? .32 : 1.8, text:()=>P.i===3 ? (NARROW() ? 'แท่นสังเกต' : 'แท่นสังเกต (ลากสัตว์มาวาง)') : 'เครื่องเอกซเรย์ (ลากสัตว์มาวาง)'}); if(P.i===3) drawFeat(null); else drawXR(null); }
   }
   function item(id, g, home){ g.userData.id = id; g.userData.home = home.clone(); g.position.copy(home); shadowAll(g); R.world.add(g); P.items[id] = g; return g; }
   function goHome(g){ g.position.copy(g.userData.home); }
@@ -1465,18 +1694,18 @@ const Lab = (function(){
     else { x.strokeStyle = '#7FA6D9'; x.lineWidth = 3; for(let i=0;i<7;i++){ x.beginPath(); x.arc(150 + i*35, 150, 22, 0, Math.PI*2); x.stroke(); } }
     x.fillStyle = v ? '#7CF0B0' : '#FFD27F'; x.fillText(v ? 'พบกระดูกสันหลัง' : 'ไม่พบกระดูกสันหลัง', 256, 290); P.xr.needsUpdate = true; }
   function inspect(k){ const sp = SET().sp.find(x=>x[0]===k); P.s.look[k] = 1; P.say = `${sp[1]}: ${sp[3]}`; }
-  function scanIt(k){ const sp = SET().sp.find(x=>x[0]===k); P.s.scan[k] = 1; drawXR(k); Object.entries(P.items).forEach(([q,g])=>{ if(q!==k && g.userData.onScan){ g.userData.onScan = false; if(!P.s.done[q]) goHome(g); } }); P.say = `เอกซเรย์${sp[1]}: ${XR[k]}`; P.items[k].position.set(SCAN.x, TABLE_Y + .13, SCAN.z); P.items[k].userData.onScan = true; }
+  function scanIt(k){ const sp = SET().sp.find(x=>x[0]===k); P.s.scan[k] = 1; if(P.i===3) drawFeat(k); else drawXR(k); Object.entries(P.items).forEach(([q,g])=>{ if(q!==k && g.userData.onScan){ g.userData.onScan = false; if(!P.s.done[q]) goHome(g); } }); P.say = P.i===3 ? `${sp[1]}: ${FEAT[k][0]} · หายใจด้วย${FEAT[k][1]} · ${FEAT[k][2]}` : `เอกซเรย์${sp[1]}: ${XR[k]}`; P.items[k].position.set(SCX().x, TABLE_Y + .13, SCX().z); P.items[k].userData.onScan = true; }
   function sortIt(k, grp){ const s = P.s, sp = SET().sp.find(x=>x[0]===k);
-    if(P.i===2 && !s.scan[k]){ P.warn = `ลาก${sp[1]}ไปส่องเครื่องเอกซเรย์ก่อน แล้วค่อยจัดกลุ่ม`; goHome(P.items[k]); return; }
-    if(grp===sp[2]){ s.done[k] = 1; P.say = `ถูกต้อง! ${sp[1]}อยู่กลุ่ม${SET().trays.find(t=>t[0]===grp)[1]}`; }
-    else { s.wrong += 1; P.warn = P.i===0 ? `${sp[1]}ยังไม่ใช่กลุ่มนี้ แตะดูว่าสร้างอาหารเองได้หรือไม่ และเคลื่อนที่ได้หรือไม่` : P.i===1 ? `${sp[1]}ยังไม่ใช่กลุ่มนี้ แตะดูว่ามีดอกหรือไม่` : `${sp[1]}ยังไม่ใช่กลุ่มนี้ ดูผลเอกซเรย์อีกครั้ง`; goHome(P.items[k]); } }
-  function sync(){ const s = P.s, set = SET(); set.trays.forEach(([t])=>{ set.sp.filter(x=>x[2]===t && s.done[x[0]]).forEach((x,idx)=>{ const g = P.items[x[0]]; if(g && !(drag && drag.g===g)){ g.position.copy(slotPos(t, idx)); g.scale.setScalar(.6); g.userData.home = g.position.clone(); } }); }); }
+    if(SCN() && !s.scan[k]){ P.warn = P.i===3 ? `ลาก${sp[1]}ไปวางบนแท่นสังเกตก่อน แล้วค่อยจัดกลุ่ม` : `ลาก${sp[1]}ไปส่องเครื่องเอกซเรย์ก่อน แล้วค่อยจัดกลุ่ม`; goHome(P.items[k]); return; }
+    if(grp===sp[2]){ s.done[k] = 1; SFX.ok(); P.say = `ถูกต้อง! ${sp[1]}อยู่กลุ่ม${SET().trays.find(t=>t[0]===grp)[1]}` + (P.i===3 ? ` (${TEN[grp]})` : ''); }
+    else { s.wrong += 1; P.warn = P.i===0 ? `${sp[1]}ยังไม่ใช่กลุ่มนี้ แตะดูว่าสร้างอาหารเองได้หรือไม่ และเคลื่อนที่ได้หรือไม่` : P.i===1 ? `${sp[1]}ยังไม่ใช่กลุ่มนี้ แตะดูว่ามีดอกหรือไม่` : P.i===3 ? `${sp[1]}ยังไม่ใช่กลุ่ม${SET().trays.find(t=>t[0]===grp)[1]} ` + (TRAP[k] || `ดูบนแท่นสังเกต: ${FEAT[k][0]} หายใจด้วย${FEAT[k][1]} ${FEAT[k][2]}`) : `${sp[1]}ยังไม่ใช่กลุ่มนี้ ดูผลเอกซเรย์อีกครั้ง`; goHome(P.items[k]); } }
+  function sync(){ if(P.i===4){ syncKey(); return; } const s = P.s, set = SET(); set.trays.forEach(([t])=>{ set.sp.filter(x=>x[2]===t && s.done[x[0]]).forEach((x,idx)=>{ const g = P.items[x[0]]; if(g && !(drag && drag.g===g)){ g.position.copy(slotPos(t, idx)); g.scale.setScalar(.6); g.userData.home = g.position.clone(); } }); }); }
 
   /* ----- drop ----- */
-  function targets(){ const T = SET().trays.map(([k])=>[k, V(P.trays[k].x, TABLE_Y + .1, P.trays[k].z)]); if(P.i===2) T.push(['scan', V(SCAN.x, TABLE_Y + .2, SCAN.z)]); return T; }
+  function targets(){ const T = SET().trays.map(([k])=>[k, V(P.trays[k].x, TABLE_Y + .1, P.trays[k].z)]); if(SCN()) T.push(['scan', V(SCX().x, TABLE_Y + .2, SCX().z)]); return T; }
   function bestTarget(cx, cy, lim){ let best = null, bd = lim; targets().forEach(([k,v])=>{ const p = scr(v), d = Math.hypot(p.x - cx, p.y - cy); if(d < bd){ bd = d; best = k; } }); return best; }
   function onDrop(d){
-    P.warn = null; P.say = null; const lim = Math.max(80, R.renderer.domElement.clientWidth*.11);
+    P.warn = null; P.say = null; if(P.i===4){ kDrop(d); sync(); refresh(); return; } const lim = Math.max(80, R.renderer.domElement.clientWidth*.11);
     const best = bestTarget(d.cx, d.cy, lim);
     if(best==='scan') scanIt(d.id); else if(best) sortIt(d.id, best); else goHome(d.g);
     sync(); refresh();
@@ -1492,6 +1721,7 @@ const Lab = (function(){
   /* ----- missions ----- */
   function check(){
     const s = P.s, m = S.miss[P.i], sp = SET().sp; let ch = false; const set = k => { if(!m[k]){ m[k] = 1; ch = true; } };
+    if(P.i===4){ const n = KAN.filter(x=>s.ok[x[0]]).length; if(n >= 3) set('key3'); if(n >= 6) set('key6'); if(ch) SFX.ok(); return ch; }
     if(P.i < 2){ if(sp.every(x=>s.look[x[0]])) set('look'); } else if(sp.every(x=>s.scan[x[0]])) set('scan');
     if(sp.every(x=>s.done[x[0]])) set('sort'); if(s.ans.q1) set('q1'); if(s.ans.q2) set('q2');
     return ch;
@@ -1499,8 +1729,9 @@ const Lab = (function(){
   function refresh(){
     check();
     const m = S.miss[P.i];
-    if(PARTS[P.i].miss.every(x=>m[x[0]]) && eqDone(P.i) && !S.labDone[P.i]){ S.labDone[P.i] = true; P.celebrate = true; toast(P.i < PARTS.length - 1 ? `${PARTS[P.i].k}เสร็จแล้ว ปลดล็อก${PARTS[P.i+1].k}` : 'ทดลองครบทุกตอนแล้ว ปลดล็อกแบบทดสอบหลังเรียน'); renderRail(); }
+    if(PARTS[P.i].miss.every(x=>m[x[0]]) && eqDone(P.i) && !S.labDone[P.i]){ S.labDone[P.i] = true; P.celebrate = true; SFX.done(); toast(P.i < PARTS.length - 1 ? `${PARTS[P.i].k}เสร็จแล้ว ปลดล็อก${PARTS[P.i+1].k}` : 'ทดลองครบทุกตอนแล้ว ปลดล็อกแบบทดสอบหลังเรียน'); renderRail(); }
     try { S.ps = S.ps || {}; S.ps[P.i] = JSON.parse(JSON.stringify(P.s)); } catch(e){}
+    if(P.warn && P.warn !== P.lastWarn) SFX.bad(); P.lastWarn = P.warn;
     save(); refreshUI();
   }
   function mascotSay(){ if(P && P.mg && Date.now() - P.mg.t < 15000 && P.mg.t > (window.__mgClr || 0)) return ['think', P.mg.msg];
@@ -1508,12 +1739,14 @@ const Lab = (function(){
     if(P.warn) return [s.wrong >= 3 ? 'cry' : 'shock', P.warn];
     if(S.labDone[P.i] && P.celebrate) return ['yay', P.i < PARTS.length - 1 ? `เก่งมาก ครบทุกภารกิจแล้ว ไป${PARTS[P.i+1].k}กันต่อเลย` : 'สุดยอด ทำครบทุกตอนแล้ว ไปทำแบบทดสอบหลังเรียนกัน'];
     if(P.say) return ['wow', P.say];
+    if(P.i===4){ if(s.cur){ const N = KEYN[s.at]; return ['think', `${KAN.find(x=>x[0]===s.cur)[1]}: ${N.q} (${N.e}) ลากไปทาง "ใช่" หรือ "ไม่ใช่"`]; }
+      const left = KAN.filter(x=>!s.ok[x[0]]); return left.length ? ['think', `ลากสัตว์ไปวางที่ช่อง "เริ่ม" บนแผ่นแผนภาพ (เหลือ ${left.map(x=>x[1]).join(', ')})`] : ['yay','แผนภาพใช่/ไม่ใช่ช่วยจำแนก (classify) สัตว์ทีละขั้น ด้วยคำถามที่ตอบได้ชัดเจน']; }
     const first = P.i < 2 ? 'look' : 'scan', left = sp.filter(x=>!(P.i < 2 ? s.look : s.scan)[x[0]]).map(x=>x[1]);
-    if(!m[first]) return ['think', P.i < 2 ? `แตะสิ่งมีชีวิตเพื่อดูลักษณะ (เหลือ ${left.join(', ')})` : `ลากสัตว์ไปวางบนเครื่องเอกซเรย์ (เหลือ ${left.join(', ')})`];
+    if(!m[first]) return ['think', P.i < 2 ? `แตะสิ่งมีชีวิตเพื่อดูลักษณะ (เหลือ ${left.join(', ')})` : P.i===3 ? `ลากสัตว์ไปวางบนแท่นสังเกต ดูผิว การหายใจ การออกลูก (เหลือ ${left.join(', ')})` : `ลากสัตว์ไปวางบนเครื่องเอกซเรย์ (เหลือ ${left.join(', ')})`];
     if(!m.sort) return ['think', `ลากไปวางในถาดของกลุ่มที่ถูกต้อง (เหลือ ${sp.filter(x=>!s.done[x[0]]).map(x=>x[1]).join(', ')})`];
     if(!m.q1) return ['think','ตอบคำถามในแผงด้านข้าง'];
     if(!m.q2) return ['think','อีกหนึ่งคำถาม'];
-    return ['yay', ['สิ่งมีชีวิตแบ่งเป็นพืช สัตว์ และกลุ่มที่ไม่ใช่พืชและสัตว์ เช่น เห็ด รา','พืชแบ่งเป็นพืชดอกกับพืชไม่มีดอก','สัตว์แบ่งเป็นสัตว์มีกระดูกสันหลังกับไม่มีกระดูกสันหลัง'][P.i]];
+    return ['yay', ['สิ่งมีชีวิตแบ่งเป็นพืช (Plant) สัตว์ (Animal) และกลุ่มที่ไม่ใช่พืชและสัตว์ เช่น เห็ด รา','พืชแบ่งเป็นพืชดอก (Flowering plant) กับพืชไม่มีดอก','สัตว์แบ่งเป็นสัตว์มีกระดูกสันหลัง (Vertebrate) กับไม่มีกระดูกสันหลัง (Invertebrate)','สัตว์มีกระดูกสันหลังมี 5 กลุ่ม: Fish, Amphibian, Reptile, Bird, Mammal'][P.i]];
   }
   function refreshUI(){
     if(!P || !$('#panel')) return;
@@ -1529,16 +1762,19 @@ const Lab = (function(){
     const B = (v, t, on) => `<button class="btn ${on ? '' : 'ghost'} sm" type="button" data-act="lab" data-v="${v}">${t}</button>`;
     const done = t => `<div><span class="status on">${t}</span></div>`;
     const Q = (key, title, opts, cond) => cond ? `<h2 style="margin-top:6px">${title}</h2>${s.ans[key] ? done(opts.find(o=>o[0]===s.ans[key])[1]) : `<div class="row" style="gap:6px">${opts.map(([v,t])=>B('ans:'+key+':'+v, t)).join('')}</div>`}` : '';
-    const sig = JSON.stringify([P.i, s.look, s.scan, s.done, s.ans, P.sel]);
+    const sig = JSON.stringify([P.i, s.look, s.scan, s.done, s.ans, P.sel, s.ok, s.cur, s.at]);
     const left = set.sp.filter(x=>!s.done[x[0]]);
-    let ctrls = left.length ? `<h2>จัดกลุ่ม (แตะชื่อ แล้วเลือกถาด)</h2><div class="row" style="gap:6px">${left.map(x=>B('sel:'+x[0], x[1], P.sel===x[0])).join('')}</div>`
-      + (P.sel ? `<div class="row" style="gap:6px;margin-top:6px">${P.i===2 && !s.scan[P.sel] ? B('scan:'+P.sel, 'ส่องเอกซเรย์', true) : ''}${set.trays.map(t=>B('put:'+P.sel+':'+t[0], '→ ' + t[1], true)).join('')}</div>` : '') : '';
+    let ctrls = P.i===4 ? (s.cur ? `<h2>${KAN.find(x=>x[0]===s.cur)[1]}: ${KEYN[s.at].q}</h2><div class="row" style="gap:6px">${B('kans:y','ใช่ Yes', true)}${B('kans:n','ไม่ใช่ No', true)}</div><div class="note">ปุ่มสำรอง · หรือลากสัตว์ไปตามลูกศรบนแผ่นแผนภาพ</div>`
+        : (KAN.some(x=>!s.ok[x[0]]) ? `<h2>เลือกสัตว์มาเริ่ม (หรือลากไปที่ช่อง “เริ่ม”)</h2><div class="row" style="gap:6px">${KAN.filter(x=>!s.ok[x[0]]).map(x=>B('kst:'+x[0], x[1])).join('')}</div>` : '')) + `<div class="row" style="gap:6px;margin-top:6px">${B('resetPart','เริ่มใหม่')}</div>`
+      : left.length ? `<h2>จัดกลุ่ม (แตะชื่อ แล้วเลือกถาด)</h2><div class="row" style="gap:6px">${left.map(x=>B('sel:'+x[0], x[1], P.sel===x[0])).join('')}</div>`
+      + (P.sel ? `<div class="row" style="gap:6px;margin-top:6px">${SCN() && !s.scan[P.sel] ? B('scan:'+P.sel, P.i===3 ? 'ส่องดูลักษณะ' : 'ส่องเอกซเรย์', true) : ''}${set.trays.map(t=>B('put:'+P.sel+':'+t[0], '→ ' + t[1], true)).join('')}</div>` : '') : '';
     if(P.i===0) ctrls += '' + '';
     else if(P.i===1) ctrls += '' + '';
     else ctrls += '' + '';
-    const res = `<h2>ผลการจัดกลุ่ม</h2>${set.trays.map(([k,n])=>`<div style="font-size:14px;margin:3px 0"><b>${n}:</b> ${set.sp.filter(x=>x[2]===k && s.done[x[0]]).map(x=>x[1]).join(', ') || '–'}</div>`).join('')}${P.i===2 ? `<div class="note" style="margin-top:4px">ส่องเอกซเรย์แล้ว ${set.sp.filter(x=>s.scan[x[0]]).length}/8</div>` : `<div class="note" style="margin-top:4px">ดูลักษณะแล้ว ${set.sp.filter(x=>s.look[x[0]]).length}/${set.sp.length}</div>`}`;
-    const r = $('#pRes'); if(r.dataset.h !== res){ r.innerHTML = res; r.dataset.h = res; }
+    const res = P.i===4 ? `<h2>ผลจากแผนภาพ</h2>${KAN.map(([k,n,L])=>`<div style="font-size:14px;margin:3px 0"><b>${n}:</b> ${s.ok[k] ? KEYL[L][0] + ' ' + KEYL[L][1] : '–'}</div>`).join('')}` : `<h2>ผลการจัดกลุ่ม</h2>${set.trays.map(([k,n])=>`<div style="font-size:14px;margin:3px 0"><b>${n}:</b> ${set.sp.filter(x=>x[2]===k && s.done[x[0]]).map(x=>x[1]).join(', ') || '–'}</div>`).join('')}${SCN() ? `<div class="note" style="margin-top:4px">${P.i===3 ? 'สังเกตบนแท่นแล้ว' : 'ส่องเอกซเรย์แล้ว'} ${set.sp.filter(x=>s.scan[x[0]]).length}/${set.sp.length}</div>` : `<div class="note" style="margin-top:4px">ดูลักษณะแล้ว ${set.sp.filter(x=>s.look[x[0]]).length}/${set.sp.length}</div>`}`;
+    ctrls = `<div id="resBox" style="flex-basis:100%;display:flex;flex-direction:column;gap:2px"></div>` + ctrls + vocabBox(P.i);
     if(sig !== P.ctrlSig || !$('#pCtrl').innerHTML){ $('#pCtrl').innerHTML = ctrls; P.ctrlSig = sig; }
+    setHTML('#resBox', res); setHTML('#pRes', '');
     const doneP = S.labDone[P.i];
     const nextBtn = doneP ? nextPartBtn(P.i) : '';
     setHTML('#pMiss', missBox(P.i, part, k=>!!(m[k]), nextBtn));
@@ -1552,9 +1788,11 @@ const Lab = (function(){
     if(!P) return;
     if(v==='camL') camRotate(-Math.PI/7); else if(v==='camR') camRotate(Math.PI/7);
     else if(v==='zin') camZoom(.82); else if(v==='zout') camZoom(1.2);
-    else if(v==='camReset'){ R.camera.position.copy(CAMS[P.i].pos); R.controls.target.copy(CAMS[P.i].tgt); }
+    else if(v==='camReset'){ P.camGo = null; camHome(); }
+    else if(v.startsWith('kst:')) act(()=>kStart(v.slice(4)));
+    else if(v.startsWith('kans:')) act(()=>kAnswer(v.slice(5)));
     else if(v==='resetPart'){ if(S.ps) delete S.ps[P.i]; P = fresh(P.i); build(); }
-    else if(v.startsWith('sel:')){ const k = v.slice(4); P.sel = P.sel===k ? null : k; act(()=>{ if(P.sel){ if(P.i < 2) inspect(k); else if(P.s.scan[k]) P.say = `${SET().sp.find(x=>x[0]===k)[1]}: ${XR[k]}`; } }); }
+    else if(v.startsWith('sel:')){ const k = v.slice(4); P.sel = P.sel===k ? null : k; act(()=>{ if(P.sel){ if(P.i < 2) inspect(k); else if(P.s.scan[k]) P.say = P.i===3 ? `${SET().sp.find(x=>x[0]===k)[1]}: ${FEAT[k].join(' · ')}` : `${SET().sp.find(x=>x[0]===k)[1]}: ${XR[k]}`; } }); }
     else if(v.startsWith('look:')) act(()=>inspect(v.slice(5)));
     else if(v.startsWith('scan:')) act(()=>scanIt(v.slice(5)));
     else if(v.startsWith('put:')){ const [,k,g] = v.split(':'); P.sel = null; act(()=>sortIt(k, g)); }
@@ -1565,7 +1803,7 @@ const Lab = (function(){
   let drag = null; const ndc = new THREE.Vector2();
   function pick(e){ const r = R.renderer.domElement.getBoundingClientRect(); ndc.set(((e.clientX-r.left)/r.width)*2-1, -((e.clientY-r.top)/r.height)*2+1); R.raycaster.setFromCamera(ndc, R.camera); }
   function rootOf(o){ while(o && !o.userData.id) o = o.parent; return o; }
-  const movable = id => !!(P.items && P.items[id]) && !P.s.done[id];
+  const movable = id => !!(P.items && P.items[id]) && !P.s.done[id] && !(P.i===4 && P.s.ok[id]);
   function bindPointer(){
     const el = R.renderer.domElement;
     el.addEventListener('pointerdown', e=>{
@@ -1593,7 +1831,7 @@ const Lab = (function(){
     };
     el.addEventListener('pointerup', end); el.addEventListener('pointercancel', end);
   }
-  function tap(id){ if(!P.items[id]) return; if(P.i < 2) act(()=>inspect(id)); else if(P.s.scan[id]) act(()=>{ P.say = `${SET().sp.find(x=>x[0]===id)[1]}: ${XR[id]}`; }); else toast('ลากสัตว์ไปวางบนเครื่องเอกซเรย์'); }
+  function tap(id){ if(!P.items[id]) return; if(P.i===4){ if(P.s.ok[id]) act(()=>{ const a = KAN.find(x=>x[0]===id); P.say = `${a[1]}อยู่กลุ่ม${KEYL[a[2]][0]} (${KEYL[a[2]][1]})`; }); else if(!P.s.cur) act(()=>kStart(id)); else toast('ลากไปตามลูกศร ใช่ หรือ ไม่ใช่'); return; } if(P.i < 2) act(()=>inspect(id)); else if(P.s.scan[id]) act(()=>{ P.say = P.i===3 ? `${SET().sp.find(x=>x[0]===id)[1]}: ${FEAT[id].join(' · ')}` : `${SET().sp.find(x=>x[0]===id)[1]}: ${XR[id]}`; }); else toast(P.i===3 ? 'ลากสัตว์ไปวางบนแท่นสังเกต' : 'ลากสัตว์ไปวางบนเครื่องเอกซเรย์'); }
 
   /* ----- loop ----- */
   let last = 0, uiT = 0, tt = 0;
@@ -1603,7 +1841,9 @@ const Lab = (function(){
     const dt = Math.min(.1, (t-last)/1000 || 0); last = t; tt += dt;
     R.controls.update();
     if(P){
-      Object.entries(P.items).forEach(([k,g])=>{ if(!P.s.done[k] && !(drag && drag.g===g) && !g.userData.onScan) g.rotation.y = Math.sin(tt*.8 + k.length)*.25; });
+      Object.entries(P.items).forEach(([k,g])=>{ if(!P.s.done[k] && !P.s.ok[k] && !(drag && drag.g===g) && !g.userData.onScan) g.rotation.y = Math.sin(tt*.8 + k.length)*.25; });
+      if(P.kq && P.kq.visible) P.kq.scale.setScalar(1 + Math.sin(tt*5)*.06);
+      if(P.camGo){ const kk = Math.min(1, dt*3.5); R.controls.target.lerp(P.camGo.tgt, kk); R.camera.position.lerp(P.camGo.pos, kk); if(R.camera.position.distanceTo(P.camGo.pos) < .01) P.camGo = null; }
       uiT += dt; if(uiT > .3){ uiT = 0; if(check()) refresh(); else refreshUI(); }
       if(P.dirty){ P.dirty = false; refresh(); }
       placeLabels();
@@ -1639,7 +1879,7 @@ const Lab = (function(){
       if(R.ro) R.ro.disconnect(); R.ro = new ResizeObserver(resize); R.ro.observe(box); resize();
       if(!R.active){ R.active = true; requestAnimationFrame(tick); }
     },
-    stop(){ if(R){ R.active = false; if(R.ro) R.ro.disconnect(); } },
+    stop(){ SFX.amb({}); if(R){ R.active = false; if(R.ro) R.ro.disconnect(); } },
     refreshUI(){ if(P){ P.ctrlSig = ''; refreshUI(); } },
     action
   };
