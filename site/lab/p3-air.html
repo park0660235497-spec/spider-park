@@ -1588,10 +1588,10 @@ const Lab = (function(){
     const s = P.s, m = S.miss[P.i], part = PARTS[P.i];
     const [mood, msg] = mascotSay();
     $('#bubbleMascot').innerHTML = mascot(moodOf(mood, msg), 80); $('#bubbleMsg').textContent = nk(msg);
-    $('#stageOverlay').innerHTML = S.pred[P.i] ? '' : `<div class="overlay"><div class="card">
+    setHTML('#stageOverlay', S.pred[P.i] ? '' : `<div class="overlay"><div class="card">
       <div class="row" style="gap:14px;flex-wrap:nowrap">${mascot('think',64)}<div><div class="note">${S.nick?esc(S.nick)+' ':''}ลองทำนายก่อนทดลองนะ</div><h2 style="font-size:20px">${part.pred.q}</h2></div></div>
       <div class="chips" role="radiogroup" aria-label="คำทำนาย">${part.pred.o.map(o=>`<button type="button" role="radio" class="chip" aria-checked="false" data-act="pred" data-o="${esc(o)}">${o}</button>`).join('')}</div>
-      <div class="note">ไม่มีถูกหรือผิด ตอบตามที่คิดได้เลย แล้วเข้าไปทดลองดูว่าจริงไหม</div></div></div>`;
+      <div class="note">ไม่มีถูกหรือผิด ตอบตามที่คิดได้เลย แล้วเข้าไปทดลองดูว่าจริงไหม</div></div></div>`);
     const panel = $('#panel');
     if(!$('#pMiss', panel)) panel.innerHTML = `<div class="box" id="pMiss"></div>`;
     let ctrls = '', res = '';

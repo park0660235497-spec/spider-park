@@ -485,13 +485,13 @@ function moodOf(mood, msg){
 const CONF = {
   title:'ส่วนต่าง ๆ ของพืชดอก', short:'ป.4 ส่วนต่าง ๆ ของพืชดอก', subject:'วิทยาศาสตร์ ป.4',
   tags:['วิทยาศาสตร์ ป.4','สิ่งมีชีวิตกับกระบวนการดำรงชีวิต','ห้องแลป 3 มิติ'],
-  sub:'ติดป้ายชื่อราก ลำต้น ใบ ดอก ปักดอกไม้สีขาวในน้ำสีเพื่อดูการลำเลียงน้ำของลำต้น และพาผึ้งไปผสมเกสรจนดอกกลายเป็นผลที่มีเมล็ด',
-  key:'parkilab-p4-plant-v1', file:'ParK_iLab-P4-plant-parts-worksheet.pdf',
+  sub:'ติดป้ายชื่อราก ลำต้น ใบ ดอก ปักดอกไม้สีขาวในน้ำสีเพื่อดูการลำเลียงน้ำของลำต้น พาผึ้งไปผสมเกสรจนดอกกลายเป็นผลที่มีเมล็ด ทดลองว่าพืชต้องการน้ำและแสง และดูส่วนประกอบของดอก พร้อมคำศัพท์ภาษาอังกฤษ',
+  key:'parkilab-p4-plant-v2', file:'ParK_iLab-P4-plant-parts-worksheet.pdf',
   hint:'ลากป้ายชื่อไปวางที่ส่วนของพืช · ลากหลอดหยดสีไปที่บีกเกอร์ ลากดอกไม้ไปปักในบีกเกอร์ · ลากผึ้งไปที่เกสร',
   observe:'สังเกตตำแหน่งของแต่ละส่วน สีของกลีบดอกและเนื้อลำต้นที่เปลี่ยนไป และการเปลี่ยนแปลงของดอกหลังการผสมเกสร',
   guide:[
-    {h:'จุดประสงค์', li:['ระบุส่วนต่าง ๆ ของพืชดอก ได้แก่ ราก ลำต้น ใบ และดอก','บรรยายหน้าที่ของราก ลำต้น ใบ และดอกของพืชดอก','ใช้หลักฐานจากการทดลองอธิบายการลำเลียงน้ำของลำต้น']},
-    {h:'ใช้ห้องแลป 3 มิติอย่างไร', li:['<b>ลากป้ายชื่อ</b> ไปวางที่ส่วนของต้นพืช แล้ว<b>แตะ</b>แต่ละส่วนเพื่ออ่านหน้าที่','<b>ลากหลอดหยด</b>สีแดงไปที่บีกเกอร์ แล้ว<b>ลากดอกไม้สีขาว</b>ไปปักในบีกเกอร์ทั้งสองใบ กดปุ่มให้เวลาผ่านไป','<b>ลากผึ้ง</b>ไปที่อับเรณู (ปลายเกสรสีเหลือง) แล้วพาไปที่ยอดเกสรตรงกลางดอก']},
+    {h:'จุดประสงค์', li:['ระบุส่วนต่าง ๆ ของพืชดอก ได้แก่ ราก ลำต้น ใบ และดอก','บรรยายหน้าที่ของราก ลำต้น ใบ และดอกของพืชดอก','ใช้หลักฐานจากการทดลองอธิบายการลำเลียงน้ำของลำต้น','ทดลองและอธิบายว่าพืชต้องการน้ำและแสงเพื่อการเจริญเติบโต','ระบุส่วนประกอบของดอก ได้แก่ กลีบเลี้ยง กลีบดอก เกสรเพศผู้ และเกสรเพศเมีย','ใช้คำศัพท์ภาษาอังกฤษเกี่ยวกับพืชดอกได้']},
+    {h:'ใช้ห้องแลป 3 มิติอย่างไร', li:['<b>ลากป้ายชื่อ</b> ไปวางที่ส่วนของต้นพืช แล้ว<b>แตะ</b>แต่ละส่วนเพื่ออ่านหน้าที่','<b>ลากหลอดหยด</b>สีแดงไปที่บีกเกอร์ แล้ว<b>ลากดอกไม้สีขาว</b>ไปปักในบีกเกอร์ทั้งสองใบ กดปุ่มให้เวลาผ่านไป','<b>ลากผึ้ง</b>ไปที่อับเรณู (ปลายเกสรสีเหลือง) แล้วพาไปที่ยอดเกสรตรงกลางดอก','<b>กดปุ่มน้ำและแสง</b> ของกระถางแต่ละใบ แล้วให้เวลาผ่านไป','<b>แตะคำศัพท์ภาษาอังกฤษ</b> ในแผงด้านข้างเพื่อฟังเสียงอ่าน']},
     'POE',
     {h:'ข้อควรระวัง (เมื่อทดลองจริง)', li:['ใช้กรรไกรตัดลำต้นด้วยความระมัดระวัง ให้ครูช่วยเมื่อต้องตัด','ล้างมือหลังจับดินและสีผสมอาหาร','สังเกตผึ้งจากระยะไกล ไม่จับหรือรบกวนผึ้ง']}
   ]
@@ -507,7 +507,12 @@ const QUIZ = [
   {q:'ผึ้งช่วยพืชดอกอย่างไร', o:['พาละอองเรณูไปที่ยอดเกสร ช่วยผสมเกสร','กินแมลงที่มาทำลายใบของพืชดอก','พาเมล็ดของพืชไปปลูกในที่ไกล ๆ','นำน้ำหวานมาเติมให้ดอกใช้สร้างผล'], a:0, why:'ผึ้งบินไปตอมดอก ละอองเรณูติดตัวผึ้งไปที่ยอดเกสร ทำให้ดอกได้รับการผสมเกสร'},
   {q:'หลังจากดอกได้รับการผสมเกสร ส่วนของดอกจะเจริญเป็นอะไร', o:['ผลที่มีเมล็ดอยู่ภายใน','รากใหม่ที่งอกออกมา','ใบอ่อนที่แตกออกมา','ลำต้นที่แตกกิ่งใหม่'], a:0, why:'หลังการผสมเกสร ส่วนโคนของเกสรเพศเมียจะเจริญเป็นผล ภายในมีเมล็ด'},
   {q:'ถ้ารากของต้นไม้ถูกทำลายจนหมด จะเกิดอะไรขึ้นกับต้นไม้', o:['เหี่ยว เพราะไม่ได้รับน้ำ','โตเร็วขึ้น เพราะเบาลง','ใบเขียวขึ้น เพราะได้แสงมาก','ออกดอกมากขึ้น เพราะใช้น้ำน้อย'], a:0, why:'รากทำหน้าที่ดูดน้ำ เมื่อไม่มีราก ต้นไม้ไม่ได้รับน้ำจึงเหี่ยวและตาย'},
-  {q:'ข้อใดจับคู่ส่วนของพืชกับหน้าที่ได้ถูกต้อง', o:['ใบ – สร้างอาหาร','ราก – สืบพันธุ์','ดอก – ดูดน้ำ','ลำต้น – สร้างเมล็ด'], a:0, why:'ใบสร้างอาหาร รากดูดน้ำ ลำต้นลำเลียงน้ำ ดอกสืบพันธุ์'}
+  {q:'ข้อใดจับคู่ส่วนของพืชกับหน้าที่ได้ถูกต้อง', o:['ใบ – สร้างอาหาร','ราก – สืบพันธุ์','ดอก – ดูดน้ำ','ลำต้น – สร้างเมล็ด'], a:0, why:'ใบสร้างอาหาร รากดูดน้ำ ลำต้นลำเลียงน้ำ ดอกสืบพันธุ์'},
+  {q:'คำว่า Root แปลว่าอะไร', say:['Root'], o:['ใบ','ราก','ดอก','ลำต้น'], a:1, why:'Root คือ ราก ทำหน้าที่ดูดน้ำและแร่ธาตุ และยึดลำต้นไว้กับดิน'},
+  {q:'ส่วนที่ทำหน้าที่สร้างอาหาร ภาษาอังกฤษเรียกว่าอะไร', say:['Stem','Root','Flower','Leaf'], o:['Stem','Root','Flower','Leaf'], a:3, why:'Leaf คือ ใบ ทำหน้าที่สร้างอาหาร ส่วน Stem คือลำต้น Root คือราก Flower คือดอก'},
+  {q:'คำว่า Petal หมายถึงข้อใด', say:['Petal'], o:['กลีบเลี้ยง','กลีบดอก','เกสรเพศผู้','เมล็ด'], a:1, why:'Petal คือ กลีบดอก ส่วนกลีบเลี้ยงคือ Sepal'},
+  {q:'ผึ้งพาละอองเรณูไปตกบนยอดเกสร ภาษาอังกฤษเรียกว่าอะไร', say:['Seed','Pollen','Pollination','Stem'], o:['Seed','Pollen','Pollination','Stem'], a:2, why:'Pollination คือ การถ่ายเรณู ส่วน Pollen คือ ละอองเรณู'},
+  {q:'คำว่า Seed แปลว่าอะไร', say:['Seed'], o:['ผล','ดอก','ราก','เมล็ด'], a:3, why:'Seed คือ เมล็ด อยู่ภายในผล (Fruit) และงอกเป็นต้นใหม่ได้'}
 ];
 
 const PARTS = [
@@ -519,12 +524,20 @@ const PARTS = [
    miss:[['setup','หยดสี และปักดอกไม้ในบีกเกอร์ทั้ง 2 ใบ'],['wait','ให้เวลาผ่านไปอย่างน้อย 4 ชั่วโมง'],['cut','ตัดลำต้นตามขวางดูสีภายใน']]},
   {k:'ตอนที่ 3', t:'ดอกกับการสืบพันธุ์', d:'พาผึ้งไปเก็บละอองเรณูที่อับเรณู แล้วนำไปที่ยอดเกสร ให้เวลาผ่านไปจนดอกเจริญเป็นผล แล้วผ่าผลดูเมล็ด', time:'ประมาณ 15 นาที', bg:'#FFF4D6',
    pred:{q:'ถ้าดอกไม่ได้รับละอองเรณูเลย จะเกิดผลหรือไม่', o:['ไม่เกิดผล','เกิดผลตามปกติ','เกิดผลที่ใหญ่กว่าเดิม']},
-   miss:[['pollen','ให้ผึ้งเก็บละอองเรณู'],['poll','พาผึ้งไปผสมเกสรที่ยอดเกสร'],['fruit','รอจนเกิดผล แล้วผ่าดูเมล็ด']]}
+   miss:[['pollen','ให้ผึ้งเก็บละอองเรณู'],['poll','พาผึ้งไปผสมเกสรที่ยอดเกสร'],['fruit','รอจนเกิดผล แล้วผ่าดูเมล็ด']]},
+  {k:'ตอนที่ 4', t:'พืชต้องการน้ำและแสง', d:'จัดกระถาง 3 ใบ ได้ทั้งน้ำและแสง ขาดน้ำ และขาดแสง ให้เวลาผ่านไป แล้วเปรียบเทียบการเจริญเติบโต', time:'ประมาณ 15 นาที', bg:'#E8F4FD',
+   pred:{q:'ต้นไม้ที่ได้น้ำแต่อยู่ในกล่องทึบไม่มีแสง จะเป็นอย่างไร', o:['ต้นผอม ใบซีดเหลือง','เขียวดีเหมือนต้นปกติ','ตายทันทีในวันแรก']},
+   miss:[['setup','จัดกระถาง: ครบทั้งน้ำและแสง / ขาดน้ำ / ขาดแสง'],['days','ให้เวลาผ่านไปอย่างน้อย 7 วัน'],['measure','แตะดูกระถางครบทั้ง 3 ใบ'],['pick','เลือกกระถางที่เจริญเติบโตดีที่สุด']]},
+  {k:'ตอนที่ 5', t:'ส่วนประกอบของดอก', d:'ติดป้ายกลีบเลี้ยง กลีบดอก เกสรเพศผู้ เกสรเพศเมีย แตะอ่านหน้าที่ แล้วแยกส่วนดอกออกเป็นชั้น ๆ', time:'ประมาณ 15 นาที', bg:'#F3EDFC',
+   pred:{q:'ส่วนใดของดอกที่อยู่นอกสุดและมีสีเขียว', o:['กลีบเลี้ยง','กลีบดอก','เกสรเพศเมีย']},
+   miss:[['tag','ติดป้ายส่วนประกอบของดอกครบ 4 ส่วน'],['look','แตะอ่านหน้าที่ครบ 4 ส่วน'],['explode','แยกส่วนดอก ดูเรียงจากนอกเข้าใน']]}
 ];
 const PART_ART = [
   `<svg width="200" height="110" viewBox="0 0 200 110" aria-hidden="true"><rect x="70" y="72" width="60" height="34" rx="6" fill="#C9A06B"/><path d="M100 72 V22" stroke="#3BA55C" stroke-width="5"/><ellipse cx="80" cy="50" rx="18" ry="6" fill="#4CB86A" transform="rotate(-20 80 50)"/><ellipse cx="120" cy="40" rx="18" ry="6" fill="#4CB86A" transform="rotate(20 120 40)"/>${[0,72,144,216,288].map(a=>`<ellipse cx="100" cy="12" rx="8" ry="4" fill="#F48FB1" transform="rotate(${a} 100 20)"/>`).join('')}<circle cx="100" cy="20" r="5" fill="#F2C94C"/><path d="M100 80 l-10 18 M100 80 l10 18 M100 80 v22" stroke="#8C6A43" stroke-width="2"/></svg>`,
   `<svg width="200" height="110" viewBox="0 0 200 110" aria-hidden="true"><rect x="40" y="55" width="44" height="50" rx="4" fill="#DCEBFB" stroke="#9AB4D8"/><rect x="42" y="72" width="40" height="31" fill="#BFE0FF"/><rect x="116" y="55" width="44" height="50" rx="4" fill="#DCEBFB" stroke="#9AB4D8"/><rect x="118" y="72" width="40" height="31" fill="#F27474"/><path d="M62 90 V20 M138 90 V20" stroke="#3BA55C" stroke-width="4"/><circle cx="62" cy="18" r="12" fill="#fff" stroke="#ccc"/><circle cx="138" cy="18" r="12" fill="#F7B6C2" stroke="#E25555"/></svg>`,
-  `<svg width="200" height="110" viewBox="0 0 200 110" aria-hidden="true">${[0,60,120,180,240,300].map(a=>`<ellipse cx="100" cy="40" rx="22" ry="9" fill="#F7B6C2" transform="rotate(${a} 100 60)"/>`).join('')}<circle cx="100" cy="60" r="10" fill="#7FCB8E"/><circle cx="100" cy="52" r="4" fill="#3BA55C"/><g transform="translate(150 30)"><ellipse rx="12" ry="8" fill="#F2C94C"/><path d="M-6 -8 v16 M2 -8 v16" stroke="#333" stroke-width="3"/><ellipse cx="-2" cy="-12" rx="7" ry="4" fill="#E8F2FE"/></g></svg>`
+  `<svg width="200" height="110" viewBox="0 0 200 110" aria-hidden="true">${[0,60,120,180,240,300].map(a=>`<ellipse cx="100" cy="40" rx="22" ry="9" fill="#F7B6C2" transform="rotate(${a} 100 60)"/>`).join('')}<circle cx="100" cy="60" r="10" fill="#7FCB8E"/><circle cx="100" cy="52" r="4" fill="#3BA55C"/><g transform="translate(150 30)"><ellipse rx="12" ry="8" fill="#F2C94C"/><path d="M-6 -8 v16 M2 -8 v16" stroke="#333" stroke-width="3"/><ellipse cx="-2" cy="-12" rx="7" ry="4" fill="#E8F2FE"/></g></svg>`,
+  `<svg width="200" height="110" viewBox="0 0 200 110" aria-hidden="true">${[40,100,160].map((x,k)=>`<path d="M${x-18} 78 h36 l-5 24 h-26z" fill="#D9895B"/><path d="M${x} 78 V${k===2?62:k===1?34:44}" stroke="${k===1?'#C9C76A':'#3BA55C'}" stroke-width="3"/><ellipse cx="${x-9}" cy="${k===2?66:k===1?44:52}" rx="9" ry="4" fill="${k===1?'#E3DB7A':k===2?'#B08A4A':'#4CB86A'}"/><ellipse cx="${x+9}" cy="${k===2?68:k===1?40:48}" rx="9" ry="4" fill="${k===1?'#E3DB7A':k===2?'#B08A4A':'#4CB86A'}"/>`).join('')}<circle cx="40" cy="18" r="9" fill="#FFC94D"/><rect x="128" y="20" width="0" height="0"/><path d="M152 10 l6 8 M164 10 l-6 8" stroke="#5B8DEF" stroke-width="3"/></svg>`,
+  `<svg width="200" height="110" viewBox="0 0 200 110" aria-hidden="true">${[0,72,144,216,288].map(a=>`<ellipse cx="100" cy="78" rx="20" ry="7" fill="#7FCB8E" transform="rotate(${a} 100 70)"/>`).join('')}${[36,108,180,252,324].map(a=>`<ellipse cx="100" cy="42" rx="22" ry="9" fill="#F7A8C4" transform="rotate(${a} 100 60)"/>`).join('')}${[0,60,120,180,240,300].map(a=>`<circle cx="${100+Math.cos(a*Math.PI/180)*16}" cy="${54+Math.sin(a*Math.PI/180)*6}" r="4" fill="#F2C94C"/>`).join('')}<path d="M100 72 V44" stroke="#5CB85C" stroke-width="5"/><circle cx="100" cy="42" r="5" fill="#3BA55C"/></svg>`
 ];
 
 const SHEET = [
@@ -542,9 +555,19 @@ const SHEET = [
     ['p3a','ผึ้งที่อับเรณู','.....................................................'],
     ['p3b','ผึ้งที่ยอดเกสร','.....................................................'],
     ['p3c','หลังผ่านไปหลายสัปดาห์','.....................................................'],
-    ['p3d','ดอกที่ได้รับการผสมเกสรจะเจริญเป็น',['ผลที่มีเมล็ด','ราก','ใบ']]], concl:'p3s', cq:'อธิบายว่าดอกมีความสำคัญต่อการเกิดต้นพืชรุ่นใหม่อย่างไร'}
+    ['p3d','ดอกที่ได้รับการผสมเกสรจะเจริญเป็น',['ผลที่มีเมล็ด','ราก','ใบ']]], concl:'p3s', cq:'อธิบายว่าดอกมีความสำคัญต่อการเกิดต้นพืชรุ่นใหม่อย่างไร'},
+  {title:'ตอนที่ 4 พืชต้องการน้ำและแสง', cols:['กระถาง','ผลหลังผ่านไป 7 วัน'], rows:[
+    ['p4a','ได้รับน้ำและแสง (Water + Sunlight)','.....................................................'],
+    ['p4b','ได้รับน้ำ แต่ไม่มีแสง','.....................................................'],
+    ['p4c','ได้รับแสง แต่ไม่ได้น้ำ','.....................................................'],
+    ['p4d','กระถางที่เจริญเติบโตดีที่สุด',['น้ำ + แสง','น้ำอย่างเดียว','แสงอย่างเดียว']]], concl:'p4s', cq:'พืชต้องการอะไรเพื่อการเจริญเติบโต อธิบายจากผลการทดลอง'},
+  {title:'ตอนที่ 5 ส่วนประกอบของดอก', cols:['ส่วนประกอบของดอก','หน้าที่'], rows:[
+    ['p5a','กลีบเลี้ยง (Sepal)','.....................................................'],
+    ['p5b','กลีบดอก (Petal)','.....................................................'],
+    ['p5c','เกสรเพศผู้ (Stamen)','.....................................................'],
+    ['p5d','เกสรเพศเมีย (Pistil)','.....................................................']], concl:'p5s', cq:'วาดดอกไม้ 1 ดอก ชี้บอกส่วนประกอบทั้ง 4 ส่วน เขียนชื่อภาษาไทยและภาษาอังกฤษ'}
 ];
-const GUIDE = [{"tag": ["[data-v^=\"sel:\"]", "เลือกป้ายชื่อ แล้วกดส่วนของพืชที่ตรงกัน ให้ครบ 4 ส่วนครับ", [], ""], "look": ["[data-v^=\"look:\"]", "แตะดูหน้าที่ของ ราก ลำต้น ใบ ดอก ให้ครบครับ", [], ""], "q1": ["[data-v^=\"ans:q1:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"], "q2": ["[data-v^=\"ans:q2:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"]}, {"setup": ["dye", "กด “หยดสี” แล้วปักดอกไม้ลงในบีกเกอร์ทั้ง 2 ใบครับ", ["หยดสีลงน้ำ", "ปักดอกไม้ในบีกเกอร์ใบที่ 1", "ปักดอกไม้ในบีกเกอร์ใบที่ 2"], ""], "wait": ["[data-v^=\"hr:\"]", "กดเลื่อนเวลาให้ผ่านไปอย่างน้อย 4 ชั่วโมงครับ", [], ""], "cut": ["cut", "กด “ตัดลำต้น” แล้วดูสีภายในครับ", [], ""], "q": ["[data-v^=\"ans:q:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"]}, {"pollen": ["[data-v^=\"bee:\"]", "พาผึ้งไปที่อับเรณูเพื่อเก็บละอองเรณูครับ", [], ""], "poll": ["[data-v^=\"bee:\"]", "พาผึ้งไปที่ยอดเกสรเพศเมียครับ", [], ""], "fruit": ["week", "กดเลื่อนเวลาจนเกิดผล แล้วกด “ผ่าผล” ครับ", ["เลื่อนเวลาหลายสัปดาห์", "กดผ่าผล ดูเมล็ด"], ""], "q": ["[data-v^=\"ans:qf:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"]}];
+const GUIDE = [{"tag": ["[data-v^=\"sel:\"]", "เลือกป้ายชื่อ แล้วกดส่วนของพืชที่ตรงกัน ให้ครบ 4 ส่วนครับ", [], ""], "look": ["[data-v^=\"look:\"]", "แตะดูหน้าที่ของ ราก ลำต้น ใบ ดอก ให้ครบครับ", [], ""], "q1": ["[data-v^=\"ans:q1:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"], "q2": ["[data-v^=\"ans:q2:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"]}, {"setup": ["dye", "กด “หยดสี” แล้วปักดอกไม้ลงในบีกเกอร์ทั้ง 2 ใบครับ", ["หยดสีลงน้ำ", "ปักดอกไม้ในบีกเกอร์ใบที่ 1", "ปักดอกไม้ในบีกเกอร์ใบที่ 2"], ""], "wait": ["[data-v^=\"hr:\"]", "กดเลื่อนเวลาให้ผ่านไปอย่างน้อย 4 ชั่วโมงครับ", [], ""], "cut": ["cut", "กด “ตัดลำต้น” แล้วดูสีภายในครับ", [], ""], "q": ["[data-v^=\"ans:q:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"]}, {"pollen": ["[data-v^=\"bee:\"]", "พาผึ้งไปที่อับเรณูเพื่อเก็บละอองเรณูครับ", [], ""], "poll": ["[data-v^=\"bee:\"]", "พาผึ้งไปที่ยอดเกสรเพศเมียครับ", [], ""], "fruit": ["week", "กดเลื่อนเวลาจนเกิดผล แล้วกด “ผ่าผล” ครับ", ["เลื่อนเวลาหลายสัปดาห์", "กดผ่าผล ดูเมล็ด"], ""], "q": ["[data-v^=\"ans:qf:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"]}, {"setup": ["[data-v^=\"cw:\"]", "กดปุ่ม น้ำ/แสง ให้กระถางทั้ง 3 ใบต่างกันครับ", [], ""], "days": ["day:3", "กด +3 วัน ให้เวลาผ่านไปอย่างน้อย 7 วันครับ", [], ""], "measure": ["[data-v^=\"see:\"]", "กดดูกระถางทั้ง 3 ใบครับ", [], ""], "pick": ["[data-v^=\"pick:\"]", "เลือกกระถางที่ต้นไม้เจริญเติบโตดีที่สุดครับ", [], ""]}, {"tag": ["[data-v^=\"fsel:\"]", "เลือกป้ายชื่อ แล้วแตะส่วนของดอกที่ตรงกันครับ", [], ""], "look": ["[data-v^=\"flook:\"]", "แตะอ่านหน้าที่ของทั้ง 4 ส่วนครับ", [], ""], "explode": ["explode", "กด “แยกส่วนดอก” ครับ", [], ""]}];
 const ENDQ = [
  [{k:'root', q:'{n}แตะดูราก รากทำหน้าที่อะไร', o:[['food','สร้างอาหารให้ต้นพืช'],['water','ดูดน้ำและยึดลำต้น'],['seed','สร้างผลและเมล็ด']], a:'water',
    h:['รากอยู่ใต้ดิน ใต้ดินมีอะไรที่พืชต้องการ','แตะที่รากแล้วอ่านหน้าที่อีกครั้ง'], why:'รากดูดน้ำและแร่ธาตุจากดิน และยึดลำต้นไว้กับดิน'},
@@ -569,7 +592,23 @@ const ENDQ = [
   {k:'fruit', q:'{n}รอหลายสัปดาห์หลังผสมเกสร ดอกเปลี่ยนเป็นอะไร', o:[['fruit','ผล'],['leaf','ใบ'],['root','ราก']], a:'fruit',
    h:['ให้เวลาผ่านไป แล้วดูที่ดอก','ข้างในมีเมล็ดอยู่'], why:'ดอกที่ได้รับการผสมเกสรจะเจริญเป็นผล'},
   {k:'seed', q:'{n}ผ่าผลแล้วเห็นเมล็ด เมล็ดสำคัญอย่างไร', o:[['new','งอกเป็นพืชต้นใหม่ได้'],['food','สร้างอาหารให้ใบ'],['water','ดูดน้ำให้ผล']], a:'new',
-   h:['ถ้านำเมล็ดไปปลูกจะเกิดอะไร','ดอก → ผล → เมล็ด → ...'], why:'เมล็ดงอกเป็นพืชต้นใหม่ ดอกจึงสำคัญต่อการเกิดพืชรุ่นใหม่'}]
+   h:['ถ้านำเมล็ดไปปลูกจะเกิดอะไร','ดอก → ผล → เมล็ด → ...'], why:'เมล็ดงอกเป็นพืชต้นใหม่ ดอกจึงสำคัญต่อการเกิดพืชรุ่นใหม่'}],
+ [{k:'best', q:'{n}ให้เวลาผ่านไป 7 วัน กระถางใดเจริญเติบโตดีที่สุด', o:[['full','ได้รับทั้งน้ำและแสง'],['dark','ได้น้ำ แต่ไม่มีแสง'],['dry','ได้แสง แต่ไม่ได้น้ำ']], a:'full',
+   h:['ดูสีใบและความแข็งแรงของต้น ไม่ใช่ดูแค่ความสูง','ต้นไหนใบเขียวและตั้งตรงดี'], why:'ต้นที่ได้รับทั้งน้ำและแสง ใบเขียว ลำต้นแข็งแรง เจริญเติบโตดีที่สุด'},
+  {k:'dark', q:'ต้นที่อยู่ในกล่องทึบ (ไม่มีแสง) มีลักษณะอย่างไร', o:[['pale','ลำต้นผอมสูง ใบซีดเหลือง'],['green','ใบเขียวเข้ม แข็งแรงดี'],['dry','เหี่ยวแห้ง ดินแตกระแหง']], a:'pale',
+   h:['เปิดดูต้นที่อยู่ในกล่องทึบ','ไม่มีแสง ใบจะเป็นสีเขียวได้ไหม'], why:'ขาดแสง พืชสร้างอาหารไม่ได้ ลำต้นจึงผอมยืดยาวหาแสง ใบซีดเหลือง'},
+  {k:'dry', q:'{n}ไม่รดน้ำกระถางหนึ่ง ต้นไม้เป็นอย่างไร', o:[['wilt','เหี่ยว ใบเหลืองน้ำตาล'],['tall','สูงขึ้นเร็วกว่าปกติ'],['same','เหมือนกระถางที่รดน้ำ']], a:'wilt',
+   h:['ดูดินและใบของกระถางที่ไม่รดน้ำ','รากหาน้ำในดินแห้งไม่ได้'], why:'ขาดน้ำ ต้นไม้จึงเหี่ยว ใบเหลืองและแห้งเป็นสีน้ำตาล'},
+  {k:'need', q:'การทดลองนี้สรุปได้ว่าพืชต้องการอะไรเพื่อเจริญเติบโต', o:[['wl','น้ำและแสง (Water & Sunlight)'],['w','น้ำอย่างเดียว (Water)'],['l','แสงอย่างเดียว (Sunlight)']], a:'wl',
+   h:['ขาดอย่างใดอย่างหนึ่ง ต้นไม้เป็นอย่างไร','มีแค่กระถางเดียวที่โตดี'], why:'ขาดน้ำหรือขาดแสงอย่างใดอย่างหนึ่ง พืชก็เจริญเติบโตไม่ดี พืชจึงต้องการทั้งน้ำและแสง'}],
+ [{k:'sepal', q:'ส่วนสีเขียวที่อยู่นอกสุดของดอก ห่อหุ้มดอกตูมไว้ คืออะไร', o:[['sepal','กลีบเลี้ยง (Sepal)'],['petal','กลีบดอก (Petal)'],['leaf','ใบ (Leaf)']], a:'sepal',
+   h:['อยู่ใต้กลีบดอก สีเขียว','แตะชั้นนอกสุดแล้วอ่านหน้าที่'], why:'กลีบเลี้ยงอยู่นอกสุด สีเขียว ห่อหุ้มป้องกันดอกตอนยังเป็นดอกตูม'},
+  {k:'petal', q:'{n}คิดว่ากลีบดอกสีสวยมีประโยชน์อย่างไร', o:[['bee','ล่อแมลงมาช่วยผสมเกสร'],['food','สร้างอาหารให้ต้นพืช'],['water','ดูดน้ำเข้าสู่ดอก']], a:'bee',
+   h:['ใครชอบมาตอมดอกไม้สีสวย','นึกถึงผึ้งในตอนที่ 3'], why:'กลีบดอกมีสีสวยและกลิ่นหอม ล่อแมลงให้มาช่วยผสมเกสร'},
+  {k:'stamen', q:'เกสรเพศผู้ (Stamen) ทำหน้าที่อะไร', o:[['pollen','สร้างละอองเรณู'],['fruit','เจริญเป็นผล'],['protect','ห่อหุ้มดอกตูม']], a:'pollen',
+   h:['ปลายเกสรเพศผู้มีอับเรณูสีเหลือง','ผึ้งได้อะไรจากอับเรณู'], why:'เกสรเพศผู้มีอับเรณูที่สร้างละอองเรณู (Pollen)'},
+  {k:'pistil', q:'หลังผสมเกสร ส่วนโคนของเกสรเพศเมีย (Pistil) จะเจริญเป็นอะไร', o:[['fruit','ผล (Fruit)'],['root','ราก (Root)'],['petal','กลีบดอก (Petal)']], a:'fruit',
+   h:['ทบทวนตอนที่ 3 หลังผึ้งผสมเกสร','ส่วนที่พองโตขึ้นและมีเมล็ดอยู่ข้างใน'], why:'ส่วนโคนของเกสรเพศเมียเจริญเป็นผล ภายในมีเมล็ด'}]
 ];
 
 const PD = !CONF.uni && /ป\.\d|ม\.1(?!\d)/.test(CONF.subject || ''), NOG = CONF.uni || PD, MD = !!CONF.uni && !!CONF.resCard, MDC = CONF.resCard==='C';
@@ -689,6 +728,9 @@ function render(){
 document.getElementById('main').addEventListener('click', e=>{
   const a = e.target.closest('[data-act]'); if(!a || a.disabled) return;
   const act = a.dataset.act, v = a.dataset.v;
+  if(act==='sfx'){ const m = SFX.toggle(); a.innerHTML = m ? SND_OFF : SND_ON; a.setAttribute('aria-label', m ? 'เปิดเสียง' : 'ปิดเสียง'); toast(m ? 'ปิดเสียงแล้ว' : 'เปิดเสียงแล้ว'); return; }
+  if(act==='say'){ SFX.speak(v); return; }
+  if(act!=='ans' && act!=='pred') SFX.click(); else SFX.pick();
   if(act==='go') go(v);
   if(act==='part') go('lab', {part:+v});
   if(act==='ans'){ const st = S[ui.view], q0 = Math.min(NQ - 1, Math.max(0, ui.q)); ui.q = q0; st.a[q0] = +v; st.a.length = NQ; save(); if(q0<NQ-1) { setTimeout(()=>{ if(ui.q===q0){ ui.q = q0 + 1; render(); } }, 180); } render(); }
@@ -783,7 +825,7 @@ function vQuiz(kind){
       <h1 style="font-size:22px">ข้อ ${ui.q+1} จาก ${NQ}</h1>${isPre && !S.pre.skip ? `<button class="btn ghost sm" type="button" data-act="skipPre" style="margin-top:6px">ข้ามไปก่อน ทำทีหลังได้ ${ICON.arrow}</button>` : ''}</div>
       <div class="qdots" role="group" aria-label="ไปที่ข้อ">${st.a.map((x,i)=>`<button type="button" class="qdot ${x!==null?'ans':''} ${i===ui.q?'cur':''}" data-act="q" data-v="${i}" aria-label="ข้อ ${i+1}">${i+1}</button>`).join('')}</div></div>
     <section class="card pad" style="display:flex;flex-direction:column;gap:20px">
-      <h2 class="qtext">${esc(it.q)}</h2>${fig}
+      <h2 class="qtext">${esc(it.q)}</h2>${it.say ? `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:-8px">${it.say.map(w=>`<button class="chip" type="button" data-act="say" data-v="${w}" style="display:inline-flex;align-items:center;gap:6px">${SPK}ฟังเสียง ${w}</button>`).join('')}</div>` : ''}${fig}
       <div class="opts" role="radiogroup" aria-label="ตัวเลือก">${[0,1,2,3].map(j=>`<button type="button" role="radio" class="opt ${it.pics?'pic':''}" aria-checked="${st.a[ui.q]===j}" data-act="ans" data-v="${j}">${optHTML(it,j)}</button>`).join('')}</div>
     </section>
     <div class="row spread">
@@ -851,7 +893,7 @@ function eqSt(i){ S.eq = S.eq || {}; const st = S.eq[i] = S.eq[i] || {a:{}, w:{}
 const eqQOk = (st, q) => st.a[q.k]===q.a && (!q.r || st.r[q.k]===q.ra);
 function eqDone(i){ const st = eqSt(i); return EQ(i).every(q=>eqQOk(st, q)); }
 function eqAnswer(v){ const [i, k, o] = v.split('|'), q = EQ(+i).find(x=>x.k===k), st = eqSt(+i); if(!q || st.a[k]===q.a) return false;
-  st.a[k] = o; if(o!==q.a){ st.w[k] = (st.w[k] || 0) + 1; } else toast(q.r ? 'ข้อสรุปถูกต้อง ต่อไปเลือกเหตุผล' : 'ถูกต้อง เก่งมาก!'); save(); return o===q.a; }
+  st.a[k] = o; if(o!==q.a){ st.w[k] = (st.w[k] || 0) + 1; SFX.bad(); } else SFX.ok(), toast(q.r ? 'ข้อสรุปถูกต้อง ต่อไปเลือกเหตุผล' : 'ถูกต้อง เก่งมาก!'); save(); return o===q.a; }
 function eqReason(v){ const [i, k, o] = v.split('|'), q = EQ(+i).find(x=>x.k===k), st = eqSt(+i); if(!q || !q.r || st.a[k]!==q.a || st.r[k]===q.ra) return false;
   st.r[k] = o; if(o!==q.ra){ st.wr[k] = (st.wr[k] || 0) + 1; } else toast('ถูกต้องทั้งข้อสรุปและเหตุผล'); save(); return o===q.ra; }
 const EQPOS = (()=>{ const m = {}; if(typeof ENDQ==='undefined') return m; let h = 2166136261; for(const ch of String(CONF.key) + 'eq'){ h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619) >>> 0; }
@@ -1102,6 +1144,7 @@ ${CONF.hs ? '' : `${PD ? '' : `          <button class="ibtn" type="button" data
           <button class="ibtn" type="button" data-act="lab" data-v="zin" aria-label="ซูมเข้า">${ICON.zin}</button>
           <button class="ibtn" type="button" data-act="lab" data-v="zout" aria-label="ซูมออก">${ICON.zout}</button>`}
           <button class="ibtn" type="button" data-act="lab" data-v="camReset" aria-label="มุมมองเริ่มต้น">${ICON.cube}</button>
+          <button class="ibtn" type="button" data-act="sfx" aria-label="${SFX.muted ? 'เปิดเสียง' : 'ปิดเสียง'}">${SFX.muted ? SND_OFF : SND_ON}</button>
 ${PD ? `          <button class="ibtn" type="button" data-act="guideinfo" aria-label="คู่มือการทำกิจกรรม" style="font-weight:700;font-size:20px;color:var(--primary-d)">ⓘ</button>
           <button class="ibtn" type="button" data-act="full" id="fullBtn" aria-label="ขยายเต็มจอ" style="font-size:20px">⛶</button>` : ''}
 ${CONF.uni ? `          <button class="ibtn" type="button" data-act="whyopen" aria-label="อธิบายการทดลองตอนนี้" style="font-weight:700;font-size:18px;color:var(--primary-d)">ⓘ</button>
@@ -1252,6 +1295,57 @@ function vResult(){
   </div>`;
 }
 
+/* ---------- sound effects + speech (Web Audio, no files) ---------- */
+const SPK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>';
+const SND_ON = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>';
+const SND_OFF = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9l5 6M21 9l-5 6"/></svg>';
+const SFX = (function(){
+  let ac = null, master = null, noise = null, ch = {}, last = {}, muted = false;
+  try { muted = localStorage.getItem('parkilab-sfx-mute') === '1'; } catch(_){}
+  const VOL = .32;
+  function unlock(){
+    if(ac){ if(ac.state === 'suspended') ac.resume(); return; }
+    try {
+      ac = new (window.AudioContext || window.webkitAudioContext)();
+      master = ac.createGain(); master.gain.value = muted ? 0 : VOL; master.connect(ac.destination);
+      const len = ac.sampleRate*2, buf = ac.createBuffer(1, len, ac.sampleRate), d = buf.getChannelData(0);
+      for(let i=0;i<len;i++) d[i] = Math.random()*2 - 1; noise = buf;
+      const mk = (type, freq, q, lfo) => { const src = ac.createBufferSource(); src.buffer = noise; src.loop = true;
+        const f = ac.createBiquadFilter(); f.type = type; f.frequency.value = freq; f.Q.value = q;
+        const g = ac.createGain(); g.gain.value = 0; src.connect(f); f.connect(g); g.connect(master); src.start();
+        if(lfo){ const o = ac.createOscillator(), og = ac.createGain(); o.frequency.value = lfo; og.gain.value = freq*.35; o.connect(og); og.connect(f.frequency); o.start(); }
+        return g; };
+      const buzz = () => { const o = ac.createOscillator(); o.type = 'sawtooth'; o.frequency.value = 210; const v = ac.createOscillator(), vg = ac.createGain(); v.frequency.value = 9; vg.gain.value = 14; v.connect(vg); vg.connect(o.frequency); v.start();
+        const f = ac.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 900; const g = ac.createGain(); g.gain.value = 0; o.connect(f); f.connect(g); g.connect(master); o.start(); return g; };
+      ch = { rain: mk('bandpass', 2600, .6), boil: mk('lowpass', 520, 1.2, 3.1), wind: mk('bandpass', 420, 1.4, .18), hiss: mk('highpass', 5200, .7), sizzle: mk('highpass', 2800, 1.5, 7), buzz: buzz() };
+    } catch(_){ ac = null; }
+  }
+  addEventListener('pointerdown', unlock, {capture:true, passive:true});
+  addEventListener('keydown', unlock, {capture:true});
+  function tone(f0, f1, dur, type='sine', vol=.5, delay=0){
+    if(!ac || muted) return; const t = ac.currentTime + delay, o = ac.createOscillator(), g = ac.createGain();
+    o.type = type; o.frequency.setValueAtTime(f0, t); if(f1) o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + .012); g.gain.exponentialRampToValueAtTime(.001, t + dur);
+    o.connect(g); g.connect(master); o.start(t); o.stop(t + dur + .02);
+  }
+  const AMB = {rain:.5, boil:.9, wind:.55, hiss:.12, sizzle:.18, buzz:.07};
+  return {
+    unlock,
+    get muted(){ return muted; },
+    toggle(){ muted = !muted; try { localStorage.setItem('parkilab-sfx-mute', muted ? '1' : '0'); } catch(_){} if(master) master.gain.setTargetAtTime(muted ? 0 : VOL, ac.currentTime, .05); if(!muted){ unlock(); tone(660, 990, .12, 'sine', .4); } return muted; },
+    click(){ tone(820, 620, .05, 'triangle', .25); },
+    pick(){ tone(380, 620, .09, 'sine', .35); },
+    drop(){ tone(240, 140, .12, 'sine', .45); },
+    ok(){ tone(660, 0, .12, 'sine', .4); tone(990, 0, .18, 'sine', .35, .09); },
+    bad(){ tone(220, 170, .22, 'square', .12); },
+    done(){ [523, 659, 784, 1046].forEach((f,k)=>tone(f, 0, .22, 'triangle', .35, k*.09)); },
+    pop(){ tone(900 + Math.random()*700, 1500, .04, 'sine', .12); },
+    tick(){ tone(2400 + Math.random()*800, 0, .03, 'square', .06); },
+    speak(w){ try{ const u = new SpeechSynthesisUtterance(w); u.lang = 'en-US'; u.rate = .8; const vs = speechSynthesis.getVoices().filter(x=>/^en/i.test(x.lang)); if(vs.length) u.voice = vs.find(x=>/en-US/i.test(x.lang)) || vs[0]; speechSynthesis.cancel(); speechSynthesis.speak(u); } catch(_){ toast('อุปกรณ์นี้อ่านออกเสียงไม่ได้'); } },
+    amb(lv){ if(!ac) return; Object.keys(ch).forEach(k=>{ const v = Math.max(0, Math.min(1, (lv && lv[k]) || 0))*AMB[k]; if(Math.abs((last[k]||0) - v) > .01){ last[k] = v; ch[k].gain.setTargetAtTime(v, ac.currentTime, .25); } }); }
+  };
+})();
+
 /* ---------- PDF ---------- */
 async function makePdf(btn){
   const el = $('#pdfsheet'), pages = sheetPages();
@@ -1291,7 +1385,9 @@ const Lab = (function(){
   const CAMS = [
     {pos:V(0,1.9,5.6), tgt:V(-.1,1.05,0)},
     {pos:V(.3,2.2,5.2), tgt:V(.3,.8,0)},
-    {pos:V(.3,2.9,3.6), tgt:V(.1,1.25,0)}
+    {pos:V(.3,2.9,3.6), tgt:V(.1,1.25,0)},
+    {pos:V(0,2.6,5.9), tgt:V(0,.95,0)},
+    {pos:V(0,1.85,2.45), tgt:V(0,1.3,0)}
   ];
   function mat(c, o={}){ return new THREE.MeshStandardMaterial(Object.assign({color:c, roughness:.55, metalness:0}, o)); }
   const METAL = () => mat(0xB9C0CE, {metalness:.8, roughness:.3});
@@ -1317,7 +1413,7 @@ const Lab = (function(){
       const renderer = new THREE.WebGLRenderer({antialias:true});
       renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
       renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-      const scene = new THREE.Scene(); scene.background = new THREE.Color(0xEDF1FA);
+      const scene = new THREE.Scene(); scene.background = canvasTex(4, 256, (cx)=>{ const g = cx.createLinearGradient(0,0,0,256); g.addColorStop(0,'#CFE3FA'); g.addColorStop(.55,'#E8F1FB'); g.addColorStop(1,'#F6F2EC'); cx.fillStyle = g; cx.fillRect(0,0,4,256); });
       const camera = new THREE.PerspectiveCamera(42, 1, 0.3, 60);
       const controls = new THREE.OrbitControls(camera, renderer.domElement);
       controls.enablePan = false; controls.enableDamping = true; controls.dampingFactor = .08;
@@ -1384,26 +1480,30 @@ const Lab = (function(){
   function rnd(seed){ let x = Math.sin(seed*127.1)*43758.5453; return x - Math.floor(x); }
   function scr(v){ const r = R.renderer.domElement.getBoundingClientRect(); const p = v.clone().project(R.camera); return {x:r.left + (p.x*.5+.5)*r.width, y:r.top + (-p.y*.5+.5)*r.height}; }
   function ellip(rx, ry, rz, m, s=16){ const o = sph(1, m, s); o.scale.set(rx, ry, rz); return o; }
+  function makeLeaf(L, Wd, m, droop=.35){ const sh = new THREE.Shape(); sh.moveTo(0,0); sh.quadraticCurveTo(L*.38, Wd, L, 0); sh.quadraticCurveTo(L*.38, -Wd, 0, 0);
+    const g = new THREE.ShapeGeometry(sh, 12), p = g.attributes.position; for(let i=0;i<p.count;i++){ const x = p.getX(i)/L, y = p.getY(i); p.setZ(i, -droop*x*x*L + Math.abs(y)*.25); } g.computeVertexNormals();
+    const o = new THREE.Group(), leaf = new THREE.Mesh(g, m); leaf.rotation.x = -Math.PI/2; o.add(leaf);
+    const rib = new THREE.Mesh(new THREE.CylinderGeometry(.004,.007,L*.92,5), mat(0x8FD39A)); rib.rotation.z = Math.PI/2; rib.position.set(L*.46, .004, 0); o.add(rib); return o; }
   function idTag(o, id){ o.userData.id = id; o.traverse(c=>{ if(c!==o && c.isMesh) c.userData.pid = id; }); return o; }
 
   /* ----- constants ----- */
   const PL = {x:-.7, z:0};
-  const PN = {root:'ราก', stem:'ลำต้น', leaf:'ใบ', flower:'ดอก'}, PK = Object.keys(PN);
+  const PN = {root:'ราก', stem:'ลำต้น', leaf:'ใบ', flower:'ดอก'}, PK = Object.keys(PN), EN = {root:'Root', stem:'Stem', leaf:'Leaf', flower:'Flower'};
   const PC = {root:'#B7834A', stem:'#3BA55C', leaf:'#2F9E6E', flower:'#E2649A'};
-  const PFUN = {root:'ราก: ดูดน้ำและแร่ธาตุจากดิน และยึดลำต้นไว้กับดิน', stem:'ลำต้น: ลำเลียงน้ำจากรากขึ้นไป และชูกิ่ง ใบ ดอก ให้รับแสง', leaf:'ใบ: มีสีเขียว ทำหน้าที่สร้างอาหารให้พืช', flower:'ดอก: ทำหน้าที่สืบพันธุ์ เมื่อผสมเกสรจะกลายเป็นผลและเมล็ด'};
+  const PFUN = {root:'ราก (Root): ดูดน้ำและแร่ธาตุจากดิน และยึดลำต้นไว้กับดิน', stem:'ลำต้น (Stem): ลำเลียงน้ำจากรากขึ้นไป และชูกิ่ง ใบ ดอก ให้รับแสง', leaf:'ใบ (Leaf): มีสีเขียว ทำหน้าที่สร้างอาหารให้พืช', flower:'ดอก (Flower): ทำหน้าที่สืบพันธุ์ เมื่อผสมเกสรจะกลายเป็นผลและเมล็ด'};
   const PT = {root:V(PL.x, TABLE_Y + .32, PL.z), stem:V(PL.x, TABLE_Y + 1.0, PL.z), leaf:V(PL.x + .42, TABLE_Y + 1.32, PL.z), flower:V(PL.x, TABLE_Y + 2.05, PL.z)};
   const BK = [{x:-1.0, z:-.2, dye:false}, {x:.5, z:-.2, dye:true}];
   const FL = {x:-.1, z:-.1};
 
   /* ----- part setup ----- */
-  const defaults = i => ({wrong:0, ans:{}, tag:{}, look:{}, dye:false, inB:{}, hrs:0, u:{f1:0, f2:0}, cut:false, pollen:false, poll:false, wk:0, open:false});
+  const defaults = i => ({wrong:0, ans:{}, tag:{}, look:{}, dye:false, inB:{}, hrs:0, u:{f1:0, f2:0}, cut:false, pollen:false, poll:false, wk:0, open:false, cond:{A:{w:true,l:true},B:{w:true,l:true},C:{w:true,l:true}}, day:0, seen:{}, pick:null, ftag:{}, flook:{}, exp:false});
   const restoreS = i => { const s = defaults(i); try { if(S.ps && S.ps[i]) Object.assign(s, JSON.parse(JSON.stringify(S.ps[i]))); } catch(e){} return s; };
   const fresh = i => ({i, s:restoreS(i), labels:[], celebrate:false, dirty:false, ctrlSig:'', warn:null, sel:null});
   function clearWorld(){ while(R.world.children.length) R.world.remove(R.world.children[0]); }
   function build(){
     clearWorld(); P.labels = []; P.ctrlSig = ''; P.items = {}; P.sel = null;
-    const cam = CAMS[P.i]; R.camera.position.copy(cam.pos); R.controls.target.copy(cam.tgt);
-    if(P.i===0) buildP1(); else if(P.i===1) buildP2(); else buildP3();
+    const cam = CAMS[P.i]; R.controls.minDistance = P.i===4 ? 1.6 : 3; R.camera.position.copy(cam.pos); R.controls.target.copy(cam.tgt);
+    if(P.i===0) buildP1(); else if(P.i===1) buildP2(); else if(P.i===2) buildP3(); else if(P.i===3) buildP4(); else buildP5();
     labelsDOM(); sync(); refresh();
   }
   function item(id, g, home){ g.userData.id = id; g.userData.home = home.clone(); g.position.copy(home); shadowAll(g); R.world.add(g); P.items[id] = g; return g; }
@@ -1420,27 +1520,30 @@ const Lab = (function(){
     const jar = cyl(.46,.42,.72, GLASS(.18), 32, true); jar.position.y = .36; g.add(jar);
     g.add(at(cyl(.42,.42,.03, GLASS(.3), 32), 0,.015,0));
     const soil = cyl(.43,.41,.56, TRANS(0x8C6A43, .45), 32); soil.position.y = .3; g.add(soil);
+    for(let k=0;k<9;k++){ const pb = sph(.025 + rnd(k)*.02, mat(0xB8A48A,{roughness:1}), 8); const a = rnd(k*5)*6.28, r = .12 + rnd(k*9)*.25; pb.position.set(Math.cos(a)*r, .59, Math.sin(a)*r); g.add(pb); }
     const roots = new THREE.Group(); const rm = mat(0xE8D3A8);
     roots.add(at(cyl(.03,.012,.45, rm, 8), 0,.36,0));
     for(let k=0;k<7;k++){ const a = k/7*Math.PI*2, r = cyl(.014,.005,.32, rm, 6); r.position.set(Math.cos(a)*.12, .3 - (k%3)*.07, Math.sin(a)*.12); r.rotation.set(Math.sin(a)*.9, 0, -Math.cos(a)*.9); roots.add(r); }
     g.add(idTag(roots, 'part:root'));
     const stem = cyl(.035,.045,1.42, mat(0x3BA55C), 12); stem.position.y = 1.29; const sg = new THREE.Group(); sg.add(stem); sg.add(hitBox(.18,1.0,.18,1.1)); g.add(idTag(sg, 'part:stem'));
-    const lg = new THREE.Group(); const lm = mat(0x4CB86A, {roughness:.5});
-    [[1.0, 1, .1], [1.3, -1, .9], [1.55, 1, 2.1], [1.1, -1, 2.6]].forEach(([y, s, ry])=>{ const l = ellip(.3,.025,.12, lm, 16); l.position.set(Math.cos(ry)*.3*s, y, -Math.sin(ry)*.3*s*.3); l.rotation.set(0, ry*.3, s*.35); lg.add(l); });
-    const big = ellip(.32,.025,.13, lm, 16); big.position.set(.38, 1.27, 0); big.rotation.z = .3; lg.add(big);
+    const lg = new THREE.Group(); const lm = mat(0x4CB86A, {roughness:.5, side:THREE.DoubleSide});
+    [[1.0, 2.6], [1.3, .9], [1.55, -2.2], [1.12, -1.1], [1.7, 1.7]].forEach(([y, ry])=>{ const l = makeLeaf(.36, .12, lm); l.position.set(0, y, 0); l.rotation.y = ry; l.rotation.z = .25; lg.add(l); });
+    const big = makeLeaf(.44, .15, lm, .25); big.position.set(.03, 1.25, 0); big.rotation.z = .15; lg.add(big); const lh = hitBox(.5,.25,.35,1.27); lh.position.x = .3; lg.add(lh);
     g.add(idTag(lg, 'part:leaf'));
     const fh = makeFlowerHead(mat(0xF48FB1,{roughness:.45}), 12, .16); fh.position.y = 2.02; fh.rotation.x = .35; const fg = new THREE.Group(); fg.add(fh); fg.add(hitBox(.42,.25,.42,2.02)); g.add(idTag(fg, 'part:flower'));
     g.position.set(PL.x, TABLE_Y, PL.z); shadowAll(g); W.add(g); return g;
   }
-  function makeCard(k){ const g = new THREE.Group(); const c = textPlane(PN[k], PC[k], .62, .26, false); c.position.y = .13; g.add(c); g.add(at(box(.64,.28,.02, mat(0xFFFFFF)), 0,.13,-.012)); return g; }
+  function makeCard(k){ const g = new THREE.Group();
+    const tex = canvasTex(512, 260, (x, cw, ch)=>{ x.fillStyle = PC[k]; x.beginPath(); x.roundRect ? x.roundRect(4,4,cw-8,ch-8,26) : x.rect(4,4,cw-8,ch-8); x.fill(); x.fillStyle = '#fff'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.font = '600 96px Mitr, Anuphan, sans-serif'; x.fillText(PN[k], cw/2, ch*.38); x.font = '500 62px Mitr, Anuphan, sans-serif'; x.fillText(EN[k], cw/2, ch*.76); });
+    const c = new THREE.Mesh(new THREE.PlaneGeometry(.62,.32), new THREE.MeshStandardMaterial({map:tex, roughness:.8, polygonOffset:true, polygonOffsetFactor:-2, polygonOffsetUnits:-4})); c.position.y = .16; g.add(c); g.add(at(box(.64,.34,.02, mat(0xFFFFFF)), 0,.16,-.012)); return g; }
   function cardSpot(k){ const t = PT[k]; return k==='leaf' ? V(t.x + .78, t.y, t.z + .05) : V(t.x + (k==='flower' ? .62 : .75), t.y - .13, t.z + .05); }
   function buildP1(){
     const s = P.s; buildPlant();
-    PK.forEach((k,j)=>{ const g = item('c:'+k, makeCard(k), V(1.0 + (j%2)*.85, TABLE_Y + .02 + Math.floor(j/2)*.42, .5)); if(s.tag[k]) g.position.copy(cardSpot(k)); });
+    PK.forEach((k,j)=>{ const g = item('c:'+k, makeCard(k), V(1.0 + (j%2)*.85, TABLE_Y + .02 + Math.floor(j/2)*.46, .5)); if(s.tag[k]) g.position.copy(cardSpot(k)); });
     PK.forEach(k=>{ const o = new THREE.Object3D(); o.position.copy(PT[k]); R.world.add(o); P.labels.push({obj:o, dy:0, text:()=>s.tag[k] ? '' : '?'}); });
   }
   function placeCard(k, tgt){ const s = P.s, g = P.items['c:'+k];
-    if(k===tgt){ s.tag[k] = 1; g.position.copy(cardSpot(k)); g.userData.home = cardSpot(k); P.say = `ถูกต้อง! ส่วนนี้คือ${PN[k]}`; }
+    if(k===tgt){ s.tag[k] = 1; g.position.copy(cardSpot(k)); g.userData.home = cardSpot(k); P.say = `ถูกต้อง! ส่วนนี้คือ${PN[k]} ภาษาอังกฤษคือ ${EN[k]}`; }
     else { s.wrong += 1; P.warn = `ป้าย "${PN[k]}" ยังไม่ใช่ส่วนนี้ ลองดูตำแหน่งอีกครั้ง`; goHome(g); } }
   function lookPart(k){ P.s.look[k] = 1; P.say = PFUN[k]; }
 
@@ -1449,7 +1552,7 @@ const Lab = (function(){
   function makeWhiteFlower(){
     const g = new THREE.Group(); const stem = cyl(.025,.03,1.3, mat(0x5CB85C), 10); stem.position.y = .65; g.add(stem);
     const pm = mat(0xFFFFFF, {roughness:.5}); const head = makeFlowerHead(pm, 14, .17); head.position.y = 1.32; head.rotation.x = .3; g.add(head);
-    const lf = ellip(.16,.02,.06, mat(0x5CB85C), 12); lf.position.set(.1,.85,0); lf.rotation.z = .4; g.add(lf);
+    const lf = makeLeaf(.24,.08, mat(0x5CB85C,{side:THREE.DoubleSide})); lf.position.set(0,.85,0); lf.rotation.z = .35; g.add(lf);
     g.userData.pm = pm; g.userData.sm = stem.material; g.add(hitBox(.45,1.5,.45,.75)); return g;
   }
   function buildP2(){
@@ -1477,13 +1580,15 @@ const Lab = (function(){
     if(P.i===1){ const s = P.s; ['f1','f2'].forEach(id=>{ const g = P.items[id]; if(!g || (drag && drag.g===g)) return; const j = s.inB[id]; if(j!==undefined) g.position.set(BK[j].x, TABLE_Y + .05, BK[j].z); else goHome(g); });
       const d = P.items.drop; if(d && !(drag && drag.g===d)) goHome(d); paintP2(); }
     if(P.i===2) paintP3();
+    if(P.i===3) syncP4();
+    if(P.i===4) syncP5();
   }
 
   /* ===== part 3 ===== */
   function buildP3(){
     const W = R.world, s = P.s, g = new THREE.Group();
     g.add(at(cyl(.06,.08,1.15, mat(0x3BA55C), 12), 0,.58,0));
-    const lm = mat(0x4CB86A); [[.45,-1],[.75,1]].forEach(([y,sd])=>{ const l = ellip(.34,.03,.13, lm, 16); l.position.set(.3*sd, y, 0); l.rotation.z = .35*sd; g.add(l); });
+    const lm = mat(0x4CB86A,{side:THREE.DoubleSide}); [[.45,Math.PI],[.75,0]].forEach(([y,ry])=>{ const l = makeLeaf(.42,.15, lm); l.position.set(0, y, 0); l.rotation.y = ry; l.rotation.z = .2; g.add(l); });
     const rec = sph(.16, mat(0x5CB85C), 16); rec.scale.y = .6; rec.position.y = 1.18; g.add(rec);
     P.petals = []; const pm = mat(0xF7A8C4, {roughness:.45, side:THREE.DoubleSide});
     for(let k=0;k<6;k++){ const a = k/6*Math.PI*2; const pv = new THREE.Group(); pv.position.y = 1.2; pv.rotation.y = -a; const p = ellip(.42,.025,.2, pm, 16); p.position.x = .4; pv.add(p); pv.rotation.z = .45; g.add(pv); P.petals.push(pv); }
@@ -1495,16 +1600,16 @@ const Lab = (function(){
       const an = ellip(.05,.035,.035, mat(0xF2C94C,{roughness:.7}), 10); an.position.set(x, 1.58, z); g.add(an); P.anth.push(an); }
     P.seeds = new THREE.Group(); for(let k=0;k<7;k++){ const sd = ellip(.035,.02,.025, mat(0x6B4A2B), 8); const a = k/7*Math.PI*2; sd.position.set(Math.cos(a)*.13, (k%2)*.05 - .02, Math.sin(a)*.13); P.seeds.add(sd); } P.seeds.position.y = 1.3; P.seeds.visible = false; g.add(P.seeds);
     g.position.set(FL.x, TABLE_Y, FL.z); shadowAll(g); W.add(g); P.flower = g;
-    P.labels.push({obj:P.anth[1], dy:.12, text:()=>s.wk ? '' : 'อับเรณู'}); P.labels.push({obj:P.stig, dy:.12, text:()=>s.wk ? '' : 'ยอดเกสร'});
-    P.labels.push({obj:P.ovary, dy:-.32, text:()=>s.wk >= 2 ? (s.poll ? (s.open ? 'ผ่าผลแล้ว: มีเมล็ดอยู่ภายใน' : 'ผล (แตะเพื่อผ่าดู)') : 'ดอกเหี่ยว ไม่เกิดผล') : ''});
+    P.labels.push({obj:P.anth[1], dy:.12, text:()=>s.wk ? '' : 'อับเรณู (Anther)'}); P.labels.push({obj:P.stig, dy:.12, text:()=>s.wk ? '' : 'ยอดเกสร (Stigma)'});
+    P.labels.push({obj:P.ovary, dy:-.32, text:()=>s.wk >= 2 ? (s.poll ? (s.open ? 'ผ่าผลแล้ว: มีเมล็ด (Seed) อยู่ภายใน' : 'ผล Fruit (แตะเพื่อผ่าดู)') : 'ดอกเหี่ยว ไม่เกิดผล') : ''});
     const bee = new THREE.Group(); const body = ellip(.13,.09,.09, mat(0xF2C94C,{roughness:.5}), 14); bee.add(body);
     [-.04,.04].forEach(x=>bee.add(at(box(.025,.17,.17, mat(0x2B2A3D)), x,0,0)));
-    bee.add(at(sph(.065, mat(0x2B2A3D), 10), .14,.02,0));
+    bee.add(at(sph(.065, mat(0x2B2A3D), 10), .14,.02,0)); [-1,1].forEach(sd=>{ const an = cyl(.004,.004,.12, mat(0x2B2A3D),4); an.position.set(.2,.08,.025*sd); an.rotation.z = -.7; bee.add(an); }); for(let k=0;k<3;k++) [-1,1].forEach(sd=>{ const lg2 = cyl(.005,.004,.09, mat(0x2B2A3D),4); lg2.position.set(-.04 + k*.05,-.09,.05*sd); lg2.rotation.x = .5*sd; bee.add(lg2); });
     const wm = new THREE.MeshStandardMaterial({color:0xE8F2FE, transparent:true, opacity:.7, roughness:.1, side:THREE.DoubleSide});
     P.wings = [-1,1].map(sd=>{ const w = ellip(.1,.01,.05, wm, 10); w.position.set(0,.1,.08*sd); w.rotation.x = .5*sd; bee.add(w); return w; });
     P.bp = new THREE.Group(); for(let k=0;k<9;k++){ const d = sph(.016, mat(0xFFD23F), 6); d.position.set((rnd(k)-.5)*.2, -.07 + rnd(k*3)*.05, (rnd(k*7)-.5)*.16); P.bp.add(d); } P.bp.visible = s.pollen; bee.add(P.bp);
     bee.add(hitBox(.4,.3,.3,0));
-    item('bee', bee, V(1.05, TABLE_Y + 1.25, .5)); P.labels.push({obj:bee, dy:.22, text:()=>`ผึ้ง${s.pollen ? ' (มีละอองเรณูติดตัว)' : ''}`});
+    item('bee', bee, V(1.05, TABLE_Y + 1.25, .5)); P.labels.push({obj:bee, dy:.22, text:()=>`ผึ้ง Bee${s.pollen ? ' (มีละอองเรณู Pollen ติดตัว)' : ''}`});
     paintP3();
   }
   function paintP3(){ const s = P.s; if(!P.petals) return;
@@ -1519,16 +1624,102 @@ const Lab = (function(){
     if(P.bp) P.bp.visible = s.pollen; }
   function beeTo(k){ const s = P.s;
     if(s.wk){ P.warn = 'ดอกเหี่ยวแล้ว กดเริ่มตอนนี้ใหม่ถ้าต้องการทดลองอีกครั้ง'; return; }
-    if(k==='anth'){ s.pollen = true; P.say = 'ผึ้งตอมดอก ละอองเรณูสีเหลืองจากอับเรณูติดตัวผึ้งไปแล้ว'; }
-    else if(k==='stig'){ if(!s.pollen){ s.wrong += 1; P.warn = 'ผึ้งยังไม่มีละอองเรณู ให้ผึ้งไปที่อับเรณู (ปลายเกสรสีเหลือง) ก่อน'; return; } s.poll = true; P.say = 'ละอองเรณูติดที่ยอดเกสรแล้ว เกิดการผสมเกสร! ลองให้เวลาผ่านไป'; } }
+    if(k==='anth'){ s.pollen = true; P.say = 'ผึ้งตอมดอก ละอองเรณู (Pollen) สีเหลืองจากอับเรณูติดตัวผึ้งไปแล้ว'; }
+    else if(k==='stig'){ if(!s.pollen){ s.wrong += 1; P.warn = 'ผึ้งยังไม่มีละอองเรณู ให้ผึ้งไปที่อับเรณู (ปลายเกสรสีเหลือง) ก่อน'; return; } s.poll = true; P.say = 'ละอองเรณูติดที่ยอดเกสรแล้ว เกิด Pollination (การถ่ายเรณู)! ลองให้เวลาผ่านไป'; } }
   function nextWeek(){ const s = P.s; if(s.wk >= 3) return; s.wk += 1;
     P.say = s.wk===1 ? 'ผ่านไป 1 สัปดาห์ กลีบดอกเริ่มเหี่ยว' : s.wk===2 ? (s.poll ? 'ผ่านไป 2 สัปดาห์ กลีบดอกร่วง ส่วนโคนเกสรเพศเมียพองโตขึ้นเป็นผลอ่อน' : 'ผ่านไป 2 สัปดาห์ ดอกที่ไม่ได้รับละอองเรณูเหี่ยวและร่วงไป ไม่เกิดผล') : (s.poll ? 'ผ่านไป 3 สัปดาห์ ผลโตและสุกแล้ว แตะที่ผลเพื่อผ่าดูภายใน' : 'ไม่เกิดผลเพราะไม่ได้ผสมเกสร กดเริ่มตอนนี้ใหม่ แล้วพาผึ้งไปผสมเกสรก่อน'); }
   function cutFruit(){ const s = P.s; if(!(s.poll && s.wk >= 3)){ P.warn = s.poll ? 'ผลยังไม่สุก ให้เวลาผ่านไปอีก' : 'ยังไม่มีผลให้ผ่า'; return; } s.open = true; P.say = 'ผ่าผลแล้ว ภายในมีเมล็ด เมล็ดนี้งอกเป็นต้นพืชต้นใหม่ได้'; }
+
+
+  /* ===== vocabulary ===== */
+  const VOC = [
+    [['Root','ราก'],['Stem','ลำต้น'],['Leaf','ใบ'],['Flower','ดอก']],
+    [['Stem','ลำต้น'],['Petal','กลีบดอก'],['Flower','ดอก']],
+    [['Pollen','ละอองเรณู'],['Pollination','การถ่ายเรณู'],['Fruit','ผล'],['Seed','เมล็ด']],
+    [['Water','น้ำ'],['Sunlight','แสงแดด'],['Leaf','ใบ'],['Stem','ลำต้น'],['Root','ราก']],
+    [['Sepal','กลีบเลี้ยง'],['Petal','กลีบดอก'],['Stamen','เกสรเพศผู้'],['Pistil','เกสรเพศเมีย'],['Pollen','ละอองเรณู']]
+  ];
+  function vocabBox(i){ const L = VOC[i] || []; if(!L.length) return '';
+    return `<div style="flex-basis:100%;display:flex;flex-direction:column;gap:6px;margin-top:4px"><h2 style="margin:0">คำศัพท์ Vocabulary <span class="note" style="font-weight:400">แตะเพื่อฟังเสียง</span></h2><div style="display:flex;gap:6px;flex-wrap:wrap">${L.map(([e,t])=>`<button class="chip" type="button" data-act="say" data-v="${e}" style="display:inline-flex;align-items:center;gap:6px">${SPK}<b>${e}</b><span style="font-weight:400">${t}</span></button>`).join('')}</div></div>`; }
+
+  /* ===== part 4: plants need water and light ===== */
+  const POTS = [{id:'A', x:-1.7}, {id:'B', x:0}, {id:'C', x:1.7}];
+  const condOf = c => c.w && c.l ? 'full' : c.w ? 'dark' : c.l ? 'dry' : 'none';
+  const CONDN = {full:'น้ำ ✓ แสง ✓', dark:'น้ำ ✓ แสง ✗', dry:'น้ำ ✗ แสง ✓', none:'น้ำ ✗ แสง ✗'};
+  function setupOK(){ const cs = POTS.map(p=>condOf(P.s.cond[p.id])); return ['full','dark','dry'].every(c=>cs.includes(c)); }
+  function growth(id){ const c = condOf(P.s.cond[id]), d = P.s.day, k = Math.min(1, d/7);
+    if(c==='full') return {H:.32 + .055*Math.min(d,10), leaf:.75 + .045*Math.min(d,10), col:0x3E9E57, thin:1, droop:0, tilt:0, cm:Math.round((.32 + .055*Math.min(d,10))*30)};
+    if(c==='dark') return {H:.32 + .08*Math.min(d,10), leaf:.75 - .03*Math.min(d,7), col:lerpC(0x3E9E57, 0xE6DC7A, k), thin:.62, droop:.12*k, tilt:0, cm:Math.round((.32 + .08*Math.min(d,10))*30)};
+    const H = .32 + .015*Math.min(d,2); return {H, leaf:.75, col:lerpC(c==='dry' ? 0x3E9E57 : 0xB9C97A, 0x9C7444, Math.min(1, Math.max(0, (d-1)/5))), thin:1, droop:Math.min(1.1, d*.2), tilt:Math.min(.35, d*.06), cm:Math.round(H*30)}; }
+  function lerpC(a, b, t){ const ca = new THREE.Color(a), cb = new THREE.Color(b); return ca.lerp(cb, t).getHex(); }
+  function buildP4(){
+    const W = R.world, s = P.s; P.pots = {};
+    POTS.forEach(p=>{
+      const g = new THREE.Group(); g.userData.id = 'pot:' + p.id;
+      const pm = mat(0xD9895B,{roughness:.85}); g.add(at(cyl(.36,.27,.55, pm, 28), 0,.275,0)); const rim = new THREE.Mesh(new THREE.TorusGeometry(.36,.04,8,28), pm); rim.rotation.x = Math.PI/2; rim.position.y = .55; g.add(rim);
+      g.add(at(cyl(.4,.4,.03, mat(0xC97B4E),28), 0,.015,0));
+      const soil = cyl(.33,.33,.04, mat(0x5A3E28,{roughness:1}), 28); soil.position.y = .53; g.add(soil);
+      const plant = new THREE.Group(); plant.position.y = .55; g.add(plant);
+      const sm = mat(0x4E9E57), lm = mat(0x3E9E57,{side:THREE.DoubleSide});
+      const stem = cyl(.022,.03,1, sm, 8); plant.add(stem);
+      const leaves = []; [[.35,0],[.35,Math.PI],[.62,Math.PI/2],[.62,-Math.PI/2],[.88,.4],[.88,Math.PI+.4]].forEach(([f,ry])=>{ const l = makeLeaf(.2,.08, lm, .3); l.userData = {f, ry}; plant.add(l); leaves.push(l); });
+      const top = makeLeaf(.12,.05, lm, .1); top.rotation.z = 1.2; plant.add(top);
+      const cover = box(.95,1.75,.95, new THREE.MeshStandardMaterial({color:0x8A6A4A, transparent:true, opacity:.55, roughness:.9, depthWrite:false})); cover.position.y = .875; g.add(cover);
+      const sunL = sph(.14, new THREE.MeshStandardMaterial({color:0xFFC94D, emissive:0xFFB000, emissiveIntensity:.9}), 16); sunL.position.set(0, 1.95, -.45); g.add(sunL); const anc = new THREE.Object3D(); anc.position.set(0, 2.3, .2); g.add(anc);
+      const drop = sph(.06, TRANS(0x5B9BEA,.85), 10); drop.scale.y = 1.4; drop.position.set(.24, .66, .2); g.add(drop);
+      g.add(hitBox(.9,1.8,.9,.9));
+      g.position.set(p.x, TABLE_Y, 0); shadowAll(g); W.add(g);
+      P.pots[p.id] = {g, plant, stem, leaves, top, sm, lm, soil, cover, sunL, drop};
+      P.labels.push({obj:anc, dy:0, text:()=>`กระถาง ${p.id}`});
+    });
+    const dAnc = new THREE.Object3D(); dAnc.position.set(0, TABLE_Y + 2.8, .2); W.add(dAnc); P.labels.push({obj:dAnc, dy:0, text:()=>`วันที่ ${s.day}`});
+    syncP4();
+  }
+  function syncP4(){ const s = P.s; if(!P.pots) return;
+    POTS.forEach(p=>{ const o = P.pots[p.id], c = s.cond[p.id], gr = growth(p.id);
+      o.stem.scale.set(gr.thin, gr.H, gr.thin); o.stem.position.y = gr.H/2; o.sm.color.setHex(lerpC(0x4E9E57, gr.col, .6)); o.lm.color.setHex(gr.col);
+      o.leaves.forEach(l=>{ l.position.y = gr.H*l.userData.f; l.rotation.set(0, l.userData.ry, .35 - gr.droop); l.scale.setScalar(gr.leaf); });
+      o.top.position.y = gr.H; o.plant.rotation.z = gr.tilt;
+      o.cover.visible = !c.l; o.sunL.visible = c.l; o.drop.visible = c.w;
+      o.soil.material.color.setHex(c.w ? 0x5A3E28 : (s.day >= 2 ? 0xC2A27A : 0x7A5A3A)); });
+  }
+  function toggleCond(id, k){ const s = P.s; if(s.day > 0){ P.warn = 'เริ่มทดลองไปแล้ว เปลี่ยนเงื่อนไขไม่ได้ ถ้าจะจัดใหม่ กด "เริ่มใหม่" นะครับ'; return; } s.cond[id][k] = !s.cond[id][k]; const c = condOf(s.cond[id]); P.say = `กระถาง ${id}: ${CONDN[c]}`; if(c==='none') P.say += ' (ขาดทั้งน้ำและแสง จะเทียบไม่ได้ว่าเพราะอะไร ลองให้ขาดทีละอย่าง)'; }
+  function addDays(n){ const s = P.s; if(!setupOK()){ P.warn = 'จัดกระถางให้ครบ 3 แบบก่อน: ได้ทั้งน้ำและแสง 1 ใบ ขาดน้ำ 1 ใบ ขาดแสง 1 ใบ'; return; } s.day = Math.min(10, s.day + n); P.say = s.day >= 7 ? `ผ่านไป ${s.day} วันแล้ว แตะดูกระถางทีละใบ เปรียบเทียบความสูงและสีใบ` : `ผ่านไป ${s.day} วัน สังเกตต้นไม้แต่ละกระถาง`; }
+  function seePot(id){ const s = P.s; if(s.day < 7){ P.warn = 'ให้เวลาผ่านไปอย่างน้อย 7 วันก่อน แล้วค่อยดูผล'; return; } s.seen[id] = 1; const c = condOf(s.cond[id]), gr = growth(id);
+    P.say = `กระถาง ${id} (${CONDN[c]}): สูงประมาณ ${gr.cm} ซม. ` + (c==='full' ? 'ใบเขียว ลำต้นแข็งแรง ตั้งตรง' : c==='dark' ? 'ลำต้นผอมยืดยาว ใบซีดเหลือง เพราะไม่มี Sunlight (แสงแดด)' : 'เหี่ยว ใบเหลืองน้ำตาล ดินแห้ง เพราะไม่ได้ Water (น้ำ)'); }
+  function pickPot(id){ const s = P.s, c = condOf(s.cond[id]);
+    if(c==='full'){ s.pick = id; P.say = `ถูกต้อง! กระถาง ${id} ได้รับทั้ง Water และ Sunlight จึงเจริญเติบโตดีที่สุด`; }
+    else { s.wrong += 1; P.warn = c==='dark' ? `ยังไม่ถูก กระถาง ${id} สูงก็จริง แต่ลำต้นผอมและใบซีดเหลือง เพราะขาดแสง ดูสีใบและความแข็งแรงด้วย` : `ยังไม่ถูก กระถาง ${id} เหี่ยวและใบเหลืองน้ำตาล เพราะขาดน้ำ ลองเทียบกับกระถางอื่น`; } }
+
+  /* ===== part 5: parts of a flower ===== */
+  const FN = {sepal:'กลีบเลี้ยง', petal:'กลีบดอก', stamen:'เกสรเพศผู้', pistil:'เกสรเพศเมีย'}, FK = Object.keys(FN), FE = {sepal:'Sepal', petal:'Petal', stamen:'Stamen', pistil:'Pistil'};
+  const FC = {sepal:'#4E9E57', petal:'#E2649A', stamen:'#C99A12', pistil:'#2F8F6A'};
+  const FFUN = {sepal:'กลีบเลี้ยง (Sepal): อยู่นอกสุด สีเขียว ห่อหุ้มป้องกันดอกตอนเป็นดอกตูม', petal:'กลีบดอก (Petal): สีสวย มีกลิ่น ล่อแมลงให้มาช่วยผสมเกสร', stamen:'เกสรเพศผู้ (Stamen): ปลายมีอับเรณู สร้างละอองเรณู (Pollen)', pistil:'เกสรเพศเมีย (Pistil): ยอดเกสรรับละอองเรณู ส่วนโคนเจริญเป็นผล (Fruit)'};
+  const FEX = {sepal:-.42, petal:-.15, stamen:.3, pistil:.72};
+  function buildP5(){
+    const W = R.world, s = P.s, root = new THREE.Group(); P.fp = {};
+    root.add(at(cyl(.05,.065,1.0, mat(0x4E9E57), 10), 0,.5,0));
+    const L = makeLeaf(.4,.14, mat(0x4CB86A,{side:THREE.DoubleSide})); L.position.y = .25; L.rotation.z = .25; root.add(L);
+    const mk = id => { const g = new THREE.Group(); g.position.y = 1.08; root.add(g); P.fp[id] = g; return g; };
+    const sg = mk('sepal'), sm = mat(0x6CBF6E,{side:THREE.DoubleSide}); for(let k=0;k<5;k++){ const l = makeLeaf(.3,.11, sm, .15); l.rotation.set(0, k/5*Math.PI*2 + .3, -.35); sg.add(l); } sg.add(at(sph(.11, mat(0x5CB85C), 14), 0,-.02,0));
+    const pg = mk('petal'), pm = mat(0xF7A8C4,{roughness:.45, side:THREE.DoubleSide}); for(let k=0;k<5;k++){ const l = makeLeaf(.42,.2, pm, -.25); l.rotation.set(0, k/5*Math.PI*2 + .95, .55); l.position.y = .04; pg.add(l); }
+    const stg = mk('stamen'); for(let k=0;k<6;k++){ const a = k/6*Math.PI*2, x = Math.cos(a), z = Math.sin(a); const f = cyl(.008,.01,.32, mat(0xF0E6C8), 6); f.position.set(x*.07, .2, z*.07); f.rotation.set(z*.45, 0, -x*.45); stg.add(f); const an = ellip(.04,.028,.028, mat(0xF2C94C,{roughness:.7}), 10); an.position.set(x*.14, .34, z*.14); stg.add(an); }
+    const pig = mk('pistil'); pig.add(at(ellip(.08,.1,.08, mat(0x8CD39A,{roughness:.4}), 16), 0,.08,0)); pig.add(at(cyl(.018,.024,.34, mat(0x7FCB8E), 8), 0,.33,0)); pig.add(at(sph(.045, mat(0x3BA55C), 12), 0,.52,0));
+    FK.forEach(k=>{ const g = P.fp[k]; g.add(k==='pistil' ? hitBox(.22,.6,.22,.3) : k==='stamen' ? hitBox(.36,.18,.36,.32) : k==='petal' ? hitBox(.95,.12,.95,.12) : hitBox(.75,.1,.75,-.08)); idTag(g, 'fp:' + k); });
+    root.position.set(0, TABLE_Y, 0); shadowAll(root); W.add(root); P.flower5 = root;
+    const AN = {sepal:V(.3,-.06,.12), petal:V(.4,.13,.1), stamen:V(.13,.36,.08), pistil:V(0,.5,0)};
+    FK.forEach(k=>{ const o = new THREE.Object3D(); o.position.copy(AN[k]); P.fp[k].add(o); P.labels.push({obj:o, dy:0, text:()=>s.ftag[k] ? '' : '?'}); const o2 = new THREE.Object3D(); o2.position.copy(AN[k]).add(V(k==='stamen' ? .2 : k==='pistil' ? .22 : 0, 0, 0)); P.fp[k].add(o2); P.labels.push({obj:o2, dy:0, text:()=>s.ftag[k] ? `${FN[k]} ${FE[k]}` : ''}); });
+    syncP5();
+  }
+  function syncP5(){ if(!P.fp) return; FK.forEach(k=>{ P.fp[k].userData.ty = 1.08 + (P.s.exp ? FEX[k] : 0); }); }
+  function fTag(k, tgt){ const s = P.s; if(k===tgt){ s.ftag[k] = 1; P.say = `ถูกต้อง! ส่วนนี้คือ${FN[k]} ภาษาอังกฤษคือ ${FE[k]}`; } else { s.wrong += 1; P.warn = `ป้าย "${FN[k]}" ยังไม่ใช่ส่วนนี้ ${k==='sepal' ? 'กลีบเลี้ยงอยู่นอกสุด สีเขียว ใต้กลีบดอก' : k==='petal' ? 'กลีบดอกเป็นแผ่นสีชมพูที่ใหญ่ที่สุด' : k==='stamen' ? 'เกสรเพศผู้เป็นก้านเล็ก ๆ ปลายสีเหลืองหลายอันรอบ ๆ' : 'เกสรเพศเมียอยู่ตรงกลางสุด มีอันเดียว'} ลองใหม่นะ`; } }
+  function fLook(k){ P.s.flook[k] = 1; P.say = FFUN[k]; }
 
   /* ----- drop targets (screen space) ----- */
   function targets(){
     if(P.i===0) return PK.map(k=>[k, PT[k]]);
     if(P.i===1) return BK.map((b,j)=>['b'+j, V(b.x, TABLE_Y + .6, b.z)]);
+    if(P.i!==2) return [];
     const f = P.flower.position; const T = P.anth.map(a=>{ const v = new THREE.Vector3(); a.getWorldPosition(v); return ['anth', v]; }); const sv = new THREE.Vector3(); P.stig.getWorldPosition(sv); T.push(['stig', sv]); return T;
   }
   function bestTarget(cx, cy, lim){ let best = null, bd = lim; targets().forEach(([k,v])=>{ const p = scr(v), d = Math.hypot(p.x - cx, p.y - cy); if(d < bd){ bd = d; best = k; } }); return best; }
@@ -1539,8 +1730,8 @@ const Lab = (function(){
     else if(P.i===1){
       if(d.id==='drop'){ if(best==='b1'){ s.dye = true; P.say = 'หยดสีแดงลงบีกเกอร์ B แล้ว น้ำกลายเป็นสีแดง'; } else if(best==='b0'){ P.warn = 'บีกเกอร์ A ใช้เป็นชุดควบคุม (น้ำเปล่า) ให้หยดสีที่บีกเกอร์ B'; } }
       else if(best) setFlower(d.id, +best.slice(1)); else { delete s.inB[d.id]; }
-    } else { if(best) beeTo(best); goHome(d.g); }
-    sync(); refresh();
+    } else if(P.i===2){ if(best) beeTo(best); goHome(d.g); }
+    SFX.drop(); sync(); refresh();
   }
 
   /* ----- answers ----- */
@@ -1553,14 +1744,18 @@ const Lab = (function(){
     const s = P.s, m = S.miss[P.i]; let ch = false; const set = k => { if(!m[k]){ m[k] = 1; ch = true; } };
     if(P.i===0){ if(PK.every(k=>s.tag[k])) set('tag'); if(PK.every(k=>s.look[k])) set('look'); if(s.ans.q1) set('q1'); if(s.ans.q2) set('q2'); }
     else if(P.i===1){ if(s.dye && s.inB.f1!==undefined && s.inB.f2!==undefined) set('setup'); if(s.hrs >= 4) set('wait'); if(s.cut) set('cut'); if(s.ans.q) set('q'); }
-    else { if(s.pollen) set('pollen'); if(s.poll) set('poll'); if(s.open) set('fruit'); if(s.ans.qf) set('q'); }
+    else if(P.i===2){ if(s.pollen) set('pollen'); if(s.poll) set('poll'); if(s.open) set('fruit'); if(s.ans.qf) set('q'); }
+    else if(P.i===3){ if(setupOK()) set('setup'); if(s.day >= 7 && setupOK()) set('days'); if(s.day >= 7 && POTS.every(p=>s.seen[p.id])) set('measure'); if(s.pick) set('pick'); }
+    else { if(FK.every(k=>s.ftag[k])) set('tag'); if(FK.every(k=>s.flook[k])) set('look'); if(s.exp) set('explode'); }
+    if(ch) SFX.ok();
     return ch;
   }
   function refresh(){
     check();
     const m = S.miss[P.i];
-    if(PARTS[P.i].miss.every(x=>m[x[0]]) && eqDone(P.i) && !S.labDone[P.i]){ S.labDone[P.i] = true; P.celebrate = true; toast(P.i < PARTS.length - 1 ? `${PARTS[P.i].k}เสร็จแล้ว ปลดล็อก${PARTS[P.i+1].k}` : 'ทดลองครบทุกตอนแล้ว ปลดล็อกแบบทดสอบหลังเรียน'); renderRail(); }
+    if(PARTS[P.i].miss.every(x=>m[x[0]]) && eqDone(P.i) && !S.labDone[P.i]){ S.labDone[P.i] = true; P.celebrate = true; SFX.done(); toast(P.i < PARTS.length - 1 ? `${PARTS[P.i].k}เสร็จแล้ว ปลดล็อก${PARTS[P.i+1].k}` : 'ทดลองครบทุกตอนแล้ว ปลดล็อกแบบทดสอบหลังเรียน'); renderRail(); }
     try { S.ps = S.ps || {}; S.ps[P.i] = JSON.parse(JSON.stringify(P.s)); } catch(e){}
+    if(P.warn && P.warn !== P.lastWarn) SFX.bad(); P.lastWarn = P.warn;
     save(); refreshUI();
   }
   function mascotSay(){ if(P && P.mg && Date.now() - P.mg.t < 15000 && P.mg.t > (window.__mgClr || 0)) return ['think', P.mg.msg];
@@ -1582,7 +1777,20 @@ const Lab = (function(){
       if(!m.q) return ['think','จากผลการทดลอง ลำต้นทำหน้าที่อะไร'];
       return ['yay','ลำต้นลำเลียงน้ำจากล่างขึ้นไปถึงใบและดอก'];
     }
-    if(!m.pollen) return ['think','ลากผึ้งไปที่อับเรณู (ปลายเกสรสีเหลืองรอบ ๆ)'];
+    if(P.i===3){
+      if(!m.setup) return ['think','Plants need... อะไรบ้างนะ? กดปุ่ม น้ำ/แสง จัดกระถาง 3 ใบให้ต่างกัน: ได้ทั้งน้ำและแสง 1 ใบ ขาดน้ำ 1 ใบ ขาดแสง 1 ใบ'];
+      if(!m.days) return ['think', s.day ? `ผ่านไป ${s.day} วันแล้ว ให้เวลาผ่านไปจนครบ 7 วัน` : 'จัดกระถางครบแล้ว! กดให้เวลาผ่านไป แล้วสังเกตต้นไม้'];
+      if(!m.measure){ const left = POTS.filter(p=>!s.seen[p.id]).map(p=>p.id); return ['think', `แตะดูกระถางทีละใบ (เหลือ ${left.join(', ')}) เทียบความสูงและสีใบ`]; }
+      if(!m.pick) return ['think','กระถางไหนเจริญเติบโตดีที่สุด? ดูทั้งความสูง สีใบ และความแข็งแรง'];
+      return ['yay','พืชต้องการทั้ง Water (น้ำ) และ Sunlight (แสงแดด) เพื่อเจริญเติบโต'];
+    }
+    if(P.i===4){
+      if(!m.tag){ const left = FK.filter(k=>!s.ftag[k]); return ['think', `เลือกป้ายชื่อ แล้วแตะส่วนของดอกที่ตรงกัน (เหลือ ${left.map(k=>FN[k]).join(', ')})`]; }
+      if(!m.look){ const left = FK.filter(k=>!s.flook[k]); return ['think', `แตะส่วนของดอกเพื่ออ่านหน้าที่ (เหลือ ${left.map(k=>FN[k]).join(', ')})`]; }
+      if(!m.explode) return ['think','กด "แยกส่วนดอก" ดูว่าส่วนประกอบเรียงจากนอกเข้าในอย่างไร'];
+      return ['yay','จากนอกเข้าใน: Sepal กลีบเลี้ยง → Petal กลีบดอก → Stamen เกสรเพศผู้ → Pistil เกสรเพศเมีย'];
+    }
+    if(!m.pollen) return ['think','ลากผึ้ง (Bee) ไปที่อับเรณู (ปลายเกสรสีเหลืองรอบ ๆ)'];
     if(!m.poll) return ['think', s.wk ? 'ดอกนี้ไม่ได้ผสมเกสร กดเริ่มตอนนี้ใหม่' : 'พาผึ้งที่มีละอองเรณูไปที่ยอดเกสรตรงกลางดอก'];
     if(!m.fruit) return ['think', s.wk < 3 ? 'กดปุ่มให้เวลาผ่านไปทีละสัปดาห์ สังเกตดอก' : 'แตะที่ผลเพื่อผ่าดูข้างใน'];
     if(!m.q) return ['think','ดอกทำหน้าที่อะไร'];
@@ -1593,10 +1801,10 @@ const Lab = (function(){
     const s = P.s, m = S.miss[P.i], part = PARTS[P.i];
     const [mood, msg] = mascotSay();
     $('#bubbleMascot').innerHTML = mascot(moodOf(mood, msg), 80); $('#bubbleMsg').textContent = nk(msg);
-    $('#stageOverlay').innerHTML = S.pred[P.i] ? '' : `<div class="overlay"><div class="card">
+    setHTML('#stageOverlay', S.pred[P.i] ? '' : `<div class="overlay"><div class="card">
       <div class="row" style="gap:14px;flex-wrap:nowrap">${mascot('think',72)}<div><div class="note">${S.nick?esc(S.nick)+' ':''}ลองทายก่อนทดลองนะ</div><h2 style="font-size:20px">${part.pred.q}</h2></div></div>
       <div class="chips" role="radiogroup" aria-label="คำทำนาย">${part.pred.o.map(o=>`<button type="button" role="radio" class="chip" aria-checked="false" data-act="pred" data-o="${esc(o)}">${o}</button>`).join('')}</div>
-      <div class="note">ทายตามที่คิด แล้วมาดูผลการทดลองกัน</div></div></div>`;
+      <div class="note">ทายตามที่คิด แล้วมาดูผลการทดลองกัน</div></div></div>`);
     const panel = $('#panel');
     if(!$('#pMiss', panel)) panel.innerHTML = `<div class="box" id="pMiss"></div>`;
     const B = (v, t, on) => `<button class="btn ${on ? '' : 'ghost'} sm" type="button" data-act="lab" data-v="${v}">${t}</button>`;
@@ -1620,13 +1828,28 @@ const Lab = (function(){
       const col = id => { const u = dyeOf(id); return u > .6 ? 'แดงเข้ม' : u > .3 ? 'ชมพูแดง' : u > .05 ? 'ชมพูอ่อน' : 'ขาว'; };
       const row = (j) => { const id = ['f1','f2'].find(f=>s.inB[f]===j); return `<span>บีกเกอร์ ${j ? 'B (สี)' : 'A (เปล่า)'}</span><span>${id ? col(id) : '–'}</span><span>${s.cut && id ? (dyeOf(id) > .05 ? 'มีจุดสีแดง' : 'ไม่มีสี') : '–'}</span>`; };
       res = `<h2>ผลการสังเกต · ผ่านไป ${s.hrs} ชั่วโมง</h2>${grid('1fr auto auto', `<b>ชุด</b><b>กลีบดอก</b><b>รอยตัดลำต้น</b>${row(0)}${row(1)}`)}`;
-    } else {
+    } else if(P.i===2){
       sig = JSON.stringify(['p2', s.pollen, s.poll, s.wk, s.open, s.ans]);
       ctrls = `<h2>อุปกรณ์</h2><div class="row" style="gap:6px">${!s.pollen ? B('bee:anth','ผึ้งไปที่อับเรณู') : ''}${s.pollen && !s.poll && !s.wk ? B('bee:stig','ผึ้งไปที่ยอดเกสร') : ''}${s.wk < 3 ? B('week','+1 สัปดาห์', s.poll) : ''}${s.wk >= 3 && s.poll && !s.open ? B('cutF','ผ่าผล', true) : ''}${B('resetPart','เริ่มใหม่')}</div>`
         + '';
       const st = ['ดอกบาน','กลีบดอกเหี่ยว', s.poll ? 'ผลอ่อน' : 'ดอกร่วง ไม่เกิดผล', s.poll ? 'ผลสุก' : 'ไม่เกิดผล'][s.wk];
       res = `<h2>ผลการสังเกต</h2>${grid('1fr auto', `<span>ละอองเรณูบนผึ้ง</span><span>${s.pollen ? 'มี ✓' : '–'}</span><span>การผสมเกสร</span><span>${s.poll ? 'เกิดแล้ว ✓' : 'ยังไม่เกิด'}</span><span>เวลาผ่านไป</span><span>${s.wk} สัปดาห์</span><span>ลักษณะ</span><span>${st}</span><span>เมล็ด</span><span>${s.open ? 'พบ 7 เมล็ด' : '–'}</span>`)}`;
+    } else if(P.i===3){
+      sig = JSON.stringify(['p3', s.cond, s.day, s.seen, s.pick]);
+      const ok = setupOK();
+      ctrls = `<div style="flex-basis:100%;display:flex;flex-direction:column;gap:6px"><h2 style="margin:0">จัดกระถาง ${s.day ? '(เริ่มทดลองแล้ว)' : '(กดเพื่อเปลี่ยน)'}</h2>${POTS.map(p=>{ const c = s.cond[p.id]; return `<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap"><b style="min-width:72px">กระถาง ${p.id}</b>${B('cw:'+p.id+':w', c.w ? 'รดน้ำ ✓' : 'ไม่รดน้ำ ✗', c.w)}${B('cw:'+p.id+':l', c.l ? 'มีแสง ✓' : 'ไม่มีแสง ✗', c.l)}${s.day >= 7 ? B('see:'+p.id, 'ดูกระถาง ' + p.id, !s.seen[p.id]) : ''}</div>`; }).join('')}</div>
+        <div class="row" style="gap:6px">${ok && s.day < 10 ? B('day:1','+1 วัน') + B('day:3','+3 วัน', true) : ''}${B('resetPart','เริ่มใหม่')}</div>
+        ${s.day >= 7 && POTS.every(p=>s.seen[p.id]) ? `<div style="flex-basis:100%;display:flex;flex-direction:column;gap:6px"><h2 style="margin:0">กระถางไหนเจริญเติบโตดีที่สุด</h2>${s.pick ? done('กระถาง ' + s.pick) : `<div class="row" style="gap:6px">${POTS.map(p=>B('pick:'+p.id, 'กระถาง ' + p.id)).join('')}</div>`}</div>` : ''}`;
+      res = `<h2>ผลการสังเกต · วันที่ ${s.day}</h2>${grid('auto 1fr auto auto', `<b>กระถาง</b><b>เงื่อนไข</b><b>สูง</b><b>ใบ</b>${POTS.map(p=>{ const c = condOf(s.cond[p.id]), gr = growth(p.id), show = s.day >= 7 ? s.seen[p.id] : s.day > 0; return `<span>${p.id}</span><span>${CONDN[c]}</span><span>${show ? gr.cm + ' ซม.' : '–'}</span><span>${show ? (c==='full' ? 'เขียว' : c==='dark' ? 'ซีดเหลือง' : 'เหลืองน้ำตาล') : '–'}</span>`; }).join('')}`)}`;
+    } else {
+      sig = JSON.stringify(['p4', s.ftag, s.flook, s.exp, P.sel]);
+      const left = FK.filter(k=>!s.ftag[k]);
+      ctrls = (left.length ? `<h2>ติดป้าย (แตะป้าย แล้วแตะส่วนของดอก)</h2><div class="row" style="gap:6px">${left.map(k=>B('fsel:'+k, FN[k] + ' ' + FE[k], P.sel===k)).join('')}</div>` : '')
+        + `<h2 style="margin-top:6px">อ่านหน้าที่</h2><div class="row" style="gap:6px">${FK.map(k=>B('flook:'+k, FN[k], s.flook[k])).join('')}</div>`
+        + `<div class="row" style="gap:6px">${B('explode', s.exp ? 'รวมส่วนดอกกลับ' : 'แยกส่วนดอก', !s.exp)}${B('resetPart','เริ่มใหม่')}</div>`;
+      res = `<h2>ส่วนประกอบของดอก</h2>${grid('auto 1fr', FK.map(k=>`<b style="color:${FC[k]}">${FN[k]}<br><small>${FE[k]}</small></b><span>${s.flook[k] ? FFUN[k].split(': ')[1] : (s.ftag[k] ? 'แตะดู' : '–')}</span>`).join(''))}`;
     }
+    ctrls += vocabBox(P.i);
     if(res){ const r = $('#pRes'); if(r.dataset.h !== res){ r.innerHTML = res; r.dataset.h = res; } }
     if(sig !== P.ctrlSig || !$('#pCtrl').innerHTML){ $('#pCtrl').innerHTML = ctrls; P.ctrlSig = sig; }
     const doneP = S.labDone[P.i];
@@ -1655,6 +1878,14 @@ const Lab = (function(){
     else if(v==='week') act(()=>{ goHome(P.items.bee); nextWeek(); });
     else if(v==='cutF') act(cutFruit);
     else if(v.startsWith('ans:')){ const [,q,a] = v.split(':'); answer(q, a); }
+    else if(v.startsWith('cw:')){ const [,id,k] = v.split(':'); act(()=>toggleCond(id, k)); }
+    else if(v.startsWith('day:')) act(()=>addDays(+v.slice(4)));
+    else if(v.startsWith('see:')) act(()=>seePot(v.slice(4)));
+    else if(v.startsWith('pick:')) act(()=>pickPot(v.slice(5)));
+    else if(v.startsWith('fsel:')){ const k = v.slice(5); P.sel = P.sel===k ? null : k; act(()=>{ P.say = P.sel ? `แตะที่ส่วนของดอกที่เป็น "${FN[k]}"` : null; }); }
+    else if(v.startsWith('fplace:')){ const [,k,t] = v.split(':'); act(()=>fTag(k, t)); }
+    else if(v.startsWith('flook:')) act(()=>fLook(v.slice(6)));
+    else if(v==='explode') act(()=>{ s.exp = !s.exp; { const dy = s.exp ? .12 : -.12, off = R.camera.position.clone().sub(R.controls.target).multiplyScalar(s.exp ? 1.3 : 1/1.3); R.controls.target.y += dy; R.camera.position.copy(R.controls.target).add(off); } P.say = s.exp ? 'แยกส่วนดอกแล้ว: ล่างสุด Sepal (กลีบเลี้ยง) → Petal (กลีบดอก) → Stamen (เกสรเพศผู้) → บนสุด Pistil (เกสรเพศเมีย) อยู่ในสุด' : 'รวมส่วนดอกกลับแล้ว'; });
   }
 
   /* ----- pointer ----- */
@@ -1677,7 +1908,7 @@ const Lab = (function(){
     }, {capture:true});
     el.addEventListener('pointermove', e=>{
       if(!drag || e.pointerId!==drag.pid) return;
-      if(!drag.moved && Math.abs(e.clientX-drag.x)+Math.abs(e.clientY-drag.y) > 6){ if(drag.g.isTap || !movable(drag.id)) return; drag.moved = true; }
+      if(!drag.moved && Math.abs(e.clientX-drag.x)+Math.abs(e.clientY-drag.y) > 6){ if(drag.g.isTap || !movable(drag.id)) return; drag.moved = true; SFX.pick(); }
       if(!drag.moved) return;
       pick(e); const pt = new THREE.Vector3(); if(!R.raycaster.ray.intersectPlane(drag.pl, pt)) return;
       pt.add(drag.off); drag.g.position.set(Math.max(-4.2, Math.min(4.2, pt.x)), Math.max(TABLE_Y, Math.min(TABLE_Y + 2.6, pt.y)), Math.max(-2.3, Math.min(2.3, pt.z)));
@@ -1692,6 +1923,8 @@ const Lab = (function(){
     el.addEventListener('pointerup', end); el.addEventListener('pointercancel', end);
   }
   function tap(id, d){
+    if(id.startsWith('pot:')){ act(()=>seePot(id.slice(4))); return; }
+    if(id.startsWith('fp:')){ const k = id.slice(3); if(P.sel){ const sk = P.sel; P.sel = null; act(()=>fTag(sk, k)); } else act(()=>fLook(k)); return; }
     if(id.startsWith('part:')){ const k = id.slice(5); if(P.sel){ const sk = P.sel; P.sel = null; act(()=>placeCard(sk, k)); } else act(()=>lookPart(k)); return; }
     if(id.startsWith('c:')){ action('sel:' + id.slice(2)); return; }
     if(id==='drop'){ toast('ลากหลอดหยดไปที่บีกเกอร์ B'); return; }
@@ -1709,6 +1942,9 @@ const Lab = (function(){
     if(P){
       if(P.i===2 && P.wings){ P.wings.forEach((w,k)=>{ w.rotation.x = (k ? 1 : -1)*(.5 + Math.sin(tt*40)*.4); }); }
       if(P.i===2 && P.s.open && P.flower) P.seeds.rotation.y += dt*.4;
+      if(P.i===4 && P.fp) FK.forEach(k=>{ const g = P.fp[k], ty = g.userData.ty || 1.08; g.position.y += (ty - g.position.y)*Math.min(1, dt*5); });
+      if(P.i===3 && P.pots) POTS.forEach((p,k)=>{ const o = P.pots[p.id]; if(o.sunL.visible) o.sunL.rotation.y += dt; if(o.drop.visible){ o.drop.position.y = .66 + Math.abs(Math.sin(tt*2 + k))*.08; } });
+      SFX.amb(P.i===2 && !P.s.wk ? {buzz:(drag && drag.id==='bee') ? 1 : .35} : P.i===3 ? {wind:.18} : {});
       uiT += dt; if(uiT > .3){ uiT = 0; if(check()) refresh(); else refreshUI(); }
       if(P.dirty){ P.dirty = false; refresh(); }
       placeLabels();
@@ -1744,7 +1980,7 @@ const Lab = (function(){
       if(R.ro) R.ro.disconnect(); R.ro = new ResizeObserver(resize); R.ro.observe(box); resize();
       if(!R.active){ R.active = true; requestAnimationFrame(tick); }
     },
-    stop(){ if(R){ R.active = false; if(R.ro) R.ro.disconnect(); } },
+    stop(){ SFX.amb({}); if(R){ R.active = false; if(R.ro) R.ro.disconnect(); } },
     refreshUI(){ if(P){ P.ctrlSig = ''; refreshUI(); } },
     action
   };
