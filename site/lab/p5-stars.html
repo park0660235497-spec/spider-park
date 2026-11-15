@@ -485,12 +485,13 @@ function moodOf(mood, msg){
 const CONF = {
   title:'ดาวและกลุ่มดาว', short:'ป.5 ดาวและกลุ่มดาว', subject:'วิทยาศาสตร์ ป.5',
   tags:['วิทยาศาสตร์ ป.5','โลกและอวกาศ','ห้องแลป 3 มิติ'],
-  sub:'เปรียบเทียบดาวฤกษ์กับดาวเคราะห์ในห้องมืด หมุนแผนที่ดาวหากลุ่มดาวตามวันและเวลา แล้วดูกลุ่มดาวขึ้นและตกบนท้องฟ้าจำลอง',
-  key:'parkilab-p5-stars-v1', file:'ParK_iLab-P5-stars-worksheet.pdf',
+  sub:'เปรียบเทียบดาวฤกษ์กับดาวเคราะห์ หมุนแผนที่ดาวหากลุ่มดาว ดูกลุ่มดาวขึ้นและตก ลากเส้นต่อดาวเป็นกลุ่มดาว และถ่ายภาพเส้นทางดาวในแต่ละทิศ',
+  key:'parkilab-p5-stars-v2', file:'ParK_iLab-P5-stars-worksheet.pdf',
   hint:'แตะหลอดไฟหรือกลุ่มดาวเพื่อเลือก · ลากแผ่นแผนที่ดาวหรือท้องฟ้าเพื่อหมุนเวลา · ลากพื้นที่ว่างเพื่อหมุนมุมมอง',
+  hints:['แตะหลอดไฟเพื่อเปิดปิด · แตะแผ่นท้องฟ้าเพื่อดูคืนถัดไป · ลากพื้นที่ว่างเพื่อหมุนมุมมอง','ลากแผ่นวงกลมเพื่อหมุนเวลา · แตะกลุ่มดาวในช่องหน้าต่าง','ลากท้องฟ้าซ้าย-ขวาเพื่อเลื่อนเวลา · แตะดาวเหนือ','ลากจากดาวไปหาดาวเพื่อต่อเส้น (หรือแตะดาว 2 ดวง)','ปัดซ้าย-ขวาหรือกดลูกศรเพื่อหันไปทิศอื่น · กด “เริ่มถ่ายภาพดาว”'],
   observe:'สังเกตว่าดาวดวงใดมีแสงในตัวเอง ใช้แผนที่ดาวหากลุ่มดาว และดูทิศที่กลุ่มดาวขึ้นและตก',
   guide:[
-    {h:'จุดประสงค์', li:['เปรียบเทียบความแตกต่างของดาวฤกษ์และดาวเคราะห์จากแบบจำลอง','ใช้แผนที่ดาวระบุตำแหน่งของกลุ่มดาวฤกษ์บนท้องฟ้าตามวันและเวลา','อธิบายเส้นทางการขึ้นและตกของกลุ่มดาวฤกษ์บนท้องฟ้า']},
+    {h:'จุดประสงค์', li:['เปรียบเทียบความแตกต่างของดาวฤกษ์และดาวเคราะห์จากแบบจำลอง','ใช้แผนที่ดาวระบุตำแหน่งของกลุ่มดาวฤกษ์บนท้องฟ้าตามวันและเวลา','อธิบายเส้นทางการขึ้นและตกของกลุ่มดาวฤกษ์บนท้องฟ้า','ระบุรูปร่างของกลุ่มดาวนายพราน แมงป่อง หมีใหญ่ และใช้หมีใหญ่หาดาวเหนือ','เปรียบเทียบเส้นทางการเคลื่อนที่ปรากฏของดาวในแต่ละทิศ','อ่านและออกเสียงคำศัพท์ภาษาอังกฤษเกี่ยวกับดาว']},
     {h:'ใช้ห้องแลป 3 มิติอย่างไร', li:['<b>แตะหลอดไฟ</b> เพื่อเปิดปิดดาวฤกษ์ ใช้แผงด้านขวาเพื่อปิดไฟห้อง','<b>ลากแผ่นวงกลมของแผนที่ดาว</b> เพื่อหมุนเวลา แล้ว <b>แตะกลุ่มดาว</b> ที่อยู่ในช่องหน้าต่าง','<b>ลากท้องฟ้าจำลอง</b> ไปทางซ้ายหรือขวาเพื่อเลื่อนเวลา หรือกดเล่นให้เวลาเดินเอง','<b>ลากพื้นที่ว่าง</b> เพื่อหมุนมุมมอง ใช้นิ้วสองนิ้วหรือลูกกลิ้งเมาส์เพื่อซูม']},
     'POE',
     {h:'ข้อควรระวัง (เมื่อดูดาวจริง)', li:['ห้ามมองดวงอาทิตย์ด้วยตาเปล่า กล้องส่องทางไกล หรือกล้องโทรทรรศน์','ดูดาวในที่ปลอดภัย มีผู้ใหญ่ไปด้วย','ใช้ไฟฉายแสงสีแดงอ่านแผนที่ดาว ตาจะได้ปรับกับความมืดได้ดี']}
@@ -507,7 +508,12 @@ const QUIZ = [
   {q:'แผนที่ดาวใช้ทำอะไร', o:['วัดอุณหภูมิและขนาดของดาว','หาตำแหน่งกลุ่มดาวตามวันและเวลา','นับจำนวนดาวทั้งหมดบนฟ้า','ทำนายฝนและสภาพอากาศ'], a:1, why:'แผนที่ดาวช่วยบอกว่าวันและเวลาที่สังเกต จะเห็นกลุ่มดาวใดอยู่ทิศไหนบนท้องฟ้า'},
   {q:'ก่อนใช้แผนที่ดาว ต้องหมุนแผ่นแผนที่ให้อะไรตรงกัน', o:['ชื่อกลุ่มดาวตรงกับทิศเหนือ','วันที่ตรงกับเวลาที่จะสังเกต','ดวงจันทร์ตรงกับดวงอาทิตย์','ไม่ต้องหมุน'], a:1, why:'หมุนแผ่นให้วันที่ตรงกับเวลาที่สังเกต จะเห็นกลุ่มดาวที่อยู่เหนือขอบฟ้าในช่องหน้าต่าง'},
   {q:'ดูกลุ่มดาวเดิมในเวลาเดิม (20.00 น.) แต่ต่างเดือนกัน จะเป็นอย่างไร', o:['อยู่ตำแหน่งเดิมทุกเดือนไม่เปลี่ยน','ตำแหน่งเปลี่ยน บางเดือนอาจมองไม่เห็น','รูปร่างของกลุ่มดาวเปลี่ยนไปทุกเดือน','จำนวนดาวในกลุ่มดาวเพิ่มขึ้นทุกเดือน'], a:1, why:'กลุ่มดาวขึ้นเร็วขึ้นวันละประมาณ 4 นาที ในเวลาเดิมแต่ต่างเดือน ตำแหน่งจึงเปลี่ยนไป'},
-  {q:'กลุ่มดาวนายพรานเห็นได้ชัดตอนหัวค่ำในช่วงเดือนใด', o:['มิถุนายน ถึง สิงหาคม','ธันวาคม ถึง กุมภาพันธ์','เมษายน ถึง พฤษภาคม','ทุกเดือนเหมือนกัน'], a:1, why:'ช่วงหัวค่ำของเดือนธันวาคมถึงกุมภาพันธ์ กลุ่มดาวนายพรานอยู่สูงทางทิศตะวันออกถึงใต้ เห็นได้ชัด'}
+  {q:'กลุ่มดาวนายพรานเห็นได้ชัดตอนหัวค่ำในช่วงเดือนใด', o:['มิถุนายน ถึง สิงหาคม','ธันวาคม ถึง กุมภาพันธ์','เมษายน ถึง พฤษภาคม','ทุกเดือนเหมือนกัน'], a:1, why:'ช่วงหัวค่ำของเดือนธันวาคมถึงกุมภาพันธ์ กลุ่มดาวนายพรานอยู่สูงทางทิศตะวันออกถึงใต้ เห็นได้ชัด'},
+  {q:'คำว่า "Star" หมายถึงข้อใด', o:['ดาวฤกษ์','ดาวเคราะห์','ดวงจันทร์','กลุ่มดาว'], a:0, say:['Star'], why:'Star = ดาวฤกษ์ ดาวที่มีแสงในตัวเอง เช่น ดวงอาทิตย์'},
+  {q:'คำว่า "Planet" หมายถึงข้อใด', o:['ดาวฤกษ์','ดาวเคราะห์','ดาวหาง','แผนที่ดาว'], a:1, say:['Planet'], why:'Planet = ดาวเคราะห์ ไม่มีแสงในตัวเอง เช่น ดาวศุกร์ ดาวอังคาร'},
+  {q:'คำว่า "Constellation" หมายถึงข้อใด', o:['ดาวตก','ขอบฟ้า','กลุ่มดาว','ดาวเหนือ'], a:2, say:['Constellation'], why:'Constellation = กลุ่มดาว เช่น Orion (นายพราน) Scorpius (แมงป่อง)'},
+  {q:'"ทิศตะวันออก" ภาษาอังกฤษคือคำใด', o:['North','East','South','West'], a:1, say:['North','East','South','West'], why:'East = ทิศตะวันออก ทิศที่ดวงอาทิตย์และดาวขึ้น'},
+  {q:'"Polaris" คือดาวดวงใด', o:['ดาวเหนือ','ดวงอาทิตย์','ดาวศุกร์','ดาวซิริอุส'], a:0, say:['Polaris'], why:'Polaris = ดาวเหนือ อยู่เกือบตรงแกนหมุนของโลก จึงแทบไม่เคลื่อนที่'}
 ];
 
 const PARTS = [
@@ -519,12 +525,20 @@ const PARTS = [
    miss:[['orion','ตั้งวันที่ 15 ม.ค. เวลา 20.00 น. แล้วแตะกลุ่มดาวนายพราน'],['dir','บอกทิศของกลุ่มดาวนายพรานให้ถูก'],['scorp','หมุนแผนที่ แล้วหากลุ่มดาวแมงป่อง'],['dipper','หมุนแผนที่ แล้วหากลุ่มดาวหมีใหญ่ (จระเข้)']]},
   {k:'ตอนที่ 3', t:'การขึ้นและตกของกลุ่มดาว', d:'เลื่อนเวลาบนท้องฟ้าจำลอง ดูกลุ่มดาวนายพรานขึ้น อยู่สูงสุด และตก แล้วหาดาวเหนือ', time:'ประมาณ 15 นาที', bg:'#FFF4D6',
    pred:{q:'เมื่อเวลาผ่านไปทั้งคืน กลุ่มดาวนายพรานจะเคลื่อนที่อย่างไร', o:['ขึ้นทางตะวันออก ตกทางตะวันตก','ขึ้นทางตะวันตก ตกทางตะวันออก','อยู่ที่เดิมตลอดคืน']},
-   miss:[['rise','ดูกลุ่มดาวนายพรานขึ้นจากขอบฟ้า'],['high','ดูกลุ่มดาวนายพรานอยู่สูงที่สุดทางทิศใต้'],['set','ดูกลุ่มดาวนายพรานตกลับขอบฟ้า'],['polaris','แตะดาวเหนือ แล้วสังเกตว่าเคลื่อนที่ไหม']]}
+   miss:[['rise','ดูกลุ่มดาวนายพรานขึ้นจากขอบฟ้า'],['high','ดูกลุ่มดาวนายพรานอยู่สูงที่สุดทางทิศใต้'],['set','ดูกลุ่มดาวนายพรานตกลับขอบฟ้า'],['polaris','แตะดาวเหนือ แล้วสังเกตว่าเคลื่อนที่ไหม']]},
+  {k:'ตอนที่ 4', t:'ต่อจุดเป็นกลุ่มดาว', d:'ลากเส้นเชื่อมดาวเป็นรูปกลุ่มดาวนายพราน (Orion) แมงป่อง (Scorpius) หมีใหญ่ (Big Dipper) บอกชื่อจากรูปร่าง แล้วใช้หมีใหญ่หาดาวเหนือ', time:'ประมาณ 15 นาที', bg:'#F1ECFF',
+   pred:{q:'กลุ่มดาว (Constellation) คืออะไร', o:['ดาวหลายดวงที่คนจินตนาการเป็นรูปร่าง','ดาวดวงใหญ่ดวงเดียว','ดาวเคราะห์ที่อยู่ใกล้กัน']},
+   miss:[['orion','ต่อเส้นและบอกชื่อกลุ่มดาวนายพราน'],['scorp','ต่อเส้นและบอกชื่อกลุ่มดาวแมงป่อง'],['dipper','ต่อเส้นและบอกชื่อกลุ่มดาวหมีใหญ่'],['polaris','ใช้ดาวชี้ของหมีใหญ่หาดาวเหนือ']]},
+  {k:'ตอนที่ 5', t:'เส้นทางดาวแต่ละทิศ', d:'หันหน้าไปแต่ละทิศ แล้วเปิดกล้องถ่ายภาพดาวนาน ๆ ดูว่าเส้นทางของดาวในแต่ละทิศเป็นแบบไหน', time:'ประมาณ 15 นาที', bg:'#E6F4FF',
+   pred:{q:'ถ้าหันหน้าไปทิศเหนือ แล้วถ่ายภาพดาวนาน ๆ คิดว่าเส้นทางดาวเป็นแบบไหน', o:['เป็นวงโค้งรอบดาวเหนือ','เป็นเส้นตรงพุ่งขึ้น','ดาวไม่เคลื่อนที่เลย']},
+   miss:[['north','หันทิศเหนือ ถ่ายภาพดาวอย่างน้อย 3 ชั่วโมง'],['east','หันทิศตะวันออก ถ่ายภาพดาวอย่างน้อย 3 ชั่วโมง'],['south','หันทิศใต้ ถ่ายภาพดาวอย่างน้อย 3 ชั่วโมง'],['west','หันทิศตะวันตก ถ่ายภาพดาวอย่างน้อย 3 ชั่วโมง']]}
 ];
 const PART_ART = [
   `<svg width="200" height="110" viewBox="0 0 200 110" aria-hidden="true"><rect x="0" y="0" width="200" height="110" rx="12" fill="#1E2A55"/><circle cx="55" cy="55" r="16" fill="#FFD66B"/><circle cx="55" cy="55" r="26" fill="#FFD66B" opacity=".25"/><circle cx="140" cy="55" r="16" fill="#3A4675"/><path d="M140 39 a16 16 0 0 0 0 32z" fill="#C9CFDF"/></svg>`,
   `<svg width="200" height="110" viewBox="0 0 200 110" aria-hidden="true"><circle cx="100" cy="55" r="50" fill="#16204A"/><path d="M60 40 Q100 20 140 40 Q150 70 100 95 Q50 70 60 40z" fill="#2B3A78"/><g fill="#fff"><circle cx="90" cy="50" r="2.5"/><circle cx="96" cy="55" r="2"/><circle cx="102" cy="60" r="2"/><circle cx="85" cy="40" r="2"/><circle cx="110" cy="70" r="2.5"/></g><circle cx="100" cy="55" r="50" fill="none" stroke="#FFC94D" stroke-width="5" stroke-dasharray="3 6"/></svg>`,
-  `<svg width="200" height="110" viewBox="0 0 200 110" aria-hidden="true"><path d="M20 95 A80 80 0 0 1 180 95" fill="#EAF0FE" stroke="#9CC8FF" stroke-width="2"/><rect x="10" y="95" width="180" height="8" fill="#5CCFA4"/><path d="M40 95 Q100 10 160 95" fill="none" stroke="#F2994A" stroke-width="2" stroke-dasharray="5 5"/><g fill="#1E2A55"><circle cx="70" cy="44" r="3"/><circle cx="100" cy="30" r="3"/><circle cx="130" cy="44" r="3"/></g><text x="20" y="90" font-size="11" fill="#7A8399">ตะวันออก</text><text x="150" y="90" font-size="11" fill="#7A8399">ตะวันตก</text></svg>`
+  `<svg width="200" height="110" viewBox="0 0 200 110" aria-hidden="true"><path d="M20 95 A80 80 0 0 1 180 95" fill="#EAF0FE" stroke="#9CC8FF" stroke-width="2"/><rect x="10" y="95" width="180" height="8" fill="#5CCFA4"/><path d="M40 95 Q100 10 160 95" fill="none" stroke="#F2994A" stroke-width="2" stroke-dasharray="5 5"/><g fill="#1E2A55"><circle cx="70" cy="44" r="3"/><circle cx="100" cy="30" r="3"/><circle cx="130" cy="44" r="3"/></g><text x="20" y="90" font-size="11" fill="#7A8399">ตะวันออก</text><text x="150" y="90" font-size="11" fill="#7A8399">ตะวันตก</text></svg>`,
+  `<svg width="200" height="110" viewBox="0 0 200 110" aria-hidden="true"><rect x="0" y="0" width="200" height="110" rx="12" fill="#141C46"/><g stroke="#9CC8FF" stroke-width="2"><path d="M70 20 L100 12 L125 24 M70 20 L90 55 L100 53 L110 51 L125 24 M90 55 L78 92 M110 51 L130 88"/></g><g fill="#fff"><circle cx="70" cy="20" r="4" fill="#FFB27A"/><circle cx="100" cy="12" r="2.5"/><circle cx="125" cy="24" r="3"/><circle cx="90" cy="55" r="3"/><circle cx="100" cy="53" r="3"/><circle cx="110" cy="51" r="3"/><circle cx="78" cy="92" r="3"/><circle cx="130" cy="88" r="4" fill="#CFE0FF"/></g></svg>`,
+  `<svg width="200" height="110" viewBox="0 0 200 110" aria-hidden="true"><rect x="0" y="0" width="200" height="110" rx="12" fill="#0B1435"/><g fill="none" stroke="#C8DAFF" stroke-width="1.6" opacity=".85"><circle cx="100" cy="70" r="14"/><circle cx="100" cy="70" r="26"/><circle cx="100" cy="70" r="38"/><circle cx="100" cy="70" r="50"/></g><circle cx="100" cy="70" r="3.5" fill="#FFF3C4"/><rect x="0" y="92" width="200" height="18" fill="#15261C"/></svg>`
 ];
 
 const SHEET = [
@@ -541,9 +555,19 @@ const SHEET = [
     ['p3a','ตอนขึ้นจากขอบฟ้า',['ตะวันออก','ตะวันตก','เหนือ','ใต้']],
     ['p3b','ตอนอยู่สูงที่สุด',['ตะวันออก','ตะวันตก','เหนือ','ใต้']],
     ['p3c','ตอนตกลับขอบฟ้า',['ตะวันออก','ตะวันตก','เหนือ','ใต้']],
-    ['p3d','ดาวเหนือตลอดคืน',['เคลื่อนที่มาก','แทบไม่เคลื่อนที่']]], concl:'p3s', cq:'วาดหรือเขียนอธิบายเส้นทางการขึ้นและตกของกลุ่มดาวฤกษ์บนท้องฟ้า'}
+    ['p3d','ดาวเหนือตลอดคืน',['เคลื่อนที่มาก','แทบไม่เคลื่อนที่']]], concl:'p3s', cq:'วาดหรือเขียนอธิบายเส้นทางการขึ้นและตกของกลุ่มดาวฤกษ์บนท้องฟ้า'},
+  {title:'ตอนที่ 4 ต่อจุดเป็นกลุ่มดาว', cols:['กลุ่มดาว','รูปร่าง / ลักษณะเด่น'], rows:[
+    ['p4a','นายพราน (Orion)','....................................'],
+    ['p4b','แมงป่อง (Scorpius)','....................................'],
+    ['p4c','หมีใหญ่ (Big Dipper)','....................................'],
+    ['p4d','หาดาวเหนือ (Polaris) จาก',['ดาวชี้ 2 ดวงของหมีใหญ่','ดาว 3 ดวงเรียงกันของนายพราน']]], concl:'p4s', cq:'กลุ่มดาวคืออะไร และเราใช้ประโยชน์จากกลุ่มดาวได้อย่างไร'},
+  {title:'ตอนที่ 5 เส้นทางดาวแต่ละทิศ', cols:['ทิศที่หันหน้า','เส้นทางของดาวที่เห็น'], rows:[
+    ['p5a','ทิศเหนือ (North)',['วงโค้งรอบดาวเหนือ','เฉียงขึ้นจากขอบฟ้า','โค้งจากซ้ายไปขวา','เฉียงลงสู่ขอบฟ้า']],
+    ['p5b','ทิศตะวันออก (East)',['วงโค้งรอบดาวเหนือ','เฉียงขึ้นจากขอบฟ้า','โค้งจากซ้ายไปขวา','เฉียงลงสู่ขอบฟ้า']],
+    ['p5c','ทิศใต้ (South)',['วงโค้งรอบดาวเหนือ','เฉียงขึ้นจากขอบฟ้า','โค้งจากซ้ายไปขวา','เฉียงลงสู่ขอบฟ้า']],
+    ['p5d','ทิศตะวันตก (West)',['วงโค้งรอบดาวเหนือ','เฉียงขึ้นจากขอบฟ้า','โค้งจากซ้ายไปขวา','เฉียงลงสู่ขอบฟ้า']]], concl:'p5s', cq:'ทำไมดาวในแต่ละทิศจึงมีเส้นทางต่างกัน'}
 ];
-const GUIDE = [{"glow": ["room", "ปิดไฟห้อง แล้วเปิดหลอดไฟดาวฤกษ์ครับ", ["ปิดไฟห้อง", "เปิดหลอดไฟดาวฤกษ์"], ""], "gone": ["star", "ปิดทั้งไฟห้องและหลอดไฟดาวฤกษ์ แล้วดูว่าดาวเคราะห์ยังเห็นไหมครับ", [], ""], "move": ["night", "กด “ดูท้องฟ้าคืนถัดไป” ให้ครบ 5 คืนครับ", [], ""], "sort": ["[data-v^=\"cls:\"]", "เลือกว่าดาวแต่ละดวงเป็นดาวฤกษ์หรือดาวเคราะห์ครับ", [], ""]}, {"orion": ["[data-v^=\"d:\"]", "ตั้งวันที่ 15 ม.ค. เวลา 20.00 น. แล้วแตะกลุ่มดาวนายพรานบนแผนที่ครับ", ["เลือกวันที่ 15 ม.ค.", "ปรับเวลาเป็น 20.00 น.", "แตะกลุ่มดาวนายพราน"], ""], "dir": ["[data-v^=\"dir:\"]", "เลือกทิศที่เห็นกลุ่มดาวนายพรานครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"], "scorp": ["[data-v^=\"d:\"]", "เปลี่ยนวันเวลา แล้วหาและแตะกลุ่มดาวแมงป่องครับ", [], ""], "dipper": ["[data-v^=\"d:\"]", "เปลี่ยนวันเวลา แล้วหาและแตะกลุ่มดาวหมีใหญ่ (จระเข้) ครับ", [], ""]}, {"rise": ["play", "กด “เล่น” ให้เวลาเดิน แล้วดูกลุ่มดาวนายพรานขึ้นจากขอบฟ้าครับ", [], ""], "high": ["play", "ให้เวลาเดินต่อ จนกลุ่มดาวนายพรานอยู่สูงที่สุดทางทิศใต้ครับ", [], ""], "set": ["play", "ให้เวลาเดินต่อ จนกลุ่มดาวนายพรานตกครับ", [], ""], "polaris": ["#stage", "แตะดาวเหนือ แล้วดูว่าดาวเหนือเคลื่อนที่ไหมครับ", [], ""]}];
+const GUIDE = [{"glow": ["room", "ปิดไฟห้อง แล้วเปิดหลอดไฟดาวฤกษ์ครับ", ["ปิดไฟห้อง", "เปิดหลอดไฟดาวฤกษ์"], ""], "gone": ["star", "ปิดทั้งไฟห้องและหลอดไฟดาวฤกษ์ แล้วดูว่าดาวเคราะห์ยังเห็นไหมครับ", [], ""], "move": ["night", "กด “ดูท้องฟ้าคืนถัดไป” ให้ครบ 5 คืนครับ", [], ""], "sort": ["[data-v^=\"cls:\"]", "เลือกว่าดาวแต่ละดวงเป็นดาวฤกษ์หรือดาวเคราะห์ครับ", [], ""]}, {"orion": ["[data-v^=\"d:\"]", "ตั้งวันที่ 15 ม.ค. เวลา 20.00 น. แล้วแตะกลุ่มดาวนายพรานบนแผนที่ครับ", ["เลือกวันที่ 15 ม.ค.", "ปรับเวลาเป็น 20.00 น.", "แตะกลุ่มดาวนายพราน"], ""], "dir": ["[data-v^=\"dir:\"]", "เลือกทิศที่เห็นกลุ่มดาวนายพรานครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"], "scorp": ["[data-v^=\"d:\"]", "เปลี่ยนวันเวลา แล้วหาและแตะกลุ่มดาวแมงป่องครับ", [], ""], "dipper": ["[data-v^=\"d:\"]", "เปลี่ยนวันเวลา แล้วหาและแตะกลุ่มดาวหมีใหญ่ (จระเข้) ครับ", [], ""]}, {"rise": ["play", "กด “เล่น” ให้เวลาเดิน แล้วดูกลุ่มดาวนายพรานขึ้นจากขอบฟ้าครับ", [], ""], "high": ["play", "ให้เวลาเดินต่อ จนกลุ่มดาวนายพรานอยู่สูงที่สุดทางทิศใต้ครับ", [], ""], "set": ["play", "ให้เวลาเดินต่อ จนกลุ่มดาวนายพรานตกครับ", [], ""], "polaris": ["#stage", "แตะดาวเหนือ แล้วดูว่าดาวเหนือเคลื่อนที่ไหมครับ", [], ""]}, {"orion": ["[data-v=\"con:orion\"]", "เลือกกลุ่มดาวแรก แล้วลากเส้นจากดาวไปหาดาวตามเส้นประ ให้ครบ แล้วเลือกชื่อกลุ่มดาวครับ", [], ""], "scorp": ["[data-v=\"con:scorp\"]", "กดเลือกกลุ่มดาวที่ 2 แล้วต่อเส้นตามเส้นประให้ครบ แล้วเลือกชื่อครับ", [], ""], "dipper": ["[data-v=\"con:dipper\"]", "กดเลือกกลุ่มดาวที่ 3 แล้วต่อเส้นตามเส้นประให้ครบ แล้วเลือกชื่อครับ", [], ""], "polaris": ["", "ในกลุ่มดาวหมีใหญ่ แตะดาวชี้ 2 ดวงที่ขอบกระบวยด้านนอก แล้วแตะดาวที่อยู่บนเส้นประสีเหลืองครับ", [], "ต่อเส้นและบอกชื่อกลุ่มดาวหมีใหญ่ก่อน แล้วแตะดาวชี้ 2 ดวงที่ขอบกระบวยด้านนอก ตามด้วยดาวบนเส้นประสีเหลืองครับ"]}, {"north": ["[data-v=\"dir:N\"]", "เลือกทิศเหนือ แล้วกด “เริ่มถ่ายภาพดาว” รอให้ครบ 3 ชั่วโมงครับ", [], ""], "east": ["[data-v=\"dir:E\"]", "เลือกทิศตะวันออก แล้วกด “เริ่มถ่ายภาพดาว” รอให้ครบ 3 ชั่วโมงครับ", [], ""], "south": ["[data-v=\"dir:S\"]", "เลือกทิศใต้ แล้วกด “เริ่มถ่ายภาพดาว” รอให้ครบ 3 ชั่วโมงครับ", [], ""], "west": ["[data-v=\"dir:W\"]", "เลือกทิศตะวันตก แล้วกด “เริ่มถ่ายภาพดาว” รอให้ครบ 3 ชั่วโมงครับ", [], ""]}];
 const ENDQ = [
  [{k:'star', q:'{n}ปิดไฟห้องแล้วเปิดหลอดไฟดาวฤกษ์ เห็นอะไร', o:[['a','หลอดไฟ และด้านที่ถูกแสงของลูกบอล'],['b','มองไม่เห็นอะไรเลยทั้งห้อง เพราะมืด'],['c','เห็นลูกบอลสว่างทั้งลูกเท่ากันทุกด้าน']], a:'a',
    h:['ลองเปิดหลอดไฟอีกครั้งแล้วดูลูกบอล','ลูกบอลสว่างเฉพาะด้านที่หันเข้าหาหลอดไฟ'], why:'หลอดไฟมีแสงในตัวเอง ส่วนลูกบอลสว่างเพราะสะท้อนแสงจากหลอดไฟ'},
@@ -568,7 +592,19 @@ const ENDQ = [
   {k:'why', q:'กลุ่มดาวขึ้นทางตะวันออกและตกทางตะวันตก เพราะอะไร', o:[['spin','โลกหมุนรอบตัวเอง'],['stars','กลุ่มดาวเคลื่อนเอง'],['moon','ดวงจันทร์ดึงดาว']], a:'spin',
    h:['ดวงอาทิตย์ขึ้นและตกด้วยเหตุผลเดียวกัน','โลกหมุนจากตะวันตกไปตะวันออก'], why:'โลกหมุนรอบตัวเอง เราจึงเห็นกลุ่มดาวขึ้นทางตะวันออกและตกทางตะวันตก'},
   {k:'polaris', q:'{n}แตะดาวเหนือ แล้วเลื่อนเวลาทั้งคืน ดาวเหนือเป็นอย่างไร', o:[['still','อยู่ที่เดิมเกือบตลอด'],['move','ขึ้นและตกเหมือนดาวอื่น'],['gone','หายไปกลางดึก']], a:'still',
-   h:['ดูตำแหน่งดาวเหนือตอนหัวค่ำกับตอนดึก','ดาวเหนืออยู่เกือบตรงแกนหมุนของโลก'], why:'ดาวเหนืออยู่เกือบตรงแนวแกนโลก จึงแทบไม่เคลื่อนที่ ใช้บอกทิศเหนือได้'}]
+   h:['ดูตำแหน่งดาวเหนือตอนหัวค่ำกับตอนดึก','ดาวเหนืออยู่เกือบตรงแกนหมุนของโลก'], why:'ดาวเหนืออยู่เกือบตรงแนวแกนโลก จึงแทบไม่เคลื่อนที่ ใช้บอกทิศเหนือได้'}],
+ [{k:'belt', q:'{n}ต่อกลุ่มดาวนายพราน (Orion) แล้ว ส่วนที่เป็น "เข็มขัด" มีลักษณะอย่างไร', o:[['a','ดาว 3 ดวงเรียงกันเป็นแนว'],['b','ดาว 4 ดวงเป็นสี่เหลี่ยมกระบวย'],['c','ดาวเรียงโค้งยาวเหมือนหาง']], a:'a',
+   h:['ดูดาวที่อยู่ตรงกลางของนายพราน','มีดาว 3 ดวงอยู่ติดกัน'], why:'กลุ่มดาวนายพรานมีดาว 3 ดวงเรียงกันตรงกลาง เรียกว่าเข็มขัดนายพราน'},
+  {k:'pol', q:'{n}ใช้กลุ่มดาวหมีใหญ่ (Big Dipper) หาดาวเหนือได้อย่างไร', o:[['a','ต่อเส้นจากดาวชี้ 2 ดวงที่ขอบกระบวยออกไป'],['b','ดูดาวที่ปลายด้ามกระบวย'],['c','ดูดาวที่สว่างที่สุดในกลุ่ม']], a:'a',
+   h:['ดาวชี้ (pointer stars) อยู่ตรงไหนของกระบวย','เส้นประสีเหลืองลากจากดาวชี้ไปหาดาวเหนือ'], why:'ต่อเส้นจากดาวชี้ 2 ดวงที่ขอบกระบวยด้านนอกออกไป จะพบดาวเหนือ'},
+  {k:'what', q:'กลุ่มดาว (Constellation) คืออะไร', o:[['a','ดาวฤกษ์หลายดวงที่คนจินตนาการเชื่อมเป็นรูปร่าง'],['b','ดาวเคราะห์ที่โคจรอยู่ใกล้กัน'],['c','ดาวที่เกิดขึ้นใหม่ทุกคืน']], a:'a',
+   h:['ตอนต่อเส้น เราเชื่อมดาวกี่ดวง','รูปร่างเกิดจากจินตนาการของคน'], why:'กลุ่มดาวคือกลุ่มของดาวฤกษ์ที่คนจินตนาการเชื่อมกันเป็นรูปร่าง ช่วยให้จำตำแหน่งดาวและบอกทิศได้'}],
+ [{k:'north', q:'{n}หันทิศเหนือ (North) ถ่ายภาพดาวนาน ๆ เส้นทางดาวเป็นอย่างไร', o:[['a','เป็นวงโค้งรอบดาวเหนือ'],['b','เฉียงขึ้นจากขอบฟ้า'],['c','ดาวทุกดวงไม่ขยับเลย']], a:'a',
+   h:['ดูภาพถ่ายตอนหันทิศเหนือ','ดาวเหนืออยู่ตรงกลางวง'], why:'ทิศเหนือ ดาวเคลื่อนเป็นวงโค้งรอบดาวเหนือ เพราะดาวเหนืออยู่เกือบตรงแกนหมุนของโลก'},
+  {k:'east', q:'หันทิศตะวันออก (East) เห็นดาวเคลื่อนที่อย่างไร', o:[['a','ขึ้นจากขอบฟ้าเฉียงขึ้นไป'],['b','ตกลงสู่ขอบฟ้า'],['c','วนเป็นวงรอบดาวเหนือ']], a:'a',
+   h:['ดาวขึ้น (rise) ทางทิศใด','ดูภาพถ่ายตอนหันทิศตะวันออก'], why:'ทิศตะวันออก ดาวขึ้นจากขอบฟ้าเป็นเส้นเฉียงขึ้น'},
+  {k:'why', q:'เส้นทางดาวทุกทิศเกิดจากสาเหตุเดียวกันคืออะไร', o:[['spin','โลกหมุนรอบตัวเอง'],['wind','ลมพัดดาวให้เคลื่อนที่'],['near','ดาวเคลื่อนเข้าใกล้โลก']], a:'spin',
+   h:['ดวงอาทิตย์ขึ้นและตกเพราะอะไร','Rotate = หมุน'], why:'โลกหมุนรอบตัวเอง (rotate) จากตะวันตกไปตะวันออก เราจึงเห็นดาวเคลื่อนที่เป็นเส้นทางต่าง ๆ ในแต่ละทิศ'}]
 ];
 
 const PD = !CONF.uni && /ป\.\d|ม\.1(?!\d)/.test(CONF.subject || ''), NOG = CONF.uni || PD, MD = !!CONF.uni && !!CONF.resCard, MDC = CONF.resCard==='C';
@@ -691,6 +727,9 @@ function render(){
 document.getElementById('main').addEventListener('click', e=>{
   const a = e.target.closest('[data-act]'); if(!a || a.disabled) return;
   const act = a.dataset.act, v = a.dataset.v;
+  if(act==='sfx'){ const m = SFX.toggle(); a.innerHTML = m ? SND_OFF : SND_ON; a.setAttribute('aria-label', m ? 'เปิดเสียง' : 'ปิดเสียง'); toast(m ? 'ปิดเสียงแล้ว' : 'เปิดเสียงแล้ว'); return; }
+  if(act==='say'){ SFX.speak(v); return; }
+  if(act!=='ans' && act!=='pred') SFX.click(); else SFX.pick();
   if(act==='go') go(v);
   if(act==='part') go('lab', {part:+v});
   if(act==='ans'){ const st = S[ui.view], q0 = Math.min(NQ - 1, Math.max(0, ui.q)); ui.q = q0; st.a[q0] = +v; st.a.length = NQ; save(); if(q0<NQ-1) { setTimeout(()=>{ if(ui.q===q0){ ui.q = q0 + 1; render(); } }, 180); } render(); }
@@ -785,7 +824,7 @@ function vQuiz(kind){
       <h1 style="font-size:22px">ข้อ ${ui.q+1} จาก ${NQ}</h1>${isPre && !S.pre.skip ? `<button class="btn ghost sm" type="button" data-act="skipPre" style="margin-top:6px">ข้ามไปก่อน ทำทีหลังได้ ${ICON.arrow}</button>` : ''}</div>
       <div class="qdots" role="group" aria-label="ไปที่ข้อ">${st.a.map((x,i)=>`<button type="button" class="qdot ${x!==null?'ans':''} ${i===ui.q?'cur':''}" data-act="q" data-v="${i}" aria-label="ข้อ ${i+1}">${i+1}</button>`).join('')}</div></div>
     <section class="card pad" style="display:flex;flex-direction:column;gap:20px">
-      <h2 class="qtext">${esc(it.q)}</h2>${fig}
+      <h2 class="qtext">${esc(it.q)}</h2>${it.say ? `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:-8px">${it.say.map(w=>`<button class="chip" type="button" data-act="say" data-v="${w}" style="display:inline-flex;align-items:center;gap:6px">${SPK}ฟังเสียง ${w}</button>`).join('')}</div>` : ''}${fig}
       <div class="opts" role="radiogroup" aria-label="ตัวเลือก">${[0,1,2,3].map(j=>`<button type="button" role="radio" class="opt ${it.pics?'pic':''}" aria-checked="${st.a[ui.q]===j}" data-act="ans" data-v="${j}">${optHTML(it,j)}</button>`).join('')}</div>
     </section>
     <div class="row spread">
@@ -853,7 +892,7 @@ function eqSt(i){ S.eq = S.eq || {}; const st = S.eq[i] = S.eq[i] || {a:{}, w:{}
 const eqQOk = (st, q) => st.a[q.k]===q.a && (!q.r || st.r[q.k]===q.ra);
 function eqDone(i){ const st = eqSt(i); return EQ(i).every(q=>eqQOk(st, q)); }
 function eqAnswer(v){ const [i, k, o] = v.split('|'), q = EQ(+i).find(x=>x.k===k), st = eqSt(+i); if(!q || st.a[k]===q.a) return false;
-  st.a[k] = o; if(o!==q.a){ st.w[k] = (st.w[k] || 0) + 1; } else toast(q.r ? 'ข้อสรุปถูกต้อง ต่อไปเลือกเหตุผล' : 'ถูกต้อง เก่งมาก!'); save(); return o===q.a; }
+  st.a[k] = o; if(o!==q.a){ st.w[k] = (st.w[k] || 0) + 1; SFX.bad(); } else SFX.ok(), toast(q.r ? 'ข้อสรุปถูกต้อง ต่อไปเลือกเหตุผล' : 'ถูกต้อง เก่งมาก!'); save(); return o===q.a; }
 function eqReason(v){ const [i, k, o] = v.split('|'), q = EQ(+i).find(x=>x.k===k), st = eqSt(+i); if(!q || !q.r || st.a[k]!==q.a || st.r[k]===q.ra) return false;
   st.r[k] = o; if(o!==q.ra){ st.wr[k] = (st.wr[k] || 0) + 1; } else toast('ถูกต้องทั้งข้อสรุปและเหตุผล'); save(); return o===q.ra; }
 const EQPOS = (()=>{ const m = {}; if(typeof ENDQ==='undefined') return m; let h = 2166136261; for(const ch of String(CONF.key) + 'eq'){ h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619) >>> 0; }
@@ -1097,13 +1136,14 @@ function vLab(){
     </header>
     <div class="labgrid">
       ${PD ? '<div class="pdwrap" id="pdwrap">' : ''}<section class="stage" id="stage"${MDC ? ' data-mdc' : ''} aria-label="โต๊ะทดลอง 3 มิติ">
-        <div class="hint">${ICON.move}<span>${CONF.hint}</span></div>
+        <div class="hint">${ICON.move}<span>${(CONF.hints || [])[ui.part] || CONF.hint}</span></div>
         <div class="camctl">
 ${CONF.hs ? '' : `${PD ? '' : `          <button class="ibtn" type="button" data-act="lab" data-v="camL" aria-label="หมุนมุมมองไปทางซ้าย">${ICON.rotL}</button>
           <button class="ibtn" type="button" data-act="lab" data-v="camR" aria-label="หมุนมุมมองไปทางขวา">${ICON.rotR}</button>`}
           <button class="ibtn" type="button" data-act="lab" data-v="zin" aria-label="ซูมเข้า">${ICON.zin}</button>
           <button class="ibtn" type="button" data-act="lab" data-v="zout" aria-label="ซูมออก">${ICON.zout}</button>`}
           <button class="ibtn" type="button" data-act="lab" data-v="camReset" aria-label="มุมมองเริ่มต้น">${ICON.cube}</button>
+          <button class="ibtn" type="button" data-act="sfx" aria-label="${SFX.muted ? 'เปิดเสียง' : 'ปิดเสียง'}">${SFX.muted ? SND_OFF : SND_ON}</button>
 ${PD ? `          <button class="ibtn" type="button" data-act="guideinfo" aria-label="คู่มือการทำกิจกรรม" style="font-weight:700;font-size:20px;color:var(--primary-d)">ⓘ</button>
           <button class="ibtn" type="button" data-act="full" id="fullBtn" aria-label="ขยายเต็มจอ" style="font-size:20px">⛶</button>` : ''}
 ${CONF.uni ? `          <button class="ibtn" type="button" data-act="whyopen" aria-label="อธิบายการทดลองตอนนี้" style="font-weight:700;font-size:18px;color:var(--primary-d)">ⓘ</button>
@@ -1254,6 +1294,57 @@ function vResult(){
   </div>`;
 }
 
+/* ---------- sound effects + speech (Web Audio, no files) ---------- */
+const SPK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>';
+const SND_ON = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>';
+const SND_OFF = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9l5 6M21 9l-5 6"/></svg>';
+const SFX = (function(){
+  let ac = null, master = null, noise = null, ch = {}, last = {}, muted = false;
+  try { muted = localStorage.getItem('parkilab-sfx-mute') === '1'; } catch(_){}
+  const VOL = .32;
+  function unlock(){
+    if(ac){ if(ac.state === 'suspended') ac.resume(); return; }
+    try {
+      ac = new (window.AudioContext || window.webkitAudioContext)();
+      master = ac.createGain(); master.gain.value = muted ? 0 : VOL; master.connect(ac.destination);
+      const len = ac.sampleRate*2, buf = ac.createBuffer(1, len, ac.sampleRate), d = buf.getChannelData(0);
+      for(let i=0;i<len;i++) d[i] = Math.random()*2 - 1; noise = buf;
+      const mk = (type, freq, q, lfo) => { const src = ac.createBufferSource(); src.buffer = noise; src.loop = true;
+        const f = ac.createBiquadFilter(); f.type = type; f.frequency.value = freq; f.Q.value = q;
+        const g = ac.createGain(); g.gain.value = 0; src.connect(f); f.connect(g); g.connect(master); src.start();
+        if(lfo){ const o = ac.createOscillator(), og = ac.createGain(); o.frequency.value = lfo; og.gain.value = freq*.35; o.connect(og); og.connect(f.frequency); o.start(); }
+        return g; };
+      const buzz = () => { const o = ac.createOscillator(); o.type = 'sawtooth'; o.frequency.value = 210; const v = ac.createOscillator(), vg = ac.createGain(); v.frequency.value = 9; vg.gain.value = 14; v.connect(vg); vg.connect(o.frequency); v.start();
+        const f = ac.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 900; const g = ac.createGain(); g.gain.value = 0; o.connect(f); f.connect(g); g.connect(master); o.start(); return g; };
+      ch = { rain: mk('bandpass', 2600, .6), boil: mk('lowpass', 520, 1.2, 3.1), wind: mk('bandpass', 420, 1.4, .18), hiss: mk('highpass', 5200, .7), sizzle: mk('highpass', 2800, 1.5, 7), buzz: buzz() };
+    } catch(_){ ac = null; }
+  }
+  addEventListener('pointerdown', unlock, {capture:true, passive:true});
+  addEventListener('keydown', unlock, {capture:true});
+  function tone(f0, f1, dur, type='sine', vol=.5, delay=0){
+    if(!ac || muted) return; const t = ac.currentTime + delay, o = ac.createOscillator(), g = ac.createGain();
+    o.type = type; o.frequency.setValueAtTime(f0, t); if(f1) o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + .012); g.gain.exponentialRampToValueAtTime(.001, t + dur);
+    o.connect(g); g.connect(master); o.start(t); o.stop(t + dur + .02);
+  }
+  const AMB = {rain:.5, boil:.9, wind:.55, hiss:.12, sizzle:.18, buzz:.07};
+  return {
+    unlock,
+    get muted(){ return muted; },
+    toggle(){ muted = !muted; try { localStorage.setItem('parkilab-sfx-mute', muted ? '1' : '0'); } catch(_){} if(master) master.gain.setTargetAtTime(muted ? 0 : VOL, ac.currentTime, .05); if(!muted){ unlock(); tone(660, 990, .12, 'sine', .4); } return muted; },
+    click(){ tone(820, 620, .05, 'triangle', .25); },
+    pick(){ tone(380, 620, .09, 'sine', .35); },
+    drop(){ tone(240, 140, .12, 'sine', .45); },
+    ok(){ tone(660, 0, .12, 'sine', .4); tone(990, 0, .18, 'sine', .35, .09); },
+    bad(){ tone(220, 170, .22, 'square', .12); },
+    done(){ [523, 659, 784, 1046].forEach((f,k)=>tone(f, 0, .22, 'triangle', .35, k*.09)); },
+    pop(){ tone(900 + Math.random()*700, 1500, .04, 'sine', .12); },
+    tick(){ tone(2400 + Math.random()*800, 0, .03, 'square', .06); },
+    speak(w){ try{ const u = new SpeechSynthesisUtterance(w); u.lang = 'en-US'; u.rate = .8; const vs = speechSynthesis.getVoices().filter(x=>/^en/i.test(x.lang)); if(vs.length) u.voice = vs.find(x=>/en-US/i.test(x.lang)) || vs[0]; speechSynthesis.cancel(); speechSynthesis.speak(u); } catch(_){ toast('อุปกรณ์นี้อ่านออกเสียงไม่ได้'); } },
+    amb(lv){ if(!ac) return; Object.keys(ch).forEach(k=>{ const v = Math.max(0, Math.min(1, (lv && lv[k]) || 0))*AMB[k]; if(Math.abs((last[k]||0) - v) > .01){ last[k] = v; ch[k].gain.setTargetAtTime(v, ac.currentTime, .25); } }); }
+  };
+})();
+
 /* ---------- PDF ---------- */
 async function makePdf(btn){
   const el = $('#pdfsheet'), pages = sheetPages();
@@ -1293,7 +1384,9 @@ const Lab = (function(){
   const CAMS = [
     {pos:V(0, 3.4, 7.4), tgt:V(0, 1.6, 0)},
     {pos:V(0, 2.1, 5.5), tgt:V(0, 1.85, 0)},
-    {pos:V(0, 3.6, -7.6), tgt:V(0, 1.2, 0)}
+    {pos:V(0, 3.6, -7.6), tgt:V(0, 1.2, 0)},
+    {pos:V(0, 2.1, 5.1), tgt:V(0, 1.9, -1.2)},
+    {pos:V(0, .5, .55), tgt:V(0, 1.2, -2.4)}
   ];
   function mat(c, o={}){ return new THREE.MeshStandardMaterial(Object.assign({color:c, roughness:.55, metalness:0}, o)); }
   const METAL = () => mat(0xB9C0CE, {metalness:.8, roughness:.3});
@@ -1351,12 +1444,12 @@ const Lab = (function(){
   /* ----- sky data (RA hours, Dec degrees) ----- */
   const D2R = Math.PI/180, LAT = 15*D2R;
   const CONS = {
-    orion:{n:'นายพราน', s:[[5.92,7.4],[5.42,6.35],[5.68,-1.94],[5.60,-1.2],[5.53,-.3],[5.80,-9.67],[5.24,-8.2]], l:[[0,1],[0,2],[1,4],[2,3],[3,4],[2,5],[4,6],[5,6]]},
-    dipper:{n:'หมีใหญ่ (จระเข้)', s:[[11.06,61.75],[11.03,56.38],[11.90,53.69],[12.26,57.03],[12.90,55.96],[13.40,54.93],[13.79,49.31]], l:[[0,1],[1,2],[2,3],[3,0],[3,4],[4,5],[5,6]]},
-    scorp:{n:'แมงป่อง', s:[[16.09,-19.81],[16.01,-22.62],[15.98,-26.11],[16.49,-26.43],[16.60,-28.22],[16.84,-34.29],[16.86,-38.05],[16.90,-42.36],[17.20,-43.24],[17.62,-43.0],[17.79,-40.13],[17.56,-37.10]], l:[[0,1],[1,2],[1,3],[3,4],[4,5],[5,6],[6,7],[7,8],[8,9],[9,10],[10,11]]},
-    cass:{n:'ค้างคาว', s:[[.15,59.15],[.68,56.54],[.95,60.72],[1.43,60.24],[1.91,63.67]], l:[[0,1],[1,2],[2,3],[3,4]]},
-    leo:{n:'สิงโต', s:[[10.14,11.97],[10.12,16.76],[10.33,19.84],[9.76,23.77],[9.88,26.0],[11.24,20.52],[11.82,14.57],[11.24,15.43]], l:[[0,1],[1,2],[2,3],[3,4],[2,5],[5,6],[6,7],[7,0]]},
-    pleia:{n:'ลูกไก่', s:[[3.79,24.1],[3.75,24.37],[3.82,23.95],[3.77,23.45],[3.74,23.9],[3.81,24.4]], l:[]}
+    orion:{n:'นายพราน', e:'Orion', s:[[5.92,7.4],[5.42,6.35],[5.68,-1.94],[5.60,-1.2],[5.53,-.3],[5.80,-9.67],[5.24,-8.2]], l:[[0,1],[0,2],[1,4],[2,3],[3,4],[2,5],[4,6],[5,6]]},
+    dipper:{n:'หมีใหญ่ (จระเข้)', e:'Big Dipper', s:[[11.06,61.75],[11.03,56.38],[11.90,53.69],[12.26,57.03],[12.90,55.96],[13.40,54.93],[13.79,49.31]], l:[[0,1],[1,2],[2,3],[3,0],[3,4],[4,5],[5,6]]},
+    scorp:{n:'แมงป่อง', e:'Scorpius', s:[[16.09,-19.81],[16.01,-22.62],[15.98,-26.11],[16.49,-26.43],[16.60,-28.22],[16.84,-34.29],[16.86,-38.05],[16.90,-42.36],[17.20,-43.24],[17.62,-43.0],[17.79,-40.13],[17.56,-37.10]], l:[[0,1],[1,2],[1,3],[3,4],[4,5],[5,6],[6,7],[7,8],[8,9],[9,10],[10,11]]},
+    cass:{n:'ค้างคาว', e:'Cassiopeia', s:[[.15,59.15],[.68,56.54],[.95,60.72],[1.43,60.24],[1.91,63.67]], l:[[0,1],[1,2],[2,3],[3,4]]},
+    leo:{n:'สิงโต', e:'Leo', s:[[10.14,11.97],[10.12,16.76],[10.33,19.84],[9.76,23.77],[9.88,26.0],[11.24,20.52],[11.82,14.57],[11.24,15.43]], l:[[0,1],[1,2],[2,3],[3,4],[2,5],[5,6],[6,7],[7,0]]},
+    pleia:{n:'ลูกไก่', e:'Pleiades', s:[[3.79,24.1],[3.75,24.37],[3.82,23.95],[3.77,23.45],[3.74,23.9],[3.81,24.4]], l:[]}
   };
   const POLARIS = [2.53, 89.26];
   const conCenter = id => { const s = CONS[id].s; let ra = 0, de = 0; s.forEach(p=>{ ra += p[0]; de += p[1]; }); return [ra/s.length, de/s.length]; };
@@ -1376,22 +1469,28 @@ const Lab = (function(){
   const defaults = i => [
     {room:true, star:true, night:1, cls:{}, wrong:0},
     {d:15, t:18, found:{}, dirAns:null, wrong:0},
-    {d:288, t:20, play:false, trail:true, sel:'orion', pol:false, wrong:0}
+    {d:288, t:20, play:false, trail:true, sel:'orion', pol:false, wrong:0},
+    {con:'orion', ln:{}, named:{}, ptr:{}, pol:false, wrong:0},
+    {dir:'N', t:19, el:0, play:false, rec:{}, wrong:0}
   ][i];
   const restoreS = i => { const s = defaults(i); try { if(S.ps && S.ps[i]) Object.assign(s, JSON.parse(JSON.stringify(S.ps[i]))); } catch(e){} return s; };
   const fresh = i => ({i, s:restoreS(i), labels:[], celebrate:false, dirty:false, ctrlSig:'', warn:null});
   function clearWorld(){ while(R.world.children.length) R.world.remove(R.world.children[0]); }
   function build(){
     clearWorld(); P.labels = []; P.ctrlSig = '';
-    const cam = CAMS[P.i]; R.camera.position.copy(cam.pos); R.controls.target.copy(cam.tgt);
-    if(P.i===0) buildP1(); else if(P.i===1) buildP2(); else buildP3();
+    camHome();
+    const C = R.controls, n5 = P.i===4; C.enabled = !n5; C.minDistance = n5 ? .05 : 3; C.maxPolarAngle = n5 ? Math.PI : 1.45; C.minPolarAngle = n5 ? 0 : .15; R.camera.userData.f0 = n5 ? 62 : 42; resize(); P.sel = null;
+    if(P.i===0) buildP1(); else if(P.i===1) buildP2(); else if(P.i===2) buildP3(); else if(P.i===3) buildP4(); else buildP5();
     setRoom(); labelsDOM(); refresh();
   }
+  function camHome(){ const cam = CAMS[P.i], st = $('#stage'), w = st ? st.clientWidth : 1000, t = cam.tgt.clone(), off = cam.pos.clone().sub(cam.tgt);
+    if(w < 640 && P.i===3){ off.multiplyScalar(1.15); t.x += .3; } else if(w < 640 && P.i===0){ off.multiplyScalar(1.08); t.x += .25; }
+    R.controls.target.copy(t); R.camera.position.copy(t).add(off); }
   function setRoom(){
-    const dark = (P.i===0 && !P.s.room) || P.i===2;
-    R.hemi.intensity = P.i===0 && !P.s.room ? .05 : P.i===2 ? .5 : .85;
-    R.sun.intensity = P.i===0 && !P.s.room ? 0 : P.i===2 ? .4 : .85;
-    R.scene.background.setHex(P.i===0 && !P.s.room ? 0x0E1430 : P.i===2 ? 0x1B2550 : 0xEDF1FA);
+    const dark = (P.i===0 && !P.s.room) || P.i>=2;
+    R.hemi.intensity = P.i===0 && !P.s.room ? .05 : P.i===2 ? .5 : P.i===3 ? .45 : P.i===4 ? .25 : .85;
+    R.sun.intensity = P.i===0 && !P.s.room ? 0 : P.i===2 ? .4 : P.i===3 ? .35 : P.i===4 ? .1 : .85;
+    R.scene.background.setHex(P.i===0 && !P.s.room ? 0x0E1430 : P.i===2 ? 0x1B2550 : P.i===3 ? 0x1A2148 : P.i===4 ? 0x050A22 : 0xEDF1FA);
     R.mat.material.color.setHex(dark ? 0x8C96B8 : 0xFFFFFF);
   }
 
@@ -1415,13 +1514,14 @@ const Lab = (function(){
     const board = new THREE.Mesh(new THREE.PlaneGeometry(4.2, 2.1), new THREE.MeshBasicMaterial({map:tex})); board.position.set(0, y0 + 2.25, -1.9); board.userData.id = 'board'; W.add(board); P.board = board;
     W.add(at(box(4.4,2.3,.08, mat(0x2B3050)), 0, y0 + 2.25, -1.96));
     drawSky();
-    P.labels.push({obj:glass, dy:.5, text:()=>P.s.star ? 'หลอดไฟ = ดาวฤกษ์ (แตะเพื่อปิด)' : 'หลอดไฟ = ดาวฤกษ์ (แตะเพื่อเปิด)'});
-    P.labels.push({obj:pb, dy:.55, text:()=>'ลูกบอล = ดาวเคราะห์'});
-    P.labels.push({obj:board, dy:-1.2, text:()=>`ท้องฟ้าคืนที่ ${P.s.night} (แตะเพื่อดูคืนถัดไป)`});
+    P.labels.push({obj:glass, dy:.45, text:()=>'ดาวฤกษ์ Star'});
+    P.labels.push({obj:pb, dy:.5, text:()=>'ดาวเคราะห์ Planet'});
+    P.labels.push({obj:board, dy:1.18, text:()=>`ท้องฟ้าคืนที่ ${P.s.night} · แตะเพื่อดูคืนถัดไป`});
   }
   function drawSky(){
     const c = P.skyTex.userData.c, x = c.getContext('2d'), w = c.width, h = c.height, n = P.s.night;
     const g = x.createLinearGradient(0,0,0,h); g.addColorStop(0,'#0B1233'); g.addColorStop(1,'#1E2A60'); x.fillStyle = g; x.fillRect(0,0,w,h);
+    { let sd = 9; const r = ()=>{ sd = (sd*9301 + 49297) % 233280; return sd/233280; }; for(let k=0;k<260;k++){ x.globalAlpha = .2 + r()*.5; x.fillStyle = r() < .2 ? '#FFE3C2' : '#DDE6FF'; x.beginPath(); x.arc(r()*w, r()*h*.9, .6 + r()*1.3, 0, 7); x.fill(); } x.globalAlpha = 1; }
     x.fillStyle = '#fff'; SKY_STARS.forEach(([a,b],k)=>{ x.beginPath(); x.arc(a*w, b*h, k%3 ? 4 : 6, 0, 7); x.fill(); });
     x.globalAlpha = .9; x.fillStyle = '#FFE9A8'; x.font = '600 26px sans-serif';
     for(let k=1;k<=n;k++){ const px = (.2 + k*.11)*w, py = (.48 + Math.sin(k*.6)*.05)*h; x.globalAlpha = k===n ? 1 : .35; x.fillStyle = '#FF9A5A'; x.beginPath(); x.arc(px, py, k===n ? 10 : 7, 0, 7); x.fill(); if(k===n){ x.fillStyle = '#FFD7B0'; x.fillText('ดาวเคราะห์', px - 55, py - 20); } }
@@ -1455,7 +1555,7 @@ const Lab = (function(){
       Object.keys(CONS).forEach(id=>{ const c = CONS[id], pts = c.s.map(([ra,de])=>cxy(rOf(de), -ra*15));
         x.strokeStyle = 'rgba(140,190,255,.8)'; x.lineWidth = 3; c.l.forEach(([a,b])=>{ x.beginPath(); x.moveTo(...pts[a]); x.lineTo(...pts[b]); x.stroke(); });
         x.fillStyle = '#fff'; pts.forEach((p,k)=>{ x.beginPath(); x.arc(p[0], p[1], id==='pleia' ? 4 : (k%3 ? 6 : 8), 0, 7); x.fill(); });
-        const [ra,de] = conCenter(id), [lx,ly] = cxy(rOf(de), -ra*15); x.fillStyle = '#FFD66B'; x.font = '600 30px sans-serif'; x.textAlign = 'center'; x.fillText(c.n, lx, ly + (id==='scorp' ? 70 : 46)); });
+        const [ra,de] = conCenter(id), [lx,ly] = cxy(rOf(de), -ra*15); x.fillStyle = '#FFD66B'; x.font = '600 30px sans-serif'; x.textAlign = 'center'; x.fillText(c.n, lx, ly + (id==='scorp' ? 70 : 46)); x.fillStyle = '#BFD4FF'; x.font = '500 22px sans-serif'; x.fillText(c.e, lx, ly + (id==='scorp' ? 96 : 72)); });
       const [px,py] = cxy(rOf(POLARIS[1]), -POLARIS[0]*15); x.fillStyle = '#fff'; x.beginPath(); x.arc(px,py,9,0,7); x.fill(); x.fillStyle = '#FFD66B'; x.font = '600 26px sans-serif'; x.fillText('ดาวเหนือ', px + 40, py - 14);
       const MN = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
       x.fillStyle = '#1E2340'; x.strokeStyle = '#1E2340';
@@ -1517,6 +1617,7 @@ const Lab = (function(){
     dome.position.y = y0; dome.userData.id = 'sky'; W.add(dome); P.dome = dome;
     const grid = new THREE.Mesh(new THREE.SphereGeometry(DOME + .005, 24, 6, 0, Math.PI*2, 0, Math.PI/2), new THREE.MeshBasicMaterial({color:0x8FA6E8, wireframe:true, transparent:true, opacity:.15})); grid.position.y = y0; W.add(grid);
     [['เหนือ',0],['ตะวันออก',90],['ใต้',180],['ตะวันตก',270]].forEach(([n,a])=>{ const t = textPlane(n, a===0 ? '#E25555' : '#5B6280', .9, .32); const p = domePos(0, a*D2R, DOME + .55); t.position.set(p.x, y0 + .07, p.z); t.rotation.z = 0; W.add(t); });
+    treeRing(W, y0 + .06, DOME + .05, 30, 0x15261C); fieldPoints(W);
     const man = new THREE.Group(); man.add(at(cyl(.08,.1,.35, mat(0xF2994A),10), 0,.24,0)); man.add(at(sph(.09, mat(0xF2C29B),10), 0,.5,0)); man.position.y = y0 + .06; W.add(man);
     P.stars = {};
     const smat = new THREE.MeshBasicMaterial({color:0xFFFFFF}), lmat = new THREE.LineBasicMaterial({color:0x8CC0FF, transparent:true, opacity:.75});
@@ -1529,10 +1630,9 @@ const Lab = (function(){
     const pol = new THREE.Group(); pol.userData.id = 'polaris'; pol.add(sph(.06, new THREE.MeshBasicMaterial({color:0xFFF3C4}), 10)); pol.add(sph(.25, new THREE.MeshBasicMaterial({visible:false}), 8)); W.add(pol); P.pol = pol;
     const trailGeo = new THREE.BufferGeometry().setFromPoints(Array.from({length:97}, ()=>V(0,0,0)));
     P.trail = new THREE.Line(trailGeo, new THREE.LineDashedMaterial({color:0xFFB23F, dashSize:.12, gapSize:.08})); W.add(P.trail);
-    P.labels.push({obj:P.stars.orion.g.userData.hit, dy:.35, text:()=>P.stars.orion.g.visible ? 'นายพราน' : ''});
+    P.labels.push({obj:P.stars.orion.g.userData.hit, dy:.35, text:()=>P.stars.orion.g.visible ? 'นายพราน Orion' : ''});
     ['dipper','scorp','cass','leo','pleia'].forEach(id=>P.labels.push({obj:P.stars[id].g.userData.hit, dy:.3, text:()=>P.stars[id].g.visible ? CONS[id].n : ''}));
-    P.labels.push({obj:pol, dy:.25, text:()=>'ดาวเหนือ'});
-    P.labels.push({obj:man, dy:.75, text:()=>`${MONTHS.find(m=>m[1]===P.s.d)[2]} ${hhmm(P.s.t)}`});
+    P.labels.push({obj:pol, dy:.25, text:()=>'ดาวเหนือ Polaris'});
     syncP3();
   }
   function syncP3(){
@@ -1544,6 +1644,7 @@ const Lab = (function(){
       const [ra,de] = conCenter(id), ca = altAz(ra, de, lst); st.g.userData.hit.position.copy(domePos(ca.alt, ca.az)); st.g.visible = ca.alt > -2*D2R; st.ca = ca;
     });
     const pa = altAz(POLARIS[0], POLARIS[1], lst); P.pol.position.copy(domePos(pa.alt, pa.az));
+    if(P.ptsB) placePoints(fieldPos(lst, DOME - .02));
     const [ra,de] = conCenter('orion'), arr = P.trail.geometry.attributes.position.array;
     for(let k=0;k<=96;k++){ const a = altAz(ra, de, k/4), p = domePos(Math.max(0, a.alt), a.az, DOME - .02); arr[k*3] = p.x; arr[k*3+1] = p.y; arr[k*3+2] = p.z; }
     P.trail.geometry.attributes.position.needsUpdate = true; P.trail.computeLineDistances(); P.trail.visible = s.trail;
@@ -1552,27 +1653,201 @@ const Lab = (function(){
     if(alt > 55 && az > 120 && az < 240) P.seen = Object.assign(P.seen||{}, {high:1});
     if(alt > 0 && alt < 22 && az > 225 && az < 315) P.seen = Object.assign(P.seen||{}, {set:1});
   }
-  function setT(t){ const s = P.s; s.t = ((t % 24) + 24) % 24; if(P.i===1) syncP2(); else syncP3(); }
+  function setT(t){ const s = P.s; s.t = ((t % 24) + 24) % 24; if(P.i===1) syncP2(); else if(P.i===2) syncP3(); }
+
+
+  /* ===== vocabulary ===== */
+  const VOC = [
+    [['Star','ดาวฤกษ์'],['Planet','ดาวเคราะห์'],['Sun','ดวงอาทิตย์'],['Light','แสง'],['Reflect','สะท้อน']],
+    [['Star map','แผนที่ดาว'],['Constellation','กลุ่มดาว'],['North','ทิศเหนือ'],['East','ทิศตะวันออก'],['South','ทิศใต้'],['West','ทิศตะวันตก']],
+    [['Rise','ขึ้น'],['Set','ตก'],['Horizon','ขอบฟ้า'],['Orion','นายพราน'],['Polaris','ดาวเหนือ']],
+    [['Constellation','กลุ่มดาว'],['Orion','นายพราน'],['Scorpius','แมงป่อง'],['Big Dipper','หมีใหญ่'],['Polaris','ดาวเหนือ']],
+    [['Star trail','เส้นทางดาว'],['North','ทิศเหนือ'],['East','ทิศตะวันออก'],['South','ทิศใต้'],['West','ทิศตะวันตก'],['Rotate','หมุน']]
+  ];
+  function vocabBox(i){ const L = VOC[i] || []; if(!L.length) return '';
+    return `<div style="flex-basis:100%;display:flex;flex-direction:column;gap:6px;margin-top:4px"><h2 style="margin:0">คำศัพท์ Vocabulary <span class="note" style="font-weight:400">แตะเพื่อฟังเสียง</span></h2><div style="display:flex;gap:6px;flex-wrap:wrap">${L.map(([e,t])=>`<button class="chip" type="button" data-act="say" data-v="${e}" style="display:inline-flex;align-items:center;gap:6px">${SPK}<b>${e}</b> <span style="color:var(--ink2)">${t}</span></button>`).join('')}</div></div>`; }
+
+  /* ----- shared night-sky star field (RA h, Dec deg, size) ----- */
+  let FIELD = null;
+  function starField(){ if(FIELD) return FIELD; let sd = 11; const r = ()=>{ sd = (sd*9301 + 49297) % 233280; return sd/233280; };
+    FIELD = []; for(let k=0;k<340;k++){ const ra = r()*24, de = Math.asin(r()*1.75 - .75)/D2R; FIELD.push([ra, de, r() < .18 ? 1 : 0]); }
+    Object.keys(CONS).forEach(id=>CONS[id].s.forEach(([ra,de])=>FIELD.push([ra, de, 1]))); return FIELD; }
+  function dotTex(){ if(dotTex.t) return dotTex.t; dotTex.t = canvasTex(32, 32, (x)=>{ const g = x.createRadialGradient(16,16,0,16,16,16); g.addColorStop(0,'rgba(255,255,255,1)'); g.addColorStop(.5,'rgba(255,255,255,.9)'); g.addColorStop(1,'rgba(255,255,255,0)'); x.fillStyle = g; x.beginPath(); x.arc(16,16,16,0,7); x.fill(); }); return dotTex.t; }
+  function treeRing(W, y0, R0, n, col){ const m = mat(col, {roughness:1}); let sd = 5; const r = ()=>{ sd = (sd*9301 + 49297) % 233280; return sd/233280; };
+    for(let k=0;k<n;k++){ const a = k/n*Math.PI*2 + r()*.12, h = .18 + r()*.32, g = new THREE.Group();
+      if(r() < .55){ g.add(at(new THREE.Mesh(new THREE.ConeGeometry(.09 + r()*.08, h, 7), m), 0, h/2 + .05, 0)); } else { g.add(at(sph(.08 + r()*.07, m, 8), 0, h*.75, 0)); g.add(at(cyl(.015,.02,h*.6, m, 5), 0, h*.3, 0)); }
+      g.position.set(Math.sin(a)*R0, y0, -Math.cos(a)*R0); W.add(g); } }
+
+  /* ===== PART 4: connect the stars ===== */
+  const BRD = {w:5.0, h:2.9, y:TABLE_Y + 1.85, z:-1.2};
+  const scoXY = CONS.scorp.s.map(([ra,de])=>[-(ra - 16.75)*15*.11, (de + 31)*.085]);
+  const CN = {
+    orion:{n:'นายพราน', e:'Orion', s:[[-.7,.9,.085,0xFFB27A],[0,1.3,.05],[.48,.76,.065],[-.18,-.23,.062],[0,-.14,.066],[.17,-.03,.062],[-.46,-1.2,.065],[.8,-1.01,.085,0xCFE0FF]], l:[[0,1],[1,2],[0,3],[2,5],[3,4],[4,5],[3,6],[5,7]],
+      tip:'มีดาว 3 ดวงเรียงกันตรงกลางเป็น "เข็มขัด" และดาวสว่าง 4 ดวงล้อมรอบ'},
+    scorp:{n:'แมงป่อง', e:'Scorpius', s:scoXY.map((p,k)=>[p[0], p[1], k===3 ? .09 : .055, k===3 ? 0xFF6A4A : 0]), l:CONS.scorp.l,
+      tip:'เป็นแนวโค้งยาวเหมือนลำตัวและหางที่งอขึ้น มีดาวสีแดงสว่าง (แอนทาเรส) ตรงกลางลำตัว'},
+    dipper:{n:'หมีใหญ่ (จระเข้)', e:'Big Dipper', s:[[1.2,-.1,.07],[1.16,-.5,.065],[.6,-.62,.06],[.5,-.24,.055],[-.05,-.2,.065],[-.52,-.3,.065],[-1.1,-.62,.065]], l:[[0,1],[1,2],[2,3],[3,0],[3,4],[4,5],[5,6]],
+      tip:'มีดาว 4 ดวงเป็นสี่เหลี่ยมเหมือนกระบวย และมีด้ามยาวอีก 3 ดวง'}
+  };
+  const CK = ['orion','scorp','dipper'];
+  const POLXY = [1.33, 1.18], DECOY = [[.5,1.02],[1.98,.82],[.85,.42],[-.45,.95],[2.05,-.2]];
+  const bw = (u, v, dz=.03) => V(u, BRD.y + v, BRD.z + dz);
+  function glowTex(){ if(glowTex.t) return glowTex.t; glowTex.t = canvasTex(64, 64, (x)=>{ const g = x.createRadialGradient(32,32,0,32,32,32); g.addColorStop(0,'rgba(255,255,255,.9)'); g.addColorStop(.25,'rgba(200,220,255,.35)'); g.addColorStop(1,'rgba(200,220,255,0)'); x.fillStyle = g; x.fillRect(0,0,64,64); }); return glowTex.t; }
+  function starMesh(id, u, v, r, col){ const g = new THREE.Group(); g.userData.id = id; g.position.copy(bw(u, v));
+    g.add(sph(r, new THREE.MeshBasicMaterial({color:col || 0xFFFFFF}), 14));
+    const gl = new THREE.Mesh(new THREE.PlaneGeometry(r*6, r*6), new THREE.MeshBasicMaterial({map:glowTex(), transparent:true, depthWrite:false, blending:THREE.AdditiveBlending, color:col || 0xFFFFFF})); gl.position.z = -.01; g.add(gl);
+    g.add(sph(.2, new THREE.MeshBasicMaterial({visible:false}), 8)); return g; }
+  function rodBetween(m, a, b){ const d = b.clone().sub(a), L = d.length(); m.scale.set(1, L, 1); m.position.copy(a).addScaledVector(d, .5); m.quaternion.setFromUnitVectors(UP, d.normalize()); }
+  function buildP4(){
+    const W = R.world, s = P.s; P.cg = {};
+    W.add(at(box(BRD.w + .22, BRD.h + .22, .08, mat(0x2B3050,{roughness:.6})), 0, BRD.y, BRD.z - .05));
+    [-1.6, 1.6].forEach(x=>W.add(at(cyl(.04,.05, BRD.y - BRD.h/2 - TABLE_Y + .1, METAL(), 10), x, (BRD.y - BRD.h/2 + TABLE_Y)/2, BRD.z - .1)));
+    const tex = canvasTex(1024, 594, ()=>{}); P.brdTex = tex;
+    W.add(at(new THREE.Mesh(new THREE.PlaneGeometry(BRD.w, BRD.h), new THREE.MeshBasicMaterial({map:tex})), 0, BRD.y, BRD.z));
+    const lineM = new THREE.MeshBasicMaterial({color:0x9CC8FF}), dashM = new THREE.LineDashedMaterial({color:0xFFFFFF, dashSize:.06, gapSize:.06, transparent:true, opacity:.45});
+    CK.forEach(c=>{ const G = new THREE.Group(); W.add(G); const C = CN[c], st = C.s.map(([u,v,r,col],k)=>{ const m = starMesh(`st:${c}:${k}`, u, v, r, col); G.add(m); return m; });
+      const rods = C.l.map(([a,b])=>{ const m = cyl(.014,.014,1, lineM, 6); rodBetween(m, st[a].position, st[b].position); m.visible = false; G.add(m); return m; });
+      const dash = C.l.map(([a,b])=>{ const ln = new THREE.Line(new THREE.BufferGeometry().setFromPoints([st[a].position, st[b].position]), dashM); ln.computeLineDistances(); G.add(ln); return ln; });
+      P.cg[c] = {G, st, rods, dash}; });
+    const D = P.cg.dipper; D.pol = starMesh('st:dipper:P', POLXY[0], POLXY[1], .07); D.G.add(D.pol);
+    D.dec = DECOY.map(([u,v],k)=>{ const m = starMesh('st:dipper:D' + k, u, v, .055 + (k%2)*.012); D.G.add(m); return m; });
+    D.ext = new THREE.Line(new THREE.BufferGeometry().setFromPoints([bw(1.16,-.5,.02), bw(POLXY[0] + .05, POLXY[1] + .45, .02)]), new THREE.LineDashedMaterial({color:0xFFD66B, dashSize:.09, gapSize:.07})); D.ext.computeLineDistances(); D.G.add(D.ext);
+    P.selRing = new THREE.Mesh(new THREE.RingGeometry(.12,.16,28), new THREE.MeshBasicMaterial({color:0xFFD54A, transparent:true, depthTest:false})); P.selRing.renderOrder = 9; P.selRing.visible = false; W.add(P.selRing);
+    P.rubber = new THREE.Line(new THREE.BufferGeometry().setFromPoints([V(0,0,0), V(0,0,0)]), new THREE.LineBasicMaterial({color:0xFFD54A})); P.rubber.visible = false; P.rubber.frustumCulled = false; W.add(P.rubber);
+    const nAnc = new THREE.Object3D(); nAnc.position.copy(bw(0, BRD.h/2 + .05, .05)); W.add(nAnc);
+    P.labels.push({obj:nAnc, dy:0, text:()=>s.named[s.con] ? `กลุ่มดาว${CN[s.con].n} · ${CN[s.con].e}` : 'กลุ่มดาวปริศนา ?'});
+    P.labels.push({obj:D.pol, dy:.12, text:()=>s.con==='dipper' && s.pol ? 'ดาวเหนือ Polaris' : ''});
+    syncP4();
+  }
+  function lnDone(c){ const L = P.s.ln[c] || {}; return CN[c].l.every((_,k)=>L[k]); }
+  function drawBoard(){ const s = P.s, c = P.brdTex.userData.c, x = c.getContext('2d'), w = c.width, h = c.height, X = u => (u + BRD.w/2)/BRD.w*w, Y = v => (BRD.h/2 - v)/BRD.h*h;
+    const g = x.createLinearGradient(0,0,0,h); g.addColorStop(0,'#060B26'); g.addColorStop(1,'#16214F'); x.fillStyle = g; x.fillRect(0,0,w,h);
+    const hz = x.createRadialGradient(w*.3,h*.2,10,w*.3,h*.2,w*.6); hz.addColorStop(0,'rgba(120,140,220,.12)'); hz.addColorStop(1,'rgba(120,140,220,0)'); x.fillStyle = hz; x.fillRect(0,0,w,h);
+    let sd = 3; const r = ()=>{ sd = (sd*9301 + 49297) % 233280; return sd/233280; };
+    for(let k=0;k<420;k++){ x.globalAlpha = .25 + r()*.6; x.fillStyle = r() < .15 ? '#FFE3C2' : '#DDE6FF'; x.beginPath(); x.arc(r()*w, r()*h, .6 + r()*1.4, 0, 7); x.fill(); }
+    x.globalAlpha = 1;
+    if(s.named[s.con]){ const C = CN[s.con], P2 = C.s.map(([u,v])=>[X(u), Y(v)]); x.strokeStyle = 'rgba(255,214,107,.55)'; x.fillStyle = 'rgba(255,214,107,.13)'; x.lineWidth = 5; x.lineCap = 'round'; x.lineJoin = 'round';
+      if(s.con==='orion'){ const [b,m,bl,al,an,mi,sa,ri] = P2;
+        x.beginPath(); x.arc(m[0], m[1] + 6, 30, 0, 7); x.fill(); x.stroke();
+        x.beginPath(); x.moveTo(b[0], b[1]); x.lineTo(b[0] - 70, b[1] - 80); x.lineTo(b[0] - 40, b[1] - 170); x.stroke(); x.beginPath(); x.ellipse(b[0] - 40, b[1] - 185, 14, 30, -.3, 0, 7); x.fill(); x.stroke();
+        x.beginPath(); x.moveTo(bl[0], bl[1]); x.lineTo(bl[0] + 70, bl[1] - 10); x.stroke(); x.beginPath(); x.moveTo(bl[0] + 80, bl[1] - 90); x.quadraticCurveTo(bl[0] + 140, bl[1], bl[0] + 85, bl[1] + 80); x.stroke();
+        x.beginPath(); x.moveTo(an[0], an[1]); x.lineTo(an[0] - 6, an[1] + 80); x.stroke();
+        x.beginPath(); x.moveTo(b[0], b[1]); x.lineTo(bl[0], bl[1]); x.lineTo(mi[0], mi[1]); x.lineTo(al[0], al[1]); x.closePath(); x.fill(); }
+      else if(s.con==='scorp'){ x.lineWidth = 16; x.strokeStyle = 'rgba(255,170,120,.28)'; x.beginPath(); C.l.forEach(([a,b])=>{ x.moveTo(...P2[a]); x.lineTo(...P2[b]); }); x.stroke(); x.lineWidth = 5; x.strokeStyle = 'rgba(255,214,107,.6)';
+        const hd = P2[1]; [[0,-1],[2,1]].forEach(([k,sg])=>{ const p = P2[k]; x.beginPath(); x.moveTo(p[0], p[1]); x.quadraticCurveTo(p[0] + 60, p[1] + sg*-30, p[0] + 70, p[1] + sg*40); x.stroke(); });
+        const t = P2[11]; x.beginPath(); x.moveTo(t[0], t[1]); x.quadraticCurveTo(t[0] + 30, t[1] - 40, t[0] + 5, t[1] - 55); x.stroke(); }
+      else { const q = [0,1,2,3].map(k=>P2[k]); x.beginPath(); q.forEach((p,k)=>k ? x.lineTo(...p) : x.moveTo(...p)); x.closePath(); x.fill(); x.lineWidth = 14; x.strokeStyle = 'rgba(255,214,107,.25)'; x.beginPath(); x.moveTo(...P2[3]); [4,5,6].forEach(k=>x.lineTo(...P2[k])); x.stroke();
+        x.fillStyle = 'rgba(255,230,170,.75)'; x.font = '500 22px Mitr, sans-serif'; x.fillText('รูปกระบวย · คนไทยเรียกกลุ่มดาวจระเข้', X(-1.2), Y(-1.0)); }
+    }
+    P.brdTex.needsUpdate = true; P.drawnSig = JSON.stringify([s.con, !!s.named[s.con]]); }
+  function syncP4(){ const s = P.s; if(!P.cg) return;
+    CK.forEach(c=>{ const g = P.cg[c]; g.G.visible = c===s.con; const L = s.ln[c] || {}; g.rods.forEach((m,k)=>{ m.visible = !!L[k]; }); g.dash.forEach((d,k)=>{ d.visible = !L[k]; }); });
+    const D = P.cg.dipper; const ready = !!s.named.dipper; D.pol.visible = ready; D.dec.forEach(m=>m.visible = ready); D.ext.visible = ready && s.ptr[0] && s.ptr[1];
+    D.st.forEach((m,k)=>{ m.children[0].material.color.setHex(k < 2 && s.ptr[k] ? 0xFFD54A : 0xFFFFFF); });
+    if(P.drawnSig !== JSON.stringify([s.con, !!s.named[s.con]])) drawBoard();
+    const sel = P.sel && P.cg[P.sel.c] && P.sel.c===s.con ? P.cg[P.sel.c].st[P.sel.k] : null; P.selRing.visible = !!sel; if(sel) P.selRing.position.copy(sel.position).add(V(0,0,.02));
+  }
+  function parseSt(id){ const [, c, k] = id.split(':'); return {c, k: /^\d+$/.test(k) ? +k : k}; }
+  function linkStars(a, b){ const s = P.s; if(a.c!==b.c || a.k===b.k) return;
+    if(typeof a.k!=='number' || typeof b.k!=='number'){ P.say = 'ต่อเส้นได้เฉพาะดาวในกลุ่มดาวนะครับ'; return; }
+    const k = CN[a.c].l.findIndex(([x,y])=>(x===a.k && y===b.k) || (x===b.k && y===a.k));
+    if(k < 0){ s.wrong += 1; P.warn = 'ดาว 2 ดวงนี้ไม่ได้ต่อกันในกลุ่มดาวนี้ ดูเส้นประจาง ๆ เป็นแนวทาง แล้วลองใหม่นะ'; return; }
+    s.ln[a.c] = s.ln[a.c] || {}; if(s.ln[a.c][k]){ P.say = 'เส้นนี้ต่อไว้แล้วครับ'; return; }
+    s.ln[a.c][k] = 1; P.warn = null; SFX.pop();
+    const left = CN[a.c].l.length - Object.keys(s.ln[a.c]).length;
+    P.say = left ? `ต่อเส้นแล้ว เหลืออีก ${left} เส้น` : 'ต่อครบแล้ว! รูปนี้เหมือนอะไร? เลือกชื่อกลุ่มดาวในแผงด้านล่าง'; }
+  function nameCon(id){ const s = P.s, c = s.con; if(!lnDone(c)){ P.warn = 'ต่อเส้นให้ครบก่อน แล้วค่อยดูว่ารูปเหมือนอะไรนะ'; return; } if(s.named[c]) return;
+    if(id===c){ s.named[c] = 1; P.warn = null; SFX.speak(CN[c].e); P.say = `ถูกต้อง! นี่คือกลุ่มดาว${CN[c].n} (${CN[c].e}) — ${CN[c].tip}` + (c==='dipper' ? ' ต่อไปหาดาวเหนือ: แตะดาวชี้ 2 ดวง (pointer stars) ที่ขอบกระบวยด้านนอก' : ''); }
+    else { s.wrong += 1; P.warn = `ยังไม่ใช่กลุ่มดาว${CN[id].n} ลองดูใหม่: รูปนี้${CN[c].tip}`; } }
+  function dipperTap(k){ const s = P.s;
+    if(k==='P'){ if(!(s.ptr[0] && s.ptr[1])){ P.warn = 'แตะดาวชี้ 2 ดวงของกระบวยก่อน แล้วจะเห็นเส้นนำทางไปหาดาวเหนือ'; return; } s.pol = true; P.warn = null; SFX.speak('Polaris'); P.say = 'เจอแล้ว! ดาวเหนือ (Polaris) อยู่ตามแนวเส้นที่ต่อออกจากดาวชี้ 2 ดวง ใช้บอกทิศเหนือได้'; return; }
+    if(typeof k==='string'){ s.wrong += 1; P.warn = s.ptr[0] && s.ptr[1] ? 'ดาวดวงนี้ไม่อยู่บนเส้นประสีเหลือง ดาวเหนืออยู่ตามแนวเส้นที่ต่อออกจากดาวชี้' : 'แตะดาวชี้ 2 ดวงของกระบวยก่อนนะ'; return; }
+    if(k < 2){ s.ptr[k] = 1; P.warn = null; P.say = s.ptr[0] && s.ptr[1] ? 'ดาวชี้ครบ 2 ดวง! เส้นประสีเหลืองต่อออกไป ดาวที่อยู่บนเส้นนั้นคือดาวเหนือ แตะได้เลย' : 'ถูกแล้ว ดาวชี้ดวงแรก แตะอีกดวงที่อยู่ขอบกระบวยด้านเดียวกัน'; }
+    else { s.wrong += 1; P.warn = 'ยังไม่ใช่ ดาวชี้ (pointer stars) คือ 2 ดวงที่ขอบกระบวยด้านนอก ฝั่งที่อยู่ห่างจากด้าม'; } }
+  function starTap(id){ const s = P.s, a = parseSt(id); if(a.c!==s.con) return;
+    if(a.c==='dipper' && s.named.dipper && !s.pol){ dipperTap(a.k); return; }
+    if(typeof a.k!=='number'){ toast(a.k==='P' ? 'ดาวเหนือ Polaris' : 'ดาวดวงนี้ไม่ได้อยู่ในกลุ่มดาว'); return; }
+    if(lnDone(a.c)){ P.say = s.named[a.c] ? `กลุ่มดาว${CN[a.c].n} (${CN[a.c].e})` : 'ต่อครบแล้ว เลือกชื่อกลุ่มดาวในแผงด้านล่าง'; return; }
+    if(P.sel && P.sel.c===a.c && P.sel.k!==a.k){ const b = P.sel; P.sel = null; linkStars(b, a); }
+    else { P.sel = P.sel && P.sel.k===a.k ? null : a; P.say = P.sel ? 'เลือกดาวแล้ว แตะดาวอีกดวงเพื่อต่อเส้น (หรือลากจากดาวไปหาดาว)' : null; } }
+  function nextLine(){ const s = P.s, c = s.con, L = s.ln[c] = s.ln[c] || {}; const k = CN[c].l.findIndex((_,j)=>!L[j]); if(k < 0) return; const [a,b] = CN[c].l[k]; linkStars({c, k:a}, {c, k:b}); }
+  function boardPoint(e){ pick(e); const pl = new THREE.Plane(V(0,0,1), -(BRD.z + .03)), out = V(0,0,0); return R.raycaster.ray.intersectPlane(pl, out) ? out : null; }
+  function starAt(e, skip){ pick(e); const hs = R.raycaster.intersectObjects(R.world.children, true);
+    for(const h of hs){ if(!visChain(h.object)) continue; const r = rootOf(h.object); if(r && r.userData.id && r.userData.id.startsWith('st:') && r.userData.id!==skip) return r.userData.id; }
+    const rc = R.renderer.domElement.getBoundingClientRect(); let best = null, bd = 46; const g = P.cg[P.s.con];
+    [...g.st, ...(g.pol ? [g.pol, ...g.dec] : [])].forEach(m=>{ if(!visChain(m) || m.userData.id===skip) return; const p = m.position.clone().project(R.camera), x = rc.left + (p.x*.5 + .5)*rc.width, y = rc.top + (-p.y*.5 + .5)*rc.height, d = Math.hypot(x - e.clientX, y - e.clientY); if(d < bd){ bd = d; best = m.userData.id; } });
+    return best; }
+  function visChain(o){ for(let q = o; q; q = q.parent) if(!q.visible) return false; return true; }
+
+  /* ===== PART 5: star trails by direction ===== */
+  const DIRS = [['N','เหนือ','North',0,'north'],['E','ตะวันออก','East',90,'east'],['S','ใต้','South',180,'south'],['W','ตะวันตก','West',270,'west']];
+  const DIRPAT = {N:'เป็นวงโค้งรอบดาวเหนือ', E:'เฉียงขึ้นจากขอบฟ้า', S:'โค้งจากซ้ายไปขวา', W:'เฉียงลงสู่ขอบฟ้า'};
+  const DIRSAY = {N:'ทิศเหนือ (North): ดาวเคลื่อนเป็นวงโค้งรอบดาวเหนือ (Polaris) ทวนเข็มนาฬิกา ส่วนดาวเหนือแทบไม่ขยับ', E:'ทิศตะวันออก (East): ดาวขึ้น (rise) จากขอบฟ้า เส้นทางเฉียงขึ้นไปทางขวา', S:'ทิศใต้ (South): ดาวเคลื่อนจากซ้ายไปขวา (ตะวันออก → ตะวันตก) เป็นเส้นโค้ง', W:'ทิศตะวันตก (West): ดาวตก (set) ลับขอบฟ้า เส้นทางเฉียงลงไปทางขวา'};
+  const TRK = 110;
+  function camP5(){ const s = P.s, d = DIRS.find(x=>x[0]===s.dir), az = d[3]*D2R, alt = (s.dir==='N' ? 20 : s.dir==='S' ? 32 : 26)*D2R;
+    const tgt = domePos(alt, az, 2.6), back = V(-Math.sin(az)*.55, 0, Math.cos(az)*.55); R.controls.target.copy(tgt); R.camera.position.set(back.x, TABLE_Y + .32, back.z); }
+  function buildP5(){
+    const W = R.world, s = P.s, y0 = TABLE_Y; s.play = false; s.el = 0; s.t = 19;
+    W.add(at(cyl(9, 9, .04, mat(0x15261C,{roughness:1}), 48), 0, y0 + .01, 0));
+    W.add(at(cyl(DOME, DOME, .05, mat(0x1F3B2A,{roughness:1}), 64), 0, y0 + .03, 0));
+    const sky = new THREE.SphereGeometry(DOME + .05, 48, 24, 0, Math.PI*2, 0, Math.PI/2 + .05), col = [], pa = sky.attributes.position, c = new THREE.Color(), cz = new THREE.Color(0x050A22), ch = new THREE.Color(0x26366A);
+    for(let k=0;k<pa.count;k++){ const t = Math.max(0, pa.getY(k))/(DOME + .05); c.copy(ch).lerp(cz, Math.pow(t, .6)); col.push(c.r, c.g, c.b); }
+    sky.setAttribute('color', new THREE.Float32BufferAttribute(col, 3)); const sm = new THREE.Mesh(sky, new THREE.MeshBasicMaterial({vertexColors:true, side:THREE.BackSide, depthWrite:false})); sm.position.y = y0; sm.renderOrder = -1; W.add(sm);
+    treeRing(W, y0 + .03, 2.45, 34, 0x08120C);
+    fieldPoints(W); const F = P.fld;
+    P.pol = sph(.035, new THREE.MeshBasicMaterial({color:0xFFF3C4}), 10); W.add(P.pol);
+    const tg = new THREE.BufferGeometry(); tg.setAttribute('position', new THREE.Float32BufferAttribute(new Float32Array(F.length*TRK*6), 3)); tg.setDrawRange(0, 0);
+    P.trails = new THREE.LineSegments(tg, new THREE.LineBasicMaterial({color:0xC8DAFF, transparent:true, opacity:.8})); P.trails.frustumCulled = false; W.add(P.trails); P.nseg = 0;
+    DIRS.forEach(([k,n,e,a])=>{ const o = new THREE.Object3D(); o.position.copy(domePos(1.5*D2R, a*D2R, 2.4)); W.add(o); P.labels.push({obj:o, dy:0, text:()=>`ทิศ${n} ${e}`}); });
+    P.labels.push({obj:P.pol, dy:.1, text:()=>'ดาวเหนือ Polaris'});
+    const rec = new THREE.Object3D(); W.add(rec); P.recAnc = rec; P.labels.push({obj:rec, dy:0, text:()=>s.play ? `● กำลังถ่ายภาพ ${hhmm(s.t)}` : (s.el > 0 ? `ภาพถ่าย ${Math.round(s.el)} ชั่วโมง` : '')});
+    camP5(); syncP5(true);
+  }
+  function fieldPos(lst, rr=2.6){ const F = P.fld, out = new Array(F.length); for(let k=0;k<F.length;k++){ const a = altAz(F[k][0], F[k][1], lst); out[k] = {alt:a.alt, p:domePos(a.alt, a.az, rr)}; } return out; }
+  function fieldPoints(W){ const F = starField(); P.fld = F; const mk = (big) => { const idx = F.map((f,k)=>[f,k]).filter(([f])=>!!f[2]===big).map(([,k])=>k); const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(new Float32Array(idx.length*3), 3)); const pts = new THREE.Points(geo, new THREE.PointsMaterial({color:0xFFFFFF, size:big ? 4 : 2.4, sizeAttenuation:false, map:dotTex(), transparent:true, alphaTest:.3, depthWrite:false})); pts.userData.idx = idx; W.add(pts); return pts; }; P.ptsB = mk(true); P.ptsS = mk(false); }
+  function placePoints(Q){ [P.ptsB, P.ptsS].forEach(pt=>{ const arr = pt.geometry.attributes.position.array; pt.userData.idx.forEach((k,j)=>{ const q = Q[k], p = q.alt > 0 ? q.p : V(0,-9,0); arr[j*3] = p.x; arr[j*3+1] = p.y; arr[j*3+2] = p.z; }); pt.geometry.attributes.position.needsUpdate = true; }); }
+  function syncP5(reset){ const s = P.s, lst = lstOf(15, s.t), Q = fieldPos(lst);
+    placePoints(Q);
+    const pa = altAz(POLARIS[0], POLARIS[1], lst); P.pol.position.copy(domePos(pa.alt, pa.az, 2.6));
+    const d = DIRS.find(x=>x[0]===s.dir); P.recAnc.position.copy(domePos(46*D2R, d[3]*D2R, 2.4));
+    if(reset){ P.nseg = 0; P.trails.geometry.setDrawRange(0, 0); P.prevQ = Q; P.acc = 0; } }
+  function trailStep(){ const s = P.s, Q = fieldPos(lstOf(15, s.t)), arr = P.trails.geometry.attributes.position.array, cap = P.fld.length*TRK;
+    Q.forEach((q,k)=>{ const p0 = P.prevQ[k]; if(q.alt > 0 && p0.alt > 0 && P.nseg < cap){ const o = P.nseg*6; arr[o] = p0.p.x; arr[o+1] = p0.p.y; arr[o+2] = p0.p.z; arr[o+3] = q.p.x; arr[o+4] = q.p.y; arr[o+5] = q.p.z; P.nseg++; } });
+    P.prevQ = Q; P.trails.geometry.attributes.position.needsUpdate = true; P.trails.geometry.setDrawRange(0, P.nseg*2); }
+  function tickP5(dt){ const s = P.s; if(!s.play) return; const step = dt*1.25; s.t = (s.t + step) % 24; s.el += step; P.acc += step;
+    if(P.acc >= .1){ P.acc = 0; trailStep(); syncP5(false); }
+    if(s.el >= 3 && !s.rec[s.dir]){ s.rec[s.dir] = 1; P.say = DIRSAY[s.dir]; SFX.ok(); P.dirty = true; }
+    if(s.el >= 10){ s.play = false; P.say = `ถ่ายภาพครบ 10 ชั่วโมง · ${DIRSAY[s.dir]}`; P.dirty = true; }
+    P.uiDirty = true; }
+  function setDir(k){ const s = P.s; s.dir = k; s.play = false; s.el = 0; s.t = 19; camP5(); syncP5(true); P.say = `หันหน้าไปทิศ${DIRS.find(x=>x[0]===k)[1]} แล้วกด "เริ่มถ่ายภาพดาว" ค้างไว้หลายชั่วโมง`; }
+  function turnDir(st){ const i = DIRS.findIndex(x=>x[0]===P.s.dir); setDir(DIRS[(i + st + 4) % 4][0]); }
+  function shoot(){ const s = P.s; if(s.play){ s.play = false; P.say = s.el >= 3 ? DIRSAY[s.dir] : 'หยุดถ่ายแล้ว ถ่ายให้นานอย่างน้อย 3 ชั่วโมงจะเห็นเส้นทางดาวชัด'; return; }
+    if(s.el >= 10){ s.el = 0; s.t = 19; syncP5(true); } s.play = true; SFX.tick(); P.say = 'เปิดหน้ากล้องค้างไว้ (long exposure) ดาวจะลากเป็นเส้นตามเวลาที่ผ่านไป'; }
 
   /* ----- missions ----- */
   function check(){
     const s = P.s, m = S.miss[P.i]; let ch = false; const set = k => { if(!m[k]){ m[k] = 1; ch = true; } };
     if(P.i===0){ if(!s.room && s.star) set('glow'); if(!s.room && !s.star) set('gone'); if(s.night >= 5) set('move'); if(OBJS.every(o=>s.cls[o[0]])) set('sort'); }
     else if(P.i===1){ if(s.found.orion) set('orion'); if(s.dirAns) set('dir'); if(s.found.scorp) set('scorp'); if(s.found.dipper) set('dipper'); }
-    else { const v = P.seen || {}; if(v.rise) set('rise'); if(v.high) set('high'); if(v.set) set('set'); if(s.pol) set('polaris'); }
+    else if(P.i===2){ const v = P.seen || {}; if(v.rise) set('rise'); if(v.high) set('high'); if(v.set) set('set'); if(s.pol) set('polaris'); }
+    else if(P.i===3){ CK.forEach(c=>{ if(s.named[c]) set(c); }); if(s.pol) set('polaris'); }
+    else { DIRS.forEach(d=>{ if(s.rec[d[0]]) set(d[4]); }); }
+    if(ch) SFX.ok();
     return ch;
   }
   function refresh(){
     check();
     const m = S.miss[P.i];
-    if(PARTS[P.i].miss.every(x=>m[x[0]]) && eqDone(P.i) && !S.labDone[P.i]){ S.labDone[P.i] = true; P.celebrate = true; toast(P.i<2 ? `${PARTS[P.i].k}เสร็จแล้ว! ปลดล็อก${PARTS[P.i+1].k}` : 'ทดลองครบทุกตอนแล้ว! ปลดล็อกแบบทดสอบหลังเรียน'); renderRail(); }
+    if(PARTS[P.i].miss.every(x=>m[x[0]]) && eqDone(P.i) && !S.labDone[P.i]){ S.labDone[P.i] = true; P.celebrate = true; SFX.done(); toast(P.i<PARTS.length-1 ? `${PARTS[P.i].k}เสร็จแล้ว! ปลดล็อก${PARTS[P.i+1].k}` : 'ทดลองครบทุกตอนแล้ว! ปลดล็อกแบบทดสอบหลังเรียน'); renderRail(); }
     try { S.ps = S.ps || {}; S.ps[P.i] = JSON.parse(JSON.stringify(P.s)); } catch(e){}
+    if(P.warn && P.warn !== P.lastWarn) SFX.bad(); P.lastWarn = P.warn;
     save(); refreshUI();
   }
   function mascotSay(){ if(P && P.mg && Date.now() - P.mg.t < 15000 && P.mg.t > (window.__mgClr || 0)) return ['think', P.mg.msg];
     const s = P.s, m = S.miss[P.i];
     if(P.warn) return [s.wrong >= 3 ? 'cry' : 'shock', P.warn];
-    if(S.labDone[P.i] && P.celebrate) return ['yay', P.i<2 ? `ภารกิจครบแล้ว! คำทำนายตรงกับผลไหม? กดปุ่ม "ไป${PARTS[P.i+1].k}" ได้เลย` : 'เก่งมาก! ทดลองครบทั้ง 3 ตอนแล้ว ไปทำแบบทดสอบหลังเรียนกันเลย'];
+    if(P.say && P.i >= 3) return ['happy', P.say];
+    if(S.labDone[P.i] && P.celebrate) return ['yay', P.i<PARTS.length-1 ? `ภารกิจครบแล้ว! คำทำนายตรงกับผลไหม? กดปุ่ม "ไป${PARTS[P.i+1].k}" ได้เลย` : 'เก่งมาก! ทดลองครบทั้ง 5 ตอนแล้ว ไปทำแบบทดสอบหลังเรียนกันเลย'];
     if(P.i===0){
       if(!m.glow) return s.room ? ['think','ปิดไฟห้องที่แผงด้านขวา ให้ห้องมืดเหมือนท้องฟ้ากลางคืน'] : ['think','แตะหลอดไฟเพื่อเปิดดาวฤกษ์'];
       if(!m.gone) return ['wow','หลอดไฟสว่างด้วยตัวเอง ส่วนลูกบอลสว่างแค่ด้านที่ถูกแสง เพราะสะท้อนแสงจากหลอดไฟ! ลองแตะหลอดไฟเพื่อปิดดูสิ'];
@@ -1587,6 +1862,14 @@ const Lab = (function(){
       if(lf && lf.id!=='orion') { const rest = (!m.scorp ? 'แมงป่อง ' : '') + (!m.dipper ? 'หมีใหญ่' : ''); return ['happy',`เจอกลุ่มดาว${CONS[lf.id].n} ทางทิศ${lf.dir} สูงประมาณ ${lf.alt} องศา${rest ? ' ต่อไปหากลุ่มดาว' + rest : ''}`]; }
       return ['think','ลองเปลี่ยนเดือนหรือเวลา แล้วหากลุ่มดาวแมงป่องและกลุ่มดาวหมีใหญ่ในช่องหน้าต่าง (ใบ้: แมงป่องเห็นช่วงหัวค่ำเดือน ก.ค. หมีใหญ่เห็นช่วงหัวค่ำเดือน เม.ย.)'];
     }
+    if(P.i===3){ const c = s.con, left = CN[c].l.length - Object.keys(s.ln[c] || {}).length;
+      if(!s.named[c]) return ['think', left ? `ลากเส้นจากดาวไปหาดาวตามเส้นประ (เหลือ ${left} เส้น) จะได้รูปกลุ่มดาว (Constellation)` : 'ต่อครบแล้ว! รูปนี้เหมือนอะไร เลือกชื่อกลุ่มดาวในแผงด้านล่าง'];
+      if(c==='dipper' && !s.pol) return ['think', s.ptr[0] && s.ptr[1] ? 'แตะดาวที่อยู่บนเส้นประสีเหลือง นั่นคือดาวเหนือ (Polaris)' : 'หาดาวเหนือ: แตะดาวชี้ 2 ดวง (pointer stars) ที่ขอบกระบวยด้านนอก ฝั่งที่ห่างจากด้าม'];
+      const nx = CK.find(k=>!s.named[k]); return ['yay', nx ? `เก่งมาก! ต่อไปกดเลือกกลุ่มดาว${CN[nx].n}` : (!s.pol ? 'ครบ 3 กลุ่มดาวแล้ว! เลือกหมีใหญ่ แล้วหาดาวเหนือ' : 'ครบทุกภารกิจ! กลุ่มดาวช่วยให้เราจำตำแหน่งดาวและหาทิศได้')]; }
+    if(P.i===4){ const d = DIRS.find(x=>x[0]===s.dir);
+      if(s.play) return ['wow', `กำลังถ่ายภาพทิศ${d[1]} (${d[2]}) ${Math.floor(s.el)} ชั่วโมง ดูดาวลากเป็นเส้น...`];
+      if(s.rec[s.dir]){ const nx = DIRS.find(x=>!s.rec[x[0]]); return ['happy', DIRSAY[s.dir] + (nx ? ` · ต่อไปหันไปทิศ${nx[1]}` : '')]; }
+      return ['think', `หันหน้าไปทิศ${d[1]} (${d[2]}) แล้วกด "เริ่มถ่ายภาพดาว" ค้างไว้อย่างน้อย 3 ชั่วโมง`]; }
     const o = P.stars.orion.ca, alt = Math.round(o.alt/D2R);
     if(!m.polaris && P.polTap) return ['wow','ดาวเหนือแทบไม่ขยับเลย ทั้งที่ดาวอื่นเคลื่อนที่ไป เพราะอยู่เกือบตรงแกนหมุนของโลก'];
     if(alt <= 0) return ['think',`ตอนนี้กลุ่มดาวนายพรานอยู่ใต้ขอบฟ้า เลื่อนเวลาต่อไป (หรือกดเล่น) ดูว่าจะโผล่ขึ้นทางทิศไหน`];
@@ -1605,6 +1888,7 @@ const Lab = (function(){
     if(!$('#pMiss', panel)) panel.innerHTML = `<div class="box" id="pMiss"></div>`;
     let ctrls = '', res = '', sig = '';
     const B = (v, t) => `<button class="btn ghost sm" type="button" data-act="lab" data-v="${v}">${t}</button>`;
+    if(P.i===3 && P.cg) syncP4();
     const TG = (v, on, n) => `<div class="ctl"><span class="n">${n}</span><button type="button" role="switch" class="toggle" aria-checked="${on}" aria-label="${n}" data-act="lab" data-v="${v}"></button></div>`;
     const monthSeg = `<div class="seg" role="group" aria-label="วันที่">${MONTHS.map(([k,d,l])=>`<button type="button" aria-pressed="${s.d===d}" data-act="lab" data-v="d:${d}">${l}</button>`).join('')}</div>`;
     const timeStep = `<div class="ctl"><span class="n">เวลา</span><div class="stepper"><button class="ibtn" type="button" data-act="lab" data-v="t-" aria-label="ย้อนเวลา">−</button><span class="v" id="tV">${hhmm(s.t)}</span><button class="ibtn" type="button" data-act="lab" data-v="t+" aria-label="เดินเวลา">+</button></div></div>`;
@@ -1619,16 +1903,30 @@ const Lab = (function(){
         ${m.orion ? `<h2 style="margin-top:6px">15 ม.ค. 20.00 น. นายพรานอยู่ทิศใด</h2>${s.dirAns ? `<div><span class="status on">ทิศ${s.dirAns}</span></div>` : `<div class="row" style="gap:6px">${['เหนือ','ตะวันออก','ใต้','ตะวันตก'].map(d=>B('dir:'+d, d)).join('')}</div>`}` : ''}`;
       const vis = visibleCons();
       res = `<h2>ในช่องหน้าต่างตอนนี้</h2><div class="note">${vis.length ? vis.map(id=>'กลุ่มดาว' + CONS[id].n).join(' · ') : 'ไม่มีกลุ่มดาวในชุดนี้อยู่เหนือขอบฟ้า'}</div>${P.lastFound && !(P.lastFound.id==='orion' && !s.dirAns) ? `<div class="note">แตะล่าสุด: กลุ่มดาว${CONS[P.lastFound.id].n} ทิศ${P.lastFound.dir} สูง ${P.lastFound.alt}°</div>` : ''}<div class="note">กากบาทสีส้ม = จุดเหนือศีรษะ ขอบเส้นสีน้ำเงิน = ขอบฟ้า</div>`;
-    } else {
+    } else if(P.i===2){
       sig = JSON.stringify(['p2', s.d, s.play, s.trail]);
       ctrls = `<h2>ควบคุม</h2><div class="n" style="font-size:15px;color:var(--ink2)">วันที่</div>${monthSeg}${timeStep}
         <div class="row" style="gap:8px">${B('play', s.play ? 'หยุดเวลา' : 'เล่น (เวลาเดินเอง)')}</div>${TG('trail', s.trail, 'แสดงเส้นทางของนายพราน')}`;
       const o = P.stars ? P.stars.orion.ca : null;
       res = `<h2>กลุ่มดาวนายพราน</h2>${o ? `<div class="note" id="oInfo">${o.alt > 0 ? `อยู่ทิศ${dirName(o.az)} สูง ${Math.round(o.alt/D2R)} องศา` : 'อยู่ใต้ขอบฟ้า มองไม่เห็น'}</div>` : ''}<div class="note">เส้นประสีส้ม = เส้นทางที่กลุ่มดาวนายพรานเคลื่อนผ่านในหนึ่งวัน</div>`;
+    } else if(P.i===3){
+      const c = s.con, done = lnDone(c);
+      sig = JSON.stringify(['p3', c, done, s.named, s.ptr, s.pol]);
+      ctrls = `<h2>เลือกกลุ่มดาว</h2><div class="seg" role="group" aria-label="กลุ่มดาว">${CK.map((k,j)=>`<button type="button" aria-pressed="${c===k}" data-act="lab" data-v="con:${k}">${s.named[k] ? CN[k].n.split(' ')[0] + ' ✓' : 'กลุ่มดาว ' + (j + 1)}</button>`).join('')}</div>
+        ${done && !s.named[c] ? `<h2 style="margin-top:6px">รูปนี้คือกลุ่มดาวอะไร</h2><div class="row" style="gap:6px">${CK.map(k=>B('name:' + k, `${CN[k].n.split(' ')[0]} ${CN[k].e}`)).join('')}</div>` : ''}
+        ${!done ? `<details style="flex-basis:100%"><summary class="note" style="cursor:pointer">ปุ่มสำรอง (ถ้าลากไม่ได้)</summary><div class="row" style="gap:6px;margin-top:6px">${B('nextLine','ต่อเส้นให้ 1 เส้น')}</div></details>` : ''}
+        <div class="row" style="gap:6px">${B('resetPart','เริ่มใหม่')}</div>`;
+      res = `<h2>ผลการต่อกลุ่มดาว</h2>${CK.map((k,j)=>`<div class="note">${s.named[k] ? `<b>${CN[k].n} ${CN[k].e}</b> ✓` : `กลุ่มดาว ${j + 1}: ?`} · ต่อเส้น ${Object.keys(s.ln[k] || {}).length}/${CN[k].l.length}</div>`).join('')}<div class="note">ดาวเหนือ Polaris: ${s.pol ? 'พบแล้ว ✓' : '–'}</div>`;
+    } else {
+      sig = JSON.stringify(['p4', s.dir, s.play, s.rec, s.el >= 10]);
+      ctrls = `<h2>หันหน้าไปทิศ</h2><div class="seg" role="group" aria-label="ทิศ">${DIRS.map(([k,n,e])=>`<button type="button" aria-pressed="${s.dir===k}" data-act="lab" data-v="dir:${k}">${n}${s.rec[k] ? ' ✓' : ''}</button>`).join('')}</div>
+        <div class="row" style="gap:6px">${B('shoot', s.play ? 'หยุดถ่ายภาพ' : 'เริ่มถ่ายภาพดาว')}${B('clearShot','ล้างภาพ')}${B('resetPart','เริ่มใหม่')}</div>`;
+      res = `<h2>เส้นทางดาวที่บันทึกได้ · ${hhmm(s.t)}</h2>${DIRS.map(([k,n,e])=>`<div class="note"><b>ทิศ${n} ${e}</b>: ${s.rec[k] ? DIRPAT[k] : '–'}</div>`).join('')}`;
     }
+    ctrls = `<div id="resBox" style="flex-basis:100%;display:flex;flex-direction:column;gap:4px"></div>` + ctrls + vocabBox(P.i);
     if(sig !== P.ctrlSig || !$('#pCtrl').innerHTML){ $('#pCtrl').innerHTML = ctrls; P.ctrlSig = sig; }
     const tv = $('#tV'); if(tv) tv.textContent = hhmm(s.t || 0);
-    $('#pRes').innerHTML = res;
+    setHTML('#resBox', res); setHTML('#pRes', '');
     const doneP = S.labDone[P.i];
     const nextBtn = doneP ? nextPartBtn(P.i) : '';
     setHTML('#pMiss', missBox(P.i, part, k=>!!(m[k]), nextBtn));
@@ -1639,10 +1937,18 @@ const Lab = (function(){
   function action(v){
     if(typeof v==='string' && v.startsWith('mg:')){ const id = v.slice(3), g = mgGet(P.i, id), dn = !!(S.miss[P.i] && S.miss[P.i][id]); P.warn = null; P.say = dn ? 'ภารกิจนี้ทำเสร็จแล้วครับ ✓' : (g ? g[1] : null); P.mg = P.say ? {msg:P.say, t:Date.now()} : null; refresh(); if(!dn && !mgFlash(g)){ const nx = (PARTS[P.i].miss.find(x=>!(S.miss[P.i] && S.miss[P.i][x[0]])) || [])[0]; const alt = g && g[3] ? g[3] : (g && nx && nx!==id ? g[1] + ' (ทำข้อที่มี ▶ ทำต่อ ให้เสร็จก่อนนะครับ)' : ''); if(alt){ P.say = alt; P.mg = {msg:alt, t:Date.now()}; refresh(); } } return; }
     if(P) P.mg = null;
-    if(!P) return; const s = P.s;
+    if(!P) return; const s = P.s; P.warn = null; if(P.i >= 3) P.say = null;
     if(v==='camL') camRotate(-Math.PI/7); else if(v==='camR') camRotate(Math.PI/7);
     else if(v==='zin') camZoom(.82); else if(v==='zout') camZoom(1.2);
-    else if(v==='camReset'){ R.camera.position.copy(CAMS[P.i].pos); R.controls.target.copy(CAMS[P.i].tgt); }
+    else if(P.i===4 && (v==='camL' || v==='camR')){ turnDir(v==='camR' ? 1 : -1); refresh(); }
+    else if(v==='camReset'){ if(P.i===4) camP5(); else camHome(); }
+    else if(v.startsWith('con:')){ s.con = v.slice(4); P.sel = null; P.warn = null; P.say = null; syncP4(); refresh(); }
+    else if(v.startsWith('name:')){ nameCon(v.slice(5)); refresh(); }
+    else if(v==='nextLine'){ nextLine(); refresh(); }
+    else if(v.startsWith('stp:')){ starTap(v.slice(4)); refresh(); }
+    else if(v.startsWith('dir:') && P.i===4){ setDir(v.slice(4)); refresh(); }
+    else if(v==='shoot'){ shoot(); refresh(); }
+    else if(v==='clearShot'){ s.play = false; s.el = 0; s.t = 19; syncP5(true); P.say = 'ล้างภาพแล้ว'; refresh(); }
     else if(v==='resetPart'){ if(S.ps) delete S.ps[P.i]; P = fresh(P.i); build(); }
     else if(v==='room'){ s.room = !s.room; syncP1(); refresh(); }
     else if(v==='star'){ s.star = !s.star; syncP1(); refresh(); }
@@ -1664,7 +1970,8 @@ const Lab = (function(){
     const el = R.renderer.domElement;
     el.addEventListener('pointerdown', e=>{
       if(!P || drag) return; pick(e);
-      const hs = R.raycaster.intersectObjects(R.world.children, true).filter(x=>rootOf(x.object));
+      if(P.i===4){ drag = {id:'p5sky', x:e.clientX, y:e.clientY, moved:false, pid:e.pointerId}; try{ el.setPointerCapture(e.pointerId); }catch(_){} return; }
+      const hs = R.raycaster.intersectObjects(R.world.children, true).filter(x=>rootOf(x.object) && (P.i!==3 || visChain(x.object)));
       let h = hs[0]; if(P.i===2){ const pr = hs.find(x=>rootOf(x.object).userData.id!=='sky'); if(pr) h = pr; }
       if(!h) return; const g = rootOf(h.object);
       e.stopImmediatePropagation(); e.preventDefault();
@@ -1675,12 +1982,16 @@ const Lab = (function(){
       if(!drag || e.pointerId!==drag.pid) return;
       if(!drag.moved && Math.abs(e.clientX-drag.x)+Math.abs(e.clientY-drag.y) > 6) drag.moved = true;
       if(!drag.moved) return;
+      if(P.i===3 && drag.id.startsWith('st:')){ const st = P.cg[P.s.con] && [...P.cg[P.s.con].st].find(m=>m.userData.id===drag.id); const bp = boardPoint(e); if(st && bp){ const ar = P.rubber.geometry.attributes.position; ar.setXYZ(0, st.position.x, st.position.y, st.position.z + .02); ar.setXYZ(1, bp.x, bp.y, bp.z + .02); ar.needsUpdate = true; P.rubber.visible = true; } return; }
       if(drag.id==='disc' && drag.a0 !== null){ const a = discAngle(e); if(a === null) return; let da = a - drag.a0; if(da > Math.PI) da -= 2*Math.PI; if(da < -Math.PI) da += 2*Math.PI; drag.a0 = a; setT(P.s.t + da/(15*D2R)); P.uiDirty = true; }
       else if(drag.id==='sky' || (drag.id && drag.id.startsWith('con:'))){ const r = el.getBoundingClientRect(); setT(drag.t0 + (drag.x - e.clientX)/r.width*12); P.uiDirty = true; }
     });
     const end = e=>{
       if(!drag || e.pointerId!==drag.pid) return;
       const d = drag; drag = null; el.classList.remove('dragging'); R.controls.enabled = true;
+      R.controls.enabled = P.i!==4;
+      if(P.i===4){ if(d.moved && Math.abs(e.clientX - d.x) > 50){ turnDir(e.clientX < d.x ? 1 : -1); refresh(); } return; }
+      if(P.i===3 && d.id.startsWith('st:')){ P.rubber.visible = false; if(d.moved){ const tgt = starAt(e, d.id); if(tgt){ const a = parseSt(d.id), b = parseSt(tgt); if(typeof a.k==='number' && typeof b.k==='number' && !lnDone(a.c)){ P.sel = null; linkStars(a, b); } else starTap(tgt); } else P.say = 'ปล่อยนิ้วให้ตรงดาวอีกดวงนะครับ'; refresh(); return; } }
       if(!d.moved) tap(d); else { if(P.i===1) P.s.t = Math.round(P.s.t*4)/4, syncP2(); refresh(); }
     };
     el.addEventListener('pointerup', end); el.addEventListener('pointercancel', end);
@@ -1691,6 +2002,7 @@ const Lab = (function(){
     else if(d.id==='board') nextNight();
     else if(d.id==='disc' && d.uv) tapDisc(d.uv);
     else if(d.id==='polaris'){ P.polTap = true; s.pol = 1; P.warn = null; refresh(); }
+    else if(d.id && d.id.startsWith('st:')){ P.warn = null; P.say = null; starTap(d.id); refresh(); }
     else if(d.id && d.id.startsWith('con:')){ const id = d.id.slice(4), ca = P.stars[id].ca; toast(`กลุ่มดาว${CONS[id].n} ${ca.alt > 0 ? 'ทิศ' + dirName(ca.az) + ' สูง ' + Math.round(ca.alt/D2R) + ' องศา' : 'อยู่ใต้ขอบฟ้า'}`); }
   }
 
@@ -1705,6 +2017,9 @@ const Lab = (function(){
       const s = P.s;
       if(P.i===0 && s.star){ const k = 1 + Math.sin(t/300)*.04; P.bulb.userData.halo.scale.setScalar(k); }
       if(P.i===2 && s.play){ setT(s.t + dt*1.5); P.uiDirty = true; }
+      if(P.i===4) tickP5(dt);
+      if(P.i===3 && P.selRing && P.selRing.visible) P.selRing.scale.setScalar(1 + Math.sin(t/180)*.12);
+      SFX.amb(P.i>=2 ? {wind:.16} : {});
       uiT += dt; if(uiT > .25){ uiT = 0; if(P.uiDirty){ P.uiDirty = false; if(check()) refresh(); else refreshUI(); } }
       if(P.dirty){ P.dirty = false; refresh(); }
       placeLabels();
@@ -1740,7 +2055,7 @@ const Lab = (function(){
       if(R.ro) R.ro.disconnect(); R.ro = new ResizeObserver(resize); R.ro.observe(box); resize();
       if(!R.active){ R.active = true; requestAnimationFrame(tick); }
     },
-    stop(){ if(R){ R.active = false; if(R.ro) R.ro.disconnect(); } },
+    stop(){ SFX.amb({}); if(R){ R.active = false; if(R.ro) R.ro.disconnect(); } },
     refreshUI(){ if(P){ P.ctrlSig = ''; refreshUI(); } },
     action
   };
