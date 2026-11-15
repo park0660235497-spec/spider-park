@@ -485,13 +485,13 @@ function moodOf(mood, msg){
 const CONF = {
   title:'วัฏจักรน้ำ', short:'ป.5 วัฏจักรน้ำ', subject:'วิทยาศาสตร์ ป.5',
   tags:['วิทยาศาสตร์ ป.5','โลกและอวกาศ','ห้องแลป 3 มิติ'],
-  sub:'สร้างแบบจำลองวัฏจักรน้ำในตู้กระจก ดูการเกิดน้ำค้าง หมอก และเมฆ แล้วปรับความสูงของเมฆ อุณหภูมิ และลมให้เกิดฝน หิมะ และลูกเห็บ',
-  key:'parkilab-p5-water-v1', file:'ParK_iLab-P5-watercycle-worksheet.pdf',
+  sub:'สร้างแบบจำลองวัฏจักรน้ำในตู้กระจก ดูการเกิดน้ำค้าง หมอก และเมฆ ปรับเมฆให้เกิดฝน หิมะ ลูกเห็บ ทดลองเปลี่ยนสถานะของน้ำ และดูการเกิดน้ำค้างแข็ง พร้อมคำศัพท์ภาษาอังกฤษ',
+  key:'parkilab-p5-water-v2', file:'ParK_iLab-P5-watercycle-worksheet.pdf',
   hint:'ลากโคมไฟ ถุงน้ำแข็ง ก้อนอากาศ หรือก้อนเมฆไปวาง · แตะเมฆเพื่อให้ตก · ลากพื้นที่ว่างเพื่อหมุนมุมมอง',
   observe:'ทำตามภารกิจ สังเกตว่าน้ำเปลี่ยนสถานะตรงไหน เพราะได้รับหรือสูญเสียความร้อน',
   guide:[
-    {h:'จุดประสงค์', li:['สร้างแบบจำลองและอธิบายการหมุนเวียนของน้ำในวัฏจักรน้ำ','เปรียบเทียบการเกิดน้ำค้าง หมอก และเมฆ','เปรียบเทียบการเกิดฝน หิมะ และลูกเห็บ','ตระหนักว่าน้ำจืดที่ใช้ได้มีน้อย และช่วยกันใช้น้ำอย่างประหยัด']},
-    {h:'ใช้ห้องแลป 3 มิติอย่างไร', li:['<b>ลากโคมไฟ</b> ไปส่องเหนือทะเล (แทนดวงอาทิตย์) <b>ลากถุงน้ำแข็ง</b> ไปวางบนฝาตู้','<b>ลากก้อนอากาศ</b> หรือ <b>ก้อนเมฆ</b> ขึ้นลง เพื่อเปลี่ยนความสูง','<b>แตะก้อนเมฆ</b> เพื่อให้เกิดหยาดน้ำฟ้าตกลงมา','<b>ลากพื้นที่ว่าง</b> เพื่อหมุนมุมมอง ใช้นิ้วสองนิ้วหรือลูกกลิ้งเมาส์เพื่อซูม']},
+    {h:'จุดประสงค์', li:['สร้างแบบจำลองและอธิบายการหมุนเวียนของน้ำในวัฏจักรน้ำ','เปรียบเทียบการเกิดน้ำค้าง หมอก และเมฆ','เปรียบเทียบการเกิดฝน หิมะ และลูกเห็บ','อธิบายการเปลี่ยนสถานะของน้ำ 6 แบบ (Melting, Freezing, Evaporation, Condensation, Sublimation, Deposition) และบอกได้ว่ารับหรือคายความร้อน','ตระหนักว่าน้ำจืดที่ใช้ได้มีน้อย และช่วยกันใช้น้ำอย่างประหยัด']},
+    {h:'ใช้ห้องแลป 3 มิติอย่างไร', li:['<b>ลากโคมไฟ</b> ไปส่องเหนือทะเล (แทนดวงอาทิตย์) <b>ลากถุงน้ำแข็ง</b> ไปวางบนฝาตู้','<b>ลากก้อนอากาศ</b> หรือ <b>ก้อนเมฆ</b> ขึ้นลง เพื่อเปลี่ยนความสูง','<b>แตะก้อนเมฆ</b> เพื่อให้เกิดหยาดน้ำฟ้าตกลงมา','<b>แตะคำศัพท์ภาษาอังกฤษ</b> ในแผงด้านข้าง เพื่อฟังเสียงอ่าน','<b>ลากพื้นที่ว่าง</b> เพื่อหมุนมุมมอง ใช้นิ้วสองนิ้วหรือลูกกลิ้งเมาส์เพื่อซูม']},
     'POE',
     {h:'ข้อควรระวัง (เมื่อทดลองจริง)', li:['โคมไฟร้อน อย่าจับหลอดไฟ','เช็ดน้ำที่หกบนโต๊ะทันทีเพื่อกันลื่นและไฟฟ้าช็อต','ใช้น้ำอย่างประหยัด เททิ้งในที่ที่เหมาะสม']}
   ]
@@ -519,12 +519,16 @@ const PARTS = [
    miss:[['glass','ใส่น้ำแข็งในแก้ว ดูผิวด้านนอก'],['dawn','เปลี่ยนเวลาเป็นเช้ามืด ดูหญ้าและอากาศ'],['cloud','ลากก้อนอากาศขึ้นสูงจนเกิดเมฆ'],['match','จับคู่ว่าน้ำค้าง หมอก เมฆ เกิดที่ใดให้ถูกทั้งหมด']]},
   {k:'ตอนที่ 3', t:'ฝน หิมะ และลูกเห็บ', d:'ปรับความสูงของเมฆ อุณหภูมิใกล้พื้น และลมที่พัดขึ้น แล้วแตะเมฆให้ตก', time:'ประมาณ 15 นาที', bg:'#FFF4D6',
    pred:{q:'ถ้าอากาศใกล้พื้นดินเย็นจัดต่ำกว่า 0 °C สิ่งที่ตกจากเมฆจะเป็นอะไร', o:['ฝน','หิมะ','ลูกเห็บ']},
-   miss:[['rain','ทำให้เกิดฝน'],['snow','ทำให้เกิดหิมะ'],['hail','ทำให้เกิดลูกเห็บ']]}
+   miss:[['rain','ทำให้เกิดฝน'],['snow','ทำให้เกิดหิมะ'],['hail','ทำให้เกิดลูกเห็บ']]},
+  {k:'ตอนที่ 4', t:'การเปลี่ยนสถานะของน้ำ', d:'ให้ความร้อนและทำให้เย็นในบีกเกอร์ ดู Melting, Evaporation, Condensation และ Freezing', time:'ประมาณ 15 นาที', bg:'#FDE8EF', pred:{q:'ถ้าให้ความร้อนกับน้ำแข็งไปเรื่อย ๆ น้ำแข็งจะเปลี่ยนไปอย่างไร', o:['ละลายเป็นน้ำ แล้วกลายเป็นไอน้ำ','กลายเป็นไอน้ำทันที','ไม่เปลี่ยนแปลงเลย']}, miss:[['melt','ให้ความร้อนจนน้ำแข็งละลาย (Melting)'],['evap','ให้ความร้อนจนน้ำกลายเป็นไอ (Evaporation)'],['cond','วางแผ่นกระจกเย็นให้ไอน้ำควบแน่น (Condensation)'],['freeze','ทำให้น้ำเย็นจนแข็งตัว (Freezing)']]},
+  {k:'ตอนที่ 5', t:'น้ำค้างแข็ง (Frost)', d:'เปรียบเทียบคืนที่อากาศ 5 °C กับ −3 °C ดู Deposition และ Sublimation แล้วจัดกลุ่มรับ/คายความร้อน', time:'ประมาณ 15 นาที', bg:'#EEF0FB', pred:{q:'ถ้ากลางคืนอากาศเย็นจัดต่ำกว่า 0 °C ตอนเช้ายอดหญ้าจะเป็นอย่างไร', o:['มีเกล็ดน้ำแข็งสีขาวเกาะ','มีหยดน้ำใส ๆ เกาะ','แห้งเหมือนเดิม']}, miss:[['dew','คืน 5 °C ดูน้ำค้าง (Dew)'],['frost','คืน −3 °C ดูน้ำค้างแข็ง (Frost)'],['subl','แดดออกตอนอากาศต่ำกว่า 0 °C (Sublimation)'],['sort','จัดกลุ่มกระบวนการ รับ/คายความร้อน']]}
 ];
 const PART_ART = [
   `<svg width="200" height="110" viewBox="0 0 200 110" aria-hidden="true"><rect x="20" y="20" width="160" height="80" fill="#DCEBFB" stroke="#9CC8FF" stroke-width="2"/><rect x="22" y="70" width="80" height="28" fill="#5B8DEF" opacity=".7"/><path d="M100 98 L150 40 L178 98z" fill="#5CCFA4"/><ellipse cx="140" cy="32" rx="26" ry="9" fill="#fff" stroke="#C9CFDF"/><rect x="128" y="10" width="26" height="10" rx="2" fill="#9CC8FF"/><circle cx="50" cy="12" r="8" fill="#FFC94D"/><path d="M60 64 q4 -8 0 -16 M74 64 q4 -8 0 -16" stroke="#fff" stroke-width="3" fill="none"/></svg>`,
   `<svg width="200" height="110" viewBox="0 0 200 110" aria-hidden="true"><path d="M20 40 h30 l-4 56 h-22z" fill="#DCEBFB" stroke="#9CC8FF" stroke-width="2"/><circle cx="18" cy="60" r="2.5" fill="#5B8DEF"/><circle cx="52" cy="72" r="2.5" fill="#5B8DEF"/><rect x="70" y="80" width="60" height="18" fill="#5CCFA4"/><rect x="70" y="70" width="60" height="12" fill="#fff" opacity=".8"/><line x1="160" y1="98" x2="160" y2="20" stroke="#9AA3B5" stroke-width="3"/><ellipse cx="172" cy="30" rx="18" ry="8" fill="#fff" stroke="#C9CFDF"/></svg>`,
-  `<svg width="200" height="110" viewBox="0 0 200 110" aria-hidden="true"><ellipse cx="100" cy="28" rx="56" ry="18" fill="#B9C2D6"/><g stroke="#5B8DEF" stroke-width="2"><line x1="60" y1="58" x2="56" y2="70"/><line x1="72" y1="62" x2="68" y2="74"/></g><g fill="#fff" stroke="#9CC8FF"><circle cx="100" cy="64" r="4"/><circle cx="112" cy="74" r="4"/></g><g fill="#EAF7FF" stroke="#9AA3B5"><circle cx="140" cy="64" r="6"/><circle cx="152" cy="78" r="5"/></g><rect x="20" y="96" width="160" height="8" fill="#5CCFA4"/></svg>`
+  `<svg width="200" height="110" viewBox="0 0 200 110" aria-hidden="true"><ellipse cx="100" cy="28" rx="56" ry="18" fill="#B9C2D6"/><g stroke="#5B8DEF" stroke-width="2"><line x1="60" y1="58" x2="56" y2="70"/><line x1="72" y1="62" x2="68" y2="74"/></g><g fill="#fff" stroke="#9CC8FF"><circle cx="100" cy="64" r="4"/><circle cx="112" cy="74" r="4"/></g><g fill="#EAF7FF" stroke="#9AA3B5"><circle cx="140" cy="64" r="6"/><circle cx="152" cy="78" r="5"/></g><rect x="20" y="96" width="160" height="8" fill="#5CCFA4"/></svg>`,
+  `<svg width="200" height="110" viewBox="0 0 200 110" aria-hidden="true"><rect x="55" y="90" width="90" height="12" rx="3" fill="#5B6280"/><path d="M75 20 h50 v68 h-50z" fill="#DCEBFB" stroke="#9CC8FF" stroke-width="2"/><rect x="77" y="58" width="46" height="29" fill="#5B8DEF" opacity=".6"/><rect x="82" y="44" width="14" height="14" fill="#EAF7FF" stroke="#9CC8FF"/><rect x="100" y="48" width="14" height="14" fill="#EAF7FF" stroke="#9CC8FF"/><path d="M88 16 q-6 -8 0 -14 M110 16 q6 -8 0 -14" stroke="#B9C0CE" stroke-width="3" fill="none"/><path d="M70 98 l8 -8 l8 8 l8 -8 l8 8 l8 -8 l8 8 l8 -8 l8 8" stroke="#FF8A3D" stroke-width="3" fill="none"/></svg>`,
+  `<svg width="200" height="110" viewBox="0 0 200 110" aria-hidden="true"><path d="M20 95 L70 30 L120 95z" fill="#9AA6C2"/><path d="M58 46 L70 30 L82 46z" fill="#fff"/><rect x="10" y="92" width="180" height="12" fill="#7BC47F"/><g stroke="#4FA35E" stroke-width="3">${[30,50,70,90,110,130,150,170].map(x=>`<path d="M${x} 94 l3 -16"/>`).join('')}</g><g fill="#fff" stroke="#9CC8FF">${[33,53,73,93,113,133,153,173].map(x=>`<circle cx="${x}" cy="76" r="3.5"/>`).join('')}</g><circle cx="160" cy="28" r="14" fill="#FFC94D"/></svg>`
 ];
 
 const SHEET = [
@@ -541,9 +545,19 @@ const SHEET = [
   {title:'ตอนที่ 3 ฝน หิมะ และลูกเห็บ', cols:['สภาพที่ตั้ง','สิ่งที่ตกลงมา'], rows:[
     ['p3a','อากาศใกล้พื้นอุ่น เมฆไม่สูงมาก',['ฝน','หิมะ','ลูกเห็บ']],
     ['p3b','อากาศใกล้พื้นเย็นจัด (ต่ำกว่า 0 °C)',['ฝน','หิมะ','ลูกเห็บ']],
-    ['p3c','เมฆสูงมาก มีลมพัดขึ้นแรง',['ฝน','หิมะ','ลูกเห็บ']]], concl:'p3s', cq:'ฝน หิมะ และลูกเห็บ เกิดต่างกันอย่างไร'}
+    ['p3c','เมฆสูงมาก มีลมพัดขึ้นแรง',['ฝน','หิมะ','ลูกเห็บ']]], concl:'p3s', cq:'ฝน หิมะ และลูกเห็บ เกิดต่างกันอย่างไร'},
+  {title:'ตอนที่ 4 การเปลี่ยนสถานะของน้ำ (Changes of State)', cols:['สิ่งที่ทำ','ผลที่สังเกตได้'], rows:[
+    ['p4a','ให้ความร้อนกับน้ำแข็ง',['ละลายเป็นน้ำ (Melting)','ไม่เปลี่ยนแปลง']],
+    ['p4b','ให้ความร้อนกับน้ำจนเดือด',['กลายเป็นไอน้ำ (Evaporation)','แข็งตัวเป็นน้ำแข็ง']],
+    ['p4c','วางแผ่นกระจกเย็นเหนือไอน้ำ',['มีหยดน้ำเกาะ (Condensation)','ไม่มีอะไรเกาะ']],
+    ['p4d','ทำให้น้ำเย็นต่ำกว่า 0 °C',['แข็งตัวเป็นน้ำแข็ง (Freezing)','ระเหยหายหมด']],
+    ['p4e','อุณหภูมิขณะน้ำแข็งกำลังละลาย','............. °C']], concl:'p4s', cq:'น้ำเปลี่ยนสถานะได้อย่างไร เขียนชื่อกระบวนการทั้งภาษาไทยและภาษาอังกฤษ'},
+  {title:'ตอนที่ 5 น้ำค้างแข็ง (Frost)', cols:['สภาพที่ตั้ง','ผลที่เกิด'], rows:[
+    ['p5a','กลางคืนอากาศ 5 °C',['น้ำค้าง (Dew)','น้ำค้างแข็ง (Frost)']],
+    ['p5b','กลางคืนอากาศ −3 °C',['น้ำค้าง (Dew)','น้ำค้างแข็ง (Frost)']],
+    ['p5c','แดดออก ลมแห้ง อากาศยังต่ำกว่า 0 °C',['ละลายเป็นน้ำก่อน','กลายเป็นไอโดยตรง']]], concl:'p5s', cq:'Sublimation (การระเหิด) กับ Deposition (การระเหิดกลับ) ต่างกันอย่างไร'}
 ];
-const GUIDE = [{"evap": ["lamp", "กด “ส่องดวงอาทิตย์” เหนือทะเลให้น้ำระเหยครับ", [], ""], "cloud": ["ice", "กด “วางถุงน้ำแข็ง” บนฝาตู้ให้ไอน้ำเย็นตัวเป็นเมฆครับ", [], ""], "rain": ["ice", "รอให้เมฆหนาขึ้นจนฝนตกครับ", [], ""], "runoff": ["#stage", "รอดูน้ำฝนไหลกลับลงทะเลครับ", [], ""]}, {"glass": ["glass", "กด “ใส่น้ำแข็งในแก้ว” แล้วดูผิวแก้วด้านนอกครับ", [], ""], "dawn": ["[data-v^=\"time:\"]", "เปลี่ยนเวลาเป็นเช้ามืด แล้วดูหญ้าและอากาศครับ", [], ""], "cloud": ["km+", "กด + ยกก้อนอากาศขึ้นสูงจนเกิดเมฆครับ", [], ""], "match": ["[data-v^=\"match:\"]", "จับคู่ น้ำค้าง หมอก เมฆ กับที่เกิดให้ถูกครับ", [], ""]}, {"rain": ["gT:warm", "ตั้งอากาศใกล้พื้นให้อุ่น แล้วกด “ให้เมฆตกลงมา” ครับ", [], ""], "snow": ["gT:cold", "ตั้งอากาศใกล้พื้นให้เย็นจัด แล้วกด “ให้เมฆตกลงมา” ครับ", [], ""], "hail": ["[data-v^=\"up\"]", "ให้ลมพาหยดน้ำขึ้นไปในเมฆหลายรอบ แล้วกด “ให้เมฆตกลงมา” ครับ", [], ""]}];
+const GUIDE = [{"evap": ["lamp", "กด “ส่องดวงอาทิตย์” เหนือทะเลให้น้ำระเหยครับ", [], ""], "cloud": ["ice", "กด “วางถุงน้ำแข็ง” บนฝาตู้ให้ไอน้ำเย็นตัวเป็นเมฆครับ", [], ""], "rain": ["ice", "รอให้เมฆหนาขึ้นจนฝนตกครับ", [], ""], "runoff": ["#stage", "รอดูน้ำฝนไหลกลับลงทะเลครับ", [], ""]}, {"glass": ["glass", "กด “ใส่น้ำแข็งในแก้ว” แล้วดูผิวแก้วด้านนอกครับ", [], ""], "dawn": ["[data-v^=\"time:\"]", "เปลี่ยนเวลาเป็นเช้ามืด แล้วดูหญ้าและอากาศครับ", [], ""], "cloud": ["km+", "กด + ยกก้อนอากาศขึ้นสูงจนเกิดเมฆครับ", [], ""], "match": ["[data-v^=\"match:\"]", "จับคู่ น้ำค้าง หมอก เมฆ กับที่เกิดให้ถูกครับ", [], ""]}, {"rain": ["gT:warm", "ตั้งอากาศใกล้พื้นให้อุ่น แล้วกด “ให้เมฆตกลงมา” ครับ", [], ""], "snow": ["gT:cold", "ตั้งอากาศใกล้พื้นให้เย็นจัด แล้วกด “ให้เมฆตกลงมา” ครับ", [], ""], "hail": ["[data-v^=\"up\"]", "ให้ลมพาหยดน้ำขึ้นไปในเมฆหลายรอบ แล้วกด “ให้เมฆตกลงมา” ครับ", [], ""]}, {"melt": ["mode:heat", "กด “ให้ความร้อน” ให้น้ำแข็งละลายครับ", [], ""], "evap": ["mode:heat", "ให้ความร้อนต่อจนน้ำเดือดเป็นไอน้ำครับ", [], ""], "cond": ["lid", "กด “วางแผ่นกระจกเย็น” ตอนน้ำเดือดครับ", [], ""], "freeze": ["mode:cool", "กด “ทำให้เย็น” จนน้ำแข็งตัวครับ", [], ""]}, {"dew": ["ft:warm", "ตั้ง 5 °C แล้วกด “ผ่านไปหนึ่งคืน” ครับ", [], ""], "frost": ["ft:cold", "ตั้ง −3 °C แล้วกด “ผ่านไปหนึ่งคืน” ครับ", [], ""], "subl": ["sun", "ตอนมีน้ำค้างแข็ง กด “แดดออก ลมแห้ง” ครับ", [], ""], "sort": ["[data-v^=\"sort:\"]", "จัดกลุ่ม รับ/คายความร้อน ให้ถูกครับ", [], ""]}];
 const ENDQ = [
  [{k:'evap', q:'{n}ส่องไฟเหนือทะเลในตู้ เกิดอะไรขึ้น', o:[['evap','น้ำระเหยเป็นไอน้ำ'],['freeze','น้ำแข็งตัวเป็นน้ำแข็ง'],['none','ไม่มีอะไรเปลี่ยนแปลง']], a:'evap',
    h:['ไฟให้ความร้อนกับน้ำ','ดูสิ่งที่ลอยขึ้นจากผิวน้ำ'], why:'น้ำได้รับความร้อนจึงระเหยเป็นไอน้ำ'},
@@ -570,7 +584,23 @@ const ENDQ = [
   {k:'snow', q:'ถ้าอากาศใกล้พื้นเย็นจัด ต่ำกว่า 0 องศาเซลเซียส จะเกิดอะไร', o:[['rain','ฝน'],['snow','หิมะ'],['dew','น้ำค้าง']], a:'snow',
    h:['ต่ำกว่า 0 องศา น้ำจะเป็นอะไร','ผลึกน้ำแข็งเบา ๆ ไม่ละลายระหว่างตก'], why:'อากาศเย็นจัด ผลึกน้ำแข็งจึงไม่ละลาย ตกลงมาเป็นหิมะ'},
   {k:'hail', q:'{n}ทำให้เกิดลูกเห็บได้ ต้องปรับอย่างไร', o:[['a','เมฆสูงมาก และลมพัดขึ้นแรง'],['b','เมฆต่ำมาก และไม่มีลมเลย'],['c','อากาศใกล้พื้นร้อนมาก และแดดจัด']], a:'a',
-   h:['ลูกเห็บเป็นก้อนน้ำแข็งที่ใหญ่ขึ้นเรื่อย ๆ','ลมพัดหยดน้ำขึ้นไปเจอความเย็นบนที่สูงหลายรอบ'], why:'ลมแรงพัดหยดน้ำขึ้นไปในเมฆที่สูงและเย็นหลายรอบ จนกลายเป็นก้อนน้ำแข็งใหญ่ แล้วตกลงมาเป็นลูกเห็บ'}]
+   h:['ลูกเห็บเป็นก้อนน้ำแข็งที่ใหญ่ขึ้นเรื่อย ๆ','ลมพัดหยดน้ำขึ้นไปเจอความเย็นบนที่สูงหลายรอบ'], why:'ลมแรงพัดหยดน้ำขึ้นไปในเมฆที่สูงและเย็นหลายรอบ จนกลายเป็นก้อนน้ำแข็งใหญ่ แล้วตกลงมาเป็นลูกเห็บ'}],
+ [{k:'melt', q:'{n}ให้ความร้อนกับน้ำแข็งจนเป็นน้ำ เรียกว่าอะไร', o:[['melt','Melting (การหลอมเหลว)'],['freeze','Freezing (การแข็งตัว)'],['evap','Evaporation (การระเหย)']], a:'melt',
+   h:['ของแข็งกลายเป็นของเหลว','Melt แปลว่า ละลาย'], why:'น้ำแข็งได้รับความร้อนแล้วละลายเป็นน้ำ เรียกว่า Melting (การหลอมเหลว)'},
+  {k:'evap', q:'น้ำเดือดกลายเป็นไอน้ำ น้ำเปลี่ยนจากสถานะใดเป็นสถานะใด', o:[['lg','Liquid ของเหลว → Gas แก๊ส'],['sl','Solid ของแข็ง → Liquid ของเหลว'],['gl','Gas แก๊ส → Liquid ของเหลว']], a:'lg',
+   h:['น้ำในบีกเกอร์เป็นสถานะอะไร','ไอน้ำที่ลอยขึ้นเป็นสถานะอะไร'], why:'น้ำ (Liquid) ได้รับความร้อนจนเป็นไอน้ำ (Gas) เรียกว่า Evaporation (การระเหย)'},
+  {k:'cond', q:'{n}วางแผ่นกระจกเย็นเหนือน้ำเดือด แล้วมีหยดน้ำเกาะใต้กระจก เรียกว่าอะไร', o:[['cond','Condensation (การควบแน่น)'],['subl','Sublimation (การระเหิด)'],['melt','Melting (การหลอมเหลว)']], a:'cond',
+   h:['ไอน้ำ (แก๊ส) เจอกระจกเย็น','แก๊สเสียความร้อนแล้วกลายเป็นของเหลว'], why:'ไอน้ำเสียความร้อนให้กระจกเย็น จึงควบแน่นเป็นหยดน้ำ เรียกว่า Condensation'},
+  {k:'freeze', q:'Freezing (การแข็งตัว) เกิดขึ้นเมื่อใด', o:[['lose','น้ำเสียความร้อนจนต่ำกว่า 0 °C'],['gain','น้ำได้รับความร้อนจนถึง 100 °C'],['wind','น้ำโดนลมพัดแรงมาก ๆ']], a:'lose',
+   h:['ตอนทำให้แข็งตัว เรากดปุ่มอะไร','น้ำแข็งตัวที่อุณหภูมิเท่าไร'], why:'น้ำเสียความร้อนจนอุณหภูมิลดถึง 0 °C แล้วแข็งตัวเป็นน้ำแข็ง'}],
+ [{k:'frost', q:'{n}ตั้งอากาศ −3 °C แล้วผ่านไปหนึ่งคืน เกิดอะไรบนยอดหญ้า', o:[['frost','น้ำค้างแข็ง (Frost)'],['dew','น้ำค้าง (Dew)'],['rain','หยดฝน (Rain)']], a:'frost',
+   h:['ต่ำกว่า 0 °C น้ำจะเป็นสถานะอะไร','ดูสีของสิ่งที่เกาะยอดหญ้า'], why:'อากาศต่ำกว่า 0 °C ไอน้ำจึงเปลี่ยนเป็นเกล็ดน้ำแข็งเกาะยอดหญ้า เรียกว่าน้ำค้างแข็ง (Frost)'},
+  {k:'depo', q:'ไอน้ำเปลี่ยนเป็นน้ำแข็งโดยตรง ไม่ผ่านการเป็นน้ำ เรียกว่าอะไร', o:[['depo','Deposition (การระเหิดกลับ)'],['subl','Sublimation (การระเหิด)'],['cond','Condensation (การควบแน่น)']], a:'depo',
+   h:['แก๊ส → ของแข็ง','ตรงข้ามกับการระเหิด'], why:'แก๊สเปลี่ยนเป็นของแข็งโดยตรง เรียกว่า Deposition (การระเหิดกลับ)'},
+  {k:'subl', q:'{n}ทำให้แดดออกตอนอากาศยังต่ำกว่า 0 °C น้ำค้างแข็งหายไปแต่พื้นยังแห้ง เพราะอะไร', o:[['subl','น้ำแข็งเป็นไอน้ำโดยตรง (Sublimation)'],['melt','น้ำแข็งละลายเป็นน้ำ (Melting)'],['wind','ลมพัดน้ำแข็งปลิวไปหมด']], a:'subl',
+   h:['ถ้าละลาย พื้นต้องเปียก','ของแข็ง → แก๊ส โดยไม่เป็นน้ำก่อน'], why:'น้ำแข็งได้รับความร้อนจากแดดแล้วเป็นไอน้ำโดยตรง เรียกว่า Sublimation (การระเหิด)'},
+  {k:'heat', q:'กลุ่มใด "รับความร้อน" ทั้งหมด', o:[['a','Melting · Evaporation · Sublimation'],['b','Freezing · Condensation · Deposition'],['c','Melting · Freezing · Condensation']], a:'a',
+   h:['ของแข็ง → ของเหลว → แก๊ส ต้องได้รับความร้อน','ทบทวนการจัดกลุ่มในแผงด้านข้าง'], why:'Melting, Evaporation และ Sublimation ต้องรับความร้อน ส่วน Freezing, Condensation และ Deposition คายความร้อน'}]
 ];
 
 const PD = !CONF.uni && /ป\.\d|ม\.1(?!\d)/.test(CONF.subject || ''), NOG = CONF.uni || PD, MD = !!CONF.uni && !!CONF.resCard, MDC = CONF.resCard==='C';
@@ -1292,7 +1322,9 @@ const Lab = (function(){
   const CAMS = [
     {pos:V(.2, 4.6, 7.6), tgt:V(.2, 1.2, 0)},
     {pos:V(.1, 4.6, 8.8), tgt:V(.1, 1.1, 0)},
-    {pos:V(0, 3.6, 10.2), tgt:V(0, 2.0, 0)}
+    {pos:V(0, 3.6, 10.2), tgt:V(0, 2.0, 0)},
+    {pos:V(-.9, 3.4, 6.0), tgt:V(-1.3, 1.0, 0)},
+    {pos:V(0, 3.8, 7.6), tgt:V(0, 1.0, 0)}
   ];
   function mat(c, o={}){ return new THREE.MeshStandardMaterial(Object.assign({color:c, roughness:.55, metalness:0}, o)); }
   const METAL = () => mat(0xB9C0CE, {metalness:.8, roughness:.3});
@@ -1364,7 +1396,9 @@ const Lab = (function(){
   const defaults = i => [
     {lamp:false, ice:false, vapor:0, cloud:0, raining:false, rainT:0, wet:0, runoff:0, sea:1},
     {glassIce:false, glassDew:0, time:'day', fog:0, dew:0, km:0, match:{}, wrong:0},
-    {km:3, gT:'warm', up:false, last:null, puddle:0, snow:0, hail:0, made:{}}
+    {km:3, gT:'warm', up:false, last:null, puddle:0, snow:0, hail:0, made:{}},
+    {T:-10, iceF:1, water:1, mode:'off', lid:false, lidDrops:0, boilT:0, cur:'', made:{}},
+    {temp:'warm', night:false, sun:false, dew:0, frost:0, frostFull:false, made:{}, sort:{}, wrong:0}
   ][i];
   const restoreS = i => { const s = defaults(i); try { if(S.ps && S.ps[i]) Object.assign(s, JSON.parse(JSON.stringify(S.ps[i]))); } catch(e){} return s; };
   const fresh = i => ({i, s:restoreS(i), labels:[], celebrate:false, dirty:false, ctrlSig:'', warn:null});
@@ -1372,7 +1406,7 @@ const Lab = (function(){
   function build(){
     clearWorld(); P.labels = []; P.ctrlSig = '';
     const cam = CAMS[P.i]; R.camera.position.copy(cam.pos); R.controls.target.copy(cam.tgt);
-    if(P.i===0) buildP1(); else if(P.i===1) buildP2(); else buildP3();
+    if(P.i===0) buildP1(); else if(P.i===1) buildP2(); else if(P.i===2) buildP3(); else if(P.i===3) buildP4(); else buildP5();
     labelsDOM(); refresh();
   }
 
@@ -1410,8 +1444,8 @@ const Lab = (function(){
     P.rain = []; for(let k=0;k<30;k++){ const d = sph(.025, TRANS(0x3E7FE0, .85), 6); d.scale.set(1,3,1); d.visible = false; d.userData.v = 0; W.add(d); P.rain.push(d); }
     P.labels.push({obj:lamp, dy:.6, text:()=>s.lamp ? 'ดวงอาทิตย์ (ไฟ) ส่องทะเลอยู่' : 'ดวงอาทิตย์ (ลากไปเหนือทะเล)'});
     P.labels.push({obj:ice, dy:.4, text:()=>s.ice ? 'ถุงน้ำแข็งทำให้ฝาเย็น' : 'ถุงน้ำแข็ง (ลากไปวางบนฝาเหนือภูเขา)'});
-    P.labels.push({obj:sea, dy:.35, text:()=>'ทะเล'});
-    P.labels.push({obj:mt, dy:.65, text:()=>'ภูเขา'});
+    P.labels.push({obj:sea, dy:.35, text:()=>'Sea · ทะเล'});
+    P.labels.push({obj:mt, dy:.65, text:()=>'Mountain · ภูเขา'});
     syncP1();
   }
   function syncP1(){
@@ -1491,7 +1525,7 @@ const Lab = (function(){
     const cloudy = s.km >= 1; P.parcel.userData.bub.visible = !cloudy; P.parcel.userData.puff.visible = cloudy;
     P.parcel.position.y = TABLE_Y + .3 + s.km*.9;
   }
-  const MATCH = [['dew','น้ำค้าง','surface'],['fog','หมอก','ground'],['cloud','เมฆ','high']];
+  const MATCH = [['dew','น้ำค้าง (Dew)','surface'],['fog','หมอก (Fog)','ground'],['cloud','เมฆ (Cloud)','high']];
   const WHERE = [['surface','บนผิววัตถุที่เย็น'],['ground','ใกล้พื้นดิน'],['high','บนที่สูง']];
   function doMatch(id, ans){
     const s = P.s, row = MATCH.find(x=>x[0]===id);
@@ -1538,34 +1572,150 @@ const Lab = (function(){
     if(t==='snow'){ s.puddle = 0; } if(t!=='snow'){ s.snow = 0; } if(t!=='hail') P.hailP.forEach(h=>h.visible = false); syncP3();
     refresh();
   }
-  const NAMES = {rain:'ฝน', snow:'หิมะ', hail:'ลูกเห็บ'};
+  const NAMES = {rain:'ฝน Rain', snow:'หิมะ Snow', hail:'ลูกเห็บ Hail'};
+
+
+  /* ===== vocabulary (English) ===== */
+  const VOC = [
+    [['Water cycle','วัฏจักรน้ำ'],['Evaporation','การระเหย'],['Water vapor','ไอน้ำ'],['Condensation','การควบแน่น'],['Cloud','เมฆ'],['Rain','ฝน']],
+    [['Dew','น้ำค้าง'],['Fog','หมอก'],['Cloud','เมฆ'],['Condensation','การควบแน่น']],
+    [['Precipitation','หยาดน้ำฟ้า'],['Rain','ฝน'],['Snow','หิมะ'],['Hail','ลูกเห็บ']],
+    [['Solid','ของแข็ง'],['Liquid','ของเหลว'],['Gas','แก๊ส'],['Melting','การหลอมเหลว'],['Evaporation','การระเหย'],['Condensation','การควบแน่น'],['Freezing','การแข็งตัว']],
+    [['Dew','น้ำค้าง'],['Frost','น้ำค้างแข็ง'],['Deposition','การระเหิดกลับ'],['Sublimation','การระเหิด']]
+  ];
+  const SPK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>';
+  function vocabBox(i){ const L = VOC[i] || []; if(!L.length) return '';
+    return `<div style="flex-basis:100%;display:flex;flex-direction:column;gap:6px;margin-top:4px"><h2 style="margin:0">คำศัพท์ Vocabulary <span class="note" style="font-weight:400">แตะเพื่อฟังเสียง</span></h2><div style="display:flex;gap:6px;flex-wrap:wrap">${L.map(([e,t])=>`<button class="chip" type="button" data-act="lab" data-v="say:${e}" style="display:inline-flex;align-items:center;gap:6px">${SPK}<b>${e}</b><span style="font-weight:400">${t}</span></button>`).join('')}</div></div>`; }
+  function speak(w){ try{ const u = new SpeechSynthesisUtterance(w); u.lang = 'en-US'; u.rate = .8; const vs = speechSynthesis.getVoices().filter(v=>/^en/i.test(v.lang)); if(vs.length) u.voice = vs.find(v=>/en-US/i.test(v.lang)) || vs[0]; speechSynthesis.cancel(); speechSynthesis.speak(u); } catch(e){ toast('อุปกรณ์นี้อ่านออกเสียงไม่ได้'); } }
+
+  /* ===== PART 4: changes of state in a beaker ===== */
+  const BK = {x:-.5, z:0, r:.55, h:1.3}, BASE_Y = TABLE_Y + .22;
+  const STATE = () => { const s = P.s; return s.iceF >= 1 ? ['Solid','ของแข็ง (น้ำแข็ง)'] : s.iceF > 0 ? ['Solid + Liquid','น้ำแข็งกำลังละลาย/แข็งตัว'] : s.T >= 100 && s.mode==='heat' ? ['Liquid → Gas','น้ำเดือดเป็นไอน้ำ'] : ['Liquid','ของเหลว (น้ำ)']; };
+  const PROC4 = [['melt','Melting','หลอมเหลว'],['evap','Evaporation','ระเหย'],['cond','Condensation','ควบแน่น'],['freeze','Freezing','แข็งตัว']];
+  const steaming = () => P.s.mode==='heat' && P.s.T >= 100 && P.s.iceF <= 0;
+  function buildP4(){
+    const W = R.world, s = P.s, y0 = TABLE_Y;
+    const plate = new THREE.Group(); plate.add(at(box(1.5,.2,1.5, mat(0x5B6280,{metalness:.3})), 0,.1,0));
+    const coil = cyl(.55,.55,.03, new THREE.MeshStandardMaterial({color:0x3A3F55, emissive:0x000000}), 32); coil.position.y = .215; plate.add(coil); plate.userData.coil = coil;
+    plate.add(at(cyl(.08,.08,.06, mat(0xE25555),16), .6,.13,.72));
+    plate.position.set(BK.x, y0, BK.z); shadowAll(plate); W.add(plate); P.plate = plate;
+    const bk = new THREE.Group(); bk.add(at(cyl(BK.r, BK.r*.95, BK.h, GLASS(.22), 32, true), 0, BK.h/2, 0)); bk.add(at(cyl(BK.r*.95, BK.r*.95, .03, GLASS(.35), 32), 0,.015,0));
+    for(let k=1;k<=4;k++) bk.add(at(box(.18,.012,.012, mat(0x7A8399)), BK.r*.75, k*.22, BK.r*.62));
+    const water = cyl(BK.r*.92, BK.r*.9, 1, TRANS(0x5B9BEA, .55), 32); bk.add(water); P.water = water;
+    P.cubes = []; for(let k=0;k<7;k++){ const c = box(.24,.24,.24, TRANS(0xEAF7FF, .92)); c.userData.p = [Math.cos(k*.9)*.24*(k%3?1:.3), .14 + Math.floor(k/3)*.22, Math.sin(k*.9)*.24*(k%3?1:.3)]; c.rotation.set(k*.4, k*.7, 0); bk.add(c); P.cubes.push(c); }
+    const th = new THREE.Group(); th.add(at(cyl(.025,.025,1.5, GLASS(.6),10), 0,.75,0)); th.add(at(sph(.05, mat(0xE53935),10), 0,.06,0)); const col = cyl(.013,.013,1, mat(0xE53935),8); th.add(col); th.userData.col = col; th.position.set(-.28, .05, -.2); th.rotation.z = .12; bk.add(th); P.th4 = th;
+    bk.position.set(BK.x, BASE_Y, BK.z); W.add(bk); P.beaker = bk;
+    P.steam = []; for(let k=0;k<18;k++){ const m = sph(.09, TRANS(0xFFFFFF, 0), 10); m.userData = {t:k/18*2, phase:k*1.3}; m.visible = false; W.add(m); P.steam.push(m); }
+    const lid = new THREE.Group(); lid.userData.id = 'lid'; lid.add(box(1.4,.05,1.4, GLASS(.45))); lid.add(at(box(1.4,.02,.04, mat(0x7CC4FF)), 0,.03,.68));
+    P.drops4 = []; for(let k=0;k<36;k++){ const d = sph(.03, TRANS(0x6FB2F0, .9), 6); d.scale.y = 1.3; d.position.set(-.55 + (k%6)*.22, -.05, -.55 + Math.floor(k/6)*.22); d.visible = false; lid.add(d); P.drops4.push(d); }
+    lid.userData.home = V(.8, y0 + .05, 1.0); lid.position.copy(lid.userData.home); W.add(lid); P.lid = lid;
+    P.labels.push({obj:bk, dy:BK.h + .35, text:()=>{ const st = STATE(); return `${st[0]} · ${st[1]} · ${Math.round(P.s.T)} °C`; }});
+    P.labels.push({obj:plate, dy:.05, text:()=>P.s.mode==='heat' ? 'กำลังให้ความร้อน (Heating)' : P.s.mode==='cool' ? 'กำลังทำให้เย็น (Cooling)' : 'แผ่นให้ความร้อน/ทำความเย็น'});
+    P.labels.push({obj:lid, dy:.35, text:()=>P.s.lid ? (P.s.lidDrops > .1 ? 'หยดน้ำเกาะใต้กระจก (Condensation)' : 'แผ่นกระจกเย็น') : 'แผ่นกระจกเย็น (ลากไปวางเหนือบีกเกอร์)'});
+    syncP4();
+  }
+  function syncP4(){
+    const s = P.s, wl = Math.max(.05, s.water*.75);
+    const liquid = (1 - s.iceF)*wl; P.water.visible = liquid > .01; P.water.scale.y = Math.max(.001, liquid); P.water.position.y = .03 + liquid/2;
+    P.cubes.forEach((c,k)=>{ const f = s.iceF; c.visible = f > .02 && k < 3 + Math.ceil(f*4); c.scale.setScalar(.45 + .55*f); c.position.set(c.userData.p[0], (f >= 1 ? c.userData.p[1] : liquid + .08 + (k%2)*.05), c.userData.p[2]); });
+    const len = Math.max(.02, (s.T + 10)/115*1.3); P.th4.userData.col.scale.y = len; P.th4.userData.col.position.y = .08 + len/2;
+    const cm = P.plate.userData.coil.material; cm.emissive.setHex(s.mode==='heat' ? 0xFF4A10 : s.mode==='cool' ? 0x2E7BD6 : 0x000000); cm.color.setHex(s.mode==='cool' ? 0xBFE1FF : 0x3A3F55);
+    if(s.lid) P.lid.position.set(BK.x, BASE_Y + BK.h + .45, BK.z);
+    const nd = Math.round(Math.min(1, s.lidDrops)*P.drops4.length); P.drops4.forEach((d,k)=>d.visible = k < nd);
+  }
+  function stepP4(dt){
+    const s = P.s, r = 22;
+    if(s.mode==='heat'){
+      if(s.iceF > 0){ if(s.T < 0){ s.T = Math.min(0, s.T + r*dt); s.cur = ''; } else { s.iceF = Math.max(0, s.iceF - dt*.4); s.cur = 'melt'; if(s.iceF <= 0) s.made.melt = 1; } }
+      else if(s.T < 100){ s.T = Math.min(100, s.T + r*dt); s.cur = s.T > 70 ? 'evap' : ''; }
+      else { s.cur = 'evap'; s.boilT += dt; s.water = Math.max(.5, s.water - dt*.02); if(s.boilT >= 1.5) s.made.evap = 1; }
+    } else if(s.mode==='cool'){
+      if(s.T > 0){ s.T = Math.max(0, s.T - r*dt); s.cur = ''; }
+      else if(s.iceF < 1){ s.iceF = Math.min(1, s.iceF + dt*.4); s.cur = 'freeze'; if(s.iceF >= 1) s.made.freeze = 1; }
+      else { s.T = Math.max(-10, s.T - r*dt); s.cur = ''; }
+    } else s.cur = '';
+    if(s.lid && steaming()){ s.lidDrops = Math.min(1, s.lidDrops + dt*.35); s.cur = 'cond'; if(s.lidDrops >= .8) s.made.cond = 1; }
+  }
+  function setLid(on){ const s = P.s; s.lid = on; if(!on) P.lid.position.copy(P.lid.userData.home); P.warn = null; syncP4(); refresh(); }
+
+  /* ===== PART 5: dew vs frost, deposition & sublimation ===== */
+  const PROCS = [['melt','Melting','การหลอมเหลว','gain','ของแข็ง → ของเหลว ต้องได้รับความร้อนจึงละลาย'],['freeze','Freezing','การแข็งตัว','lose','ของเหลว → ของแข็ง น้ำต้องเสียความร้อนจึงแข็งตัว'],['evap','Evaporation','การระเหย','gain','ของเหลว → แก๊ส ต้องได้รับความร้อนจึงกลายเป็นไอ'],['cond','Condensation','การควบแน่น','lose','แก๊ส → ของเหลว ไอน้ำต้องเย็นลง (เสียความร้อน) จึงเป็นหยดน้ำ'],['subl','Sublimation','การระเหิด','gain','ของแข็ง → แก๊ส ต้องได้รับความร้อนจากแดด'],['depo','Deposition','การระเหิดกลับ','lose','แก๊ส → ของแข็ง เกิดตอนอากาศเย็นจัด ไอน้ำเสียความร้อน']];
+  const T5 = () => P.s.temp==='warm' ? 5 : -3;
+  function buildP5(){
+    const W = R.world, s = P.s, y0 = TABLE_Y;
+    W.add(at(box(6.6,.1,3.4, mat(0x7BC47F,{roughness:1})), .2, y0 + .05, 0));
+    const mt = new THREE.Mesh(new THREE.ConeGeometry(1.6, 2.4, 7), mat(0x9AA6C2,{flatShading:true})); mt.position.set(-1.8, y0 + 1.25, -1.1); W.add(mt);
+    const cap = new THREE.Mesh(new THREE.ConeGeometry(.55, .8, 7), mat(0xFFFFFF,{flatShading:true})); cap.position.set(-1.8, y0 + 2.06, -1.1); W.add(cap); P.mt = mt;
+    P.blades = []; P.dew5 = []; P.frost5 = [];
+    for(let k=0;k<36;k++){ const x = -1.2 + (k%9)*.36, z = -.1 + Math.floor(k/9)*.36; const b = new THREE.Mesh(new THREE.ConeGeometry(.045,.42,5), mat(0x4FA35E)); b.position.set(x, y0 + .3, z); b.rotation.z = (k%3-1)*.15; W.add(b);
+      const d = sph(.045, TRANS(0x9CC8FF, .9), 8); d.position.set(x + (k%3-1)*.03, y0 + .52, z); d.visible = false; W.add(d); P.dew5.push(d);
+      const f = new THREE.Mesh(new THREE.OctahedronGeometry(.13), mat(0xF4FAFF,{roughness:.2, emissive:0xBFDFFF, emissiveIntensity:.5})); f.position.set(x + (k%3-1)*.03, y0 + .52, z); f.visible = false; W.add(f); P.frost5.push(f); }
+    const bench = new THREE.Group(); bench.add(at(box(1.3,.08,.6, mat(0xA0764F)), 0,.5,0)); [[-.55,-.22],[-.55,.22],[.55,-.22],[.55,.22]].forEach(([x,z])=>bench.add(at(box(.07,.5,.07, mat(0x8D6E4A)), x,.25,z)));
+    const fl = box(1.3,.02,.6, new THREE.MeshStandardMaterial({color:0xFFFFFF, transparent:true, opacity:0, roughness:.3})); fl.position.y = .55; bench.add(fl); P.benchFrost = fl;
+    bench.position.set(2.1, y0, .4); shadowAll(bench); W.add(bench); P.bench = bench;
+    const sun = sph(.32, new THREE.MeshStandardMaterial({color:0xFFC94D, emissive:0xFFB000, emissiveIntensity:.9}), 22); sun.userData.id = 'sun5'; W.add(sun); P.sun5 = sun;
+    const th = new THREE.Group(); th.add(at(cyl(.035,.035,.8, GLASS(.6),10), 0,.4,0)); th.add(at(sph(.07, mat(0xE53935),10), 0,.06,0)); const col = cyl(.018,.018,1, mat(0xE53935),8); th.add(col); th.userData.col = col; th.position.set(3.0, y0 + .1, -.8); W.add(th); P.th5 = th;
+    P.wisp = []; for(let k=0;k<14;k++){ const m = sph(.09, TRANS(0xFFFFFF, 0), 10); m.userData = {t:k/14*2, phase:k*1.7, x:-1.2 + (k%7)*.5, z:-.1 + (k%3)*.4}; m.visible = false; W.add(m); P.wisp.push(m); }
+    P.labels.push({obj:mt, dy:1.4, text:()=>'ยอดดอยหน้าหนาว'});
+    P.labels.push({obj:th, dy:1.0, text:()=>`อากาศ ${T5()} °C (แตะเพื่อเปลี่ยน)`});
+    P.labels.push({obj:sun, dy:.55, text:()=>P.s.sun ? 'แดดออก ลมแห้ง' : 'ดวงอาทิตย์ (แตะให้แดดออก)'});
+    P.labels.push({obj:bench, dy:.95, text:()=>P.s.frost > .1 ? 'Frost · น้ำค้างแข็ง' : P.s.dew > .1 ? 'Dew · น้ำค้าง' : 'ม้านั่งไม้'});
+    th.userData.id = 'th5'; syncP5();
+  }
+  function syncP5(){
+    const s = P.s;
+    const nd = Math.round(s.dew*P.dew5.length), nf = Math.round(s.frost*P.frost5.length);
+    P.dew5.forEach((d,k)=>d.visible = k < nd); P.frost5.forEach((f,k)=>f.visible = k < nf);
+    P.benchFrost.material.opacity = .85*s.frost; P.benchFrost.material.color.setHex(0xFFFFFF);
+    if(s.sun) P.sun5.position.set(2.6, TABLE_Y + 2.7, -1.4); else P.sun5.position.set(.6, TABLE_Y + .5, -1.6);
+    P.sun5.material.emissiveIntensity = s.sun ? 1 : .2;
+    const len = s.temp==='warm' ? .5 : .16; P.th5.userData.col.scale.y = len; P.th5.userData.col.position.y = .1 + len/2;
+  }
+  function stepP5(dt){
+    const s = P.s;
+    if(s.night){ if(s.temp==='warm'){ s.dew = Math.min(1, s.dew + dt*.45); if(s.dew >= 1){ s.night = false; s.made.dew = 1; } } else { s.frost = Math.min(1, s.frost + dt*.45); if(s.frost >= 1){ s.night = false; s.frostFull = true; s.made.frost = 1; } } }
+    if(s.sun){
+      if(s.frost > 0){ if(s.temp==='cold'){ s.frost = Math.max(0, s.frost - dt*.3); if(s.frost <= 0 && s.frostFull){ s.made.subl = 1; s.frostFull = false; } } else { s.frost = Math.max(0, s.frost - dt*.4); s.dew = Math.min(1, s.dew + dt*.4); s.frostFull = false; } }
+      else if(s.dew > 0) s.dew = Math.max(0, s.dew - dt*.25);
+    }
+  }
+  function sublOn(){ return P.s.sun && P.s.frost > 0 && P.s.temp==='cold'; }
+  function setTemp5(t){ const s = P.s; s.temp = t; s.night = false; syncP5(); refresh(); }
+  function doSort(id, ans){
+    const s = P.s, p = PROCS.find(x=>x[0]===id); if(!p || s.sort[id]) return;
+    if(p[3]===ans){ s.sort[id] = ans; P.warn = null; toast(`ถูกต้อง! ${p[1]} (${p[2]}) ${ans==='gain' ? 'รับความร้อน' : 'คายความร้อน'}`); }
+    else { s.wrong += 1; P.warn = `ยังไม่ถูก ${p[1]} (${p[2]}): ${p[4]} คิดใหม่นะ`; }
+    refresh();
+  }
 
   /* ----- missions ----- */
   function check(){
     const s = P.s, m = S.miss[P.i]; let ch = false; const set = k => { if(!m[k]){ m[k] = 1; ch = true; } };
     if(P.i===0){ if(s.vapor >= .3) set('evap'); if(s.cloud >= .5 || s.raining) set('cloud'); if(s.rainT >= 1) set('rain'); if(s.runoff >= 1) set('runoff'); }
     else if(P.i===1){ if(s.glassDew >= .8) set('glass'); if(s.time==='dawn' && s.fog >= .8) set('dawn'); if(s.km >= 1) set('cloud'); if(MATCH.every(x=>s.match[x[0]])) set('match'); }
-    else { ['rain','snow','hail'].forEach(k=>{ if(s.made[k]) set(k); }); }
+    else if(P.i===2){ ['rain','snow','hail'].forEach(k=>{ if(s.made[k]) set(k); }); }
+    else if(P.i===3){ ['melt','evap','cond','freeze'].forEach(k=>{ if(s.made[k]) set(k); }); }
+    else { ['dew','frost','subl'].forEach(k=>{ if(s.made[k]) set(k); }); if(PROCS.every(x=>s.sort[x[0]])) set('sort'); }
     return ch;
   }
   function refresh(){
     check();
     const m = S.miss[P.i];
-    if(PARTS[P.i].miss.every(x=>m[x[0]]) && eqDone(P.i) && !S.labDone[P.i]){ S.labDone[P.i] = true; P.celebrate = true; toast(P.i<2 ? `${PARTS[P.i].k}เสร็จแล้ว! ปลดล็อก${PARTS[P.i+1].k}` : 'ทดลองครบทุกตอนแล้ว! ปลดล็อกแบบทดสอบหลังเรียน'); renderRail(); }
+    if(PARTS[P.i].miss.every(x=>m[x[0]]) && eqDone(P.i) && !S.labDone[P.i]){ S.labDone[P.i] = true; P.celebrate = true; toast(P.i<PARTS.length-1 ? `${PARTS[P.i].k}เสร็จแล้ว! ปลดล็อก${PARTS[P.i+1].k}` : 'ทดลองครบทุกตอนแล้ว! ปลดล็อกแบบทดสอบหลังเรียน'); renderRail(); }
     try { S.ps = S.ps || {}; S.ps[P.i] = JSON.parse(JSON.stringify(P.s)); } catch(e){}
     save(); refreshUI();
   }
   function mascotSay(){ if(P && P.mg && Date.now() - P.mg.t < 15000 && P.mg.t > (window.__mgClr || 0)) return ['think', P.mg.msg];
     const s = P.s, m = S.miss[P.i];
     if(P.warn) return [s.wrong >= 3 ? 'cry' : 'shock', P.warn];
-    if(S.labDone[P.i] && P.celebrate) return ['yay', P.i<2 ? `ภารกิจครบแล้ว! คำทำนายตรงกับผลไหม? กดปุ่ม "ไป${PARTS[P.i+1].k}" ได้เลย` : 'เก่งมาก! ทดลองครบทั้ง 3 ตอนแล้ว ไปทำแบบทดสอบหลังเรียนกันเลย'];
+    if(S.labDone[P.i] && P.celebrate) return ['yay', P.i<PARTS.length-1 ? `ภารกิจครบแล้ว! คำทำนายตรงกับผลไหม? กดปุ่ม "ไป${PARTS[P.i+1].k}" ได้เลย` : `เก่งมาก! ทดลองครบทั้ง ${PARTS.length} ตอนแล้ว ไปทำแบบทดสอบหลังเรียนกันเลย`];
     if(P.i===0){
       if(!s.lamp && !m.evap) return ['think','ลากดวงอาทิตย์ไปไว้เหนือทะเลในตู้ ดูซิน้ำทะเลจะเป็นอย่างไร'];
-      if(!m.evap) return ['happy','ทะเลได้รับความร้อน น้ำกำลังระเหยเป็นไอน้ำลอยขึ้น...'];
+      if(!m.evap) return ['happy','ทะเลได้รับความร้อน น้ำกำลัง Evaporate (ระเหย) เป็นไอน้ำ (Water vapor) ลอยขึ้น...'];
       if(!s.ice) return ['wow','น้ำระเหยเป็นไอลอยขึ้นแล้ว! ลากถุงน้ำแข็งไปวางบนฝาตู้เหนือภูเขา ให้ข้างบนเย็นเหมือนท้องฟ้าที่สูง'];
       if(!s.lamp && s.cloud < 1 && !s.raining) return ['think','ลากดวงอาทิตย์กลับมาเหนือทะเล ให้มีไอน้ำลอยขึ้นต่อนะ'];
       if(s.raining) return ['wow','เมฆหนามากจนหยดน้ำรวมกันหนักแล้วตกลงมาเป็นฝนบนภูเขา!'];
-      if(!m.rain) return ['happy',`ไอน้ำเจอฝาเย็นจึงควบแน่นเป็นละอองน้ำ รวมกันเป็นเมฆ (${Math.round(s.cloud*100)}%) รอให้เมฆหนาขึ้นอีก`];
+      if(!m.rain) return ['happy',`ไอน้ำเจอฝาเย็นจึง Condense (ควบแน่น) เป็นละอองน้ำ รวมกันเป็นเมฆ (Cloud) (${Math.round(s.cloud*100)}%) รอให้เมฆหนาขึ้นอีก`];
       if(!m.runoff) return ['happy','น้ำฝนบนภูเขากำลังไหลลงแม่น้ำ กลับสู่ทะเล...'];
       return ['yay','ครบรอบวัฏจักรน้ำแล้ว ระเหย → ควบแน่นเป็นเมฆ → ฝนตก → ไหลกลับลงทะเล แล้วก็เริ่มใหม่ไปเรื่อย ๆ'];
     }
@@ -1575,6 +1725,20 @@ const Lab = (function(){
       if(!m.cloud) return s.time==='dawn' ? ['wow','เช้ามืดอากาศเย็น ไอน้ำควบแน่นเป็นน้ำค้างบนใบหญ้า และเป็นหมอกลอยใกล้พื้น! ต่อไปลากก้อนอากาศขึ้นที่สูง'] : ['think','ลากก้อนอากาศขึ้นไปที่สูง ดูอุณหภูมิที่ลดลง'];
       if(!m.match) return ['think','ยิ่งสูงอากาศยิ่งเย็น พอเย็นถึงจุดหนึ่งไอน้ำควบแน่นเป็นเมฆ! ต่อไปจับคู่ในแผงด้านขวาว่าแต่ละอย่างเกิดที่ใด'];
       return ['yay','น้ำค้าง หมอก เมฆ เกิดจากไอน้ำควบแน่นเหมือนกัน ต่างกันที่ตำแหน่งที่เกิด'];
+    }
+    if(P.i===3){
+      if(!m.melt) return s.mode!=='heat' ? ['think','ในบีกเกอร์เป็นน้ำแข็ง (Solid ของแข็ง) −10 °C ลองกด "ให้ความร้อน" ดูซิว่าจะเกิดอะไร'] : s.T >= 0 && s.iceF < 1 ? ['wow','น้ำแข็งกำลัง Melt ละลายเป็นน้ำ (Liquid)! สังเกตอุณหภูมิค้างที่ 0 °C จนละลายหมด'] : ['happy','น้ำแข็งกำลังรับความร้อน อุณหภูมิค่อย ๆ สูงขึ้น...'];
+      if(!m.evap) return s.mode!=='heat' ? ['think','Melting เสร็จแล้ว น้ำแข็งเป็นน้ำ! ให้ความร้อนต่อ ดูว่าน้ำจะเป็นอย่างไร'] : s.T >= 100 ? ['wow','น้ำเดือดที่ 100 °C กำลัง Evaporate กลายเป็นไอน้ำ (Gas แก๊ส) ลอยขึ้น!'] : ['happy','น้ำ (Liquid) กำลังร้อนขึ้นเรื่อย ๆ...'];
+      if(!m.cond) return !s.lid ? ['think','ไอน้ำลอยขึ้นแล้ว ลากแผ่นกระจกเย็นไปวางเหนือบีกเกอร์ หรือกด "วางแผ่นกระจกเย็น"'] : !steaming() ? ['think','ให้ความร้อนต่อ ให้ไอน้ำลอยขึ้นไปเจอแผ่นกระจกเย็น'] : ['wow','ไอน้ำเจอกระจกเย็นจึง Condense เป็นหยดน้ำเกาะใต้กระจก นี่คือ Condensation (การควบแน่น)!'];
+      if(!m.freeze) return s.mode!=='cool' ? ['think','ต่อไปกด "ทำให้เย็น" ให้น้ำเย็นลงจนต่ำกว่า 0 °C'] : s.T <= 0 && s.iceF < 1 ? ['wow','น้ำกำลัง Freeze แข็งตัวเป็นน้ำแข็ง! อุณหภูมิค้างที่ 0 °C จนแข็งหมด'] : ['happy','น้ำกำลังเสียความร้อน เย็นลงเรื่อย ๆ...'];
+      return ['yay','ครบแล้ว! Melting หลอมเหลว · Evaporation ระเหย · Condensation ควบแน่น · Freezing แข็งตัว น้ำเปลี่ยนสถานะเมื่อได้รับหรือเสียความร้อน'];
+    }
+    if(P.i===4){
+      if(!m.dew) return s.temp!=='warm' ? ['think','ตั้งอากาศกลางคืนเป็น 5 °C ก่อน แล้วกด "ผ่านไปหนึ่งคืน"'] : s.night ? ['happy','กลางคืนอากาศเย็นลง ไอน้ำกำลัง Condense เกาะยอดหญ้า...'] : ['think','กด "ผ่านไปหนึ่งคืน" ดูว่าเช้านี้ยอดหญ้าเป็นอย่างไร'];
+      if(!m.frost) return s.temp!=='cold' ? ['wow','เห็น Dew (น้ำค้าง) เป็นหยดน้ำใสแล้ว! ต่อไปตั้งอากาศ −3 °C เหมือนยอดดอยหน้าหนาว แล้วผ่านไปหนึ่งคืน'] : s.night ? ['wow','ต่ำกว่า 0 °C ไอน้ำเปลี่ยนเป็นเกล็ดน้ำแข็งทันที ไม่เป็นน้ำก่อน นี่คือ Deposition เกิดเป็น Frost (น้ำค้างแข็ง)!'] : ['think','กด "ผ่านไปหนึ่งคืน" ที่อากาศ −3 °C'];
+      if(!m.subl) return !s.sun ? ['think','เช้าแล้ว! แตะดวงอาทิตย์หรือกด "แดดออก ลมแห้ง" โดยให้อากาศยังต่ำกว่า 0 °C'] : s.temp!=='cold' ? ['think','อากาศอุ่นกว่า 0 °C น้ำค้างแข็งจะ Melt ละลายเป็นน้ำก่อน ลองตั้ง −3 °C แล้วผ่านไปหนึ่งคืนใหม่'] : s.frost > 0 ? ['wow','น้ำค้างแข็งกำลัง Sublimate เป็นไอน้ำโดยตรง ไม่ละลายเป็นน้ำ พื้นจึงยังแห้ง! นี่คือ Sublimation (การระเหิด)'] : ['think','ยังไม่มีน้ำค้างแข็ง กด "ผ่านไปหนึ่งคืน" ที่ −3 °C ก่อนนะ'];
+      if(!m.sort) return ['think','ต่อไปจัดกลุ่มในแผงด้านข้าง: กระบวนการไหน "รับความร้อน" ไหน "คายความร้อน"'];
+      return ['yay','รับความร้อน: Melting · Evaporation · Sublimation / คายความร้อน: Freezing · Condensation · Deposition ครบทั้ง 6 แล้ว!'];
     }
     if(P.fallT > 0) return ['wow', P.fallType==='rain' ? 'ฝนตก! ละอองในเมฆรวมตัวจนหนัก ตกผ่านอากาศอุ่นลงมาเป็นหยดน้ำ' : P.fallType==='snow' ? 'หิมะตก! อากาศใกล้พื้นเย็นจัด ผลึกน้ำแข็งจากเมฆจึงไม่ละลาย' : 'ลูกเห็บตก! ลมพัดขึ้นแรงพาหยดน้ำขึ้นไปแข็งตัวซ้ำหลายรอบในเมฆสูง จนเป็นก้อนน้ำแข็งใหญ่'];
     const left = ['rain','snow','hail'].filter(k=>!s.made[k]);
@@ -1602,7 +1766,7 @@ const Lab = (function(){
       ctrls = `<h2>ควบคุม</h2><div class="row" style="gap:8px">${B('lamp', s.lamp ? 'ย้ายดวงอาทิตย์ออก' : 'ส่องดวงอาทิตย์เหนือทะเล')}${B('ice', s.ice ? 'เอาถุงน้ำแข็งออก' : 'วางถุงน้ำแข็งบนฝา')}</div>`;
       const stage = s.raining ? 2 : s.runoff > 0 && s.wet > .3 ? 3 : s.cloud > .05 ? 1 : s.lamp ? 0 : -1;
       res = `<h2>ผลที่เห็น</h2>${bar('ไอน้ำในอากาศ','vap',s.vapor,'#9CC8FF')}${bar('เมฆ','cld',s.cloud,'#9AA3B5')}${bar('น้ำไหลกลับลงทะเล','run',s.runoff,'var(--primary)')}
-        <div class="row" style="gap:6px;flex-wrap:wrap">${['ระเหย','ควบแน่น (เมฆ)','ฝนตก','ไหลกลับทะเล'].map((n,k)=>`<span class="status ${k===stage?'on':''}">${n}</span>`).join('<span class="note">→</span>')}</div>`;
+        <div class="row" style="gap:6px;flex-wrap:wrap">${['Evaporation ระเหย','Condensation ควบแน่น','Rain ฝนตก','Runoff ไหลกลับทะเล'].map((n,k)=>`<span class="status ${k===stage?'on':''}">${n}</span>`).join('<span class="note">→</span>')}</div>`;
     } else if(P.i===1){
       sig = JSON.stringify(['p1', s.time, s.glassIce, s.match, !!m.glass, !!m.dawn, !!m.cloud]);
       const ready = m.glass && m.dawn && m.cloud;
@@ -1616,7 +1780,7 @@ const Lab = (function(){
       res = `<h2>ผลที่เห็น</h2><div class="note">แก้วน้ำ: ${s.glassIce ? (s.glassDew >= .8 ? 'มีหยดน้ำเกาะผิวด้านนอกมาก' : 'เริ่มมีหยดน้ำเกาะ') : 'ผิวแห้ง'}</div>
         <div class="note">ทุ่งหญ้า (${T[1]} ${T[2]} °C): ${s.time==='dawn' ? 'มีน้ำค้างบนหญ้า และหมอกลอยใกล้พื้น' : s.time==='night' ? 'อากาศเริ่มเย็น มีน้ำค้างเล็กน้อย' : 'แดดอุ่น ไม่มีหมอก'}</div>
         <div class="note">ก้อนอากาศ: สูง ${s.km.toFixed(1)} กม. อุณหภูมิ ${Math.round(30 - 10*s.km)} °C ${s.km >= 1 ? '→ ควบแน่นเป็นเมฆ' : '→ ยังเป็นไอน้ำ มองไม่เห็น'}</div>`;
-    } else {
+    } else if(P.i===2){
       sig = JSON.stringify(['p2', s.gT, s.up, s.km]);
       ctrls = `<h2>ควบคุม</h2><div class="n" style="font-size:15px;color:var(--ink2)">อากาศใกล้พื้นดิน</div>
         <div class="seg" role="group" aria-label="อุณหภูมิใกล้พื้น"><button type="button" aria-pressed="${s.gT==='warm'}" data-act="lab" data-v="gT:warm">อุ่น 28 °C</button><button type="button" aria-pressed="${s.gT==='cold'}" data-act="lab" data-v="gT:cold">เย็นจัด −5 °C</button></div>
@@ -1626,7 +1790,28 @@ const Lab = (function(){
       res = `<h2>ผลที่เห็น</h2><div class="note">ยอดเมฆ ${topT()} °C · ใกล้พื้น ${s.gT==='warm' ? 28 : -5} °C</div>
         <div style="display:flex;align-items:baseline;gap:8px"><span style="font-family:var(--f-display);font-size:30px;font-weight:600">${s.last ? NAMES[s.last] : '--'}</span><span class="note">สิ่งที่ตกลงมาล่าสุด</span></div>
         <div class="note">ทำได้แล้ว: ${['rain','snow','hail'].filter(k=>s.made[k]).map(k=>NAMES[k]).join(' · ') || '-'}</div>`;
+    } else if(P.i===3){
+      sig = JSON.stringify(['p3', s.mode, s.lid]);
+      ctrls = `<h2>ควบคุม</h2><div class="seg" role="group" aria-label="ความร้อน"><button type="button" aria-pressed="${s.mode==='heat'}" data-act="lab" data-v="mode:heat">ให้ความร้อน</button><button type="button" aria-pressed="${s.mode==='off'}" data-act="lab" data-v="mode:off">หยุด</button><button type="button" aria-pressed="${s.mode==='cool'}" data-act="lab" data-v="mode:cool">ทำให้เย็น</button></div>
+        <div class="row" style="gap:8px">${B('lid', s.lid ? 'ยกแผ่นกระจกออก' : 'วางแผ่นกระจกเย็น')}</div>`;
+      const st = STATE();
+      res = `<h2>ผลที่เห็น</h2><div style="display:flex;align-items:baseline;gap:10px"><span id="t4" style="font-family:var(--f-display);font-size:34px;font-weight:600">${Math.round(s.T)} °C</span><span class="note">${st[0]} · ${st[1]}</span></div>
+        ${bar('น้ำแข็ง (Solid)','ice4',s.iceF,'#9CC8FF')}
+        <div class="row" style="gap:6px;flex-wrap:wrap">${PROC4.map(([k,e,t])=>`<span class="status ${s.cur===k?'on':''}">${s.made[k]?'✓ ':''}${e} ${t}</span>`).join('')}</div>`;
+    } else {
+      sig = JSON.stringify(['p4', s.temp, s.sun, s.sort, !!(m.dew && m.frost && m.subl)]);
+      const ready = m.dew && m.frost && m.subl;
+      ctrls = `<h2>ควบคุม</h2><div class="n" style="font-size:15px;color:var(--ink2)">อุณหภูมิอากาศตอนกลางคืน</div>
+        <div class="seg" role="group" aria-label="อุณหภูมิ"><button type="button" aria-pressed="${s.temp==='warm'}" data-act="lab" data-v="ft:warm">5 °C</button><button type="button" aria-pressed="${s.temp==='cold'}" data-act="lab" data-v="ft:cold">−3 °C</button></div>
+        <div class="row" style="gap:8px">${B('night','ผ่านไปหนึ่งคืน')}${B('sun', s.sun ? 'แดดหมด' : 'แดดออก ลมแห้ง')}</div>
+        <div style="flex-basis:100%;display:flex;flex-direction:column;gap:6px"><h2 style="margin:4px 0 0">จัดกลุ่ม: รับหรือคายความร้อน</h2>
+        ${!ready ? '<div class="note">ทำภารกิจ 3 ข้อแรกให้ครบก่อน แล้วค่อยจัดกลุ่ม</div>' : `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:6px 14px">${PROCS.map(([id,e,t])=>`<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap"><span style="font-size:15px"><b>${e}</b> ${t}</span>${s.sort[id] ? `<span class="status on">${s.sort[id]==='gain' ? 'รับความร้อน' : 'คายความร้อน'}</span>` : `<span style="display:inline-flex;gap:6px">${B('sort:'+id+':gain','รับ')}${B('sort:'+id+':lose','คาย')}</span>`}</div>`).join('')}</div>`}</div>`;
+      res = `<h2>ผลที่เห็น</h2><div class="note">อากาศ ${T5()} °C · ${s.sun ? 'แดดออก ลมแห้ง' : s.night ? 'กลางคืน...' : 'เช้ามืด'}</div>
+        <div class="note">ยอดหญ้า: ${s.frost > .1 ? 'มีเกล็ดน้ำแข็งสีขาว Frost (น้ำค้างแข็ง)' : s.dew > .1 ? 'มีหยดน้ำใส Dew (น้ำค้าง)' : 'แห้ง'}</div>
+        <div class="note">${sublOn() ? 'น้ำค้างแข็งกำลังเป็นไอโดยตรง (Sublimation) พื้นยังแห้ง' : s.sun && s.frost > 0 ? 'น้ำค้างแข็งกำลังละลายเป็นน้ำ (Melting)' : ''}</div>
+        <div class="note">ทำได้แล้ว: ${[['dew','Dew'],['frost','Frost (Deposition)'],['subl','Sublimation']].filter(x=>s.made[x[0]]).map(x=>x[1]).join(' · ') || '-'}</div>`;
     }
+    ctrls += vocabBox(P.i);
     if(sig !== P.ctrlSig || !$('#pCtrl').innerHTML){ $('#pCtrl').innerHTML = ctrls; P.ctrlSig = sig; }
     $('#pRes').innerHTML = res;
     const doneP = S.labDone[P.i];
@@ -1641,6 +1826,7 @@ const Lab = (function(){
   function setTime(t){ P.s.time = t; syncP2(); refresh(); }
   function setKm(v){ const s = P.s; if(P.i===1){ s.km = Math.max(0, Math.min(3, Math.round(v*10)/10)); syncP2(); } else { s.km = Math.max(1, Math.min(10, Math.round(v))); syncP3(); } refresh(); }
   function action(v){
+    if(typeof v==='string' && v.startsWith('say:')){ speak(v.slice(4)); return; }
     if(typeof v==='string' && v.startsWith('mg:')){ const id = v.slice(3), g = mgGet(P.i, id), dn = !!(S.miss[P.i] && S.miss[P.i][id]); P.warn = null; P.say = dn ? 'ภารกิจนี้ทำเสร็จแล้วครับ ✓' : (g ? g[1] : null); P.mg = P.say ? {msg:P.say, t:Date.now()} : null; refresh(); if(!dn && !mgFlash(g)){ const nx = (PARTS[P.i].miss.find(x=>!(S.miss[P.i] && S.miss[P.i][x[0]])) || [])[0]; const alt = g && g[3] ? g[3] : (g && nx && nx!==id ? g[1] + ' (ทำข้อที่มี ▶ ทำต่อ ให้เสร็จก่อนนะครับ)' : ''); if(alt){ P.say = alt; P.mg = {msg:alt, t:Date.now()}; refresh(); } } return; }
     if(P) P.mg = null;
     if(!P) return; const s = P.s;
@@ -1657,10 +1843,16 @@ const Lab = (function(){
     else if(v.startsWith('gT:')){ s.gT = v.slice(3); syncP3(); refresh(); }
     else if(v==='up'){ s.up = !s.up; syncP3(); refresh(); }
     else if(v==='fall') fall();
+    else if(v.startsWith('mode:')){ s.mode = v.slice(5); syncP4(); refresh(); }
+    else if(v==='lid') setLid(!s.lid);
+    else if(v.startsWith('ft:')) setTemp5(v.slice(3));
+    else if(v==='night'){ s.sun = false; s.night = true; if(s.temp==='warm') s.frost = 0; else s.dew = 0; P.warn = null; syncP5(); refresh(); }
+    else if(v==='sun'){ s.sun = !s.sun; s.night = false; syncP5(); refresh(); }
+    else if(v.startsWith('sort:')){ const [,id,a] = v.split(':'); doSort(id, a); }
   }
 
   /* ----- pointer: drag & tap ----- */
-  const DRAG = {lamp:'h', ice:'h', icebowl:'h', parcel:'v', cloud:'v'};
+  const DRAG = {lamp:'h', ice:'h', icebowl:'h', parcel:'v', cloud:'v', lid:'h'};
   let drag = null; const ndc = new THREE.Vector2(), hit = new THREE.Vector3();
   function pick(e){ const r = R.renderer.domElement.getBoundingClientRect(); ndc.set(((e.clientX-r.left)/r.width)*2-1, -((e.clientY-r.top)/r.height)*2+1); R.raycaster.setFromCamera(ndc, R.camera); }
   function rootOf(o){ while(o && !o.userData.id) o = o.parent; return o; }
@@ -1687,7 +1879,7 @@ const Lab = (function(){
       if(!drag.moved) return;
       pick(e); if(!R.raycaster.ray.intersectPlane(drag.plane, hit)) return;
       const g = drag.g;
-      if(drag.mode==='h'){ g.position.x = Math.max(-4.2, Math.min(4.2, hit.x + drag.off.x)); g.position.z = Math.max(-2.3, Math.min(2.3, hit.z + drag.off.z)); if(drag.id!=='lamp') g.position.y = TABLE_Y + (drag.id==='ice' ? TK.h + .3 : .45); }
+      if(drag.mode==='h'){ g.position.x = Math.max(-4.2, Math.min(4.2, hit.x + drag.off.x)); g.position.z = Math.max(-2.3, Math.min(2.3, hit.z + drag.off.z)); if(drag.id!=='lamp') g.position.y = TABLE_Y + (drag.id==='ice' ? TK.h + .3 : drag.id==='lid' ? BK.h + .7 : .45); }
       else { const y = hit.y + drag.off.y;
         if(drag.id==='parcel'){ P.s.km = Math.max(0, Math.min(3, Math.round((y - TABLE_Y - .3)/.9*10)/10)); syncP2(); P.dirty = true; }
         else { const km = Math.max(1, Math.min(10, Math.round((y - TABLE_Y - .9)/.27))); if(km !== P.s.km){ P.s.km = km; syncP3(); P.dirty = true; } } }
@@ -1699,11 +1891,12 @@ const Lab = (function(){
     };
     el.addEventListener('pointerup', end); el.addEventListener('pointercancel', end);
   }
-  function dragStart(id){ if(id==='ice') P.s.ice = false; if(id==='lamp') P.s.lamp = false; }
+  function dragStart(id){ if(id==='ice') P.s.ice = false; if(id==='lamp') P.s.lamp = false; if(id==='lid') P.s.lid = false; }
   function drop(id, g){
     const s = P.s;
     if(id==='lamp'){ const over = g.position.x > SEA.x0 - .3 && g.position.x < SEA.x1 + .2 && Math.abs(g.position.z) < 1.2; if(over) setLamp(true); else { s.lamp = false; if(Math.abs(g.position.x) < 2.4 && Math.abs(g.position.z) < 1.2) P.warn = null; syncP1(); refresh(); } return; }
     if(id==='ice'){ const over = g.position.x > -.2 && g.position.x < 2.3 && Math.abs(g.position.z) < 1.2; if(over) setIce(true); else { if(Math.abs(g.position.x) < 2.3 && Math.abs(g.position.z) < 1.1) P.warn = 'วางผิดที่ ถุงน้ำแข็งควรอยู่บนฝาตู้เหนือภูเขา ไม่ใช่เหนือทะเล ลองลากใหม่นะ'; setIce(false); } return; }
+    if(id==='lid'){ if(xz(g, BK.x, BK.z) < .9) setLid(true); else { if(xz(g, BK.x, BK.z) < 2) P.warn = 'วางยังไม่ตรง ลากแผ่นกระจกไปไว้เหนือปากบีกเกอร์พอดี ๆ นะ'; setLid(false); } return; }
     if(id==='icebowl'){ if(xz(g, PX.glass, .3) < .7) putIce(); else { g.position.copy(g.userData.home); refresh(); } return; }
     refresh();
   }
@@ -1713,6 +1906,9 @@ const Lab = (function(){
     else if(id==='lamp') setLamp(!P.s.lamp);
     else if(id==='ice') setIce(!P.s.ice);
     else if(id==='icebowl') putIce();
+    else if(id==='lid') setLid(!P.s.lid);
+    else if(id==='sun5') action('sun');
+    else if(id==='th5') setTemp5(P.s.temp==='warm' ? 'cold' : 'warm');
   }
 
   /* ----- loop ----- */
@@ -1752,6 +1948,15 @@ const Lab = (function(){
             else { const h = P.hailP.find(x=>!x.visible); if(h){ h.visible = true; h.position.x = d.position.x; h.position.z = d.position.z; } }
             syncP3(); }
         });
+      }
+      if(P.i===3){
+        stepP4(dt); syncP4(); runSteam(P.steam, P.beaker.position, steaming(), dt, .9);
+        uiT += dt; if(uiT > .25){ uiT = 0; if(check()) refresh(); else { const nm = nk(mascotSay()[1]); if($('#bubbleMsg') && $('#bubbleMsg').textContent !== nm) refreshUI(); else { const a = $('#t4'); if(a) a.textContent = Math.round(s.T) + ' °C'; const b = $('#ice4B'), bt = $('#ice4T'); if(b){ b.style.width = s.iceF*100 + '%'; bt.textContent = Math.round(s.iceF*100) + '%'; } } } }
+      }
+      if(P.i===4){
+        stepP5(dt); syncP5();
+        P.wisp.forEach(m=>{ const u = m.userData; u.t += dt; if(u.t > 2){ u.t -= 2; u.live = sublOn(); } if(u.live === undefined) u.live = sublOn(); if(!u.live){ m.visible = false; return; } const f = u.t/2; m.visible = true; m.position.set(u.x + Math.sin(u.t*2 + u.phase)*.1, TABLE_Y + .55 + f*1.3, u.z); m.scale.setScalar(.5 + f); m.material.opacity = .5*(1 - f); });
+        uiT += dt; if(uiT > .3){ uiT = 0; if(check()) refresh(); else { const nm = nk(mascotSay()[1]); if($('#bubbleMsg') && $('#bubbleMsg').textContent !== nm) refreshUI(); } }
       }
       if(P.dirty){ P.dirty = false; refresh(); }
       placeLabels();
