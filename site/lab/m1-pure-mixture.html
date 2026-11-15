@@ -627,15 +627,18 @@ function toast(msg){ msg = String(msg).replace(/ปลดล็อก(ตอน�
 }
 const nk = msg => S.nick ? `${S.nick} ${msg}` : msg;
 function showNick(force){
-  const m = $('#nickModal'); if(S.nick && !force){ m.hidden = true; return; }
+  const m = $('#nickModal'); if(S.nick){ m.hidden = true; return; }
   m.hidden = false;
   m.innerHTML = `<div class="card pad" role="dialog" aria-modal="true" aria-labelledby="nickH" style="max-width:480px;width:100%;display:flex;flex-direction:column;gap:16px;box-shadow:0 20px 40px rgba(30,35,64,.12)">
     <div class="row" style="gap:14px;flex-wrap:nowrap">${mascot('ok',96)}<div><h2 id="nickH" style="font-size:22px">${HS ? 'สวัสดีครับ ผมชื่อ "ปาร์ตี้"' : SR ? 'สวัสดีครับ พี่ชื่อ "ปาร์ตี้"' : 'สวัสดี! เราชื่อ "ปาร์ตี้"'}</h2><div class="note">${HS ? 'ผมจะช่วยดูแลการทดลองในแล็บนี้ พิมพ์ชื่อที่อยากให้ผมเรียกไว้ได้เลยครับ' : SR ? 'พี่จะเป็นพี่เลี้ยงในแลปนี้ บอกชื่อเล่นของน้องไว้ พี่จะได้เรียกถูก' : 'แล้วเพื่อนชื่อะไร? บอกชื่อเล่นหน่อย เราจะได้ทดลองด้วยกัน'.replace('ชื่อะไร','ชื่ออะไร')}</div></div></div>
-    <label for="nickIn" style="font-weight:600">ชื่อเล่นของฉัน</label>
-    <input id="nickIn" type="text" maxlength="20" autocomplete="off" value="${esc(S.nick||'')}" placeholder="พิมพ์ชื่อเล่นตรงนี้">
+    <label for="nickIn" style="font-weight:600">ชื่อเล่นของฉัน <span class="note">(ตั้งได้ครั้งเดียว)</span></label>
+    <input id="nickIn" type="text" maxlength="20" autocomplete="off" value="${esc(showNick.d||S.nick||'')}" placeholder="พิมพ์ชื่อเล่นตรงนี้">
     <div class="row" style="justify-content:flex-end;gap:8px">${S.nick?'<button class="btn ghost" type="button" id="nickCancel">ยกเลิก</button>':''}<button class="btn" type="button" id="nickGo">${S.nick?'บันทึกชื่อ':'เริ่มกันเลย'} ${ICON.arrow}</button></div></div>`;
   const inp = $('#nickIn');
-  const ok = ()=>{ const v = inp.value.trim().slice(0,20); if(!v){ inp.focus(); toast('พิมพ์ชื่อเล่นก่อนนะ'); return; } S.nick = v; save(); m.hidden = true; render(); toast(`ยินดีที่ได้รู้จัก ${v}!`); };
+  const ok = ()=>{ const v = inp.value.trim().slice(0,20); if(!v){ inp.focus(); toast('พิมพ์ชื่อเล่นก่อนนะ'); return; }
+    m.querySelector('.card').innerHTML = `<div class="row" style="gap:14px;flex-wrap:nowrap">${mascot('think',80)}<div><h2 style="font-size:22px">ชื่อ “${esc(v)}” ใช่ไหม?</h2><div class="note">ตั้งชื่อได้ครั้งเดียว ยืนยันแล้วเปลี่ยนไม่ได้นะ</div></div></div><div class="row" style="justify-content:flex-end;gap:8px"><button class="btn ghost" type="button" id="nickBack">แก้ชื่อ</button><button class="btn" type="button" id="nickYes">ใช่ ยืนยัน ${ICON.arrow}</button></div>`;
+    $('#nickBack').addEventListener('click', ()=>{ showNick.d = v; showNick(); });
+    $('#nickYes').addEventListener('click', ()=>{ S.nick = v; showNick.d = ''; save(); m.hidden = true; render(); toast(`ยินดีที่ได้รู้จัก ${v}!`); }); };
   $('#nickGo').addEventListener('click', ok); inp.addEventListener('keydown', e=>{ if(e.key==='Enter') ok(); });
   const c = $('#nickCancel'); if(c) c.addEventListener('click', ()=>{ m.hidden = true; });
   setTimeout(()=>inp.focus(), 60);
@@ -644,7 +647,7 @@ function showNick(force){
 /* ---------- rail ---------- */
 function renderRail(){
   $('#brandMascot').innerHTML = mascot('wink', 44);
-  const nb = $('#nickBar'); nb.hidden = !S.nick; nb.innerHTML = S.nick ? `<span>สวัสดี <b>${esc(S.nick)}</b></span><button class="linkbtn" type="button" data-nick="1">เปลี่ยนชื่อ</button>` : '';
+  const nb = $('#nickBar'); nb.hidden = !S.nick; nb.innerHTML = S.nick ? `<span>สวัสดี <b>${esc(S.nick)}</b></span>` : '';
   const viewStep = {pre:0, guide:1, picker:2, lab:2, sheet:3, post:4, result:4}[ui.view];
   $('#steps').innerHTML = `<div class="steps-label">ขั้นตอน</div>` + STEPS.map((l,i)=>{
     if(HIDE(i)) return '';
