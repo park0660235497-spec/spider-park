@@ -17,6 +17,11 @@ CSS = """#dockbar{flex:1 1 100%;display:none;padding:10px;background:var(--surfa
 #dockbar #dock .btn{min-height:48px!important;font-size:15.5px!important;padding:0 14px!important;flex:1 1 auto;justify-content:center;border-radius:12px}
 #dockbar #dock .status{min-height:48px;display:inline-flex;align-items:center;justify-content:center;flex:1 1 auto;border:1.5px solid var(--line2);font-size:15.5px;border-radius:12px;box-sizing:border-box}
 .stage.hasbar{border-radius:var(--r-lg) var(--r-lg) 0 0!important}
+.stage[data-mdc] #dock.fb,.stage #dock.fb{right:8px!important}
+#dock.fb{position:absolute;left:8px;right:8px!important;bottom:8px;top:auto;z-index:6;display:flex;flex-wrap:wrap;gap:8px;align-items:stretch}
+#dock.fb .btn{min-height:48px!important;font-size:15.5px!important;padding:0 14px!important;flex:1 1 auto;justify-content:center;border-radius:12px}
+#dock.fb .status{min-height:48px;display:inline-flex;align-items:center;justify-content:center;flex:1 1 auto;font-size:15.5px;border-radius:12px;box-sizing:border-box}
+.stage.dockfb .bubble{bottom:calc(var(--dockb, 0px) + 16px)!important}
 @media (pointer:coarse){.btn.sm{min-height:44px}.chip{min-height:44px}.ibtn{min-width:44px;min-height:44px}#pCtrl input,#helper input{font-size:16px!important;min-height:46px}.calc button{min-height:44px}}
 @media (max-width:600px){.bubble .msg{font-size:13.5px;padding:8px 12px;line-height:1.45}.bubble{left:8px;right:8px;bottom:8px}.labels div{font-size:11px;padding:2px 8px}.camctl{top:8px;right:8px;gap:6px}.reschip{top:8px;left:8px;right:60px;max-width:none;width:auto;justify-content:space-between}.reschip .v{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
 """
@@ -42,11 +47,12 @@ rep("    stop(){ if(R){ R.active = false; if(R.ro) R.ro.disconnect(); } },", "  
 rep("""  function dock(html){ const st = $('#stage'); if(!st) return; let d = $('#dock'); if(!d){ d = document.createElement('div'); d.id = 'dock'; d.style.cssText = 'position:absolute;top:10px;left:10px;right:64px;z-index:4;display:flex;flex-wrap:wrap;gap:6px;align-items:center'; st.appendChild(d); }
     if(d.dataset.h !== html){ d.innerHTML = html; d.dataset.h = html; } const hn = $('.hint', st); if(hn) hn.style.display = html ? 'none' : ''; }""",
 """  function dock(html){ const st = $('#stage'); if(!st) return; let d = $('#dock'); if(!d){ d = document.createElement('div'); d.id = 'dock'; st.appendChild(d); }
-    const below = st.clientWidth < 700 && !st.classList.contains('full') && !document.body.classList.contains('fullon'); let bar = $('#dockbar');
+    const full = st.classList.contains('full'), nar = st.clientWidth < 700, below = nar && !full, fb = nar && full; let bar = $('#dockbar');
     if(below && !bar){ bar = document.createElement('div'); bar.id = 'dockbar'; st.insertAdjacentElement('afterend', bar); }
-    const host = below ? bar : st, mode = below ? 'b' : 's';
-    if(d.parentNode !== host || d.dataset.m !== mode){ host.appendChild(d); d.dataset.m = mode; d.style.cssText = below ? 'display:flex;flex-wrap:wrap;gap:8px;align-items:stretch' : 'position:absolute;top:10px;left:10px;right:64px;z-index:4;display:flex;flex-wrap:wrap;gap:6px;align-items:center'; }
+    const host = below ? bar : st, mode = below ? 'b' : fb ? 'f' : 's';
+    if(d.parentNode !== host || d.dataset.m !== mode){ host.appendChild(d); d.dataset.m = mode; d.classList.toggle('fb', fb); d.style.cssText = below ? 'display:flex;flex-wrap:wrap;gap:8px;align-items:stretch' : fb ? '' : 'position:absolute;top:10px;left:10px;right:64px;z-index:4;display:flex;flex-wrap:wrap;gap:6px;align-items:center'; }
     if(bar){ const on = below && !!html; bar.classList.toggle('on', on); st.classList.toggle('hasbar', on); if(on){ const g = parseFloat(getComputedStyle(st.parentNode).rowGap) || 0; bar.style.marginTop = (-g - 1) + 'px'; } }
+    st.classList.toggle('dockfb', fb && !!html); if(fb) st.style.setProperty('--dockb', d.offsetHeight + 'px');
     if(d.dataset.h !== html){ d.innerHTML = html; d.dataset.h = html; } const hn = $('.hint', st); if(hn) hn.style.display = html ? 'none' : ''; }""")
 rep("st.style.setProperty('--docky', ((d && d.offsetHeight ? d.offsetTop + d.offsetHeight : 52) + 10) + 'px');",
     "st.style.setProperty('--docky', ((d && d.offsetHeight && d.parentNode===st ? d.offsetTop + d.offsetHeight : 52) + 10) + 'px');")

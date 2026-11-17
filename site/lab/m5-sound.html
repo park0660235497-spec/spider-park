@@ -405,6 +405,11 @@ body.fullon .linebox{display:none}
 #dockbar #dock .btn{min-height:48px!important;font-size:15.5px!important;padding:0 14px!important;flex:1 1 auto;justify-content:center;border-radius:12px}
 #dockbar #dock .status{min-height:48px;display:inline-flex;align-items:center;justify-content:center;flex:1 1 auto;border:1.5px solid var(--line2);font-size:15.5px;border-radius:12px;box-sizing:border-box}
 .stage.hasbar{border-radius:var(--r-lg) var(--r-lg) 0 0!important}
+.stage[data-mdc] #dock.fb,.stage #dock.fb{right:8px!important}
+#dock.fb{position:absolute;left:8px;right:8px!important;bottom:8px;top:auto;z-index:6;display:flex;flex-wrap:wrap;gap:8px;align-items:stretch}
+#dock.fb .btn{min-height:48px!important;font-size:15.5px!important;padding:0 14px!important;flex:1 1 auto;justify-content:center;border-radius:12px}
+#dock.fb .status{min-height:48px;display:inline-flex;align-items:center;justify-content:center;flex:1 1 auto;font-size:15.5px;border-radius:12px;box-sizing:border-box}
+.stage.dockfb .bubble{bottom:calc(var(--dockb, 0px) + 16px)!important}
 @media (pointer:coarse){.btn.sm{min-height:44px}.chip{min-height:44px}.ibtn{min-width:44px;min-height:44px}#pCtrl input,#helper input{font-size:16px!important;min-height:46px}.calc button{min-height:44px}}
 @media (max-width:600px){.bubble .msg{font-size:13.5px;padding:8px 12px;line-height:1.45}.bubble{left:8px;right:8px;bottom:8px}.labels div{font-size:11px;padding:2px 8px}.camctl{top:8px;right:8px;gap:6px}.reschip{top:8px;left:8px;right:60px;max-width:none;width:auto;justify-content:space-between}.reschip .v{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
 </style>
@@ -1481,6 +1486,10 @@ const Lab = (function(){
   /* ----- audio ----- */
   let AC = null;
   function ac(){ try{ if(!AC) AC = new (window.AudioContext || window.webkitAudioContext)(); if(AC.state==='suspended') AC.resume(); }catch(e){ AC = null; } return AC; }
+  function spkGain(){ const s = P.s; return Math.min(.2, .11*Math.sqrt(s.n)/Math.max(.5, s.r)); }
+  function spkTone(on){ if(P.sp){ try{ P.sp.g.gain.setTargetAtTime(0, AC.currentTime, .05); P.sp.o.stop(AC.currentTime + .3); }catch(_){ } P.sp = null; }
+    if(!on || SFX.muted || P.i!==1) return; const c = ac(); if(!c) return; const o = c.createOscillator(), g = c.createGain(); o.type = 'sine'; o.frequency.value = 330; g.gain.value = 0; o.connect(g); g.connect(c.destination); o.start(); g.gain.setTargetAtTime(spkGain(), c.currentTime, .08); P.sp = {o, g}; }
+  function spkUpd(){ if(P.sp && AC) P.sp.g.gain.setTargetAtTime(spkGain(), AC.currentTime, .12); }
   function tone(fs, dur){ SFX.tick(); if(SFX.muted) return null; const c = ac(); if(!c) return null; const out = []; fs.forEach(f=>{ const o = c.createOscillator(), g = c.createGain(); o.type = 'sine'; o.frequency.value = f; g.gain.setValueAtTime(0, c.currentTime); g.gain.linearRampToValueAtTime(.12, c.currentTime + .02); g.gain.exponentialRampToValueAtTime(.0005, c.currentTime + dur); o.connect(g); g.connect(c.destination); o.start(); o.stop(c.currentTime + dur + .05); out.push({o, g}); }); return out; }
   function stopTone(t){ if(!t || !AC) return; t.forEach(({o, g})=>{ try{ g.gain.cancelScheduledValues(AC.currentTime); g.gain.setTargetAtTime(0, AC.currentTime, .03); o.stop(AC.currentTime + .2); }catch(_){} }); }
 
@@ -1601,14 +1610,26 @@ const Lab = (function(){
       const f = makeFork(.42); f.position.set(-.05,.3,0); g.add(f); g.userData.f = f; g.add(at(cyl(.03,.035,.02, METAL(), 12), -.05,.31,0)); g.add(hitBox(.8,1.2,.5,.5));
       if(k) g.rotation.y = Math.PI; g.position.set(x, TABLE_Y, 0); W.add(g); return g; });
     P.mal = makeMallet(); W.add(P.mal);
-    P.clay = sph(.04, mat(0x6ACB6A,{roughness:.9}), 12); P.clay.scale.set(1.1,.8,1); P.clay.position.set(-.05 - .04, .3 + .36, .0); P.fks[1].add(P.clay);
+    P.clay = sph(.062, mat(0x35D05A,{roughness:.9}), 14); P.clay.scale.set(1.1,.8,1); P.clay.position.set(-.05 - .04, .3 + .36, .0); P.fks[1].add(P.clay);
     P.labels.push({obj:P.fks[0], dy:1.15, text:()=>`ส้อมเสียง A ${FA} Hz`}); P.labels.push({obj:P.fks[1], dy:1.15, text:()=>P.s.clay ? 'ส้อมเสียง B + ดินน้ำมัน' : 'ส้อมเสียง B (?)'});
+    const mon = new THREE.Group(); mon.add(at(box(1.24,.74,.06, mat(0x20242E,{roughness:.5})), 0,.62,0)); mon.add(at(cyl(.03,.03,.26, METAL(), 10), 0,.13,-.02)); mon.add(at(box(.5,.03,.26, mat(0x20242E,{roughness:.5})), 0,.015,0));
+    P.mtex = canvasTex(720, 420, ()=>{}); mon.add(at(new THREE.Mesh(new THREE.PlaneGeometry(1.16,.67), new THREE.MeshBasicMaterial({map:P.mtex})), 0,.62,.032)); mon.position.set(0, TABLE_Y, -.62); mon.rotation.x = -.08; W.add(mon);
+    P.orb = sph(.07, new THREE.MeshBasicMaterial({color:0xFFB15C, transparent:true, opacity:.85}), 16); P.orb.position.set(0, TABLE_Y + .34, .1); P.orb.visible = false; W.add(P.orb);
+    P.labels.push({obj:P.clay, dy:.1, text:()=>P.s.clay ? 'ดินน้ำมัน' : ''});
     P.rg = rings(5, 0xE25555);
     shadowAll(W); updP3();
   }
-  function updP3(){ if(P.clay) P.clay.visible = P.s.clay; }
-  function hit3(){ const s = P.s, fb = Math.abs(FA - fBn()); if(P.mal) P.mal.userData.t3 = P.tt; s.ring = 4; stopTone(P.snd); P.snd = tone([FA, fBn()], 4); s.heard[s.clay ? 'c' : 'n'] = 1; s.last = {fb, clay:s.clay};
-    P.say = s.clay ? 'เคาะพร้อมกัน (B ติดดินน้ำมัน) ฟังและนับจังหวะดังในกราฟ เทียบกับตอนไม่ติดดินน้ำมันครับ' : 'เคาะพร้อมกันแล้ว ได้ยินเสียงดังค่อยสลับ นับจังหวะดังใน 1 วินาทีจากกราฟครับ'; }
+  function updP3(){ if(P.clay) P.clay.visible = P.s.clay; drawMon(); }
+  function drawMon(){ if(!P.mtex) return; const s = P.s, c = P.mtex.userData.c, x = c.getContext('2d'), w = c.width, h = c.height; x.fillStyle = '#0B0D16'; x.fillRect(0,0,w,h);
+    const row = (y0, hh, on, fb, col, name) => { const mid = y0 + hh/2; x.strokeStyle = 'rgba(255,255,255,.14)'; x.lineWidth = 1; for(let k=0;k<=4;k++){ const px = 20 + k*(w - 40)/4; x.beginPath(); x.moveTo(px, y0); x.lineTo(px, y0 + hh); x.stroke(); }
+      x.fillStyle = col; x.font = '600 24px Mitr, sans-serif'; x.textAlign = 'left'; x.fillText(name, 22, y0 + 26);
+      if(!on){ x.fillStyle = '#6E7791'; x.textAlign = 'center'; x.font = '500 22px Mitr, sans-serif'; x.fillText('ยังไม่ได้เคาะ', w/2, mid + 8); return; }
+      x.strokeStyle = col; x.lineWidth = 2; x.beginPath(); for(let px=0;px<=w-40;px++){ const t = px/(w - 40), e = Math.abs(Math.cos(Math.PI*fb*t)), yv = mid + 6 + Math.sin(t*2*Math.PI*90)*e*(hh/2 - 30); px ? x.lineTo(20 + px, yv) : x.moveTo(20 + px, yv); } x.stroke(); };
+    const f0 = Math.abs(FA - s.fB), f1 = Math.abs(FA - (s.fB - 2));
+    row(8, 180, !!s.heard.n, f0, '#7CC4FF', 'A + B'); row(200, 180, !!s.heard.c, f1, '#FFB15C', 'A + B ติดดินน้ำมัน');
+    x.fillStyle = '#C9D2E8'; x.font = '500 20px sans-serif'; x.textAlign = 'center'; x.fillText('0', 20, h - 10); x.fillText('เวลา 1 วินาที', w/2, h - 10); x.fillText('1 s', w - 30, h - 10); P.mtex.needsUpdate = true; }
+  function hit3(){ const s = P.s, fb = Math.abs(FA - fBn()); if(P.mal) P.mal.userData.t3 = P.tt; s.ring = 4; stopTone(P.snd); P.snd = tone([FA, fBn()], 4); s.heard[s.clay ? 'c' : 'n'] = 1; s.last = {fb, clay:s.clay}; drawMon();
+    P.say = s.clay ? 'เคาะพร้อมกัน (B ติดดินน้ำมัน) ดูจอ: เส้นสีส้มคือแบบติดดินน้ำมัน เทียบจำนวนยอดกับเส้นสีฟ้าครับ' : 'เคาะพร้อมกันแล้ว ได้ยินเสียงดังค่อยสลับ นับจำนวนยอดใน 1 วินาทีบนจอ (เส้นสีฟ้า) ครับ'; }
   function drawScope(){ const cv = $('#sc'); if(!cv || P.i!==2) return; const x = cv.getContext('2d'), w = cv.width, h = cv.height, l = P.s.last, ph = h - 34, mid = ph/2;
     x.fillStyle = '#0B0D16'; x.fillRect(0,0,w,h); x.fillStyle = '#FFFFFF'; x.fillRect(0, ph, w, h - ph);
     x.strokeStyle = 'rgba(255,255,255,.18)'; x.lineWidth = 1; for(let k=1;k<4;k++){ const px = k*w/4; x.beginPath(); x.moveTo(px, 0); x.lineTo(px, ph); x.stroke(); }
@@ -1689,11 +1710,12 @@ if(x===null){ _w = 'พิมพ์จำนวนบีตส์ต่อวิ
     return ['yay','f_b = |f₁ − f₂| ใช้ตั้งเสียงเครื่องดนตรีให้ตรงกันได้ครับ'];
   }
   function dock(html){ const st = $('#stage'); if(!st) return; let d = $('#dock'); if(!d){ d = document.createElement('div'); d.id = 'dock'; st.appendChild(d); }
-    const below = st.clientWidth < 700 && !st.classList.contains('full') && !document.body.classList.contains('fullon'); let bar = $('#dockbar');
+    const full = st.classList.contains('full'), nar = st.clientWidth < 700, below = nar && !full, fb = nar && full; let bar = $('#dockbar');
     if(below && !bar){ bar = document.createElement('div'); bar.id = 'dockbar'; st.insertAdjacentElement('afterend', bar); }
-    const host = below ? bar : st, mode = below ? 'b' : 's';
-    if(d.parentNode !== host || d.dataset.m !== mode){ host.appendChild(d); d.dataset.m = mode; d.style.cssText = below ? 'display:flex;flex-wrap:wrap;gap:8px;align-items:stretch' : 'position:absolute;top:10px;left:10px;right:64px;z-index:4;display:flex;flex-wrap:wrap;gap:6px;align-items:center'; }
+    const host = below ? bar : st, mode = below ? 'b' : fb ? 'f' : 's';
+    if(d.parentNode !== host || d.dataset.m !== mode){ host.appendChild(d); d.dataset.m = mode; d.classList.toggle('fb', fb); d.style.cssText = below ? 'display:flex;flex-wrap:wrap;gap:8px;align-items:stretch' : fb ? '' : 'position:absolute;top:10px;left:10px;right:64px;z-index:4;display:flex;flex-wrap:wrap;gap:6px;align-items:center'; }
     if(bar){ const on = below && !!html; bar.classList.toggle('on', on); st.classList.toggle('hasbar', on); if(on){ const g = parseFloat(getComputedStyle(st.parentNode).rowGap) || 0; bar.style.marginTop = (-g - 1) + 'px'; } }
+    st.classList.toggle('dockfb', fb && !!html); if(fb) st.style.setProperty('--dockb', d.offsetHeight + 'px');
     if(d.dataset.h !== html){ d.innerHTML = html; d.dataset.h = html; } const hn = $('.hint', st); if(hn) hn.style.display = html ? 'none' : ''; }
   const DB = (v, t, on, main) => `<button class="btn ${main ? 'ok' : on ? '' : 'ghost'} sm" style="min-height:38px;padding:0 12px;font-size:14px${main ? ';font-weight:600' : ''}" type="button" data-act="lab" data-v="${v}">${t}</button>`;
   const PILL = t => `<span class="status on" style="background:#fff;color:#1E2340">${t}</span>`;
@@ -1725,16 +1747,16 @@ if(x===null){ _w = 'พิมพ์จำนวนบีตส์ต่อวิ
         + '';
       res = `<h2>ความดังที่ได้ยิน</h2><div style="display:flex;gap:3px;height:22px;margin:4px 0 2px">${Array.from({length:10},(_,k)=>`<span style="flex:1;border-radius:4px;background:${k < bars ? (k > 7 ? '#E25555' : k > 4 ? '#F2994A' : '#3BB78F') : '#E3E8F2'}"></span>`).join('')}</div><div class="note">${s.ring > 0 ? 'ส้อมเสียงกำลังสั่น' : 'ส้อมเสียงหยุดสั่น แตะเพื่อเคาะใหม่'} · L = ${(s.L*100).toFixed(1)} cm</div>`
         + (ks.length ? `<div style="margin-top:8px">` + grid('auto auto auto', `<b>f (Hz)</b><b>ครั้งที่</b><b>L (cm)</b>${ks.map(k=>{ const r = s.res[k]; return `<span${HL(P.lastRes===k)}>${r.f}</span><span${HL(P.lastRes===k)}>${r.n}</span><span${HL(P.lastRes===k)}>${r.L.toFixed(1)}</span>`; }).join('')}`) + '</div>' : '');
-      dk = DB('hit','🔔 เคาะ', 0, 1) + DB('fk', `${s.f} Hz ▸`, 1) + DB('dl:-0.05','▲ 5') + DB('dl:-0.01','▲ 1') + DB('dl:-0.001','▲ 0.1') + PILL(`L ${(s.L*100).toFixed(1)} cm`) + DB('dl:0.001','▼ 0.1') + DB('dl:0.01','▼ 1') + DB('dl:0.05','▼ 5');
+      dk = DB('hit','🔔 เคาะ', 0, 1) + DB('fk', `${s.f} Hz ▸`, 1) + DB('dl:-0.01','▲') + PILL(`L ${(s.L*100).toFixed(1)} cm`) + DB('dl:0.01','▼');
     } else if(P.i===1){
       const ks = Object.keys(s.rec).sort((a,b)=>s.rec[a].n - s.rec[b].n || s.rec[a].r - s.rec[b].r);
-      sig = JSON.stringify(['p1', ks.length, s.dropOk, s.ans, pair2()]);
+      sig = JSON.stringify(['p1', ks.length, s.dropOk, s.ans, pair2(), P.spOn]);
       ctrls = FORM('<b>ความเข้มเสียง</b> I = {P|4πr²}<br><b>ระดับความเข้มเสียง</b> β = 10 log({I|I₀}) · I₀ = 10⁻¹² {W|m²}')
         + (dbl() && !s.dropOk && !m.drop ? `<h2 style="margin-top:6px">ระยะเพิ่ม 2 เท่า β ลดลงกี่ dB</h2>${IN('dv','เช่น 5','drop','ตรวจ')}` : '')
         + ''
         + '';
       res = `<h2>เครื่องวัดระดับเสียง · ${beta(s.r, s.n).toFixed(1)} dB</h2>` + (ks.length ? grid('auto auto auto', `<b>ลำโพง</b><b>r (m)</b><b>β (dB)</b>${ks.map(k=>{ const r = s.rec[k]; return `<span${HL(P.lastRec===k)}>${r.n} ตัว</span><span${HL(P.lastRec===k)}>${r.r.toFixed(1)}</span><span${HL(P.lastRec===k)}>${r.b.toFixed(1)}</span>`; }).join('')}`) : '<div class="note">ลากเครื่องวัดหรือกดปุ่มระยะบนจอ</div>');
-      dk = RS.map(r=>DB('r:' + r, r + ' m', Math.abs(s.r - r) < 1e-6)).join('') + DB('dr:-0.5','◀ 0.5') + DB('dr:0.5','0.5 ▶') + DB('sp', `ลำโพง ${s.n} ตัว ▸`, 1);
+      dk = DB('spk', P.spOn===false ? '🔇 เปิดเสียงลำโพง' : '🔊 ปิดเสียงลำโพง', P.spOn!==false) + RS.map(r=>DB('r:' + r, r + ' m', Math.abs(s.r - r) < 1e-6)).join('') + DB('dr:-0.5','◀ 0.5') + DB('dr:0.5','0.5 ▶') + DB('sp', `ลำโพง ${s.n} ตัว ▸`, 1);
     } else {
       sig = JSON.stringify(['p2', s.fbOk, s.ans, s.heard, s.last && s.last.clay]);
       const fb = Math.abs(FA - s.fB);
@@ -1758,7 +1780,7 @@ if(x===null){ _w = 'พิมพ์จำนวนบีตส์ต่อวิ
   /* ----- actions ----- */
   function act(fn){ P.warn = null; P.say = null; fn(); sync(); refresh(); }
   const val = id => { const e = $('#' + id); return e ? e.value : ''; };
-  function action(v){
+  function action(v){ if(P && P.i===1 && v!=='spk' && P.spOn!==false && !P.sp && !/^(cam|z)/.test(v)) spkTone(true);
     if(typeof v==='string' && v.startsWith('mg:')){ const id = v.slice(3), g = mgGet(P.i, id), dn = !!(S.miss[P.i] && S.miss[P.i][id]); P.warn = null; P.say = dn ? 'ภารกิจนี้ทำเสร็จแล้วครับ ✓' : (g ? g[1] : null); P.mg = P.say ? {msg:P.say, t:Date.now()} : null; refresh(); if(!dn && !mgFlash(g)){ const nx = (PARTS[P.i].miss.find(x=>!(S.miss[P.i] && S.miss[P.i][x[0]])) || [])[0]; const alt = g && g[3] ? g[3] : (g && nx && nx!==id ? g[1] + ' (ทำข้อที่มี ▶ ทำต่อ ให้เสร็จก่อนนะครับ)' : ''); if(alt){ P.say = alt; P.mg = {msg:alt, t:Date.now()}; refresh(); } } return; }
     if(P) P.mg = null;
     if(typeof v==='string' && v.startsWith('help:')){ const a = v.slice(5), so = SOLS[a], gs = Object.values((typeof GUIDE!=='undefined' && GUIDE[P.i]) || {}), nxm = (PARTS[P.i].miss.find(x=>!(S.miss[P.i] && S.miss[P.i][x[0]])) || [])[0], g = (so && gs.find(x=>x[0]==='#' + so.id)) || mgGet(P.i, nxm); const fm = g ? String(g[1]).replace(/ ?ใส่ช่องคำตอบครับ$/,'').replace(/ ครับ$/,'') + (g[2] && g[2].length ? '<ol style="margin:4px 0 0;padding-left:20px">' + g[2].map(t=>'<li>' + t + '</li>').join('') + '</ol>' : '') : 'ดูขั้นตอนในคำอธิบายของตอนนี้ (ปุ่ม ⓘ)'; const d = so ? autoHelp('ตัวช่วยคำนวณทีละขั้น', fm, so.f()) : null; P.warn = null; if(!d){ P.warn = 'ทำการทดลองให้มีข้อมูลในตารางก่อน แล้วค่อยกด 💡 ครับ'; refresh(); return; } helpOpen(d); return; }
@@ -1768,9 +1790,10 @@ if(x===null){ _w = 'พิมพ์จำนวนบีตส์ต่อวิ
     else if(v==='zin') camZoom(.82); else if(v==='zout') camZoom(1.2);
     else if(v==='camReset'){ R.camera.position.copy(CAMS[P.i].pos); R.controls.target.copy(CAMS[P.i].tgt); fitNarrow(); }
     else if(v==='resetPart'){ if(S.ps) delete S.ps[P.i]; stopTone(P.snd); P = fresh(P.i); build(); }
+    else if(v==='spk'){ P.spOn = P.spOn===false; spkTone(P.spOn); refresh(); }
     else if(v==='hit') act(hit1);
     else if(v==='fk') act(()=>{ s.f = s.f===FK[0] ? FK[1] : FK[0]; s.ring = 0; stopTone(P.snd); P.snd = null; P.say = `เปลี่ยนเป็นส้อมเสียง ${s.f} Hz แล้ว เคาะใหม่ครับ`; });
-    else if(v.startsWith('dl:')) act(()=>setL(s.L + (+v.slice(3)), .0006));
+    else if(v.startsWith('dl:')) act(()=>setL(s.L + (+v.slice(3)), .006));
     else if(v.startsWith('r:') && P.i===0) act(()=>setL(xn(+v.slice(2)), .01));
     else if(v==='v') act(()=>checkV(val('vv'))); else if(v.startsWith('v:')) act(()=>{ const p = pairV(); checkV(v.slice(2)==='auto' ? String(2*p.f*(p.L2 - p.L1)/100) : v.slice(2)); });
     else if(v.startsWith('r:')) act(()=>setR(+v.slice(2)));
@@ -1824,7 +1847,7 @@ if(x===null){ _w = 'พิมพ์จำนวนบีตส์ต่อวิ
       else if(P.i===1 && P.spk){ runRings(P.rg, P.tt, true, .15, 1.6, r=>{ r.rotation.y = Math.PI/2; const f = (P.tt*.8 + r.userData.ph) % 1; r.position.set(XS0 + .05 + f*1.1, TABLE_Y + .25, 0); r.material.opacity = .5*(1 - f)*(1 - f); });
         const pu = Math.sin(P.tt*38)*.012; P.spk.forEach(g=>{ g.userData.cn.position.x = .19 + pu; g.userData.cap.position.x = .175 + pu; }); }
       else if(P.i===2 && P.fks){ s.ring = Math.max(0, s.ring - dt); const env = Math.min(1, s.ring/2), fb = s.last ? s.last.fb : 0, e2 = env*Math.abs(Math.cos(Math.PI*fb*(4 - s.ring)));
-        P.fks.forEach(g=>vib(g.userData.f, env, P.tt)); if(P.mal){ const u = P.mal.userData, k = u.t3==null ? 1 : (P.tt - u.t3)/.5; if(k >= 1){ u.t3 = null; P.mal.position.set(-.15, TABLE_Y + .04, .5); P.mal.rotation.set(Math.PI/2, 0, 1.2); } else { const sd = k < .5 ? -1 : 1, q = Math.sin((k < .5 ? k : k - .5)*2*Math.PI); P.mal.position.set(sd*(XB - .32), TABLE_Y + .42, 0); P.mal.rotation.set(0, 0, -sd*(.8 + q*.4)); } } runRings(P.rg, P.tt, s.ring > 0, .15, .9, r=>{ r.rotation.x = Math.PI/2; r.position.set(0, TABLE_Y + .5, 0); r.material.opacity *= e2; }); }
+        P.fks.forEach(g=>vib(g.userData.f, env, P.tt)); if(P.orb){ const fbv = P.s.last ? P.s.last.fb : 0, e = Math.abs(Math.cos(Math.PI*fbv*(4 - P.s.ring))); P.orb.visible = env > .02; P.orb.scale.setScalar(.4 + 1.6*e*env); P.orb.material.opacity = .25 + .65*e; } if(P.mal){ const u = P.mal.userData, k = u.t3==null ? 1 : (P.tt - u.t3)/.5; if(k >= 1){ u.t3 = null; P.mal.position.set(-.15, TABLE_Y + .04, .5); P.mal.rotation.set(Math.PI/2, 0, 1.2); } else { const sd = k < .5 ? -1 : 1, q = Math.sin((k < .5 ? k : k - .5)*2*Math.PI); P.mal.position.set(sd*(XB - .32), TABLE_Y + .42, 0); P.mal.rotation.set(0, 0, -sd*(.8 + q*.4)); } } runRings(P.rg, P.tt, s.ring > 0, .15, .9, r=>{ r.rotation.x = Math.PI/2; r.position.set(0, TABLE_Y + .5, 0); r.material.opacity *= e2; }); }
       uiT += dt; if(uiT > .3){ uiT = 0; if(check()) refresh(); else if(!(document.activeElement && document.activeElement.tagName==='INPUT')) refreshUI(); }
       if(P.dirty){ P.dirty = false; refresh(); }
       placeLabels();
@@ -1860,8 +1883,8 @@ if(x===null){ _w = 'พิมพ์จำนวนบีตส์ต่อวิ
       if(R.ro) R.ro.disconnect(); R.ro = new ResizeObserver(resize); R.ro.observe(box); resize();
       if(!R.active){ R.active = true; requestAnimationFrame(tick); }
     },
-    stop(){ SFX.amb({}); if(P) stopTone(P.snd); if(R){ R.active = false; if(R.ro) R.ro.disconnect(); } },
-    muted(m){ if(m && P){ stopTone(P.snd); P.snd = null; } },
+    stop(){ SFX.amb({}); if(P){ stopTone(P.snd); spkTone(false); } if(R){ R.active = false; if(R.ro) R.ro.disconnect(); } },
+    muted(m){ if(P){ if(m){ stopTone(P.snd); P.snd = null; spkTone(false); } else if(P.i===1 && P.spOn!==false) spkTone(true); } },
     refreshUI(){ if(P){ P.ctrlSig = ''; refreshUI(); } },
     action
   };

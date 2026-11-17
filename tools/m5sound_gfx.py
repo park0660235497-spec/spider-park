@@ -106,5 +106,45 @@ rep("{pos:V(-.65,2.1,5.3), tgt:V(-.65,.55,0)},", "{pos:V(-.65,2.1,5.3), tgt:V(-.
 rep("    {pos:V(0,1.7,3.8), tgt:V(0,.6,0)}", "    {pos:V(0,1.7,3.8), tgt:V(0,.6,0), na:1.02, nk:1.45}")
 rep("P.labels.push({obj:fk, dy:.62, text:()=>`ส้อมเสียง ${P.s.f} Hz`});", "P.labels.push({obj:fk, dy:.5, text:()=>`ส้อมเสียง ${P.s.f} Hz`});")
 rep("{pos:V(1.2,1.95,3.3), tgt:V(0.02,.95,0)},", "{pos:V(1.2,2.0,3.3), tgt:V(0.02,1.02,0), na:.86},")
+
+# ===== round 2 (Park feedback) =====
+# P1: fewer buttons
+rep("dk = DB('hit','🔔 เคาะ', 0, 1) + DB('fk', `${s.f} Hz ▸`, 1) + DB('dl:-0.05','▲ 5') + DB('dl:-0.01','▲ 1') + DB('dl:-0.001','▲ 0.1') + PILL(`L ${(s.L*100).toFixed(1)} cm`) + DB('dl:0.001','▼ 0.1') + DB('dl:0.01','▼ 1') + DB('dl:0.05','▼ 5');",
+    "dk = DB('hit','🔔 เคาะ', 0, 1) + DB('fk', `${s.f} Hz ▸`, 1) + DB('dl:-0.01','▲') + PILL(`L ${(s.L*100).toFixed(1)} cm`) + DB('dl:0.01','▼');")
+rep("    else if(v.startsWith('dl:')) act(()=>setL(s.L + (+v.slice(3)), .0006));", "    else if(v.startsWith('dl:')) act(()=>setL(s.L + (+v.slice(3)), .006));")
+# P2: speaker tone that fades with distance
+rep("  function tone(fs, dur){", """  function spkGain(){ const s = P.s; return Math.min(.2, .11*Math.sqrt(s.n)/Math.max(.5, s.r)); }
+  function spkTone(on){ if(P.sp){ try{ P.sp.g.gain.setTargetAtTime(0, AC.currentTime, .05); P.sp.o.stop(AC.currentTime + .3); }catch(_){ } P.sp = null; }
+    if(!on || SFX.muted || P.i!==1) return; const c = ac(); if(!c) return; const o = c.createOscillator(), g = c.createGain(); o.type = 'sine'; o.frequency.value = 330; g.gain.value = 0; o.connect(g); g.connect(c.destination); o.start(); g.gain.setTargetAtTime(spkGain(), c.currentTime, .08); P.sp = {o, g}; }
+  function spkUpd(){ if(P.sp && AC) P.sp.g.gain.setTargetAtTime(spkGain(), AC.currentTime, .12); }
+  function tone(fs, dur){""")
+rep("dk = RS.map(r=>DB('r:' + r, r + ' m', Math.abs(s.r - r) < 1e-6)).join('') + DB('dr:-0.5','◀ 0.5') + DB('dr:0.5','0.5 ▶') + DB('sp', `ลำโพง ${s.n} ตัว ▸`, 1);",
+    "dk = DB('spk', P.spOn===false ? '🔇 เปิดเสียงลำโพง' : '🔊 ปิดเสียงลำโพง', P.spOn!==false) + RS.map(r=>DB('r:' + r, r + ' m', Math.abs(s.r - r) < 1e-6)).join('') + DB('dr:-0.5','◀ 0.5') + DB('dr:0.5','0.5 ▶') + DB('sp', `ลำโพง ${s.n} ตัว ▸`, 1);")
+rep("      sig = JSON.stringify(['p1', ks.length, s.dropOk, s.ans, pair2()]);", "      sig = JSON.stringify(['p1', ks.length, s.dropOk, s.ans, pair2(), P.spOn]);")
+rep("    else if(v==='hit') act(hit1);", "    else if(v==='spk'){ P.spOn = P.spOn===false; spkTone(P.spOn); refresh(); }\n    else if(v==='hit') act(hit1);")
+rep("  function action(v){", "  function action(v){ if(P && P.i===1 && v!=='spk' && P.spOn!==false && !P.sp && !/^(cam|z)/.test(v)) spkTone(true);")
+rep("    muted(m){ if(m && P){ stopTone(P.snd); P.snd = null; } },", "    muted(m){ if(P){ if(m){ stopTone(P.snd); P.snd = null; spkTone(false); } else if(P.i===1 && P.spOn!==false) spkTone(true); } },")
+rep("    stop(){ SFX.amb({}); if(P) stopTone(P.snd);", "    stop(){ SFX.amb({}); if(P){ stopTone(P.snd); spkTone(false); }")
+# P3: oscilloscope in the scene + clearer clay
+rep("    P.rg = rings(5, 0xE25555);\n    shadowAll(W); updP3();", """    const mon = new THREE.Group(); mon.add(at(box(1.24,.74,.06, mat(0x20242E,{roughness:.5})), 0,.62,0)); mon.add(at(cyl(.03,.03,.26, METAL(), 10), 0,.13,-.02)); mon.add(at(box(.5,.03,.26, mat(0x20242E,{roughness:.5})), 0,.015,0));
+    P.mtex = canvasTex(720, 420, ()=>{}); mon.add(at(new THREE.Mesh(new THREE.PlaneGeometry(1.16,.67), new THREE.MeshBasicMaterial({map:P.mtex})), 0,.62,.032)); mon.position.set(0, TABLE_Y, -.62); mon.rotation.x = -.08; W.add(mon);
+    P.orb = sph(.07, new THREE.MeshBasicMaterial({color:0xFFB15C, transparent:true, opacity:.85}), 16); P.orb.position.set(0, TABLE_Y + .34, .1); P.orb.visible = false; W.add(P.orb);
+    P.labels.push({obj:P.clay, dy:.1, text:()=>P.s.clay ? 'ดินน้ำมัน' : ''});
+    P.rg = rings(5, 0xE25555);
+    shadowAll(W); updP3();""")
+rep("    P.clay = sph(.04, mat(0x6ACB6A,{roughness:.9}), 12);", "    P.clay = sph(.062, mat(0x35D05A,{roughness:.9}), 14);")
+rep("  function updP3(){ if(P.clay) P.clay.visible = P.s.clay; }", """  function updP3(){ if(P.clay) P.clay.visible = P.s.clay; drawMon(); }
+  function drawMon(){ if(!P.mtex) return; const s = P.s, c = P.mtex.userData.c, x = c.getContext('2d'), w = c.width, h = c.height; x.fillStyle = '#0B0D16'; x.fillRect(0,0,w,h);
+    const row = (y0, hh, on, fb, col, name) => { const mid = y0 + hh/2; x.strokeStyle = 'rgba(255,255,255,.14)'; x.lineWidth = 1; for(let k=0;k<=4;k++){ const px = 20 + k*(w - 40)/4; x.beginPath(); x.moveTo(px, y0); x.lineTo(px, y0 + hh); x.stroke(); }
+      x.fillStyle = col; x.font = '600 24px Mitr, sans-serif'; x.textAlign = 'left'; x.fillText(name, 22, y0 + 26);
+      if(!on){ x.fillStyle = '#6E7791'; x.textAlign = 'center'; x.font = '500 22px Mitr, sans-serif'; x.fillText('ยังไม่ได้เคาะ', w/2, mid + 8); return; }
+      x.strokeStyle = col; x.lineWidth = 2; x.beginPath(); for(let px=0;px<=w-40;px++){ const t = px/(w - 40), e = Math.abs(Math.cos(Math.PI*fb*t)), yv = mid + 6 + Math.sin(t*2*Math.PI*90)*e*(hh/2 - 30); px ? x.lineTo(20 + px, yv) : x.moveTo(20 + px, yv); } x.stroke(); };
+    const f0 = Math.abs(FA - s.fB), f1 = Math.abs(FA - (s.fB - 2));
+    row(8, 180, !!s.heard.n, f0, '#7CC4FF', 'A + B'); row(200, 180, !!s.heard.c, f1, '#FFB15C', 'A + B ติดดินน้ำมัน');
+    x.fillStyle = '#C9D2E8'; x.font = '500 20px sans-serif'; x.textAlign = 'center'; x.fillText('0', 20, h - 10); x.fillText('เวลา 1 วินาที', w/2, h - 10); x.fillText('1 s', w - 30, h - 10); P.mtex.needsUpdate = true; }""")
+rep("s.heard[s.clay ? 'c' : 'n'] = 1; s.last = {fb, clay:s.clay};", "s.heard[s.clay ? 'c' : 'n'] = 1; s.last = {fb, clay:s.clay}; drawMon();")
+rep("P.say = s.clay ? 'เคาะพร้อมกัน (B ติดดินน้ำมัน) ฟังและนับจังหวะดังในกราฟ เทียบกับตอนไม่ติดดินน้ำมันครับ' : 'เคาะพร้อมกันแล้ว ได้ยินเสียงดังค่อยสลับ นับจังหวะดังใน 1 วินาทีจากกราฟครับ'; }",
+    "P.say = s.clay ? 'เคาะพร้อมกัน (B ติดดินน้ำมัน) ดูจอ: เส้นสีส้มคือแบบติดดินน้ำมัน เทียบจำนวนยอดกับเส้นสีฟ้าครับ' : 'เคาะพร้อมกันแล้ว ได้ยินเสียงดังค่อยสลับ นับจำนวนยอดใน 1 วินาทีบนจอ (เส้นสีฟ้า) ครับ'; }")
+rep("        P.fks.forEach(g=>vib(g.userData.f, env, P.tt));", "        P.fks.forEach(g=>vib(g.userData.f, env, P.tt)); if(P.orb){ const fbv = P.s.last ? P.s.last.fb : 0, e = Math.abs(Math.cos(Math.PI*fbv*(4 - P.s.ring))); P.orb.visible = env > .02; P.orb.scale.setScalar(.4 + 1.6*e*env); P.orb.material.opacity = .25 + .65*e; }")
 open(F, 'w', encoding='utf-8').write(s)
 print('sound gfx ok')
