@@ -410,6 +410,8 @@ body.fullon .linebox{display:none}
 #dock.fb .btn{min-height:48px!important;font-size:15.5px!important;padding:0 14px!important;flex:1 1 auto;justify-content:center;border-radius:12px}
 #dock.fb .status{min-height:48px;display:inline-flex;align-items:center;justify-content:center;flex:1 1 auto;font-size:15.5px;border-radius:12px;box-sizing:border-box}
 .stage.dockfb .bubble{bottom:calc(var(--dockb, 0px) + 16px)!important}
+.stage.full.dockfb .pres.md{max-height:calc(100% - var(--dockb, 0px) - 150px)!important}
+@media (max-width:600px){.stage .pres.md{width:auto!important;left:8px!important;right:64px!important}}
 @media (pointer:coarse){.btn.sm{min-height:44px}.chip{min-height:44px}.ibtn{min-width:44px;min-height:44px}#pCtrl input,#helper input{font-size:16px!important;min-height:46px}.calc button{min-height:44px}}
 @media (max-width:600px){.bubble .msg{font-size:13.5px;padding:8px 12px;line-height:1.45}.bubble{left:8px;right:8px;bottom:8px}.labels div{font-size:11px;padding:2px 8px}.camctl{top:8px;right:8px;gap:6px}.reschip{top:8px;left:8px;right:60px;max-width:none;width:auto;justify-content:space-between}.reschip .v{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
 </style>
@@ -448,17 +450,18 @@ const $ = (s, el=document) => el.querySelector(s);
 
 /* stacked fractions: write {numerator|denominator} in any text */
 const FR_RE = /\{([^{}|\n]+)\|([^{}\n]+)\}/;
+const SUB_RE = /(^|[^A-Za-z0-9_])([A-Za-zΔλ])_([A-Za-z0-9ก-๙]+)/;
 function fxNode(root){
   if(!root) return;
   if(root.nodeType===3){ fxText(root); return; }
   if(root.nodeType!==1 || /^(SCRIPT|STYLE|TEXTAREA|INPUT)$/.test(root.nodeName)) return;
-  const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {acceptNode:n=>(FR_RE.test(n.data) || n.data.indexOf('\u20D7') >= 0) && !n.parentNode.closest('textarea,script,style') ? 1 : 3});
+  const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {acceptNode:n=>(FR_RE.test(n.data) || SUB_RE.test(n.data) || n.data.indexOf('\u20D7') >= 0) && !n.parentNode.closest('textarea,script,style') ? 1 : 3});
   const L = []; while(w.nextNode()) L.push(w.currentNode); L.forEach(fxText);
 }
 function fxText(t){
-  if(!t.parentNode || !(FR_RE.test(t.data) || t.data.indexOf('\u20D7') >= 0)) return;
+  if(!t.parentNode || !(FR_RE.test(t.data) || SUB_RE.test(t.data) || t.data.indexOf('\u20D7') >= 0) || t.parentNode.closest('textarea,script,style')) return;
   const h = t.data.replace(/[&<>]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
-  let o = h.replace(/(\S)\u20D7/g, '<span class="vec">$1</span>'), p; do{ p = o; o = o.replace(/\{([^{}|\n]+)\|([^{}\n]+)\}/g, '<span class="fr"><span>$1</span><span>$2</span></span>'); } while(o!==p);
+  let o = h.replace(/(\S)\u20D7/g, '<span class="vec">$1</span>').replace(/(^|[^A-Za-z0-9_])([A-Za-zΔλ])_([A-Za-z0-9ก-๙]+)/g, '$1$2<sub>$3</sub>'), p; do{ p = o; o = o.replace(/\{([^{}|\n]+)\|([^{}\n]+)\}/g, '<span class="fr"><span>$1</span><span>$2</span></span>'); } while(o!==p);
   const tpl = document.createElement('template'); tpl.innerHTML = o; t.parentNode.replaceChild(tpl.content, t);
 }
 new MutationObserver(ms=>{ for(const m of ms){ if(m.type==='characterData') fxText(m.target); else m.addedNodes.forEach(fxNode); } }).observe(document.documentElement, {childList:true, subtree:true, characterData:true});
@@ -853,7 +856,7 @@ function chipSync(){ const r = $('#pRes'), c = $('#resChip'); if(!r || !c) retur
     const hd = (ch[ch.indexOf(el) % nc] || {}).textContent || '', m = hd.match(/^(.*?)\s*\(([^)]*)\)\s*$/), v = el.textContent.replace(/^[●○•]\s*/, '').trim(); return m ? `${m[1]} = ${v} ${m[2]}` : v; }).filter(Boolean);
   if(!pairs.length){ const stx = [...r.querySelectorAll('.status')].map(x=>x.textContent.trim()).filter(Boolean); if(stx.length) pairs.push(stx[0]); }
   const html = `<b>${esc(t)}</b>${`<span class="v">${pairs.length ? pairs.map(esc).join(' · ') : esc(t)}</span>`}<button class="btn ghost sm" type="button" data-act="resopen" aria-label="เปิดกราฟและตาราง" title="${esc(t)}">📊 ดูผล</button>`;
-  if(c.dataset.h !== html){ c.innerHTML = html; c.dataset.h = html; } const st = $('#stage'); if(st){ st.style.setProperty('--chipw', (c.hidden ? 0 : c.offsetWidth) + 'px'); const d = $('#dock'); st.style.setProperty('--docky', ((d && d.offsetHeight && d.parentNode===st ? d.offsetTop + d.offsetHeight : 52) + 10) + 'px'); if(d && window.ResizeObserver && !d.__ro){ d.__ro = 1; new ResizeObserver(()=>chipSync()).observe(d); } } }
+  if(c.dataset.h !== html){ c.innerHTML = html; c.dataset.h = html; } const st = $('#stage'); if(st){ st.style.setProperty('--chipw', (c.hidden ? 0 : c.offsetWidth) + 'px'); const d = $('#dock'); st.style.setProperty('--docky', ((d && d.offsetHeight && d.parentNode===st && !d.classList.contains('fb') ? d.offsetTop + d.offsetHeight : 52) + 10) + 'px'); if(d && window.ResizeObserver && !d.__ro){ d.__ro = 1; new ResizeObserver(()=>chipSync()).observe(d); } } }
 function chipWatch(){ const r = $('#pRes'); if(!r || r.__cw) return; r.__cw = 1; new MutationObserver(chipSync).observe(r, {childList:true, subtree:true, characterData:true}); chipSync(); }
 function popWatch(){ const r = $('#pRes'); if(!r || r.__pw) return; r.__pw = 1; let last = null;
   new MutationObserver(()=>{ const cur = [...r.querySelectorAll('.status')].map(el=>{ const par = el.parentElement, lab = par ? par.textContent.replace(el.textContent, '').replace(/[:：]\s*$/, '').trim() : ''; return [lab.length < 40 ? lab : '', el.textContent.trim(), el.className]; });
@@ -1278,7 +1281,7 @@ const SND_OFF = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" str
 const SFX = (function(){
   let ac = null, master = null, noise = null, ch = {}, last = {}, muted = false;
   try { muted = localStorage.getItem('parkilab-sfx-mute') === '1'; } catch(_){}
-  const VOL = .32;
+  const VOL = .15;
   function unlock(){
     if(ac){ if(ac.state === 'suspended') ac.resume(); return; }
     try {
@@ -1359,9 +1362,9 @@ const Lab = (function(){
   const TABLE_Y = 0.15;
   const V = (x,y,z) => new THREE.Vector3(x,y,z), UP = V(0,1,0);
   const CAMS = [
-    {pos:V(1.2,2.0,3.3), tgt:V(0.02,1.02,0), na:.86},
-    {pos:V(-.65,2.1,5.3), tgt:V(-.65,.55,0), na:1.25, nk:1.75},
-    {pos:V(0,1.7,3.8), tgt:V(0,.6,0), na:1.02, nk:1.45}
+    {pos:V(1.35,2.05,3.35), tgt:V(0.0,.92,0), nk:.88, nx:.05},
+    {pos:V(1.7,1.55,2.5), tgt:V(-.95,.35,0), nk:1.2},
+    {pos:V(0,1.35,2.75), tgt:V(0,.62,-.2), nk:1.25}
   ];
   function mat(c, o={}){ return new THREE.MeshStandardMaterial(Object.assign({color:c, roughness:.55, metalness:0}, o)); }
   let ENVMAP = null;
@@ -1382,6 +1385,9 @@ const Lab = (function(){
     if(flat) m.rotation.x = -Math.PI/2; return m;
   }
 
+  window.__P = () => P; window.__scr = (o, dy) => { const v = o.getWorldPosition(new THREE.Vector3()); v.y += dy || 0; return scr(v); };
+  window.__hit = (x, y) => { pick({clientX:x, clientY:y}); const h = R.raycaster.intersectObjects(R.world.children, true).find(q=>rootOf(q.object)); return h ? rootOf(h.object).userData.id : null; };
+  window.__cam = () => R ? [R.camera.position.toArray().map(v=>+v.toFixed(3)), R.controls.enabled] : null;
   function initR(){
     if(R) return true;
     try{
@@ -1490,11 +1496,14 @@ const Lab = (function(){
   function spkTone(on){ if(P.sp){ try{ P.sp.g.gain.setTargetAtTime(0, AC.currentTime, .05); P.sp.o.stop(AC.currentTime + .3); }catch(_){ } P.sp = null; }
     if(!on || SFX.muted || P.i!==1) return; const c = ac(); if(!c) return; const o = c.createOscillator(), g = c.createGain(); o.type = 'sine'; o.frequency.value = 330; g.gain.value = 0; o.connect(g); g.connect(c.destination); o.start(); g.gain.setTargetAtTime(spkGain(), c.currentTime, .08); P.sp = {o, g}; }
   function spkUpd(){ if(P.sp && AC) P.sp.g.gain.setTargetAtTime(spkGain(), AC.currentTime, .12); }
-  function tone(fs, dur){ SFX.tick(); if(SFX.muted) return null; const c = ac(); if(!c) return null; const out = []; fs.forEach(f=>{ const o = c.createOscillator(), g = c.createGain(); o.type = 'sine'; o.frequency.value = f; g.gain.setValueAtTime(0, c.currentTime); g.gain.linearRampToValueAtTime(.12, c.currentTime + .02); g.gain.exponentialRampToValueAtTime(.0005, c.currentTime + dur); o.connect(g); g.connect(c.destination); o.start(); o.stop(c.currentTime + dur + .05); out.push({o, g}); }); return out; }
+  function tone(fs, dur, pk){ if(SFX.muted) return null; const c = ac(); if(!c) return null; const out = [], t0 = c.currentTime, v = pk || .35;
+    fs.forEach(f=>{ const o = c.createOscillator(), g = c.createGain(); o.type = 'sine'; o.frequency.value = f; g.gain.setValueAtTime(0, t0); g.gain.linearRampToValueAtTime(v, t0 + .01); g.gain.setTargetAtTime(v*.55, t0 + .05, 1.2); g.gain.setTargetAtTime(0, t0 + dur*.55, dur*.18); o.connect(g); g.connect(c.destination); o.start(); o.stop(t0 + dur + .4); out.push({o, g, v});
+      const o2 = c.createOscillator(), g2 = c.createGain(); o2.type = 'sine'; o2.frequency.value = f*6.27; g2.gain.setValueAtTime(v*.22, t0); g2.gain.exponentialRampToValueAtTime(.0003, t0 + .35); o2.connect(g2); g2.connect(c.destination); o2.start(); o2.stop(t0 + .4); });
+    return out; }
   function stopTone(t){ if(!t || !AC) return; t.forEach(({o, g})=>{ try{ g.gain.cancelScheduledValues(AC.currentTime); g.gain.setTargetAtTime(0, AC.currentTime, .03); o.stop(AC.currentTime + .2); }catch(_){} }); }
 
   /* ----- constants ----- */
-  const TT = TABLE_Y + 1.25, TX = -.3, TL = 1.0, EC = .012, FK = [512, 384], RX = .45;
+  const TT = TABLE_Y + 1.32, TX = -.3, TL = 1.12, LMAX = TL - .05, EC = .012, FK = [256, 288, 320, 341, 384, 427, 480, 512], RX = .45, RING1 = 12, RING3 = 9;
   const XS0 = -2.6, RS = [1,2,3,4];
   const FA = 440, FBS = [436,437,443,444], XA = -.75, XB = .75;
 
@@ -1505,7 +1514,7 @@ const Lab = (function(){
   const restoreS = i => { const s = defaults(i); try { if(S.ps && S.ps[i]) Object.assign(s, JSON.parse(JSON.stringify(S.ps[i]))); } catch(e){} return s; };
   const fresh = i => ({i, s:restoreS(i), labels:[], celebrate:false, dirty:false, ctrlSig:'', warn:null, tt:0});
   function clearWorld(){ while(R.world.children.length) R.world.remove(R.world.children[0]); }
-  function fitNarrow(){ const el = R.renderer.domElement, a = el.clientWidth/Math.max(1, el.clientHeight), c = CAMS[P.i]; if(a < (c.na || .8)/1.02){ const k = Math.min(c.nk || 1.25, (c.na || .8)/a); R.camera.position.sub(R.controls.target).multiplyScalar(k).add(R.controls.target); } }
+  function fitNarrow(){ const el = R.renderer.domElement, a = el.clientWidth/Math.max(1, el.clientHeight), c = CAMS[P.i]; if(a < 1){ const k = Math.min(c.nk || 1.15, Math.max(1, .92/a)); R.camera.position.sub(R.controls.target).multiplyScalar(k).add(R.controls.target); if(c.nx){ R.controls.target.x += c.nx; R.camera.position.x += c.nx; } } }
   function build(){
     clearWorld(); stopTone(P.snd); P.snd = null; P.labels = []; P.ctrlSig = '';
     const cam = CAMS[P.i]; R.camera.position.copy(cam.pos); R.controls.target.copy(cam.tgt); fitNarrow();
@@ -1526,8 +1535,9 @@ const Lab = (function(){
     W.add(at(cyl(.03,.012,.06, GLASS(.4), 16), TX, TT - TL - .03, 0));
     P.water = cyl(.058,.058,1, TRANS(0x4FA3EA,.62), 28); W.add(P.water);
     P.wtop = cyl(.058,.058,.004, new THREE.MeshStandardMaterial({color:0xBFE3FF, transparent:true, opacity:.85, roughness:.05, envMap:ENVMAP, envMapIntensity:1.4}), 28); W.add(P.wtop);
-    const st = canvasTex(64, 1024, (x,w,h)=>{ x.fillStyle = '#FFF6D8'; x.fillRect(0,0,w,h); x.fillStyle = '#1C2236'; x.font = '700 20px sans-serif'; for(let c=0;c<=100;c++){ const y = 4 + c*(h - 8)/100, L = c%10 ? (c%5 ? 12 : 20) : 30; x.fillRect(0, y - 1, L, 2); if(c%10===0 && c) x.fillText(String(c), 30, y + 7); } });
-    W.add(at(box(.105, TL + .02, .012, mat(0xE8D9A8)), TX + .125, TT - TL/2, .012)); W.add(at(new THREE.Mesh(new THREE.PlaneGeometry(.1, TL), new THREE.MeshStandardMaterial({map:st, roughness:.7})), TX + .125, TT - TL/2, .02));
+    const st = canvasTex(64, 1024, (x,w,h)=>{ x.fillStyle = '#FFF6D8'; x.fillRect(0,0,w,h); x.fillStyle = '#1C2236'; x.font = '700 20px sans-serif'; for(let c=0;c<=110;c++){ const y = 4 + c*(h - 8)/110, L = c%10 ? (c%5 ? 12 : 20) : 30; x.fillRect(0, y - 1, L, 2); if(c%10===0 && c) x.fillText(String(c), 30, y + 7); } });
+    const TLR = 1.10;
+    W.add(at(box(.105, TLR + .02, .012, mat(0xE8D9A8)), TX + .125, TT - TLR/2, .012)); W.add(at(new THREE.Mesh(new THREE.PlaneGeometry(.1, TLR), new THREE.MeshStandardMaterial({map:st, roughness:.7})), TX + .125, TT - TLR/2, .02));
     P.labels.push({obj:P.water, dy:.0, text:()=>`L = ${(P.s.L*100).toFixed(1)} cm`});
     const rv = new THREE.Group(); rv.userData.id = 'res'; rv.add(cyl(.13,.1,.24, GLASS(.28), 28, true)); rv.add(at(cyl(.118,.095,.15, TRANS(0x4FA3EA,.6), 24), 0,-.04,0)); rv.add(at(cyl(.1,.1,.012, GLASS(.45), 24), 0,-.12,0));
     const rim = new THREE.Mesh(new THREE.TorusGeometry(.13,.007,8,28), GLASS(.6)); rim.rotation.x = Math.PI/2; rim.position.y = .12; rv.add(rim); rv.add(at(cyl(.02,.02,.05, GLASS(.4), 12), 0,-.15,0));
@@ -1538,21 +1548,31 @@ const Lab = (function(){
     const fk = makeFork(.28); fk.userData.id = 'fork'; fk.add(hitBox(.3,.6,.3,.25)); fk.position.set(TX, TT + .04, 0); W.add(fk); P.fork = fk;
     P.mal = makeMallet(); P.mal.userData.restPos = V(TX + .42, TABLE_Y + .045, .22); P.mal.userData.hitPos = V(TX + .26, TT + .06, 0); W.add(P.mal); swing(P.mal, 0);
     P.labels.push({obj:fk, dy:.5, text:()=>`ส้อมเสียง ${P.s.f} Hz`});
+    // rack holding the 8 tuning forks: tap one to mount it on the tube
+    const rk = new THREE.Group(), RW = .96; rk.add(at(box(RW, .07, .16, WOOD(0xB07A4A)), 0, .035, 0)); P.rk = [];
+    P.rkTex = canvasTex(1024, 96, ()=>{}); const lp = new THREE.Mesh(new THREE.PlaneGeometry(RW, .09), new THREE.MeshBasicMaterial({map:P.rkTex, transparent:true})); lp.position.set(0, .04, .0805); rk.add(lp);
+    FK.forEach((f,k)=>{ const g = makeFork(.15); g.scale.setScalar(.85); g.userData.id = 'rk:' + f; g.position.set(-RW/2 + RW/16 + k*RW/8, .07, 0); g.add(hitBox(.12,.5,.25,.15)); rk.add(g); P.rk.push(g); });
+    rk.position.set(.05, TABLE_Y, .62); rk.rotation.y = -.12; W.add(rk);
+    P.labels.push({obj:rk, dy:.42, text:()=>'ชุดส้อมเสียง (แตะเพื่อเลือก)'});
     P.air = Array.from({length:44}, (_,k)=>{ const m = sph(.0085, new THREE.MeshBasicMaterial({color:0xF2994A, transparent:true, opacity:.85}), 6); m.userData = {u:(k + .5)/44, a:k*2.399, r:.012 + ((k*37)%29)/29*.036}; W.add(m); return m; });
     P.rg = rings(3, 0xF2994A);
     shadowAll(W); updP1();
   }
-  function updP1(){ const s = P.s; if(!P.water) return; const wy = TT - s.L, bot = TT - TL; P.water.scale.y = Math.max(.001, wy - bot); P.water.position.set(TX, (wy + bot)/2, 0); P.wtop.position.set(TX, wy, 0);
+  function drawRack(){ if(!P.rkTex) return; const c = P.rkTex.userData.c, x = c.getContext('2d'), w = c.width, h = c.height; x.clearRect(0,0,w,h);
+    FK.forEach((f,k)=>{ const cx = (k + .5)*w/8, on = f===P.s.f; x.fillStyle = on ? '#F2994A' : 'rgba(255,255,255,.92)'; x.beginPath(); x.roundRect ? x.roundRect(cx - 54, 10, 108, 76, 18) : x.rect(cx - 54, 10, 108, 76); x.fill(); x.fillStyle = on ? '#fff' : '#1C2236'; x.font = '700 40px sans-serif'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(String(f), cx, 50); });
+    P.rkTex.needsUpdate = true; (P.rk || []).forEach(g=>g.visible = g.userData.id !== 'rk:' + P.s.f); }
+  function pickFork(f){ const s = P.s; if(!FK.includes(f) || s.f===f) return; s.f = f; s.ring = 0; stopTone(P.snd); P.snd = null; drawRack(); SFX.pick(); P.say = `ติดตั้งส้อมเสียง ${f} Hz แล้ว แตะส้อมเสียงบนท่อเพื่อเคาะ แล้วปรับระดับน้ำหาตำแหน่งดังที่สุดครับ`; }
+  function updP1(){ const s = P.s; if(!P.water) return; if(P.rkF !== s.f){ P.rkF = s.f; drawRack(); } const wy = TT - s.L, bot = TT - TL; P.water.scale.y = Math.max(.001, wy - bot); P.water.position.set(TX, (wy + bot)/2, 0); P.wtop.position.set(TX, wy, 0);
     const ry = Math.max(TABLE_Y + .22, Math.min(TT + .1, wy + .03)); P.rv.position.set(RX, ry, 0);
     const cv = new THREE.CatmullRomCurve3([V(TX, bot - .06, 0), V(TX, TABLE_Y + .09, .06), V((TX + RX)/2, TABLE_Y + .03, .14), V(RX, TABLE_Y + .1, .06), V(RX, ry - .17, 0)]); P.hose.geometry.dispose(); P.hose.geometry = new THREE.TubeGeometry(cv, 36, .013, 8, false); }
-  function airP1(t){ const s = P.s; if(!P.air) return; const on = s.ring > 0, a = amp1()*Math.min(1, s.ring/3), k = 2*Math.PI/lamT();
+  function airP1(t){ const s = P.s; if(!P.air) return; const on = s.ring > 0, a = amp1()*Math.min(1, s.ring/4), k = 2*Math.PI/lamT();
     P.air.forEach(m=>{ const u = m.userData, d = u.u*s.L, base = TT - d; const disp = on ? a*.03*Math.cos(k*(d + EC) - k*(s.L + EC) + Math.PI/2)*Math.sin(t*14) : 0;
       m.position.set(TX + Math.cos(u.a)*u.r, base + disp, Math.sin(u.a)*u.r); m.material.opacity = on ? .35 + .55*Math.min(1, a*1.6) : .22; }); }
-  function hit1(){ const s = P.s; if(P.mal) P.mal.userData.t0 = P.tt; s.ring = 6; stopTone(P.snd); P.snd = tone([s.f], 6); P.say = `เคาะส้อมเสียง ${s.f} Hz แล้ว ปรับระดับน้ำหาตำแหน่งที่ดังที่สุดครับ`; checkRes(.004); }
-  function checkRes(tol){ const s = P.s; for(let n=1;n<=3;n++){ const x = xn(n); if(x > .96) break; if(Math.abs(s.L - x) < tol){ s.L = Math.round(x*1000)/1000;
+  function hit1(){ const s = P.s; if(P.mal) P.mal.userData.t0 = P.tt; s.ring = RING1; stopTone(P.snd); P.snd = tone([s.f], RING1, .6); P.say = `เคาะส้อมเสียง ${s.f} Hz แล้ว ปรับระดับน้ำหาตำแหน่งที่ดังที่สุดครับ`; checkRes(.004); }
+  function checkRes(tol){ const s = P.s; for(let n=1;n<=3;n++){ const x = xn(n); if(x > LMAX) break; if(Math.abs(s.L - x) < tol){ s.L = Math.round(x*1000)/1000;
       if(s.ring <= 0){ P.say = 'ตำแหน่งนี้น่าจะดัง แต่ส้อมเสียงยังไม่สั่น แตะส้อมเสียงเพื่อเคาะก่อนครับ'; return; }
       const k = s.f + '|' + n, first = !s.res[k]; s.res[k] = {f:s.f, n, L:+(s.L*100).toFixed(1)}; P.lastRes = k; P.say = first ? `เสียงดังที่สุด! สั่นพ้องครั้งที่ ${n} ที่ L = ${(s.L*100).toFixed(1)} cm บันทึกแล้วครับ` : `สั่นพ้องครั้งที่ ${n} (มีในตารางแล้ว)`; return; } } }
-  function setL(L, tol){ const s = P.s; s.L = Math.max(.03, Math.min(.96, Math.round(L*1000)/1000)); checkRes(tol); updP1(); }
+  function setL(L, tol){ const s = P.s; s.L = Math.max(.03, Math.min(LMAX, Math.round(L*1000)/1000)); checkRes(tol); updP1(); }
   function pairV(){ const s = P.s; const fs = FK.filter(f=>s.res[f + '|1'] && s.res[f + '|2']); if(!fs.length) return null; const f = fs.includes(s.f) ? s.f : fs[0]; return {f, L1:s.res[f + '|1'].L, L2:s.res[f + '|2'].L}; }
   function checkV(v){ const s = P.s, p = pairV(), x = num(v); if(!p){ P.warn = 'หาตำแหน่งสั่นพ้องให้ครบ 2 ตำแหน่งก่อนครับ'; return; } if(x===null){ P.warn = 'พิมพ์อัตราเร็วเป็นตัวเลข หน่วย m/s'; return; }
     const d = (p.L2 - p.L1)/100, t = 2*p.f*d;
@@ -1624,26 +1644,29 @@ const Lab = (function(){
     const row = (y0, hh, on, fb, col, name) => { const mid = y0 + hh/2; x.strokeStyle = 'rgba(255,255,255,.14)'; x.lineWidth = 1; for(let k=0;k<=4;k++){ const px = 20 + k*(w - 40)/4; x.beginPath(); x.moveTo(px, y0); x.lineTo(px, y0 + hh); x.stroke(); }
       x.fillStyle = col; x.font = '600 24px Mitr, sans-serif'; x.textAlign = 'left'; x.fillText(name, 22, y0 + 26);
       if(!on){ x.fillStyle = '#6E7791'; x.textAlign = 'center'; x.font = '500 22px Mitr, sans-serif'; x.fillText('ยังไม่ได้เคาะ', w/2, mid + 8); return; }
-      x.strokeStyle = col; x.lineWidth = 2; x.beginPath(); for(let px=0;px<=w-40;px++){ const t = px/(w - 40), e = Math.abs(Math.cos(Math.PI*fb*t)), yv = mid + 6 + Math.sin(t*2*Math.PI*90)*e*(hh/2 - 30); px ? x.lineTo(20 + px, yv) : x.moveTo(20 + px, yv); } x.stroke(); };
+      const lv = P.sw && s.ring > 0 && P.sw.clay===(name!=='A + B'), el = lv ? P.tt - P.sw.t0 : 1e9, cur = lv ? el % 1 : -1, env = lv ? .35 + .65*Math.pow(s.ring/RING3, .7) : 1, ph = lv ? P.tt*55 : 0;
+      x.strokeStyle = col; x.lineWidth = 2; x.globalAlpha = lv && el < 1 ? .25 : 1; x.beginPath(); for(let px=0;px<=w-40;px++){ const t = px/(w - 40), e = Math.abs(Math.cos(Math.PI*fb*t)), yv = mid + 6 + Math.sin(t*2*Math.PI*90 + ph)*e*(hh/2 - 30)*env; px ? x.lineTo(20 + px, yv) : x.moveTo(20 + px, yv); } x.stroke(); x.globalAlpha = 1;
+      if(lv){ if(el < 1){ x.lineWidth = 2.5; x.beginPath(); for(let px=0;px<=(w-40)*cur;px++){ const t = px/(w - 40), e = Math.abs(Math.cos(Math.PI*fb*t)), yv = mid + 6 + Math.sin(t*2*Math.PI*90 + ph)*e*(hh/2 - 30)*env; px ? x.lineTo(20 + px, yv) : x.moveTo(20 + px, yv); } x.stroke(); }
+        const cx = 20 + (w - 40)*cur; x.strokeStyle = 'rgba(255,255,255,.85)'; x.lineWidth = 2; x.beginPath(); x.moveTo(cx, y0 + 34); x.lineTo(cx, y0 + hh - 4); x.stroke(); } };
     const f0 = Math.abs(FA - s.fB), f1 = Math.abs(FA - (s.fB - 2));
     row(8, 180, !!s.heard.n, f0, '#7CC4FF', 'A + B'); row(200, 180, !!s.heard.c, f1, '#FFB15C', 'A + B ติดดินน้ำมัน');
-    x.fillStyle = '#C9D2E8'; x.font = '500 20px sans-serif'; x.textAlign = 'center'; x.fillText('0', 20, h - 10); x.fillText('เวลา 1 วินาที', w/2, h - 10); x.fillText('1 s', w - 30, h - 10); P.mtex.needsUpdate = true; }
-  function hit3(){ const s = P.s, fb = Math.abs(FA - fBn()); if(P.mal) P.mal.userData.t3 = P.tt; s.ring = 4; stopTone(P.snd); P.snd = tone([FA, fBn()], 4); s.heard[s.clay ? 'c' : 'n'] = 1; s.last = {fb, clay:s.clay}; drawMon();
+    x.fillStyle = '#C9D2E8'; x.font = '500 20px sans-serif'; x.textAlign = 'center'; x.fillText('0', 24, h - 10); x.fillText('เวลา 1 วินาที (นับยอดใน 1 วินาที)', w/2, h - 10); x.fillText('1 s', w - 30, h - 10); P.mtex.needsUpdate = true; }
+  function hit3(){ const s = P.s, fb = Math.abs(FA - fBn()); if(P.mal) P.mal.userData.t3 = P.tt; s.ring = RING3; stopTone(P.snd); P.snd = tone([FA, fBn()], RING3, .3); s.heard[s.clay ? 'c' : 'n'] = 1; s.last = {fb, clay:s.clay}; P.sw = {t0:P.tt, clay:s.clay}; drawMon();
     P.say = s.clay ? 'เคาะพร้อมกัน (B ติดดินน้ำมัน) ดูจอ: เส้นสีส้มคือแบบติดดินน้ำมัน เทียบจำนวนยอดกับเส้นสีฟ้าครับ' : 'เคาะพร้อมกันแล้ว ได้ยินเสียงดังค่อยสลับ นับจำนวนยอดใน 1 วินาทีบนจอ (เส้นสีฟ้า) ครับ'; }
   function drawScope(){ const cv = $('#sc'); if(!cv || P.i!==2) return; const x = cv.getContext('2d'), w = cv.width, h = cv.height, l = P.s.last, ph = h - 34, mid = ph/2;
     x.fillStyle = '#0B0D16'; x.fillRect(0,0,w,h); x.fillStyle = '#FFFFFF'; x.fillRect(0, ph, w, h - ph);
     x.strokeStyle = 'rgba(255,255,255,.18)'; x.lineWidth = 1; for(let k=1;k<4;k++){ const px = k*w/4; x.beginPath(); x.moveTo(px, 0); x.lineTo(px, ph); x.stroke(); }
-    x.fillStyle = '#1C2236'; x.font = '600 20px sans-serif'; x.textAlign = 'center'; for(let k=0;k<=4;k++) x.fillText((k*.5).toFixed(1) + (k===4 ? ' s' : ''), Math.min(w - 22, Math.max(18, k*w/4)), h - 8);
+    x.fillStyle = '#1C2236'; x.font = '600 20px sans-serif'; x.textAlign = 'center'; for(let k=0;k<=4;k++) x.fillText((k*.25).toFixed(2).replace(/0$/,'') + (k===4 ? ' s' : ''), Math.min(w - 22, Math.max(22, k*w/4)), h - 8);
     if(!l) { x.fillStyle = '#8A93A8'; x.fillText('เคาะส้อมเสียงเพื่อดูกราฟ', w/2, mid + 6); return; }
     x.fillStyle = l.clay ? '#7AD07A' : '#FF8A65';
-    for(let i=0;i<w;i+=2){ const t = i/w*2, e = Math.abs(Math.cos(Math.PI*l.fb*t)), a = e*(mid - 8)*(.55 + .45*Math.abs(Math.sin(i*1.7))); x.fillRect(i, mid - a, 1.5, 2*a); } }
+    for(let i=0;i<w;i+=2){ const t = i/w, e = Math.abs(Math.cos(Math.PI*l.fb*t)), a = e*(mid - 8)*(.55 + .45*Math.abs(Math.sin(i*1.7))); x.fillRect(i, mid - a, 1.5, 2*a); } }
   function checkFb(v){ const s = P.s, x = num(v), fb = Math.abs(FA - s.fB); if(!s.heard.n){ P.warn = 'เคาะส้อมเสียงทั้งสอง (ไม่ติดดินน้ำมัน) ก่อนครับ'; return; } if(x===null){ P.warn = 'พิมพ์จำนวนบีตส์ต่อวินาที'; return; }
     if(Math.abs(x - fb) < .05){ s.fbOk = true; P.say = `ถูกต้องครับ บีตส์ ${fb} ครั้งต่อวินาที ดังนั้น B ต่างจาก A อยู่ ${fb} Hz แต่ยังไม่รู้ว่าสูงหรือต่ำกว่า`; return; }
     s.wrong += 1;
     if(Math.abs(x - 2*fb) < .05) P.warn = hint(['นับเฉพาะจังหวะดัง (ยอดของกราฟ) ครับ ไม่ต้องนับจังหวะเบา', 'หนึ่งบีตส์ = ดังหนึ่งครั้ง ลองนับยอดใหม่ครับ']);
-    else if(Math.abs(x - 2*fb) < .05 || Math.abs(x - fb*2) < .05 || Math.abs(x - fb/2) < .05) P.warn = 'กราฟยาว 2 วินาทีครับ นับจังหวะดังแล้วหารด้วย 2';
+    else if(Math.abs(x - fb/2) < .05) P.warn = 'กราฟยาว 1 วินาทีครับ นับยอดทั้งหมดในกราฟ';
     else if(x > 100) P.warn = 'บีตส์คือจำนวนจังหวะดังต่อวินาทีครับ ไม่ใช่ความถี่ของส้อมเสียง';
-    else P.warn = hint(['นับยอดสว่างของกราฟใน 1 วินาที (2 ช่องตาราง) ครับ', 'f_b = จำนวนจังหวะดังต่อวินาที ดูกราฟอีกครั้งครับ']);  if(P.warn && escN(P.s, 'checkFb') >= 3){ try{ const _w = String(`ถูกต้องครับ บีตส์ ${fb} ครั้งต่อวินาที ดังนั้น B ต่างจาก A อยู่ ${fb} Hz แต่ยังไม่รู้ว่าสูงหรือต่ำกว่า`).replace(/^ถูกต้อง(แล้ว)?(ครับ)?[ !:,]*/,''); P.warn = '📘 ลองมาหลายครั้งแล้ว ดูวิธีทำครับ: ' + _w + ' → พิมพ์ค่านี้แล้วกดตรวจอีกครั้ง'; }catch(_){} }}
+    else P.warn = hint(['นับยอดของเส้นสีฟ้าบนจอ (กราฟยาว 1 วินาที) ครับ', 'ความถี่บีตส์ = จำนวนจังหวะดังต่อวินาที ดูกราฟอีกครั้งครับ']);  if(P.warn && escN(P.s, 'checkFb') >= 3){ try{ const _w = String(`ถูกต้องครับ บีตส์ ${fb} ครั้งต่อวินาที ดังนั้น B ต่างจาก A อยู่ ${fb} Hz แต่ยังไม่รู้ว่าสูงหรือต่ำกว่า`).replace(/^ถูกต้อง(แล้ว)?(ครับ)?[ !:,]*/,''); P.warn = '📘 ลองมาหลายครั้งแล้ว ดูวิธีทำครับ: ' + _w + ' → พิมพ์ค่านี้แล้วกดตรวจอีกครั้ง'; }catch(_){} }}
 
   function sync(){ if(P.i===0) updP1(); else if(P.i===1) updP2(); else updP3(); }
 
@@ -1690,7 +1713,7 @@ if(x===null){ _w = 'พิมพ์จำนวนบีตส์ต่อวิ
   function mascotSay(){ if(P && P.mg && Date.now() - P.mg.t < 15000 && P.mg.t > (window.__mgClr || 0)) return ['think', P.mg.msg];
     const s = P.s, m = S.miss[P.i];
     if(P.warn) return [s.wrong >= 3 ? 'cry' : 'shock', P.warn];
-    if(S.labDone[P.i] && P.celebrate) return ['yay', P.i < PARTS.length - 1 ? `ครบทุกภารกิจแล้วครับ ไป${PARTS[P.i+1].k}กันต่อ` : 'ทำครบทุกตอนแล้วครับ บันทึกผลลงใบกิจกรรม แล้วไปทำแบบทดสอบหลังเรียนได้เลย'];
+    if(S.labDone[P.i] && P.celebrate) return ['yay', P.i < PARTS.length - 1 ? `ครบทุกภารกิจแล้วครับ ไป${PARTS[P.i+1].k} กันต่อ` : 'ทำครบทุกตอนแล้วครับ บันทึกผลลงใบกิจกรรม แล้วไปทำแบบทดสอบหลังเรียนได้เลย'];
     if(P.say) return ['wow', P.say];
     if(P.i===0){ if(s.ring <= 0 && !Object.keys(s.res).length) return ['think','แตะส้อมเสียงเพื่อเคาะ (เปิดเสียงด้วย) แล้วปรับระดับน้ำครับ'];
       if(!m.r1) return ['think','ยกถังน้ำขึ้นให้ลำอากาศสั้น ๆ แล้วค่อย ๆ ลดลง หาตำแหน่งแรกที่ดังที่สุดครับ'];
@@ -1740,7 +1763,7 @@ if(x===null){ _w = 'พิมพ์จำนวนบีตส์ต่อวิ
     const HL = c => c ? ' style="color:#2E6BE6;font-weight:700"' : '';
     let ctrls = '', sig = '', res = '', dk = '';
     if(P.i===0){
-      const ks = Object.keys(s.res).sort(), a = s.ring > 0 ? amp1()*Math.min(1, s.ring/3) : 0, bars = Math.round(a*10);
+      const ks = Object.keys(s.res).sort(), a = s.ring > 0 ? amp1()*Math.min(1, s.ring/4) : 0, bars = Math.round(a*10);
       sig = JSON.stringify(['p0', ks, s.vOk, s.ans]);
       ctrls = FORM('<b>ท่อปลายปิด</b> สั่นพ้องเมื่อ L + e = {λ|4}, 3λ/4, 5λ/4, …<br>L₂ − L₁ = {λ|2} → v = fλ = 2f(L₂ − L₁)<br><span class="note">e = ระยะแก้ปลายท่อ</span>')
         + (pairV() && !s.vOk && !m.v ? `<h2 style="margin-top:6px">อัตราเร็วเสียง (m/s)</h2>${IN('vv','เช่น 340','v','ตรวจ')}` : '')
@@ -1756,7 +1779,7 @@ if(x===null){ _w = 'พิมพ์จำนวนบีตส์ต่อวิ
         + ''
         + '';
       res = `<h2>เครื่องวัดระดับเสียง · ${beta(s.r, s.n).toFixed(1)} dB</h2>` + (ks.length ? grid('auto auto auto', `<b>ลำโพง</b><b>r (m)</b><b>β (dB)</b>${ks.map(k=>{ const r = s.rec[k]; return `<span${HL(P.lastRec===k)}>${r.n} ตัว</span><span${HL(P.lastRec===k)}>${r.r.toFixed(1)}</span><span${HL(P.lastRec===k)}>${r.b.toFixed(1)}</span>`; }).join('')}`) : '<div class="note">ลากเครื่องวัดหรือกดปุ่มระยะบนจอ</div>');
-      dk = DB('spk', P.spOn===false ? '🔇 เปิดเสียงลำโพง' : '🔊 ปิดเสียงลำโพง', P.spOn!==false) + RS.map(r=>DB('r:' + r, r + ' m', Math.abs(s.r - r) < 1e-6)).join('') + DB('dr:-0.5','◀ 0.5') + DB('dr:0.5','0.5 ▶') + DB('sp', `ลำโพง ${s.n} ตัว ▸`, 1);
+      dk = DB('spk', P.spOn===false ? '🔇 เปิดเสียง' : '🔊 ปิดเสียง', P.spOn!==false) + DB('dr:-0.5','◀ 0.5 m') + PILL(`r = ${s.r.toFixed(1)} m`) + DB('dr:0.5','0.5 m ▶') + DB('sp', `ลำโพง ${s.n} ตัว ▸`, 1);
     } else {
       sig = JSON.stringify(['p2', s.fbOk, s.ans, s.heard, s.last && s.last.clay]);
       const fb = Math.abs(FA - s.fB);
@@ -1765,7 +1788,7 @@ if(x===null){ _w = 'พิมพ์จำนวนบีตส์ต่อวิ
         + Q('more','ติดดินน้ำมันที่ B แล้วบีตส์', [['more','เพิ่มขึ้น'],['less','ลดลง']], !!((s.fbOk || m.fb) && s.heard.c) || !!m.clay)
         + Q('fB','ความถี่ของส้อมเสียง B (เดิม)', [[String(FA + fb), (FA + fb) + ' Hz'], [String(FA - fb), (FA - fb) + ' Hz']], !!(s.ans.more || m.clay))
         + '';
-      res = `<h2>กราฟเสียงรวม 2 วินาที${s.last ? (s.last.clay ? ' · B ติดดินน้ำมัน' : ' · A + B') : ''}</h2><canvas id="sc" width="600" height="190" style="width:100%;height:auto;border-radius:10px;display:block"></canvas><div class="note">ยอดที่สูงแต่ละครั้ง = เสียงดัง 1 ครั้ง (1 บีตส์)</div>`;
+      res = `<h2>กราฟเสียงรวม 1 วินาที${s.last ? (s.last.clay ? ' · B ติดดินน้ำมัน' : ' · A + B') : ''}</h2><canvas id="sc" width="600" height="190" style="width:100%;height:auto;border-radius:10px;display:block"></canvas><div class="note">ยอดที่สูงแต่ละครั้ง = เสียงดัง 1 ครั้ง (1 บีตส์)</div>`;
       dk = DB('hit3','🔔 เคาะพร้อมกัน', 0, 1) + DB('clay', s.clay ? 'แกะดินน้ำมันออก' : 'ติดดินน้ำมันที่ B', s.clay);
     }
     dock(dk);
@@ -1790,9 +1813,10 @@ if(x===null){ _w = 'พิมพ์จำนวนบีตส์ต่อวิ
     else if(v==='zin') camZoom(.82); else if(v==='zout') camZoom(1.2);
     else if(v==='camReset'){ R.camera.position.copy(CAMS[P.i].pos); R.controls.target.copy(CAMS[P.i].tgt); fitNarrow(); }
     else if(v==='resetPart'){ if(S.ps) delete S.ps[P.i]; stopTone(P.snd); P = fresh(P.i); build(); }
-    else if(v==='spk'){ P.spOn = P.spOn===false; spkTone(P.spOn); refresh(); }
+    else if(v==='spk'){ P.spOn = P.spOn===false; spkTone(P.spOn); P.mg = {t:Date.now(), msg:P.spOn ? 'เปิดเสียงลำโพงแล้ว ลองลากเครื่องวัดออกไปไกล ๆ ฟังเสียงค่อย ๆ เบาลงครับ' : 'ปิดเสียงลำโพงแล้วครับ'}; refresh(); }
     else if(v==='hit') act(hit1);
-    else if(v==='fk') act(()=>{ s.f = s.f===FK[0] ? FK[1] : FK[0]; s.ring = 0; stopTone(P.snd); P.snd = null; P.say = `เปลี่ยนเป็นส้อมเสียง ${s.f} Hz แล้ว เคาะใหม่ครับ`; });
+    else if(v==='fk') act(()=>pickFork(FK[(FK.indexOf(s.f) + 1) % FK.length]));
+    else if(v.startsWith('fk:')) act(()=>pickFork(+v.slice(3)));
     else if(v.startsWith('dl:')) act(()=>setL(s.L + (+v.slice(3)), .006));
     else if(v.startsWith('r:') && P.i===0) act(()=>setL(xn(+v.slice(2)), .01));
     else if(v==='v') act(()=>checkV(val('vv'))); else if(v.startsWith('v:')) act(()=>{ const p = pairV(); checkV(v.slice(2)==='auto' ? String(2*p.f*(p.L2 - p.L1)/100) : v.slice(2)); });
@@ -1823,11 +1847,11 @@ if(x===null){ _w = 'พิมพ์จำนวนบีตส์ต่อวิ
     }, {capture:true});
     el.addEventListener('pointermove', e=>{ if(!drag || !drag.mv || e.pointerId!==drag.pid) return; if(!drag.moved && Math.abs(e.clientX-drag.x) + Math.abs(e.clientY-drag.y) > 5) drag.moved = true; if(!drag.moved) return;
       pick(e); const pt = new THREE.Vector3(), s = P.s;
-      if(drag.id==='res'){ if(!R.raycaster.ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0,0,1), 0), pt)) return; s.L = Math.max(.03, Math.min(.96, Math.round((TT - pt.y + .03)*1000)/1000)); updP1(); }
+      if(drag.id==='res'){ if(!R.raycaster.ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0,0,1), 0), pt)) return; s.L = Math.max(.03, Math.min(LMAX, Math.round((TT - pt.y + .03)*1000)/1000)); updP1(); }
       else { if(!R.raycaster.ray.intersectPlane(new THREE.Plane(UP, -TABLE_Y), pt)) return; s.r = Math.max(.5, Math.min(4, Math.round((pt.x - XS0)*10)/10)); updP2(); } });
     const end = e=>{ if(!drag || e.pointerId!==drag.pid) return; const d = drag; drag = null; R.controls.enabled = true;
       if(d.mv && d.moved){ if(d.id==='res') act(()=>setL(P.s.L, .012)); else act(()=>setR(P.s.r)); return; }
-      if(Math.abs(e.clientX-d.x) + Math.abs(e.clientY-d.y) > 8) return; if(d.id==='fork') action('hit'); else if(d.id && d.id.startsWith('fk')) action('hit3'); };
+      if(Math.abs(e.clientX-d.x) + Math.abs(e.clientY-d.y) > 8) return; if(d.id==='fork') action('hit'); else if(d.id && d.id.startsWith('rk:')) action('fk:' + d.id.slice(3)); else if(d.id && d.id.startsWith('fk')) action('hit3'); };
     el.addEventListener('pointerup', end); el.addEventListener('pointercancel', end);
   }
 
@@ -1840,14 +1864,14 @@ if(x===null){ _w = 'พิมพ์จำนวนบีตส์ต่อวิ
     R.controls.update();
     if(P){
       const s = P.s; P.tt += dt;
-      if(P.i===0 && P.fork){ const was = s.ring > 0; s.ring = Math.max(0, s.ring - dt); const env = Math.min(1, s.ring/3), a = amp1();
-        vib(P.fork, env, P.tt); airP1(P.tt); swing(P.mal, P.tt); if(P.snd && AC){ P.snd.forEach(({g})=>{ g.gain.cancelScheduledValues(AC.currentTime); g.gain.setTargetAtTime((.01 + .2*a)*env, AC.currentTime, .03); }); }
+      if(P.i===0 && P.fork){ const was = s.ring > 0; s.ring = Math.max(0, s.ring - dt); const env = Math.pow(s.ring/RING1, .8), a = amp1();
+        vib(P.fork, env, P.tt); airP1(P.tt); swing(P.mal, P.tt); if(P.snd && AC){ P.snd.forEach(({g})=>{ g.gain.cancelScheduledValues(AC.currentTime); g.gain.setTargetAtTime((.1 + .5*a)*env, AC.currentTime, .04); }); }
         runRings(P.rg, P.tt, s.ring > 0 && a > .25, .08, .35*a, r=>{ r.rotation.x = Math.PI/2; r.position.set(TX, TT + .02, 0); });
         if(was && s.ring===0) P.dirty = true; }
       else if(P.i===1 && P.spk){ runRings(P.rg, P.tt, true, .15, 1.6, r=>{ r.rotation.y = Math.PI/2; const f = (P.tt*.8 + r.userData.ph) % 1; r.position.set(XS0 + .05 + f*1.1, TABLE_Y + .25, 0); r.material.opacity = .5*(1 - f)*(1 - f); });
         const pu = Math.sin(P.tt*38)*.012; P.spk.forEach(g=>{ g.userData.cn.position.x = .19 + pu; g.userData.cap.position.x = .175 + pu; }); }
-      else if(P.i===2 && P.fks){ s.ring = Math.max(0, s.ring - dt); const env = Math.min(1, s.ring/2), fb = s.last ? s.last.fb : 0, e2 = env*Math.abs(Math.cos(Math.PI*fb*(4 - s.ring)));
-        P.fks.forEach(g=>vib(g.userData.f, env, P.tt)); if(P.orb){ const fbv = P.s.last ? P.s.last.fb : 0, e = Math.abs(Math.cos(Math.PI*fbv*(4 - P.s.ring))); P.orb.visible = env > .02; P.orb.scale.setScalar(.4 + 1.6*e*env); P.orb.material.opacity = .25 + .65*e; } if(P.mal){ const u = P.mal.userData, k = u.t3==null ? 1 : (P.tt - u.t3)/.5; if(k >= 1){ u.t3 = null; P.mal.position.set(-.15, TABLE_Y + .04, .5); P.mal.rotation.set(Math.PI/2, 0, 1.2); } else { const sd = k < .5 ? -1 : 1, q = Math.sin((k < .5 ? k : k - .5)*2*Math.PI); P.mal.position.set(sd*(XB - .32), TABLE_Y + .42, 0); P.mal.rotation.set(0, 0, -sd*(.8 + q*.4)); } } runRings(P.rg, P.tt, s.ring > 0, .15, .9, r=>{ r.rotation.x = Math.PI/2; r.position.set(0, TABLE_Y + .5, 0); r.material.opacity *= e2; }); }
+      else if(P.i===2 && P.fks){ s.ring = Math.max(0, s.ring - dt); const env = Math.pow(s.ring/RING3, .7), fb = s.last ? s.last.fb : 0, e2 = env*Math.abs(Math.cos(Math.PI*fb*(RING3 - s.ring)));
+        P.fks.forEach(g=>vib(g.userData.f, env, P.tt)); P.mT = (P.mT || 0) + dt; if(P.mT > .05 && (s.ring > 0 || P.mLive)){ P.mT = 0; drawMon(); P.mLive = s.ring > 0; } if(P.orb){ const fbv = P.s.last ? P.s.last.fb : 0, e = Math.abs(Math.cos(Math.PI*fbv*(RING3 - P.s.ring))); P.orb.visible = env > .02; P.orb.scale.setScalar(.4 + 1.6*e*env); P.orb.material.opacity = .25 + .65*e; } if(P.mal){ const u = P.mal.userData, k = u.t3==null ? 1 : (P.tt - u.t3)/.5; if(k >= 1){ u.t3 = null; P.mal.position.set(-.15, TABLE_Y + .04, .5); P.mal.rotation.set(Math.PI/2, 0, 1.2); } else { const sd = k < .5 ? -1 : 1, q = Math.sin((k < .5 ? k : k - .5)*2*Math.PI); P.mal.position.set(sd*(XB - .32), TABLE_Y + .42, 0); P.mal.rotation.set(0, 0, -sd*(.8 + q*.4)); } } runRings(P.rg, P.tt, s.ring > 0, .15, .9, r=>{ r.rotation.x = Math.PI/2; r.position.set(0, TABLE_Y + .5, 0); r.material.opacity *= e2; }); }
       uiT += dt; if(uiT > .3){ uiT = 0; if(check()) refresh(); else if(!(document.activeElement && document.activeElement.tagName==='INPUT')) refreshUI(); }
       if(P.dirty){ P.dirty = false; refresh(); }
       placeLabels();
