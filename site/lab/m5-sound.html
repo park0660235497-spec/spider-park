@@ -400,6 +400,13 @@ textarea:focus{border-color:var(--primary);outline:none}
 .linebox .lqr{width:84px;height:84px;border-radius:8px;background:#fff;flex:none}.linebox .lt{display:flex;flex-direction:column;line-height:1.3}.linebox .lt b{font-family:var(--f-display);font-weight:500;font-size:16px}.linebox .lt span{font-size:14px;font-weight:600;color:#06C755}
 @media (max-width:860px){.linebox{position:absolute;top:22px;right:16px;padding:8px 14px;border-radius:99px;background:#06C755;color:#fff;border:0}.rail{position:relative!important}.linebox .lqr{display:none}.linebox .lt{flex-direction:row;gap:6px;font-size:14px}.linebox .lt b{font-size:14px;font-family:var(--f-body);font-weight:600}.linebox .lt span{color:#fff;font-size:14px}}
 body.fullon .linebox{display:none}
+#dockbar{flex:1 1 100%;display:none;padding:10px;background:var(--surface);border:1px solid var(--line2);border-top:0;border-radius:0 0 var(--r-lg) var(--r-lg);box-sizing:border-box;min-width:0}
+#dockbar.on{display:block}
+#dockbar #dock .btn{min-height:48px!important;font-size:15.5px!important;padding:0 14px!important;flex:1 1 auto;justify-content:center;border-radius:12px}
+#dockbar #dock .status{min-height:48px;display:inline-flex;align-items:center;justify-content:center;flex:1 1 auto;border:1.5px solid var(--line2);font-size:15.5px;border-radius:12px;box-sizing:border-box}
+.stage.hasbar{border-radius:var(--r-lg) var(--r-lg) 0 0!important}
+@media (pointer:coarse){.btn.sm{min-height:44px}.chip{min-height:44px}.ibtn{min-width:44px;min-height:44px}#pCtrl input,#helper input{font-size:16px!important;min-height:46px}.calc button{min-height:44px}}
+@media (max-width:600px){.bubble .msg{font-size:13.5px;padding:8px 12px;line-height:1.45}.bubble{left:8px;right:8px;bottom:8px}.labels div{font-size:11px;padding:2px 8px}.camctl{top:8px;right:8px;gap:6px}.reschip{top:8px;left:8px;right:60px;max-width:none;width:auto;justify-content:space-between}.reschip .v{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
 </style>
 
 <div class="app">
@@ -693,6 +700,8 @@ function render(){
 document.getElementById('main').addEventListener('click', e=>{
   const a = e.target.closest('[data-act]'); if(!a || a.disabled) return;
   const act = a.dataset.act, v = a.dataset.v;
+  if(act==='sfx'){ const m = SFX.toggle(); a.innerHTML = m ? SND_OFF : SND_ON; a.setAttribute('aria-label', m ? 'เปิดเสียง' : 'ปิดเสียง'); toast(m ? 'ปิดเสียงแล้ว' : 'เปิดเสียงแล้ว'); if(typeof Lab!=='undefined' && Lab.muted) Lab.muted(m); return; }
+  if(act==='ans' || act==='pred') SFX.pick(); else if(!(act==='lab' && /^(cam|z(in|out))/.test(String(v)))) SFX.click();
   if(act==='go') go(v);
   if(act==='part') go('lab', {part:+v});
   if(act==='ans'){ const st = S[ui.view], q0 = Math.min(NQ - 1, Math.max(0, ui.q)); ui.q = q0; st.a[q0] = +v; st.a.length = NQ; save(); if(q0<NQ-1) { setTimeout(()=>{ if(ui.q===q0){ ui.q = q0 + 1; render(); } }, 180); } render(); }
@@ -839,7 +848,7 @@ function chipSync(){ const r = $('#pRes'), c = $('#resChip'); if(!r || !c) retur
     const hd = (ch[ch.indexOf(el) % nc] || {}).textContent || '', m = hd.match(/^(.*?)\s*\(([^)]*)\)\s*$/), v = el.textContent.replace(/^[●○•]\s*/, '').trim(); return m ? `${m[1]} = ${v} ${m[2]}` : v; }).filter(Boolean);
   if(!pairs.length){ const stx = [...r.querySelectorAll('.status')].map(x=>x.textContent.trim()).filter(Boolean); if(stx.length) pairs.push(stx[0]); }
   const html = `<b>${esc(t)}</b>${`<span class="v">${pairs.length ? pairs.map(esc).join(' · ') : esc(t)}</span>`}<button class="btn ghost sm" type="button" data-act="resopen" aria-label="เปิดกราฟและตาราง" title="${esc(t)}">📊 ดูผล</button>`;
-  if(c.dataset.h !== html){ c.innerHTML = html; c.dataset.h = html; } const st = $('#stage'); if(st){ st.style.setProperty('--chipw', (c.hidden ? 0 : c.offsetWidth) + 'px'); const d = $('#dock'); st.style.setProperty('--docky', ((d && d.offsetHeight ? d.offsetTop + d.offsetHeight : 52) + 10) + 'px'); if(d && window.ResizeObserver && !d.__ro){ d.__ro = 1; new ResizeObserver(()=>chipSync()).observe(d); } } }
+  if(c.dataset.h !== html){ c.innerHTML = html; c.dataset.h = html; } const st = $('#stage'); if(st){ st.style.setProperty('--chipw', (c.hidden ? 0 : c.offsetWidth) + 'px'); const d = $('#dock'); st.style.setProperty('--docky', ((d && d.offsetHeight && d.parentNode===st ? d.offsetTop + d.offsetHeight : 52) + 10) + 'px'); if(d && window.ResizeObserver && !d.__ro){ d.__ro = 1; new ResizeObserver(()=>chipSync()).observe(d); } } }
 function chipWatch(){ const r = $('#pRes'); if(!r || r.__cw) return; r.__cw = 1; new MutationObserver(chipSync).observe(r, {childList:true, subtree:true, characterData:true}); chipSync(); }
 function popWatch(){ const r = $('#pRes'); if(!r || r.__pw) return; r.__pw = 1; let last = null;
   new MutationObserver(()=>{ const cur = [...r.querySelectorAll('.status')].map(el=>{ const par = el.parentElement, lab = par ? par.textContent.replace(el.textContent, '').replace(/[:：]\s*$/, '').trim() : ''; return [lab.length < 40 ? lab : '', el.textContent.trim(), el.className]; });
@@ -855,7 +864,7 @@ function eqSt(i){ S.eq = S.eq || {}; const st = S.eq[i] = S.eq[i] || {a:{}, w:{}
 const eqQOk = (st, q) => st.a[q.k]===q.a && (!q.r || st.r[q.k]===q.ra);
 function eqDone(i){ const st = eqSt(i); return EQ(i).every(q=>eqQOk(st, q)); }
 function eqAnswer(v){ const [i, k, o] = v.split('|'), q = EQ(+i).find(x=>x.k===k), st = eqSt(+i); if(!q || st.a[k]===q.a) return false;
-  st.a[k] = o; if(o!==q.a){ st.w[k] = (st.w[k] || 0) + 1; } else toast(q.r ? 'ข้อสรุปถูกต้อง ต่อไปเลือกเหตุผล' : 'ถูกต้อง เก่งมาก!'); save(); return o===q.a; }
+  st.a[k] = o; if(o!==q.a){ st.w[k] = (st.w[k] || 0) + 1; SFX.bad(); } else SFX.ok(), toast(q.r ? 'ข้อสรุปถูกต้อง ต่อไปเลือกเหตุผล' : 'ถูกต้อง เก่งมาก!'); save(); return o===q.a; }
 function eqReason(v){ const [i, k, o] = v.split('|'), q = EQ(+i).find(x=>x.k===k), st = eqSt(+i); if(!q || !q.r || st.a[k]!==q.a || st.r[k]===q.ra) return false;
   st.r[k] = o; if(o!==q.ra){ st.wr[k] = (st.wr[k] || 0) + 1; } else toast('ถูกต้องทั้งข้อสรุปและเหตุผล'); save(); return o===q.ra; }
 const EQPOS = (()=>{ const m = {}; if(typeof ENDQ==='undefined') return m; let h = 2166136261; for(const ch of String(CONF.key) + 'eq'){ h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619) >>> 0; }
@@ -1106,6 +1115,7 @@ ${CONF.hs ? '' : `${PD ? '' : `          <button class="ibtn" type="button" data
           <button class="ibtn" type="button" data-act="lab" data-v="zin" aria-label="ซูมเข้า">${ICON.zin}</button>
           <button class="ibtn" type="button" data-act="lab" data-v="zout" aria-label="ซูมออก">${ICON.zout}</button>`}
           <button class="ibtn" type="button" data-act="lab" data-v="camReset" aria-label="มุมมองเริ่มต้น">${ICON.cube}</button>
+          <button class="ibtn" type="button" data-act="sfx" aria-label="${SFX.muted ? 'เปิดเสียง' : 'ปิดเสียง'}">${SFX.muted ? SND_OFF : SND_ON}</button>
 ${PD ? `          <button class="ibtn" type="button" data-act="guideinfo" aria-label="คู่มือการทำกิจกรรม" style="font-weight:700;font-size:20px;color:var(--primary-d)">ⓘ</button>
           <button class="ibtn" type="button" data-act="full" id="fullBtn" aria-label="ขยายเต็มจอ" style="font-size:20px">⛶</button>` : ''}
 ${CONF.uni ? `          <button class="ibtn" type="button" data-act="whyopen" aria-label="อธิบายการทดลองตอนนี้" style="font-weight:700;font-size:18px;color:var(--primary-d)">ⓘ</button>
@@ -1256,6 +1266,57 @@ function vResult(){
   </div>`;
 }
 
+/* ---------- sound effects + speech (Web Audio, no files) ---------- */
+const SPK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>';
+const SND_ON = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>';
+const SND_OFF = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9l5 6M21 9l-5 6"/></svg>';
+const SFX = (function(){
+  let ac = null, master = null, noise = null, ch = {}, last = {}, muted = false;
+  try { muted = localStorage.getItem('parkilab-sfx-mute') === '1'; } catch(_){}
+  const VOL = .32;
+  function unlock(){
+    if(ac){ if(ac.state === 'suspended') ac.resume(); return; }
+    try {
+      ac = new (window.AudioContext || window.webkitAudioContext)();
+      master = ac.createGain(); master.gain.value = muted ? 0 : VOL; master.connect(ac.destination);
+      const len = ac.sampleRate*2, buf = ac.createBuffer(1, len, ac.sampleRate), d = buf.getChannelData(0);
+      for(let i=0;i<len;i++) d[i] = Math.random()*2 - 1; noise = buf;
+      const mk = (type, freq, q, lfo) => { const src = ac.createBufferSource(); src.buffer = noise; src.loop = true;
+        const f = ac.createBiquadFilter(); f.type = type; f.frequency.value = freq; f.Q.value = q;
+        const g = ac.createGain(); g.gain.value = 0; src.connect(f); f.connect(g); g.connect(master); src.start();
+        if(lfo){ const o = ac.createOscillator(), og = ac.createGain(); o.frequency.value = lfo; og.gain.value = freq*.35; o.connect(og); og.connect(f.frequency); o.start(); }
+        return g; };
+      const buzz = () => { const o = ac.createOscillator(); o.type = 'sawtooth'; o.frequency.value = 210; const v = ac.createOscillator(), vg = ac.createGain(); v.frequency.value = 9; vg.gain.value = 14; v.connect(vg); vg.connect(o.frequency); v.start();
+        const f = ac.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 900; const g = ac.createGain(); g.gain.value = 0; o.connect(f); f.connect(g); g.connect(master); o.start(); return g; };
+      ch = { rain: mk('bandpass', 2600, .6), boil: mk('lowpass', 520, 1.2, 3.1), wind: mk('bandpass', 420, 1.4, .18), hiss: mk('highpass', 5200, .7), sizzle: mk('highpass', 2800, 1.5, 7), buzz: buzz() };
+    } catch(_){ ac = null; }
+  }
+  addEventListener('pointerdown', unlock, {capture:true, passive:true});
+  addEventListener('keydown', unlock, {capture:true});
+  function tone(f0, f1, dur, type='sine', vol=.5, delay=0){
+    if(!ac || muted) return; const t = ac.currentTime + delay, o = ac.createOscillator(), g = ac.createGain();
+    o.type = type; o.frequency.setValueAtTime(f0, t); if(f1) o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + .012); g.gain.exponentialRampToValueAtTime(.001, t + dur);
+    o.connect(g); g.connect(master); o.start(t); o.stop(t + dur + .02);
+  }
+  const AMB = {rain:.5, boil:.9, wind:.55, hiss:.12, sizzle:.18, buzz:.07};
+  return {
+    unlock,
+    get muted(){ return muted; },
+    toggle(){ muted = !muted; try { localStorage.setItem('parkilab-sfx-mute', muted ? '1' : '0'); } catch(_){} if(master) master.gain.setTargetAtTime(muted ? 0 : VOL, ac.currentTime, .05); if(!muted){ unlock(); tone(660, 990, .12, 'sine', .4); } return muted; },
+    click(){ tone(820, 620, .05, 'triangle', .25); },
+    pick(){ tone(380, 620, .09, 'sine', .35); },
+    drop(){ tone(240, 140, .12, 'sine', .45); },
+    ok(){ tone(660, 0, .12, 'sine', .4); tone(990, 0, .18, 'sine', .35, .09); },
+    bad(){ tone(220, 170, .22, 'square', .12); },
+    done(){ [523, 659, 784, 1046].forEach((f,k)=>tone(f, 0, .22, 'triangle', .35, k*.09)); },
+    pop(){ tone(900 + Math.random()*700, 1500, .04, 'sine', .12); },
+    tick(){ tone(2400 + Math.random()*800, 0, .03, 'square', .06); },
+    speak(w){ try{ const u = new SpeechSynthesisUtterance(w); u.lang = 'en-US'; u.rate = .8; const vs = speechSynthesis.getVoices().filter(x=>/^en/i.test(x.lang)); if(vs.length) u.voice = vs.find(x=>/en-US/i.test(x.lang)) || vs[0]; speechSynthesis.cancel(); speechSynthesis.speak(u); } catch(_){ toast('อุปกรณ์นี้อ่านออกเสียงไม่ได้'); } },
+    amb(lv){ if(!ac) return; Object.keys(ch).forEach(k=>{ const v = Math.max(0, Math.min(1, (lv && lv[k]) || 0))*AMB[k]; if(Math.abs((last[k]||0) - v) > .01){ last[k] = v; ch[k].gain.setTargetAtTime(v, ac.currentTime, .25); } }); }
+  };
+})();
+
 /* ---------- PDF ---------- */
 async function makePdf(btn){
   const el = $('#pdfsheet'), pages = sheetPages();
@@ -1293,13 +1354,14 @@ const Lab = (function(){
   const TABLE_Y = 0.15;
   const V = (x,y,z) => new THREE.Vector3(x,y,z), UP = V(0,1,0);
   const CAMS = [
-    {pos:V(1.5,2.1,4.1), tgt:V(0.05,.95,0)},
-    {pos:V(-.9,2.6,6.2), tgt:V(-.9,.5,0)},
-    {pos:V(0,1.7,3.8), tgt:V(0,.6,0)}
+    {pos:V(1.2,2.0,3.3), tgt:V(0.02,1.02,0), na:.86},
+    {pos:V(-.65,2.1,5.3), tgt:V(-.65,.55,0), na:1.25, nk:1.75},
+    {pos:V(0,1.7,3.8), tgt:V(0,.6,0), na:1.02, nk:1.45}
   ];
   function mat(c, o={}){ return new THREE.MeshStandardMaterial(Object.assign({color:c, roughness:.55, metalness:0}, o)); }
-  const METAL = () => mat(0xB9C0CE, {metalness:.8, roughness:.3});
-  const GLASS = (op=.2) => new THREE.MeshStandardMaterial({color:0xDCEBFB, transparent:true, opacity:op, roughness:.05, side:THREE.DoubleSide, depthWrite:false});
+  let ENVMAP = null;
+  const METAL = () => mat(0xC9CFDA, {metalness:.9, roughness:.22, envMap:ENVMAP, envMapIntensity:1});
+  const GLASS = (op=.2) => new THREE.MeshStandardMaterial({color:0xDCEBFB, transparent:true, opacity:op, roughness:.05, envMap:ENVMAP, envMapIntensity:1.6, metalness:.1, side:THREE.DoubleSide, depthWrite:false});
   const TRANS = (c, op) => new THREE.MeshStandardMaterial({color:c, transparent:true, opacity:op, roughness:.15, depthWrite:false});
   function shadowAll(g){ g.traverse(m=>{ if(m.isMesh && !(m.material && m.material.transparent)){ m.castShadow = true; m.receiveShadow = true; } }); return g; }
   function box(w,h,d,m,x=0,y=0,z=0){ const o = new THREE.Mesh(new THREE.BoxGeometry(w,h,d), m); o.position.set(x,y,z); return o; }
@@ -1322,13 +1384,26 @@ const Lab = (function(){
       renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
       renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
       const scene = new THREE.Scene(); scene.background = new THREE.Color(0xEDF1FA);
+      try{ renderer.physicallyCorrectLights = false;
+        const bg = canvasTex(16, 256, (x)=>{ const g = x.createLinearGradient(0,0,0,256); g.addColorStop(0,'#CFDcF6'); g.addColorStop(.55,'#E9EEF9'); g.addColorStop(1,'#F6F2EC'); x.fillStyle = g; x.fillRect(0,0,16,256); }); scene.background = bg;
+        const ec = canvasTex(512, 256, (x)=>{ const g = x.createLinearGradient(0,0,0,256); g.addColorStop(0,'#FFFFFF'); g.addColorStop(.42,'#DCE6F7'); g.addColorStop(.5,'#B9C2D6'); g.addColorStop(.62,'#8E8676'); g.addColorStop(1,'#5E564A'); x.fillStyle = g; x.fillRect(0,0,512,256);
+          x.fillStyle = 'rgba(255,255,255,.95)'; [[40,30,90,60],[200,20,70,70],[330,34,110,50],[450,26,50,64]].forEach(r=>x.fillRect(...r)); x.fillStyle = 'rgba(255,236,200,.6)'; x.fillRect(120,50,40,30); });
+        ec.mapping = THREE.EquirectangularReflectionMapping; const pm = new THREE.PMREMGenerator(renderer); ENVMAP = pm.fromEquirectangular(ec).texture; pm.dispose(); ec.dispose();
+      }catch(_){ }
       const camera = new THREE.PerspectiveCamera(42, 1, 0.3, 60);
       const controls = new THREE.OrbitControls(camera, renderer.domElement);
       controls.enablePan = false; controls.enableDamping = true; controls.dampingFactor = .08;
       controls.minDistance = 3; controls.maxDistance = 15; controls.maxPolarAngle = 1.45; controls.minPolarAngle = .15;
       scene.add(new THREE.HemisphereLight(0xffffff, 0xC9D3EC, .85));
-      const sun = new THREE.DirectionalLight(0xffffff, .85); sun.position.set(4, 9, 6); sun.castShadow = true;
-      sun.shadow.mapSize.set(1024,1024); Object.assign(sun.shadow.camera, {left:-6,right:6,top:6,bottom:-5}); sun.shadow.bias = -0.0006; sun.shadow.normalBias = .02;
+      const sun = new THREE.DirectionalLight(0xFFF6E8, .85); sun.position.set(4, 9, 6); sun.castShadow = true;
+      const fill = new THREE.DirectionalLight(0xBFD4FF, .22); fill.position.set(-6, 4, -5); scene.add(fill);
+      { const coarse = window.matchMedia && matchMedia('(pointer:coarse)').matches; sun.shadow.radius = 3;
+        const fl = new THREE.Mesh(new THREE.CircleGeometry(70, 48), new THREE.MeshStandardMaterial({map:canvasTex(512, 512, (x)=>{ x.fillStyle = '#A8A297'; x.fillRect(0,0,512,512); x.strokeStyle = 'rgba(120,112,100,.35)'; x.lineWidth = 3; for(let k=0;k<=512;k+=128){ x.beginPath(); x.moveTo(k,0); x.lineTo(k,512); x.moveTo(0,k); x.lineTo(512,k); x.stroke(); } }), roughness:.9}));
+        fl.material.map.wrapS = fl.material.map.wrapT = THREE.RepeatWrapping; fl.material.map.repeat.set(36,36); fl.rotation.x = -Math.PI/2; fl.position.y = -2.6; fl.receiveShadow = false; scene.add(fl);
+        scene.fog = new THREE.Fog(0xDCE3F2, 22, 75);
+        const lm = mat(0x5A4630, {roughness:.7}); [[-4.4,-2.5],[4.4,-2.5],[-4.4,2.5],[4.4,2.5]].forEach(([x,z])=>{ const l = box(.22, 2.5, .22, lm, x, -1.45, z); scene.add(l); });
+        scene.add(box(9.1,.32,.08, lm, 0, -.42, 2.62)); scene.add(box(9.1,.32,.08, lm, 0, -.42, -2.62));
+        sun.shadow.mapSize.set(coarse ? 1024 : 2048, coarse ? 1024 : 2048); } Object.assign(sun.shadow.camera, {left:-6,right:6,top:6,bottom:-5}); sun.shadow.bias = -0.0006; sun.shadow.normalBias = .02;
       scene.add(sun);
       const top = box(9.4,.3,5.6, mat(0xA88762,{roughness:.75, polygonOffset:true, polygonOffsetFactor:4, polygonOffsetUnits:8})); top.receiveShadow = true; scene.add(top);
       scene.add(box(9.5,.1,5.7, mat(0x6E5034), 0, -.2, 0));
@@ -1390,8 +1465,15 @@ const Lab = (function(){
   function hint(arr){ let t, n = 0; do{ t = arr[Math.floor(Math.random()*arr.length)]; n++; } while(arr.length > 1 && t===P.lastHint && n < 9); P.lastHint = t; return t; }
   const rel = (a, b, r) => Math.abs(a - b) <= Math.abs(b)*r + 1e-9, TAU = Math.PI*2, pick1 = a => a[Math.floor(Math.random()*a.length)];
   function post(x, z, top){ const g = new THREE.Group(); g.add(at(cyl(.12,.14,.04, mat(0x2B3050), 20), 0,.02,0)); g.add(at(cyl(.025,.025, top - TABLE_Y, METAL(), 10), 0, (top - TABLE_Y)/2, 0)); g.position.set(x, TABLE_Y, z); return g; }
-  function makeFork(h){ const g = new THREE.Group(), m = METAL(); g.add(at(cyl(.015,.015,.18, m, 8), 0, h + .09, 0)); g.add(at(box(.1,.025,.025, m), 0, h, 0));
-    const pr = [-1,1].map(k=>{ const p = box(.022, h, .025, m); p.position.set(k*.04, h/2, 0); g.add(p); return p; }); g.userData.pr = pr; return g; }
+  function woodTex(){ if(woodTex.t) return woodTex.t; woodTex.t = canvasTex(256, 256, (x)=>{ x.fillStyle = '#C89A62'; x.fillRect(0,0,256,256); let sd = 4; const r = ()=>{ sd = (sd*9301+49297)%233280; return sd/233280; };
+      for(let y=0;y<256;y+=5){ x.strokeStyle = `rgba(90,55,20,${(.10 + r()*.2).toFixed(2)})`; x.lineWidth = 1 + r()*2.5; x.beginPath(); const ph = r()*6; x.moveTo(0,y); for(let q=0;q<=256;q+=16) x.lineTo(q, y + Math.sin(q/40 + ph)*2.5); x.stroke(); } }); return woodTex.t; }
+  const WOOD = (c=0xFFFFFF) => new THREE.MeshStandardMaterial({map:woodTex(), roughness:.6, color:c});
+  const RUBBER = () => mat(0x23262F, {roughness:.9});
+  function makeFork(h){ const g = new THREE.Group(), m = METAL(); g.add(at(cyl(.014,.014,.16, m, 12), 0, h + .08, 0)); g.add(at(sph(.022, m, 12), 0, h + .17, 0));
+    const br = new THREE.Mesh(new THREE.TorusGeometry(.04,.013,10,20,Math.PI), m); br.position.set(0, h, 0); br.rotation.z = Math.PI; br.scale.y = .001; g.add(br); g.add(at(box(.106,.026,.026, m), 0, h, 0));
+    const pr = [-1,1].map(k=>{ const p = new THREE.Group(); p.add(at(box(.022, h, .026, m), 0, 0, 0)); p.add(at(cyl(.011,.011,.026, m, 10), 0, -h/2, 0)); p.children[1].rotation.x = Math.PI/2; p.position.set(k*.04, h/2, 0); g.add(p); return p; }); g.userData.pr = pr; g.userData.h = h; return g; }
+  function makeMallet(){ const g = new THREE.Group(); const hd = cyl(.035,.035,.1, RUBBER(), 16); hd.rotation.z = Math.PI/2; hd.position.y = .3; g.add(hd); g.add(at(cyl(.011,.013,.3, WOOD(), 10), 0,.15,0)); return g; }
+  function swing(m, t){ if(!m) return; const u = m.userData, k = u.t0==null ? 1 : (t - u.t0)/.32; if(k >= 1){ u.t0 = null; m.position.copy(u.restPos); m.rotation.set(Math.PI/2, 0, .4); return; } m.position.copy(u.hitPos); m.rotation.set(0, 0, .35 + .43*Math.sin(k*Math.PI)); }
   function vib(g, a, t){ g.userData.pr.forEach((p,k)=>{ p.position.x = (k ? 1 : -1)*(.04 + a*.012*Math.sin(t*90)); }); }
   function rings(n, col){ return Array.from({length:n}, (_,k)=>{ const r = new THREE.Mesh(new THREE.TorusGeometry(1,.012,6,40), new THREE.MeshBasicMaterial({color:col, transparent:true, opacity:0, depthWrite:false})); r.userData.ph = k/n; R.world.add(r); return r; }); }
   function runRings(arr, t, on, base, scale, setup){ arr.forEach(r=>{ const f = (t*.8 + r.userData.ph) % 1; r.visible = on; if(!on) return; r.scale.setScalar(base + f*scale); r.material.opacity = .55*(1 - f); setup && setup(r); }); }
@@ -1399,7 +1481,7 @@ const Lab = (function(){
   /* ----- audio ----- */
   let AC = null;
   function ac(){ try{ if(!AC) AC = new (window.AudioContext || window.webkitAudioContext)(); if(AC.state==='suspended') AC.resume(); }catch(e){ AC = null; } return AC; }
-  function tone(fs, dur){ const c = ac(); if(!c) return null; const out = []; fs.forEach(f=>{ const o = c.createOscillator(), g = c.createGain(); o.type = 'sine'; o.frequency.value = f; g.gain.setValueAtTime(0, c.currentTime); g.gain.linearRampToValueAtTime(.12, c.currentTime + .02); g.gain.exponentialRampToValueAtTime(.0005, c.currentTime + dur); o.connect(g); g.connect(c.destination); o.start(); o.stop(c.currentTime + dur + .05); out.push({o, g}); }); return out; }
+  function tone(fs, dur){ SFX.tick(); if(SFX.muted) return null; const c = ac(); if(!c) return null; const out = []; fs.forEach(f=>{ const o = c.createOscillator(), g = c.createGain(); o.type = 'sine'; o.frequency.value = f; g.gain.setValueAtTime(0, c.currentTime); g.gain.linearRampToValueAtTime(.12, c.currentTime + .02); g.gain.exponentialRampToValueAtTime(.0005, c.currentTime + dur); o.connect(g); g.connect(c.destination); o.start(); o.stop(c.currentTime + dur + .05); out.push({o, g}); }); return out; }
   function stopTone(t){ if(!t || !AC) return; t.forEach(({o, g})=>{ try{ g.gain.cancelScheduledValues(AC.currentTime); g.gain.setTargetAtTime(0, AC.currentTime, .03); o.stop(AC.currentTime + .2); }catch(_){} }); }
 
   /* ----- constants ----- */
@@ -1414,7 +1496,7 @@ const Lab = (function(){
   const restoreS = i => { const s = defaults(i); try { if(S.ps && S.ps[i]) Object.assign(s, JSON.parse(JSON.stringify(S.ps[i]))); } catch(e){} return s; };
   const fresh = i => ({i, s:restoreS(i), labels:[], celebrate:false, dirty:false, ctrlSig:'', warn:null, tt:0});
   function clearWorld(){ while(R.world.children.length) R.world.remove(R.world.children[0]); }
-  function fitNarrow(){ const el = R.renderer.domElement, a = el.clientWidth/Math.max(1, el.clientHeight); if(a < 1){ const k = Math.min(1.25, .8/a); R.camera.position.sub(R.controls.target).multiplyScalar(k).add(R.controls.target); } }
+  function fitNarrow(){ const el = R.renderer.domElement, a = el.clientWidth/Math.max(1, el.clientHeight), c = CAMS[P.i]; if(a < (c.na || .8)/1.02){ const k = Math.min(c.nk || 1.25, (c.na || .8)/a); R.camera.position.sub(R.controls.target).multiplyScalar(k).add(R.controls.target); } }
   function build(){
     clearWorld(); stopTone(P.snd); P.snd = null; P.labels = []; P.ctrlSig = '';
     const cam = CAMS[P.i]; R.camera.position.copy(cam.pos); R.controls.target.copy(cam.tgt); fitNarrow();
@@ -1426,26 +1508,38 @@ const Lab = (function(){
   const vs = () => 331 + .6*P.s.T, lamT = () => vs()/P.s.f;
   const xn = n => (2*n - 1)*lamT()/4 - EC;
   function amp1(){ const s = P.s, q = lamT()/4, x = s.L + EC, n = Math.max(1, Math.round((x/q + 1)/2)); return 1/(1 + ((x - (2*n - 1)*q)/.008)**2); }
-  function buildP1(){ const W = R.world;
-    W.add(at(box(.5,.04,.4, mat(0x2B3050)), TX, TABLE_Y + .02, 0)); W.add(at(cyl(.02,.02, TT - TABLE_Y, METAL(), 8), TX - .2, (TT + TABLE_Y)/2, -.12));
-    W.add(at(box(.24,.03,.03, METAL()), TX - .1, TT - .15, -.06)); W.add(at(box(.24,.03,.03, METAL()), TX - .1, TT - .8, -.06));
-    W.add(at(cyl(.065,.065, TL, GLASS(.25), 28, true), TX, TT - TL/2, 0));
-    P.water = cyl(.058,.058,1, TRANS(0x6FB3EE,.6), 24); W.add(P.water);
+  function buildP1(){ const W = R.world, DK = mat(0x2B3050, {roughness:.45, metalness:.3});
+    const bs = box(.56,.035,.42, DK); bs.position.set(TX - .02, TABLE_Y + .0175, 0); W.add(bs); [[-.25,-.18],[.25,-.18],[-.25,.18],[.25,.18]].forEach(([x,z])=>W.add(at(cyl(.03,.03,.012, RUBBER(), 10), TX - .02 + x, TABLE_Y + .006, z)));
+    W.add(at(cyl(.018,.018, TT - TABLE_Y + .1, METAL(), 12), TX - .2, (TT + TABLE_Y + .1)/2, -.12)); W.add(at(sph(.024, METAL(), 10), TX - .2, TT + .1, -.12));
+    [TT - .15, TT - .8].forEach(y=>{ const c = new THREE.Group(); c.add(at(box(.05,.05,.05, DK), -.2,0,-.12)); const arm = cyl(.01,.01,.24, METAL(), 8); arm.rotation.z = Math.PI/2; arm.rotation.y = -.55; arm.position.set(-.1,0,-.06); c.add(arm); const rg = new THREE.Mesh(new THREE.TorusGeometry(.072,.009,8,24), METAL()); rg.rotation.x = Math.PI/2; c.add(rg); const kn = cyl(.014,.014,.05, RUBBER(), 8); kn.rotation.x = Math.PI/2; kn.position.set(-.2,0,-.075); c.add(kn); c.position.set(TX, y, 0); W.add(c); });
+    W.add(at(cyl(.065,.065, TL, GLASS(.22), 32, true), TX, TT - TL/2, 0));
+    [TT, TT - TL].forEach(y=>{ const r = new THREE.Mesh(new THREE.TorusGeometry(.065,.005,8,32), GLASS(.55)); r.rotation.x = Math.PI/2; r.position.set(TX, y, 0); W.add(r); });
+    W.add(at(cyl(.03,.012,.06, GLASS(.4), 16), TX, TT - TL - .03, 0));
+    P.water = cyl(.058,.058,1, TRANS(0x4FA3EA,.62), 28); W.add(P.water);
+    P.wtop = cyl(.058,.058,.004, new THREE.MeshStandardMaterial({color:0xBFE3FF, transparent:true, opacity:.85, roughness:.05, envMap:ENVMAP, envMapIntensity:1.4}), 28); W.add(P.wtop);
     const st = canvasTex(64, 1024, (x,w,h)=>{ x.fillStyle = '#FFF6D8'; x.fillRect(0,0,w,h); x.fillStyle = '#1C2236'; x.font = '700 20px sans-serif'; for(let c=0;c<=100;c++){ const y = 4 + c*(h - 8)/100, L = c%10 ? (c%5 ? 12 : 20) : 30; x.fillRect(0, y - 1, L, 2); if(c%10===0 && c) x.fillText(String(c), 30, y + 7); } });
-    W.add(at(new THREE.Mesh(new THREE.PlaneGeometry(.1, TL), new THREE.MeshStandardMaterial({map:st})), TX + .12, TT - TL/2, .02));
+    W.add(at(box(.105, TL + .02, .012, mat(0xE8D9A8)), TX + .125, TT - TL/2, .012)); W.add(at(new THREE.Mesh(new THREE.PlaneGeometry(.1, TL), new THREE.MeshStandardMaterial({map:st, roughness:.7})), TX + .125, TT - TL/2, .02));
     P.labels.push({obj:P.water, dy:.0, text:()=>`L = ${(P.s.L*100).toFixed(1)} cm`});
-    const rv = new THREE.Group(); rv.userData.id = 'res'; rv.add(cyl(.12,.12,.22, GLASS(.3), 24, true)); rv.add(at(cyl(.11,.11,.14, TRANS(0x6FB3EE,.6), 20), 0,-.03,0)); rv.add(at(cyl(.12,.12,.02, GLASS(.4), 24), 0,-.11,0)); rv.add(hitBox(.45,.5,.45,0)); W.add(rv); P.rv = rv;
+    const rv = new THREE.Group(); rv.userData.id = 'res'; rv.add(cyl(.13,.1,.24, GLASS(.28), 28, true)); rv.add(at(cyl(.118,.095,.15, TRANS(0x4FA3EA,.6), 24), 0,-.04,0)); rv.add(at(cyl(.1,.1,.012, GLASS(.45), 24), 0,-.12,0));
+    const rim = new THREE.Mesh(new THREE.TorusGeometry(.13,.007,8,28), GLASS(.6)); rim.rotation.x = Math.PI/2; rim.position.y = .12; rv.add(rim); rv.add(at(cyl(.02,.02,.05, GLASS(.4), 12), 0,-.15,0));
+    const hd = new THREE.Mesh(new THREE.TorusGeometry(.06,.01,8,16,Math.PI), mat(0xF2994A,{roughness:.5})); hd.rotation.z = -Math.PI/2; hd.position.set(.14,0,0); rv.add(hd);
+    rv.add(hitBox(.5,.55,.5,0)); W.add(rv); P.rv = rv;
     P.labels.push({obj:rv, dy:.25, text:()=>'ถังน้ำ (ลากขึ้นลง)'});
-    P.hose = new THREE.Line(new THREE.BufferGeometry(), new THREE.LineBasicMaterial({color:0x5B6280})); W.add(P.hose);
+    P.hose = new THREE.Mesh(new THREE.BufferGeometry(), RUBBER()); P.hose.castShadow = true; W.add(P.hose);
     const fk = makeFork(.28); fk.userData.id = 'fork'; fk.add(hitBox(.3,.6,.3,.25)); fk.position.set(TX, TT + .04, 0); W.add(fk); P.fork = fk;
-    P.labels.push({obj:fk, dy:.62, text:()=>`ส้อมเสียง ${P.s.f} Hz`});
+    P.mal = makeMallet(); P.mal.userData.restPos = V(TX + .42, TABLE_Y + .045, .22); P.mal.userData.hitPos = V(TX + .26, TT + .06, 0); W.add(P.mal); swing(P.mal, 0);
+    P.labels.push({obj:fk, dy:.5, text:()=>`ส้อมเสียง ${P.s.f} Hz`});
+    P.air = Array.from({length:44}, (_,k)=>{ const m = sph(.0085, new THREE.MeshBasicMaterial({color:0xF2994A, transparent:true, opacity:.85}), 6); m.userData = {u:(k + .5)/44, a:k*2.399, r:.012 + ((k*37)%29)/29*.036}; W.add(m); return m; });
     P.rg = rings(3, 0xF2994A);
-    updP1();
+    shadowAll(W); updP1();
   }
-  function updP1(){ const s = P.s; if(!P.water) return; const wy = TT - s.L, bot = TT - TL; P.water.scale.y = Math.max(.001, wy - bot); P.water.position.set(TX, (wy + bot)/2, 0);
-    const ry = Math.max(TABLE_Y + .2, Math.min(TT + .1, wy + .03)); P.rv.position.set(RX, ry, 0);
-    const pts = new THREE.CatmullRomCurve3([V(TX, bot, 0), V(TX, TABLE_Y + .06, .05), V((TX + RX)/2, TABLE_Y + .04, .12), V(RX, TABLE_Y + .08, .05), V(RX, ry - .12, 0)]).getPoints(30); P.hose.geometry.setFromPoints(pts); }
-  function hit1(){ const s = P.s; s.ring = 6; stopTone(P.snd); P.snd = tone([s.f], 6); P.say = `เคาะส้อมเสียง ${s.f} Hz แล้ว ปรับระดับน้ำหาตำแหน่งที่ดังที่สุดครับ`; checkRes(.004); }
+  function updP1(){ const s = P.s; if(!P.water) return; const wy = TT - s.L, bot = TT - TL; P.water.scale.y = Math.max(.001, wy - bot); P.water.position.set(TX, (wy + bot)/2, 0); P.wtop.position.set(TX, wy, 0);
+    const ry = Math.max(TABLE_Y + .22, Math.min(TT + .1, wy + .03)); P.rv.position.set(RX, ry, 0);
+    const cv = new THREE.CatmullRomCurve3([V(TX, bot - .06, 0), V(TX, TABLE_Y + .09, .06), V((TX + RX)/2, TABLE_Y + .03, .14), V(RX, TABLE_Y + .1, .06), V(RX, ry - .17, 0)]); P.hose.geometry.dispose(); P.hose.geometry = new THREE.TubeGeometry(cv, 36, .013, 8, false); }
+  function airP1(t){ const s = P.s; if(!P.air) return; const on = s.ring > 0, a = amp1()*Math.min(1, s.ring/3), k = 2*Math.PI/lamT();
+    P.air.forEach(m=>{ const u = m.userData, d = u.u*s.L, base = TT - d; const disp = on ? a*.03*Math.cos(k*(d + EC) - k*(s.L + EC) + Math.PI/2)*Math.sin(t*14) : 0;
+      m.position.set(TX + Math.cos(u.a)*u.r, base + disp, Math.sin(u.a)*u.r); m.material.opacity = on ? .35 + .55*Math.min(1, a*1.6) : .22; }); }
+  function hit1(){ const s = P.s; if(P.mal) P.mal.userData.t0 = P.tt; s.ring = 6; stopTone(P.snd); P.snd = tone([s.f], 6); P.say = `เคาะส้อมเสียง ${s.f} Hz แล้ว ปรับระดับน้ำหาตำแหน่งที่ดังที่สุดครับ`; checkRes(.004); }
   function checkRes(tol){ const s = P.s; for(let n=1;n<=3;n++){ const x = xn(n); if(x > .96) break; if(Math.abs(s.L - x) < tol){ s.L = Math.round(x*1000)/1000;
       if(s.ring <= 0){ P.say = 'ตำแหน่งนี้น่าจะดัง แต่ส้อมเสียงยังไม่สั่น แตะส้อมเสียงเพื่อเคาะก่อนครับ'; return; }
       const k = s.f + '|' + n, first = !s.res[k]; s.res[k] = {f:s.f, n, L:+(s.L*100).toFixed(1)}; P.lastRes = k; P.say = first ? `เสียงดังที่สุด! สั่นพ้องครั้งที่ ${n} ที่ L = ${(s.L*100).toFixed(1)} cm บันทึกแล้วครับ` : `สั่นพ้องครั้งที่ ${n} (มีในตารางแล้ว)`; return; } } }
@@ -1466,16 +1560,26 @@ const Lab = (function(){
   function buildP2(){ const W = R.world, y = TABLE_Y;
     const tape = canvasTex(2048, 64, (x,w,h)=>{ x.fillStyle = '#FFE58A'; x.fillRect(0,0,w,h); x.fillStyle = '#1C2236'; x.font = '700 26px sans-serif'; for(let c=0;c<=45;c++){ const px = 8 + c*(w - 16)/45, L = c%10 ? (c%5 ? 16 : 26) : 40; x.fillRect(px - 1.5, 0, 3, L); if(c%10===0) x.fillText(c/10 + ' m', px + 4, 58); } });
     const tm = new THREE.Mesh(new THREE.PlaneGeometry(4.5, .14), new THREE.MeshStandardMaterial({map:tape})); tm.rotation.x = -Math.PI/2; tm.position.set(XS0 + 2.25, y + .006, .45); W.add(tm);
-    P.spk = [0,1].map(k=>{ const g = new THREE.Group(); g.add(at(box(.4,.6,.4, mat(0x2B3050)), 0,.3,0)); const cn = cyl(.13,.06,.06, mat(0x5B6280), 24); cn.rotation.z = -Math.PI/2; cn.position.set(.21,.36,0); g.add(cn); const tw = cyl(.05,.03,.04, mat(0x5B6280), 16); tw.rotation.z = -Math.PI/2; tw.position.set(.21,.52,0); g.add(tw); g.position.set(XS0 - .2, y, k ? -.55 : 0); W.add(g); return g; });
+    P.spk = [0,1].map(k=>{ const g = new THREE.Group(); g.add(at(box(.42,.62,.4, WOOD(0x9A6A48)), 0,.31,0)); g.add(at(box(.012,.58,.36, mat(0x1A1C24,{roughness:.8})), .212,.31,0));
+      const sur = new THREE.Mesh(new THREE.TorusGeometry(.13,.016,10,28), RUBBER()); sur.rotation.y = Math.PI/2; sur.position.set(.222,.25,0); g.add(sur);
+      const cn = new THREE.Mesh(new THREE.ConeGeometry(.125,.07,28,1,true), mat(0x3A3F4E,{roughness:.6, side:THREE.DoubleSide})); cn.rotation.z = Math.PI/2; cn.position.set(.19,.25,0); g.add(cn);
+      const cap = sph(.04, mat(0x15171D,{roughness:.35}), 14); cap.scale.x = .5; cap.position.set(.175,.25,0); g.add(cap); g.userData.cn = cn; g.userData.cap = cap;
+      const tr = new THREE.Mesh(new THREE.TorusGeometry(.05,.01,8,20), METAL()); tr.rotation.y = Math.PI/2; tr.position.set(.222,.49,0); g.add(tr); const td = sph(.035, mat(0x2A2D38,{roughness:.3}), 12); td.scale.x = .45; td.position.set(.215,.49,0); g.add(td);
+      [[-.16,-.15],[.16,-.15],[-.16,.15],[.16,.15]].forEach(([x,z])=>g.add(at(cyl(.025,.03,.02, RUBBER(), 10), x,.01,z)));
+      g.position.set(XS0 - .2, y, k ? -.55 : 0); W.add(g); return g; });
     P.labels.push({obj:P.spk[0], dy:.8, text:()=>P.s.n===2 ? 'ลำโพง 2 ตัว' : 'ลำโพง'});
-    const mt = new THREE.Group(); mt.userData.id = 'meter'; mt.add(at(cyl(.02,.02,.55, METAL(), 8), 0,.28,0)); mt.add(at(cyl(.15,.17,.03, mat(0x2B3050), 16), 0,.015,0)); mt.add(at(box(.14,.26,.07, mat(0xF2994A)), 0,.66,0)); const mic = sph(.045, mat(0x222222), 12); mic.position.set(0,.82,0); mt.add(mic);
-    P.dtex = canvasTex(256,128,()=>{}); mt.add(at(new THREE.Mesh(new THREE.PlaneGeometry(.12,.06), new THREE.MeshBasicMaterial({map:P.dtex})), 0,.68,.037)); mt.add(hitBox(.5,1,.5,.45)); W.add(mt); P.meter = mt;
-    P.labels.push({obj:mt, dy:1.05, text:()=>`r = ${P.s.r.toFixed(1)} m`});
-    P.rg = rings(4, 0xF2994A);
-    updP2();
+    const mt = new THREE.Group(); mt.userData.id = 'meter'; [0,1,2].forEach(q=>{ const l = cyl(.009,.012,.34, RUBBER(), 6); const a = q/3*Math.PI*2; l.position.set(Math.cos(a)*.09,.15,Math.sin(a)*.09); l.rotation.set(Math.sin(a)*.55, 0, -Math.cos(a)*.55); mt.add(l); });
+    mt.add(at(cyl(.016,.016,.3, METAL(), 10), 0,.43,0)); mt.add(at(cyl(.03,.03,.04, RUBBER(), 12), 0,.3,0));
+    mt.add(at(box(.15,.3,.06, mat(0xF2994A,{roughness:.45})), 0,.72,0)); mt.add(at(box(.13,.1,.012, mat(0x20242E)), 0,.76,.032)); mt.add(at(cyl(.02,.03,.08, mat(0x20242E), 12), 0,.9,0));
+    [[-.035,.63],[.035,.63],[0,.6]].forEach(([x,yy])=>mt.add(at(cyl(.014,.014,.012, mat(0xFFFFFF), 10), x,yy,.032))); mt.children.slice(-3).forEach(b=>b.rotation.x = Math.PI/2);
+    const mic = sph(.055, mat(0x2A2A2E,{roughness:1}), 16); mic.position.set(0,.97,0); mt.add(mic);
+    P.dtex = canvasTex(256,128,()=>{}); mt.add(at(new THREE.Mesh(new THREE.PlaneGeometry(.118,.085), new THREE.MeshBasicMaterial({map:P.dtex})), 0,.76,.0385)); mt.add(hitBox(.55,1.15,.55,.5)); W.add(mt); P.meter = mt;
+    P.labels.push({obj:mt, dy:1.12, text:()=>`r = ${P.s.r.toFixed(1)} m`});
+    P.rg = rings(6, 0xF2994A);
+    shadowAll(W); updP2();
   }
   function updP2(){ const s = P.s; if(!P.meter) return; P.meter.position.set(XS0 + s.r, TABLE_Y, 0); P.spk[1].visible = s.n===2; P.spk[0].position.z = s.n===2 ? .3 : 0; if(s.n===2) P.spk[1].position.z = -.3;
-    const c = P.dtex.userData.c.getContext('2d'); c.fillStyle = '#C8E6C9'; c.fillRect(0,0,256,128); c.fillStyle = '#1B3A20'; c.font = '700 60px monospace'; c.textAlign = 'center'; c.fillText(beta(s.r, s.n).toFixed(1), 128, 88); P.dtex.needsUpdate = true; }
+    const c = P.dtex.userData.c.getContext('2d'); c.fillStyle = '#0E1A12'; c.fillRect(0,0,256,128); c.fillStyle = '#7CFFA0'; c.font = '700 64px monospace'; c.textAlign = 'center'; c.fillText(beta(s.r, s.n).toFixed(1), 128, 80); c.font = '600 26px sans-serif'; c.fillStyle = '#56C97A'; c.fillText('dB', 128, 116); P.dtex.needsUpdate = true; }
   function rec2(){ const s = P.s, b = +beta(s.r, s.n).toFixed(1), k = s.n + '|' + s.r.toFixed(1), first = !s.rec[k]; s.rec[k] = {n:s.n, r:+s.r.toFixed(1), b}; P.lastRec = k;
     P.say = `r = ${s.r.toFixed(1)} m${s.n===2 ? ' (ลำโพง 2 ตัว)' : ''} อ่านได้ ${b.toFixed(1)} dB${first ? ' บันทึกแล้ว' : ''}ครับ`; }
   function setR(r){ const s = P.s; s.r = Math.max(.5, Math.min(4, Math.round(r*10)/10)); updP2(); rec2(); }
@@ -1491,15 +1595,19 @@ const Lab = (function(){
   /* ===== part 3: beats ===== */
   const fBn = () => P.s.fB - (P.s.clay ? 2 : 0);
   function buildP3(){ const W = R.world, s = P.s;
-    P.fks = [XA, XB].map((x,k)=>{ const g = new THREE.Group(); g.userData.id = 'fk' + k; g.add(at(box(.7,.3,.32, mat(0xC98F5A,{roughness:.7})), 0,.15,0)); g.add(at(box(.02,.22,.24, mat(0x2B1A10)), .36,.15,0));
-      const f = makeFork(.42); f.position.set(-.05,.3,0); g.add(f); g.userData.f = f; g.add(hitBox(.8,1.2,.5,.5)); g.position.set(x, TABLE_Y, 0); W.add(g); return g; });
-    P.clay = sph(.04, mat(0x6ACB6A,{roughness:.9}), 12); P.clay.position.set(-.05 + .04, .3 + .3, .03); P.fks[1].add(P.clay);
+    P.fks = [XA, XB].map((x,k)=>{ const g = new THREE.Group(); g.userData.id = 'fk' + k; const wd = WOOD(0xC88A5C);
+      g.add(at(box(.7,.02,.32, wd), 0,.29,0)); g.add(at(box(.7,.02,.32, wd), 0,.03,0)); g.add(at(box(.7,.28,.02, wd), 0,.16,.15)); g.add(at(box(.7,.28,.02, wd), 0,.16,-.15)); g.add(at(box(.02,.28,.3, wd), -.34,.16,0));
+      g.add(at(box(.66,.24,.28, mat(0x2B1A10,{roughness:1})), -.015,.16,0)); [[-.28,-.12],[.28,-.12],[-.28,.12],[.28,.12]].forEach(([fx,fz])=>g.add(at(cyl(.025,.025,.02, RUBBER(), 10), fx,.01,fz)));
+      const f = makeFork(.42); f.position.set(-.05,.3,0); g.add(f); g.userData.f = f; g.add(at(cyl(.03,.035,.02, METAL(), 12), -.05,.31,0)); g.add(hitBox(.8,1.2,.5,.5));
+      if(k) g.rotation.y = Math.PI; g.position.set(x, TABLE_Y, 0); W.add(g); return g; });
+    P.mal = makeMallet(); W.add(P.mal);
+    P.clay = sph(.04, mat(0x6ACB6A,{roughness:.9}), 12); P.clay.scale.set(1.1,.8,1); P.clay.position.set(-.05 - .04, .3 + .36, .0); P.fks[1].add(P.clay);
     P.labels.push({obj:P.fks[0], dy:1.15, text:()=>`ส้อมเสียง A ${FA} Hz`}); P.labels.push({obj:P.fks[1], dy:1.15, text:()=>P.s.clay ? 'ส้อมเสียง B + ดินน้ำมัน' : 'ส้อมเสียง B (?)'});
-    P.rg = rings(4, 0xE25555);
-    updP3();
+    P.rg = rings(5, 0xE25555);
+    shadowAll(W); updP3();
   }
   function updP3(){ if(P.clay) P.clay.visible = P.s.clay; }
-  function hit3(){ const s = P.s, fb = Math.abs(FA - fBn()); s.ring = 4; stopTone(P.snd); P.snd = tone([FA, fBn()], 4); s.heard[s.clay ? 'c' : 'n'] = 1; s.last = {fb, clay:s.clay};
+  function hit3(){ const s = P.s, fb = Math.abs(FA - fBn()); if(P.mal) P.mal.userData.t3 = P.tt; s.ring = 4; stopTone(P.snd); P.snd = tone([FA, fBn()], 4); s.heard[s.clay ? 'c' : 'n'] = 1; s.last = {fb, clay:s.clay};
     P.say = s.clay ? 'เคาะพร้อมกัน (B ติดดินน้ำมัน) ฟังและนับจังหวะดังในกราฟ เทียบกับตอนไม่ติดดินน้ำมันครับ' : 'เคาะพร้อมกันแล้ว ได้ยินเสียงดังค่อยสลับ นับจังหวะดังใน 1 วินาทีจากกราฟครับ'; }
   function drawScope(){ const cv = $('#sc'); if(!cv || P.i!==2) return; const x = cv.getContext('2d'), w = cv.width, h = cv.height, l = P.s.last, ph = h - 34, mid = ph/2;
     x.fillStyle = '#0B0D16'; x.fillRect(0,0,w,h); x.fillStyle = '#FFFFFF'; x.fillRect(0, ph, w, h - ph);
@@ -1547,13 +1655,15 @@ if(x===null){ _w = 'พิมพ์จำนวนบีตส์ต่อวิ
     if(P.i===0){ const v = Object.values(s.res); if(v.some(r=>r.n===1)) set('r1'); if(v.some(r=>r.n===2)) set('r2'); if(s.vOk) set('v'); if(s.ans.qL) set('qL'); }
     else if(P.i===1){ if(rs2() >= 3) set('r3'); if(s.dropOk) set('drop'); if(s.ans.two) set('two'); if(s.ans.qinv) set('qinv'); }
     else { if(s.fbOk) set('fb'); if(s.ans.more) set('clay'); if(s.ans.fB) set('fB'); if(s.ans.def) set('def'); }
+    if(ch) SFX.ok();
     return ch;
   }
   function refresh(){
     check();
     const m = S.miss[P.i];
-    if(PARTS[P.i].miss.every(x=>m[x[0]]) && eqDone(P.i) && !S.labDone[P.i]){ S.labDone[P.i] = true; P.celebrate = true; toast(P.i < PARTS.length - 1 ? `${PARTS[P.i].k}เสร็จแล้ว ปลดล็อก${PARTS[P.i+1].k}` : 'ทดลองครบทุกตอนแล้ว ปลดล็อกแบบทดสอบหลังเรียน'); renderRail(); }
+    if(PARTS[P.i].miss.every(x=>m[x[0]]) && eqDone(P.i) && !S.labDone[P.i]){ S.labDone[P.i] = true; P.celebrate = true; SFX.done(); toast(P.i < PARTS.length - 1 ? `${PARTS[P.i].k}เสร็จแล้ว ปลดล็อก${PARTS[P.i+1].k}` : 'ทดลองครบทุกตอนแล้ว ปลดล็อกแบบทดสอบหลังเรียน'); renderRail(); }
     try { S.ps = S.ps || {}; S.ps[P.i] = JSON.parse(JSON.stringify(P.s)); } catch(e){}
+    if(P.warn && P.warn !== P.lastWarn) SFX.bad(); P.lastWarn = P.warn;
     save(); refreshUI();
   }
   function mascotSay(){ if(P && P.mg && Date.now() - P.mg.t < 15000 && P.mg.t > (window.__mgClr || 0)) return ['think', P.mg.msg];
@@ -1578,7 +1688,12 @@ if(x===null){ _w = 'พิมพ์จำนวนบีตส์ต่อวิ
     if(!m.def) return ['think','บีตส์เกิดจากอะไรครับ'];
     return ['yay','f_b = |f₁ − f₂| ใช้ตั้งเสียงเครื่องดนตรีให้ตรงกันได้ครับ'];
   }
-  function dock(html){ const st = $('#stage'); if(!st) return; let d = $('#dock'); if(!d){ d = document.createElement('div'); d.id = 'dock'; d.style.cssText = 'position:absolute;top:10px;left:10px;right:64px;z-index:4;display:flex;flex-wrap:wrap;gap:6px;align-items:center'; st.appendChild(d); }
+  function dock(html){ const st = $('#stage'); if(!st) return; let d = $('#dock'); if(!d){ d = document.createElement('div'); d.id = 'dock'; st.appendChild(d); }
+    const below = st.clientWidth < 700 && !st.classList.contains('full') && !document.body.classList.contains('fullon'); let bar = $('#dockbar');
+    if(below && !bar){ bar = document.createElement('div'); bar.id = 'dockbar'; st.insertAdjacentElement('afterend', bar); }
+    const host = below ? bar : st, mode = below ? 'b' : 's';
+    if(d.parentNode !== host || d.dataset.m !== mode){ host.appendChild(d); d.dataset.m = mode; d.style.cssText = below ? 'display:flex;flex-wrap:wrap;gap:8px;align-items:stretch' : 'position:absolute;top:10px;left:10px;right:64px;z-index:4;display:flex;flex-wrap:wrap;gap:6px;align-items:center'; }
+    if(bar){ const on = below && !!html; bar.classList.toggle('on', on); st.classList.toggle('hasbar', on); if(on){ const g = parseFloat(getComputedStyle(st.parentNode).rowGap) || 0; bar.style.marginTop = (-g - 1) + 'px'; } }
     if(d.dataset.h !== html){ d.innerHTML = html; d.dataset.h = html; } const hn = $('.hint', st); if(hn) hn.style.display = html ? 'none' : ''; }
   const DB = (v, t, on, main) => `<button class="btn ${main ? 'ok' : on ? '' : 'ghost'} sm" style="min-height:38px;padding:0 12px;font-size:14px${main ? ';font-weight:600' : ''}" type="button" data-act="lab" data-v="${v}">${t}</button>`;
   const PILL = t => `<span class="status on" style="background:#fff;color:#1E2340">${t}</span>`;
@@ -1703,12 +1818,13 @@ if(x===null){ _w = 'พิมพ์จำนวนบีตส์ต่อวิ
     if(P){
       const s = P.s; P.tt += dt;
       if(P.i===0 && P.fork){ const was = s.ring > 0; s.ring = Math.max(0, s.ring - dt); const env = Math.min(1, s.ring/3), a = amp1();
-        vib(P.fork, env, P.tt); if(P.snd && AC){ P.snd.forEach(({g})=>{ g.gain.cancelScheduledValues(AC.currentTime); g.gain.setTargetAtTime((.01 + .2*a)*env, AC.currentTime, .03); }); }
+        vib(P.fork, env, P.tt); airP1(P.tt); swing(P.mal, P.tt); if(P.snd && AC){ P.snd.forEach(({g})=>{ g.gain.cancelScheduledValues(AC.currentTime); g.gain.setTargetAtTime((.01 + .2*a)*env, AC.currentTime, .03); }); }
         runRings(P.rg, P.tt, s.ring > 0 && a > .25, .08, .35*a, r=>{ r.rotation.x = Math.PI/2; r.position.set(TX, TT + .02, 0); });
         if(was && s.ring===0) P.dirty = true; }
-      else if(P.i===1 && P.spk){ runRings(P.rg, P.tt, true, .15, .9, r=>{ r.rotation.y = Math.PI/2; r.position.set(XS0 + .05, TABLE_Y + .4, 0); }); }
+      else if(P.i===1 && P.spk){ runRings(P.rg, P.tt, true, .15, 1.6, r=>{ r.rotation.y = Math.PI/2; const f = (P.tt*.8 + r.userData.ph) % 1; r.position.set(XS0 + .05 + f*1.1, TABLE_Y + .25, 0); r.material.opacity = .5*(1 - f)*(1 - f); });
+        const pu = Math.sin(P.tt*38)*.012; P.spk.forEach(g=>{ g.userData.cn.position.x = .19 + pu; g.userData.cap.position.x = .175 + pu; }); }
       else if(P.i===2 && P.fks){ s.ring = Math.max(0, s.ring - dt); const env = Math.min(1, s.ring/2), fb = s.last ? s.last.fb : 0, e2 = env*Math.abs(Math.cos(Math.PI*fb*(4 - s.ring)));
-        P.fks.forEach(g=>vib(g.userData.f, env, P.tt)); runRings(P.rg, P.tt, s.ring > 0, .15, .9, r=>{ r.rotation.x = Math.PI/2; r.position.set(0, TABLE_Y + .5, 0); r.material.opacity *= e2; }); }
+        P.fks.forEach(g=>vib(g.userData.f, env, P.tt)); if(P.mal){ const u = P.mal.userData, k = u.t3==null ? 1 : (P.tt - u.t3)/.5; if(k >= 1){ u.t3 = null; P.mal.position.set(-.15, TABLE_Y + .04, .5); P.mal.rotation.set(Math.PI/2, 0, 1.2); } else { const sd = k < .5 ? -1 : 1, q = Math.sin((k < .5 ? k : k - .5)*2*Math.PI); P.mal.position.set(sd*(XB - .32), TABLE_Y + .42, 0); P.mal.rotation.set(0, 0, -sd*(.8 + q*.4)); } } runRings(P.rg, P.tt, s.ring > 0, .15, .9, r=>{ r.rotation.x = Math.PI/2; r.position.set(0, TABLE_Y + .5, 0); r.material.opacity *= e2; }); }
       uiT += dt; if(uiT > .3){ uiT = 0; if(check()) refresh(); else if(!(document.activeElement && document.activeElement.tagName==='INPUT')) refreshUI(); }
       if(P.dirty){ P.dirty = false; refresh(); }
       placeLabels();
@@ -1744,7 +1860,8 @@ if(x===null){ _w = 'พิมพ์จำนวนบีตส์ต่อวิ
       if(R.ro) R.ro.disconnect(); R.ro = new ResizeObserver(resize); R.ro.observe(box); resize();
       if(!R.active){ R.active = true; requestAnimationFrame(tick); }
     },
-    stop(){ if(R){ R.active = false; if(R.ro) R.ro.disconnect(); } },
+    stop(){ SFX.amb({}); if(P) stopTone(P.snd); if(R){ R.active = false; if(R.ro) R.ro.disconnect(); } },
+    muted(m){ if(m && P){ stopTone(P.snd); P.snd = null; } },
     refreshUI(){ if(P){ P.ctrlSig = ''; refreshUI(); } },
     action
   };
