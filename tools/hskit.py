@@ -47,7 +47,7 @@ rep("    stop(){ if(R){ R.active = false; if(R.ro) R.ro.disconnect(); } },", "  
 rep("""  function dock(html){ const st = $('#stage'); if(!st) return; let d = $('#dock'); if(!d){ d = document.createElement('div'); d.id = 'dock'; d.style.cssText = 'position:absolute;top:10px;left:10px;right:64px;z-index:4;display:flex;flex-wrap:wrap;gap:6px;align-items:center'; st.appendChild(d); }
     if(d.dataset.h !== html){ d.innerHTML = html; d.dataset.h = html; } const hn = $('.hint', st); if(hn) hn.style.display = html ? 'none' : ''; }""",
 """  function dock(html){ const st = $('#stage'); if(!st) return; let d = $('#dock'); if(!d){ d = document.createElement('div'); d.id = 'dock'; st.appendChild(d); }
-    const full = st.classList.contains('full'), nar = st.clientWidth < 700, below = nar && !full, fb = nar && full; let bar = $('#dockbar');
+    const full = st.classList.contains('full'), nar = innerWidth <= 860, below = nar && !full, fb = nar && full; let bar = $('#dockbar');
     if(below && !bar){ bar = document.createElement('div'); bar.id = 'dockbar'; st.insertAdjacentElement('afterend', bar); }
     const host = below ? bar : st, mode = below ? 'b' : fb ? 'f' : 's';
     if(d.parentNode !== host || d.dataset.m !== mode){ host.appendChild(d); d.dataset.m = mode; d.classList.toggle('fb', fb); d.style.cssText = below ? 'display:flex;flex-wrap:wrap;gap:8px;align-items:stretch' : fb ? '' : 'position:absolute;top:10px;left:10px;right:64px;z-index:4;display:flex;flex-wrap:wrap;gap:6px;align-items:center'; }
