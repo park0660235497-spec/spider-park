@@ -400,6 +400,20 @@ textarea:focus{border-color:var(--primary);outline:none}
 .linebox .lqr{width:84px;height:84px;border-radius:8px;background:#fff;flex:none}.linebox .lt{display:flex;flex-direction:column;line-height:1.3}.linebox .lt b{font-family:var(--f-display);font-weight:500;font-size:16px}.linebox .lt span{font-size:14px;font-weight:600;color:#06C755}
 @media (max-width:860px){.linebox{position:absolute;top:22px;right:16px;padding:8px 14px;border-radius:99px;background:#06C755;color:#fff;border:0}.rail{position:relative!important}.linebox .lqr{display:none}.linebox .lt{flex-direction:row;gap:6px;font-size:14px}.linebox .lt b{font-size:14px;font-family:var(--f-body);font-weight:600}.linebox .lt span{color:#fff;font-size:14px}}
 body.fullon .linebox{display:none}
+#dockbar{flex:1 1 100%;display:none;padding:10px;background:var(--surface);border:1px solid var(--line2);border-top:0;border-radius:0 0 var(--r-lg) var(--r-lg);box-sizing:border-box;min-width:0}
+#dockbar.on{display:block}
+#dockbar #dock .btn{min-height:48px!important;font-size:15.5px!important;padding:0 14px!important;flex:1 1 auto;justify-content:center;border-radius:12px}
+#dockbar #dock .status{min-height:48px;display:inline-flex;align-items:center;justify-content:center;flex:1 1 auto;border:1.5px solid var(--line2);font-size:15.5px;border-radius:12px;box-sizing:border-box}
+.stage.hasbar{border-radius:var(--r-lg) var(--r-lg) 0 0!important}
+.stage[data-mdc] #dock.fb,.stage #dock.fb{right:8px!important}
+#dock.fb{position:absolute;left:8px;right:8px!important;bottom:8px;top:auto;z-index:6;display:flex;flex-wrap:wrap;gap:8px;align-items:stretch}
+#dock.fb .btn{min-height:48px!important;font-size:15.5px!important;padding:0 14px!important;flex:1 1 auto;justify-content:center;border-radius:12px}
+#dock.fb .status{min-height:48px;display:inline-flex;align-items:center;justify-content:center;flex:1 1 auto;font-size:15.5px;border-radius:12px;box-sizing:border-box}
+.stage.dockfb .bubble{bottom:calc(var(--dockb, 0px) + 16px)!important}
+.stage.full.dockfb .pres.md{max-height:calc(100% - var(--dockb, 0px) - 150px)!important}
+@media (max-width:600px){.stage .pres.md{width:auto!important;left:8px!important;right:64px!important}}
+@media (pointer:coarse){.btn.sm{min-height:44px}.chip{min-height:44px}.ibtn{min-width:44px;min-height:44px}#pCtrl input,#helper input{font-size:16px!important;min-height:46px}.calc button{min-height:44px}}
+@media (max-width:600px){.bubble .msg{font-size:13.5px;padding:8px 12px;line-height:1.45}.bubble{left:8px;right:8px;bottom:8px}.labels div{font-size:11px;padding:2px 8px}.camctl{top:8px;right:8px;gap:6px}.reschip{top:8px;left:8px;right:60px;max-width:none;width:auto;justify-content:space-between}.reschip .v{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
 </style>
 
 <div class="app">
@@ -436,17 +450,18 @@ const $ = (s, el=document) => el.querySelector(s);
 
 /* stacked fractions: write {numerator|denominator} in any text */
 const FR_RE = /\{([^{}|\n]+)\|([^{}\n]+)\}/;
+const SUB_RE = /(^|[^A-Za-z0-9_])([A-Za-zΔλ])_([A-Za-z0-9ก-๙]+)/;
 function fxNode(root){
   if(!root) return;
   if(root.nodeType===3){ fxText(root); return; }
   if(root.nodeType!==1 || /^(SCRIPT|STYLE|TEXTAREA|INPUT)$/.test(root.nodeName)) return;
-  const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {acceptNode:n=>(FR_RE.test(n.data) || n.data.indexOf('\u20D7') >= 0) && !n.parentNode.closest('textarea,script,style') ? 1 : 3});
+  const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {acceptNode:n=>(FR_RE.test(n.data) || SUB_RE.test(n.data) || n.data.indexOf('\u20D7') >= 0) && !n.parentNode.closest('textarea,script,style') ? 1 : 3});
   const L = []; while(w.nextNode()) L.push(w.currentNode); L.forEach(fxText);
 }
 function fxText(t){
-  if(!t.parentNode || !(FR_RE.test(t.data) || t.data.indexOf('\u20D7') >= 0)) return;
+  if(!t.parentNode || !(FR_RE.test(t.data) || SUB_RE.test(t.data) || t.data.indexOf('\u20D7') >= 0) || t.parentNode.closest('textarea,script,style')) return;
   const h = t.data.replace(/[&<>]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
-  let o = h.replace(/(\S)\u20D7/g, '<span class="vec">$1</span>'), p; do{ p = o; o = o.replace(/\{([^{}|\n]+)\|([^{}\n]+)\}/g, '<span class="fr"><span>$1</span><span>$2</span></span>'); } while(o!==p);
+  let o = h.replace(/(\S)\u20D7/g, '<span class="vec">$1</span>').replace(/(^|[^A-Za-z0-9_])([A-Za-zΔλ])_([A-Za-z0-9ก-๙]+)/g, '$1$2<sub>$3</sub>'), p; do{ p = o; o = o.replace(/\{([^{}|\n]+)\|([^{}\n]+)\}/g, '<span class="fr"><span>$1</span><span>$2</span></span>'); } while(o!==p);
   const tpl = document.createElement('template'); tpl.innerHTML = o; t.parentNode.replaceChild(tpl.content, t);
 }
 new MutationObserver(ms=>{ for(const m of ms){ if(m.type==='characterData') fxText(m.target); else m.addedNodes.forEach(fxNode); } }).observe(document.documentElement, {childList:true, subtree:true, characterData:true});
@@ -487,12 +502,12 @@ const CONF = {
   title:'ไฟฟ้ากระแส', short:'ม.5 ฟิสิกส์ บทที่ 12 ไฟฟ้ากระแส', subject:'ฟิสิกส์ ม.5', senior:true, hs:true,
   tags:['ฟิสิกส์ ม.5','ไฟฟ้ากระแส','ห้องแลป 3 มิติ'],
   sub:'วัดกระแสและความต่างศักย์ของตัวต้านทานและหลอดไฟเพื่อตรวจสอบกฎของโอห์ม ต่อตัวต้านทานแบบอนุกรมและขนาน แล้วหาแรงเคลื่อนไฟฟ้าและความต้านทานภายในของเซลล์ไฟฟ้า',
-  key:'parkilab-m5-current-v1', file:'ParK_iLab-M5-Physics-Ch12-current-electricity-worksheet.pdf',
-  hint:'แตะแหล่งจ่ายไฟเพื่อเปลี่ยนแรงดัน · แตะอุปกรณ์เพื่อสลับ · แตะรีโอสแตตเพื่อปรับความต้านทาน',
+  key:'parkilab-m5-current-v2', file:'ParK_iLab-M5-Physics-Ch12-current-electricity-worksheet.pdf',
+  hint:'ลากสายจากขั้วหนึ่งไปอีกขั้ว (หรือแตะขั้วต้นแล้วแตะขั้วปลาย) · แตะสายแล้วกด 🗑 เพื่อถอด · หมุนปุ่มสีส้มปรับแรงดัน · แตะสวิตช์',
   observe:'สังเกตค่าแอมมิเตอร์และโวลต์มิเตอร์เมื่อเปลี่ยนแรงดัน รูปแบบการต่อ และความต้านทานภายนอก รวมถึงความเร็วของจุดแสดงกระแสในสายไฟ',
   guide:[
     {h:'จุดประสงค์', li:['ตรวจสอบกฎของโอห์ม V = IR และเปรียบเทียบตัวต้านทานกับหลอดไฟ','หาความต้านทานรวมของการต่อแบบอนุกรมและแบบขนาน','หาแรงเคลื่อนไฟฟ้า E และความต้านทานภายใน r จาก V = E − Ir']},
-    {h:'ใช้ห้องแลป 3 มิติอย่างไร', li:['ตอนที่ 1 กดปุ่มแรงดันบนจอ หรือแตะแหล่งจ่ายไฟ อ่านค่าแอมมิเตอร์และโวลต์มิเตอร์ แล้วสลับเป็นหลอดไฟ','ตอนที่ 2 กดปุ่มบนจอสลับการต่อแบบอนุกรมและขนาน','ตอนที่ 3 กดปุ่มความต้านทานบนจอหรือแตะรีโอสแตต ดูกราฟ V กับ I ในแผงข้าง']},
+    {h:'ใช้ห้องแลป 3 มิติอย่างไร', li:['ตอนที่ 1 <b>ลากสาย</b>จากขั้วหนึ่งไปอีกขั้วให้ตรงแผนภาพ (หรือแตะขั้วต้นแล้วแตะขั้วปลาย) แตะสวิตช์ หมุนปุ่มสีส้มปรับแรงดัน แล้วแตะหลอดไฟบนโต๊ะเพื่อสลับ','ตอนที่ 2 กดปุ่มบนจอสลับการต่อแบบอนุกรมและขนาน','ตอนที่ 3 กดปุ่มความต้านทานบนจอหรือแตะรีโอสแตต ดูกราฟ V กับ I ในแผงข้าง']},
     'POE',
     {h:'ข้อควรระวัง (เมื่อทดลองจริง)', li:['ต่อแอมมิเตอร์แบบอนุกรม และโวลต์มิเตอร์แบบขนานเสมอ','เริ่มจากสเกลมิเตอร์ค่าสูงก่อน แล้วค่อยลดลง','ปิดวงจรเมื่อไม่ได้อ่านค่า เพื่อไม่ให้ตัวต้านทานและเซลล์ร้อน']}
   ]
@@ -518,8 +533,8 @@ const QUIZ = [
 
 const PARTS = [
   {k:'ตอนที่ 1', t:'กฎของโอห์ม', d:'ต่อวงจรกับตัวต้านทานปริศนา ปรับแรงดันอ่านกระแสและความต่างศักย์ หาความต้านทาน แล้วเปรียบเทียบกับหลอดไฟ', time:'ประมาณ 20 นาที', bg:'#E8F2FE',
-   pred:{q:"ถ้าเพิ่มความต่างศักย์คร่อมตัวต้านทานเป็น 2 เท่า กระแสจะเป็นอย่างไร", o:["เพิ่มเป็น 4 เท่า", "เพิ่มเป็น 2 เท่า", "เท่าเดิม"], a:1}, why:{"why": "การรู้ว่ากระแสเปลี่ยนตามความต่างศักย์อย่างไรช่วยเลือกตัวต้านทานในวงจรได้ถูกต้อง และแยกได้ว่าอุปกรณ์ใดเป็นไปตามกฎของโอห์ม", "find": "ค่ากระแสที่ความต่างศักย์ต่าง ๆ ความต้านทานของตัวต้านทานปริศนา และพฤติกรรมของหลอดไฟ", "how": "แอมมิเตอร์ต่ออนุกรมวัดกระแส โวลต์มิเตอร์ต่อขนานคร่อมตัวต้านทานวัดความต่างศักย์ ถ้า V/I คงที่ อุปกรณ์เป็นไปตามกฎของโอห์ม R = {V|I} กราฟ I–V เป็นเส้นตรง", "steps": ["เลือกแรงดันอย่างน้อย 3 ค่า", "อ่าน V และ I ในตาราง", "คำนวณ R = {V|I}", "เปลี่ยนเป็นหลอดไฟ แล้วดูกราฟ I–V"]}, refl:{"q": "ทำไมกราฟ I–V ของหลอดไฟจึงโค้ง ไม่เป็นเส้นตรงแบบตัวต้านทาน", "o": ["ไส้หลอดร้อนขึ้นเมื่อกระแสมาก ความต้านทานจึงเพิ่มขึ้น", "หลอดไฟไม่มีความต้านทาน", "แอมมิเตอร์อ่านค่าผิดเมื่อกระแสมาก"], "a": 0, "why": "R = V/I ของหลอดไฟไม่คงที่ เพราะความต้านทานของโลหะเพิ่มตามอุณหภูมิ กระแสจึงเพิ่มช้ากว่าความต่างศักย์ กราฟโค้งลง", "hint": "อะไรเกิดกับไส้หลอดเมื่อกระแสมากขึ้น และมีผลต่อความต้านทานอย่างไร"},
-   miss:[['v3','วัดอย่างน้อย 3 ค่าแรงดัน'],['R','คำนวณความต้านทาน']]},
+   pred:{q:"ถ้าเพิ่มความต่างศักย์คร่อมตัวต้านทานเป็น 2 เท่า กระแสจะเป็นอย่างไร", o:["เพิ่มเป็น 4 เท่า", "เพิ่มเป็น 2 เท่า", "เท่าเดิม"], a:1}, why:{"why": "การรู้ว่ากระแสเปลี่ยนตามความต่างศักย์อย่างไรช่วยเลือกตัวต้านทานในวงจรได้ถูกต้อง และแยกได้ว่าอุปกรณ์ใดเป็นไปตามกฎของโอห์ม", "find": "ค่ากระแสที่ความต่างศักย์ต่าง ๆ ความต้านทานของตัวต้านทานปริศนา และพฤติกรรมของหลอดไฟ", "how": "แอมมิเตอร์ต่ออนุกรมวัดกระแส โวลต์มิเตอร์ต่อขนานคร่อมตัวต้านทานวัดความต่างศักย์ ถ้า V/I คงที่ อุปกรณ์เป็นไปตามกฎของโอห์ม R = {V|I} กราฟ I–V เป็นเส้นตรง", "steps": ["ต่อวงจรตามแผนภาพ: แอมมิเตอร์อนุกรม โวลต์มิเตอร์คร่อม", "ปิดสวิตช์ ปรับแรงดันอย่างน้อย 3 ค่า", "คำนวณ R = {V|I}", "สลับเป็นหลอดไฟ แล้วดูกราฟ I–V"]}, refl:{"q": "ทำไมกราฟ I–V ของหลอดไฟจึงโค้ง ไม่เป็นเส้นตรงแบบตัวต้านทาน", "o": ["ไส้หลอดร้อนขึ้นเมื่อกระแสมาก ความต้านทานจึงเพิ่มขึ้น", "หลอดไฟไม่มีความต้านทาน", "แอมมิเตอร์อ่านค่าผิดเมื่อกระแสมาก"], "a": 0, "why": "R = V/I ของหลอดไฟไม่คงที่ เพราะความต้านทานของโลหะเพิ่มตามอุณหภูมิ กระแสจึงเพิ่มช้ากว่าความต่างศักย์ กราฟโค้งลง", "hint": "อะไรเกิดกับไส้หลอดเมื่อกระแสมากขึ้น และมีผลต่อความต้านทานอย่างไร"},
+   miss:[['wire','ต่อวงจรตามแผนภาพ'],['v3','วัด V และ I อย่างน้อย 3 ค่า'],['R','คำนวณความต้านทาน'],['bulb','สลับเป็นหลอดไฟ วัด 2 ค่า']]},
   {k:'ตอนที่ 2', t:'การต่อตัวต้านทานแบบอนุกรมและขนาน', d:'ต่อตัวต้านทาน 10 Ω และ 15 Ω แบบอนุกรมและแบบขนาน วัดกระแสรวม แล้วหาความต้านทานรวม', time:'ประมาณ 15 นาที', bg:'#FFF4D6',
    pred:{q:"ต่อตัวต้านทานแบบขนาน ความต้านทานรวมจะเป็นอย่างไร", o:["อยู่ระหว่างสองตัว", "เท่ากับผลรวม", "น้อยกว่าตัวที่น้อยที่สุด"], a:2}, why:{"why": "ไฟในบ้านต่อแบบขนาน ไฟประดับบางแบบต่อแบบอนุกรม การหาความต้านทานรวมช่วยคำนวณกระแสที่ไหลจากแหล่งจ่ายและเลือกฟิวส์ได้", "find": "กระแสรวมเมื่อต่อ 10 Ω กับ 15 Ω แบบอนุกรมและแบบขนาน และความต้านทานรวมแบบขนาน", "how": "อนุกรม: กระแสผ่านทุกตัวเท่ากัน R = R₁ + R₂ ขนาน: ความต่างศักย์คร่อมทุกตัวเท่ากัน กระแสแยกทาง {1|R} = {1|R₁} + {1|R₂}", "steps": ["เลือกอนุกรม แล้วกด 📏 อ่านค่า", "เลือกขนาน แล้วกด 📏 อ่านค่า", "คำนวณ R รวม = {V|I} ของแต่ละแบบ", "ตรวจด้วย {1|R} = {1|R₁} + {1|R₂}"]}, refl:{"q": "ทำไมความต้านทานรวมแบบขนานจึงน้อยกว่าตัวที่น้อยที่สุด", "o": ["การต่อขนานเพิ่มเส้นทางให้กระแส กระแสรวมจึงมากขึ้นที่ความต่างศักย์เดิม", "ความต้านทานหักล้างกันเมื่อต่อขนาน", "กระแสไหลผ่านเพียงตัวที่น้อยที่สุด"], "a": 0, "why": "แต่ละตัวมีความต่างศักย์เท่ากัน กระแสรวม = I₁ + I₂ มากกว่ากระแสของตัวใดตัวหนึ่ง R รวม = V/I รวมจึงน้อยกว่า 10 Ω ได้ 6 Ω", "hint": "เพิ่มทางเดินให้กระแส กระแสรวมเป็นอย่างไร"},
    miss:[['ser','วัดกระแสแบบอนุกรม'],['par','วัดกระแสแบบขนาน'],['Rp','คำนวณความต้านทานรวมแบบขนาน']]},
@@ -550,7 +565,7 @@ const SHEET = [
     ['p3c','E (V) และ r (Ω) จากกราฟ','.....................................................'],
     ['p3d','กระแสมากขึ้น V ปลายเซลล์',['ลดลง','เพิ่มขึ้น']]], concl:'p3s', cq:'เขียนกราฟ V กับ I และอธิบายความหมายของจุดตัดแกนและความชัน'}
 ];
-const GUIDE = [{"v3": ["[data-v^=\"V:\"]", "เลือกแรงดัน แล้วอ่านค่ากระแส ให้ได้อย่างน้อย 3 ค่าครับ", ["ตั้งแรงดันค่าแรก", "ตั้งค่าที่สอง", "ตั้งค่าที่สาม"], ""], "R": ["#rv", "คำนวณ R = V/I จากแถวในตาราง ใส่ช่องคำตอบครับ", [], "ช่องคำนวณจะขึ้นเมื่อมีข้อมูลในตารางแล้ว ทำข้อที่มี ▶ ทำต่อ ก่อนครับ"], "lin": ["[data-v^=\"ans:lin:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"], "bulb": ["[data-v^=\"ans:bulb:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"]}, {"ser": ["cfg:ser", "เลือก “อนุกรม” แล้วกด 📏 อ่านค่าครับ", [], ""], "par": ["cfg:par", "เลือก “ขนาน” แล้วกด 📏 อ่านค่าครับ", [], ""], "Rp": ["#pv", "คำนวณ 1/R = 1/R₁ + 1/R₂ ใส่ช่องคำตอบครับ", [], "ช่องคำนวณจะขึ้นเมื่อมีข้อมูลในตารางแล้ว ทำข้อที่มี ▶ ทำต่อ ก่อนครับ"], "q": ["[data-v^=\"ans:q:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"]}, {"pts": ["[data-v^=\"rh:\"]", "ปรับความต้านทานภายนอก แล้วอ่านค่า ให้ได้อย่างน้อย 3 ค่าครับ", [], ""], "E": ["#ev", "หา E จากจุดตัดแกน V ของกราฟ V–I ใส่ช่องคำตอบครับ", [], "ช่องคำนวณจะขึ้นเมื่อมีข้อมูลในตารางแล้ว ทำข้อที่มี ▶ ทำต่อ ก่อนครับ"], "r": ["#iv", "หา r จากความชันกราฟ V–I (ค่าบวก) ใส่ช่องคำตอบครับ", [], "ช่องคำนวณจะขึ้นเมื่อมีข้อมูลในตารางแล้ว ทำข้อที่มี ▶ ทำต่อ ก่อนครับ"], "q": ["[data-v^=\"ans:q:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"]}];
+const GUIDE = [{"wire": ["#pCtrl svg", "ลากสายจากขั้วหนึ่งไปอีกขั้วให้ตรงแผนภาพ (หรือแตะขั้วต้นแล้วแตะขั้วปลาย) เริ่มจากขั้ว + สีแดงของแหล่งจ่ายไฟครับ", ["ขั้ว + แหล่งจ่าย → สวิตช์", "สวิตช์ → ขั้ว + แอมมิเตอร์", "ขั้ว − แอมมิเตอร์ → ตัวต้านทาน", "ตัวต้านทาน → ขั้ว − แหล่งจ่าย", "โวลต์มิเตอร์คร่อมตัวต้านทาน (+ ฝั่งแอมมิเตอร์)"], ""], "v3": ["[data-v^=\"V:\"]", "หมุนปุ่มสีส้มหรือกด V +/− ให้ได้อย่างน้อย 3 ค่าแรงดันครับ", [], "ต่อวงจรให้ถูกก่อน ค่าจึงจะบันทึก ทำข้อที่มี ▶ ทำต่อ ก่อนครับ"], "R": ["#rv", "คำนวณ R = V/I จากแถวในตาราง ใส่ช่องคำตอบครับ", [], "ช่องคำนวณจะขึ้นเมื่อมีข้อมูลในตารางแล้ว ทำข้อที่มี ▶ ทำต่อ ก่อนครับ"], "bulb": ["[data-v=\"swap\"]", "แตะหลอดไฟบนโต๊ะหรือกดปุ่มเปลี่ยนเป็นหลอดไฟ แล้ววัด 2 ค่าแรงดันครับ", [], ""]}, {"ser": ["cfg:ser", "เลือก “อนุกรม” แล้วกด 📏 อ่านค่าครับ", [], ""], "par": ["cfg:par", "เลือก “ขนาน” แล้วกด 📏 อ่านค่าครับ", [], ""], "Rp": ["#pv", "คำนวณ 1/R = 1/R₁ + 1/R₂ ใส่ช่องคำตอบครับ", [], "ช่องคำนวณจะขึ้นเมื่อมีข้อมูลในตารางแล้ว ทำข้อที่มี ▶ ทำต่อ ก่อนครับ"], "q": ["[data-v^=\"ans:q:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"]}, {"pts": ["[data-v^=\"rh:\"]", "ปรับความต้านทานภายนอก แล้วอ่านค่า ให้ได้อย่างน้อย 3 ค่าครับ", [], ""], "E": ["#ev", "หา E จากจุดตัดแกน V ของกราฟ V–I ใส่ช่องคำตอบครับ", [], "ช่องคำนวณจะขึ้นเมื่อมีข้อมูลในตารางแล้ว ทำข้อที่มี ▶ ทำต่อ ก่อนครับ"], "r": ["#iv", "หา r จากความชันกราฟ V–I (ค่าบวก) ใส่ช่องคำตอบครับ", [], "ช่องคำนวณจะขึ้นเมื่อมีข้อมูลในตารางแล้ว ทำข้อที่มี ▶ ทำต่อ ก่อนครับ"], "q": ["[data-v^=\"ans:q:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"]}];
 const CMAP = {"intro": "เชื่อมปริมาณไฟฟ้ากระแสด้วยความสัมพันธ์ที่ถูกต้อง", "nodes": [["V", "V", 14, 14, "ความต่างศักย์"], ["I", "I", 86, 14, "กระแส"], ["R", "R", 50, 50, "ความต้านทาน"], ["E", "E", 14, 86, "แรงเคลื่อนไฟฟ้า"], ["r", "r", 86, 86, "ความต้านทานภายใน"], ["RP", "R_ขนาน", 50, 92, "ความต้านทานรวมแบบขนาน"]], "edges": [["V", "R", "c1", "กฎของโอห์ม R = V/I สำหรับตัวต้านทานที่อุณหภูมิคงที่", "ความต้านทานหาจากความต่างศักย์และกระแสอย่างไร"], ["R", "RP", "c2", "ต่อขนาน 1/R = 1/R₁ + 1/R₂", "ความต้านทานรวมแบบขนานคิดอย่างไร"], ["E", "V", "c3", "ความต่างศักย์ปลายเซลล์ V = E − Ir", "ขั้วเซลล์ให้ความต่างศักย์น้อยกว่า E เท่าใด"], ["r", "I", "c4", "ความชันของกราฟ V–I คือ −r", "จากกราฟ V–I หา r ได้อย่างไร"], ["I", "R", "c5", "ต่ออนุกรม กระแสเท่ากันทุกตัว R = R₁ + R₂", "ต่ออนุกรมความต้านทานรวมคิดอย่างไร"]], "chips": [["c1", "R = V/I"], ["c2", "1/R = 1/R₁ + 1/R₂"], ["c3", "V = E − Ir"], ["c4", "ความชัน V–I = −r"], ["c5", "R = R₁ + R₂"], ["d1", "R = VI"], ["d2", "V = E + Ir"], ["d3", "R = 1/R₁ + 1/R₂"]], "done": "R = V/I อนุกรม R = R₁ + R₂ ขนาน 1/R = 1/R₁ + 1/R₂ และความต่างศักย์ปลายเซลล์ V = E − Ir ซึ่งให้ E จากจุดตัดแกน V และ r จากความชันของกราฟ V–I"};
 const ENDQ = [
  [{k:'lin', q:'สำหรับตัวต้านทานที่{n}วัด กระแส I สัมพันธ์กับความต่างศักย์ V อย่างไร', o:[['prop','แปรผันตรงกับ V'],['inv','แปรผกผันกับ V'],['const','คงที่ไม่ขึ้นกับ V']], a:'prop',
@@ -572,6 +587,7 @@ const ENDQ = [
    h:['แทน I = 0 ใน V = E − Ir','ความชันของกราฟคืออะไร'], r:[['I0','ไม่มีกระแส จึงไม่มีแรงดันตกคร่อม r ได้ V = E'],['slope','จุดตัดแกนบอกความชันของกราฟ ซึ่งคือความต้านทาน'],['ohm','V/I ที่จุดตัดแกนนั้นคือความต้านทานภายนอก R']], ra:'I0',
    hr:['r ได้จากความชัน (คิดค่าบวก)','ที่ I = 0 ค่า V/I หาค่าไม่ได้'], why:'ที่ I = 0 ได้ V = E จุดตัดแกน V จึงเป็นแรงเคลื่อนไฟฟ้า ส่วนความชันคือ −r'}]
 ];
+/* TEMP sample: part 1 only */ PARTS.splice(1); SHEET.splice(1); PART_ART.splice(1); GUIDE.splice(1); ENDQ.splice(1);
 
 const PD = !CONF.uni && /ป\.\d|ม\.1(?!\d)/.test(CONF.subject || ''), NOG = CONF.uni || PD, MD = !!CONF.uni && !!CONF.resCard, MDC = CONF.resCard==='C';
 const STEPS = ['แบบทดสอบก่อนเรียน','คู่มือการทำกิจกรรม','ตัวแลป', CONF.uni ? 'สรุปและทบทวน' : 'ใบกิจกรรมบันทึกผล','แบบทดสอบหลังเรียน'];
@@ -693,6 +709,8 @@ function render(){
 document.getElementById('main').addEventListener('click', e=>{
   const a = e.target.closest('[data-act]'); if(!a || a.disabled) return;
   const act = a.dataset.act, v = a.dataset.v;
+  if(act==='sfx'){ const m = SFX.toggle(); a.innerHTML = m ? SND_OFF : SND_ON; a.setAttribute('aria-label', m ? 'เปิดเสียง' : 'ปิดเสียง'); toast(m ? 'ปิดเสียงแล้ว' : 'เปิดเสียงแล้ว'); if(typeof Lab!=='undefined' && Lab.muted) Lab.muted(m); return; }
+  if(act==='ans' || act==='pred') SFX.pick(); else if(!(act==='lab' && /^(cam|z(in|out))/.test(String(v)))) SFX.click();
   if(act==='go') go(v);
   if(act==='part') go('lab', {part:+v});
   if(act==='ans'){ const st = S[ui.view], q0 = Math.min(NQ - 1, Math.max(0, ui.q)); ui.q = q0; st.a[q0] = +v; st.a.length = NQ; save(); if(q0<NQ-1) { setTimeout(()=>{ if(ui.q===q0){ ui.q = q0 + 1; render(); } }, 180); } render(); }
@@ -839,7 +857,7 @@ function chipSync(){ const r = $('#pRes'), c = $('#resChip'); if(!r || !c) retur
     const hd = (ch[ch.indexOf(el) % nc] || {}).textContent || '', m = hd.match(/^(.*?)\s*\(([^)]*)\)\s*$/), v = el.textContent.replace(/^[●○•]\s*/, '').trim(); return m ? `${m[1]} = ${v} ${m[2]}` : v; }).filter(Boolean);
   if(!pairs.length){ const stx = [...r.querySelectorAll('.status')].map(x=>x.textContent.trim()).filter(Boolean); if(stx.length) pairs.push(stx[0]); }
   const html = `<b>${esc(t)}</b>${`<span class="v">${pairs.length ? pairs.map(esc).join(' · ') : esc(t)}</span>`}<button class="btn ghost sm" type="button" data-act="resopen" aria-label="เปิดกราฟและตาราง" title="${esc(t)}">📊 ดูผล</button>`;
-  if(c.dataset.h !== html){ c.innerHTML = html; c.dataset.h = html; } const st = $('#stage'); if(st){ st.style.setProperty('--chipw', (c.hidden ? 0 : c.offsetWidth) + 'px'); const d = $('#dock'); st.style.setProperty('--docky', ((d && d.offsetHeight ? d.offsetTop + d.offsetHeight : 52) + 10) + 'px'); if(d && window.ResizeObserver && !d.__ro){ d.__ro = 1; new ResizeObserver(()=>chipSync()).observe(d); } } }
+  if(c.dataset.h !== html){ c.innerHTML = html; c.dataset.h = html; } const st = $('#stage'); if(st){ st.style.setProperty('--chipw', (c.hidden ? 0 : c.offsetWidth) + 'px'); const d = $('#dock'); st.style.setProperty('--docky', ((d && d.offsetHeight && d.parentNode===st && !d.classList.contains('fb') ? d.offsetTop + d.offsetHeight : 52) + 10) + 'px'); if(d && window.ResizeObserver && !d.__ro){ d.__ro = 1; new ResizeObserver(()=>chipSync()).observe(d); } } }
 function chipWatch(){ const r = $('#pRes'); if(!r || r.__cw) return; r.__cw = 1; new MutationObserver(chipSync).observe(r, {childList:true, subtree:true, characterData:true}); chipSync(); }
 function popWatch(){ const r = $('#pRes'); if(!r || r.__pw) return; r.__pw = 1; let last = null;
   new MutationObserver(()=>{ const cur = [...r.querySelectorAll('.status')].map(el=>{ const par = el.parentElement, lab = par ? par.textContent.replace(el.textContent, '').replace(/[:：]\s*$/, '').trim() : ''; return [lab.length < 40 ? lab : '', el.textContent.trim(), el.className]; });
@@ -855,7 +873,7 @@ function eqSt(i){ S.eq = S.eq || {}; const st = S.eq[i] = S.eq[i] || {a:{}, w:{}
 const eqQOk = (st, q) => st.a[q.k]===q.a && (!q.r || st.r[q.k]===q.ra);
 function eqDone(i){ const st = eqSt(i); return EQ(i).every(q=>eqQOk(st, q)); }
 function eqAnswer(v){ const [i, k, o] = v.split('|'), q = EQ(+i).find(x=>x.k===k), st = eqSt(+i); if(!q || st.a[k]===q.a) return false;
-  st.a[k] = o; if(o!==q.a){ st.w[k] = (st.w[k] || 0) + 1; } else toast(q.r ? 'ข้อสรุปถูกต้อง ต่อไปเลือกเหตุผล' : 'ถูกต้อง เก่งมาก!'); save(); return o===q.a; }
+  st.a[k] = o; if(o!==q.a){ st.w[k] = (st.w[k] || 0) + 1; SFX.bad(); } else SFX.ok(), toast(q.r ? 'ข้อสรุปถูกต้อง ต่อไปเลือกเหตุผล' : 'ถูกต้อง เก่งมาก!'); save(); return o===q.a; }
 function eqReason(v){ const [i, k, o] = v.split('|'), q = EQ(+i).find(x=>x.k===k), st = eqSt(+i); if(!q || !q.r || st.a[k]!==q.a || st.r[k]===q.ra) return false;
   st.r[k] = o; if(o!==q.ra){ st.wr[k] = (st.wr[k] || 0) + 1; } else toast('ถูกต้องทั้งข้อสรุปและเหตุผล'); save(); return o===q.ra; }
 const EQPOS = (()=>{ const m = {}; if(typeof ENDQ==='undefined') return m; let h = 2166136261; for(const ch of String(CONF.key) + 'eq'){ h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619) >>> 0; }
@@ -1106,6 +1124,7 @@ ${CONF.hs ? '' : `${PD ? '' : `          <button class="ibtn" type="button" data
           <button class="ibtn" type="button" data-act="lab" data-v="zin" aria-label="ซูมเข้า">${ICON.zin}</button>
           <button class="ibtn" type="button" data-act="lab" data-v="zout" aria-label="ซูมออก">${ICON.zout}</button>`}
           <button class="ibtn" type="button" data-act="lab" data-v="camReset" aria-label="มุมมองเริ่มต้น">${ICON.cube}</button>
+          <button class="ibtn" type="button" data-act="sfx" aria-label="${SFX.muted ? 'เปิดเสียง' : 'ปิดเสียง'}">${SFX.muted ? SND_OFF : SND_ON}</button>
 ${PD ? `          <button class="ibtn" type="button" data-act="guideinfo" aria-label="คู่มือการทำกิจกรรม" style="font-weight:700;font-size:20px;color:var(--primary-d)">ⓘ</button>
           <button class="ibtn" type="button" data-act="full" id="fullBtn" aria-label="ขยายเต็มจอ" style="font-size:20px">⛶</button>` : ''}
 ${CONF.uni ? `          <button class="ibtn" type="button" data-act="whyopen" aria-label="อธิบายการทดลองตอนนี้" style="font-weight:700;font-size:18px;color:var(--primary-d)">ⓘ</button>
@@ -1256,6 +1275,57 @@ function vResult(){
   </div>`;
 }
 
+/* ---------- sound effects + speech (Web Audio, no files) ---------- */
+const SPK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>';
+const SND_ON = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>';
+const SND_OFF = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9l5 6M21 9l-5 6"/></svg>';
+const SFX = (function(){
+  let ac = null, master = null, noise = null, ch = {}, last = {}, muted = false;
+  try { muted = localStorage.getItem('parkilab-sfx-mute') === '1'; } catch(_){}
+  const VOL = .32;
+  function unlock(){
+    if(ac){ if(ac.state === 'suspended') ac.resume(); return; }
+    try {
+      ac = new (window.AudioContext || window.webkitAudioContext)();
+      master = ac.createGain(); master.gain.value = muted ? 0 : VOL; master.connect(ac.destination);
+      const len = ac.sampleRate*2, buf = ac.createBuffer(1, len, ac.sampleRate), d = buf.getChannelData(0);
+      for(let i=0;i<len;i++) d[i] = Math.random()*2 - 1; noise = buf;
+      const mk = (type, freq, q, lfo) => { const src = ac.createBufferSource(); src.buffer = noise; src.loop = true;
+        const f = ac.createBiquadFilter(); f.type = type; f.frequency.value = freq; f.Q.value = q;
+        const g = ac.createGain(); g.gain.value = 0; src.connect(f); f.connect(g); g.connect(master); src.start();
+        if(lfo){ const o = ac.createOscillator(), og = ac.createGain(); o.frequency.value = lfo; og.gain.value = freq*.35; o.connect(og); og.connect(f.frequency); o.start(); }
+        return g; };
+      const buzz = () => { const o = ac.createOscillator(); o.type = 'sawtooth'; o.frequency.value = 210; const v = ac.createOscillator(), vg = ac.createGain(); v.frequency.value = 9; vg.gain.value = 14; v.connect(vg); vg.connect(o.frequency); v.start();
+        const f = ac.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 900; const g = ac.createGain(); g.gain.value = 0; o.connect(f); f.connect(g); g.connect(master); o.start(); return g; };
+      ch = { rain: mk('bandpass', 2600, .6), boil: mk('lowpass', 520, 1.2, 3.1), wind: mk('bandpass', 420, 1.4, .18), hiss: mk('highpass', 5200, .7), sizzle: mk('highpass', 2800, 1.5, 7), buzz: buzz() };
+    } catch(_){ ac = null; }
+  }
+  addEventListener('pointerdown', unlock, {capture:true, passive:true});
+  addEventListener('keydown', unlock, {capture:true});
+  function tone(f0, f1, dur, type='sine', vol=.5, delay=0){
+    if(!ac || muted) return; const t = ac.currentTime + delay, o = ac.createOscillator(), g = ac.createGain();
+    o.type = type; o.frequency.setValueAtTime(f0, t); if(f1) o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + .012); g.gain.exponentialRampToValueAtTime(.001, t + dur);
+    o.connect(g); g.connect(master); o.start(t); o.stop(t + dur + .02);
+  }
+  const AMB = {rain:.5, boil:.9, wind:.55, hiss:.12, sizzle:.18, buzz:.07};
+  return {
+    unlock,
+    get muted(){ return muted; },
+    toggle(){ muted = !muted; try { localStorage.setItem('parkilab-sfx-mute', muted ? '1' : '0'); } catch(_){} if(master) master.gain.setTargetAtTime(muted ? 0 : VOL, ac.currentTime, .05); if(!muted){ unlock(); tone(660, 990, .12, 'sine', .4); } return muted; },
+    click(){ tone(820, 620, .05, 'triangle', .25); },
+    pick(){ tone(380, 620, .09, 'sine', .35); },
+    drop(){ tone(240, 140, .12, 'sine', .45); },
+    ok(){ tone(660, 0, .12, 'sine', .4); tone(990, 0, .18, 'sine', .35, .09); },
+    bad(){ tone(220, 170, .22, 'square', .12); },
+    done(){ [523, 659, 784, 1046].forEach((f,k)=>tone(f, 0, .22, 'triangle', .35, k*.09)); },
+    pop(){ tone(900 + Math.random()*700, 1500, .04, 'sine', .12); },
+    tick(){ tone(2400 + Math.random()*800, 0, .03, 'square', .06); },
+    speak(w){ try{ const u = new SpeechSynthesisUtterance(w); u.lang = 'en-US'; u.rate = .8; const vs = speechSynthesis.getVoices().filter(x=>/^en/i.test(x.lang)); if(vs.length) u.voice = vs.find(x=>/en-US/i.test(x.lang)) || vs[0]; speechSynthesis.cancel(); speechSynthesis.speak(u); } catch(_){ toast('อุปกรณ์นี้อ่านออกเสียงไม่ได้'); } },
+    amb(lv){ if(!ac) return; Object.keys(ch).forEach(k=>{ const v = Math.max(0, Math.min(1, (lv && lv[k]) || 0))*AMB[k]; if(Math.abs((last[k]||0) - v) > .01){ last[k] = v; ch[k].gain.setTargetAtTime(v, ac.currentTime, .25); } }); }
+  };
+})();
+
 /* ---------- PDF ---------- */
 async function makePdf(btn){
   const el = $('#pdfsheet'), pages = sheetPages();
@@ -1293,13 +1363,12 @@ const Lab = (function(){
   const TABLE_Y = 0.15;
   const V = (x,y,z) => new THREE.Vector3(x,y,z), UP = V(0,1,0);
   const CAMS = [
-    {pos:V(0.2,3.5,4.4), tgt:V(0.1,.1,.1)},
-    {pos:V(0.2,3.5,4.4), tgt:V(0.1,.1,.1)},
-    {pos:V(0.1,3.5,4.4), tgt:V(0,.1,.1)}
+    {pos:V(-0.2,2.8,2.5), tgt:V(-0.2,.1,.05), nk:1.0}
   ];
   function mat(c, o={}){ return new THREE.MeshStandardMaterial(Object.assign({color:c, roughness:.55, metalness:0}, o)); }
-  const METAL = () => mat(0xB9C0CE, {metalness:.8, roughness:.3});
-  const GLASS = (op=.2) => new THREE.MeshStandardMaterial({color:0xDCEBFB, transparent:true, opacity:op, roughness:.05, side:THREE.DoubleSide, depthWrite:false});
+  let ENVMAP = null;
+  const METAL = () => mat(0xC9CFDA, {metalness:.9, roughness:.22, envMap:ENVMAP, envMapIntensity:1});
+  const GLASS = (op=.2) => new THREE.MeshStandardMaterial({color:0xDCEBFB, transparent:true, opacity:op, roughness:.05, envMap:ENVMAP, envMapIntensity:1.6, metalness:.1, side:THREE.DoubleSide, depthWrite:false});
   const TRANS = (c, op) => new THREE.MeshStandardMaterial({color:c, transparent:true, opacity:op, roughness:.15, depthWrite:false});
   function shadowAll(g){ g.traverse(m=>{ if(m.isMesh && !(m.material && m.material.transparent)){ m.castShadow = true; m.receiveShadow = true; } }); return g; }
   function box(w,h,d,m,x=0,y=0,z=0){ const o = new THREE.Mesh(new THREE.BoxGeometry(w,h,d), m); o.position.set(x,y,z); return o; }
@@ -1322,13 +1391,26 @@ const Lab = (function(){
       renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
       renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
       const scene = new THREE.Scene(); scene.background = new THREE.Color(0xEDF1FA);
+      try{ renderer.physicallyCorrectLights = false;
+        const bg = canvasTex(16, 256, (x)=>{ const g = x.createLinearGradient(0,0,0,256); g.addColorStop(0,'#CFDcF6'); g.addColorStop(.55,'#E9EEF9'); g.addColorStop(1,'#F6F2EC'); x.fillStyle = g; x.fillRect(0,0,16,256); }); scene.background = bg;
+        const ec = canvasTex(512, 256, (x)=>{ const g = x.createLinearGradient(0,0,0,256); g.addColorStop(0,'#FFFFFF'); g.addColorStop(.42,'#DCE6F7'); g.addColorStop(.5,'#B9C2D6'); g.addColorStop(.62,'#8E8676'); g.addColorStop(1,'#5E564A'); x.fillStyle = g; x.fillRect(0,0,512,256);
+          x.fillStyle = 'rgba(255,255,255,.95)'; [[40,30,90,60],[200,20,70,70],[330,34,110,50],[450,26,50,64]].forEach(r=>x.fillRect(...r)); x.fillStyle = 'rgba(255,236,200,.6)'; x.fillRect(120,50,40,30); });
+        ec.mapping = THREE.EquirectangularReflectionMapping; const pm = new THREE.PMREMGenerator(renderer); ENVMAP = pm.fromEquirectangular(ec).texture; pm.dispose(); ec.dispose();
+      }catch(_){ }
       const camera = new THREE.PerspectiveCamera(42, 1, 0.3, 60);
       const controls = new THREE.OrbitControls(camera, renderer.domElement);
       controls.enablePan = false; controls.enableDamping = true; controls.dampingFactor = .08;
       controls.minDistance = 3; controls.maxDistance = 15; controls.maxPolarAngle = 1.45; controls.minPolarAngle = .15;
       scene.add(new THREE.HemisphereLight(0xffffff, 0xC9D3EC, .85));
-      const sun = new THREE.DirectionalLight(0xffffff, .85); sun.position.set(4, 9, 6); sun.castShadow = true;
-      sun.shadow.mapSize.set(1024,1024); Object.assign(sun.shadow.camera, {left:-6,right:6,top:6,bottom:-5}); sun.shadow.bias = -0.0006; sun.shadow.normalBias = .02;
+      const sun = new THREE.DirectionalLight(0xFFF6E8, .85); sun.position.set(4, 9, 6); sun.castShadow = true;
+      const fill = new THREE.DirectionalLight(0xBFD4FF, .22); fill.position.set(-6, 4, -5); scene.add(fill);
+      { const coarse = window.matchMedia && matchMedia('(pointer:coarse)').matches; sun.shadow.radius = 3;
+        const fl = new THREE.Mesh(new THREE.CircleGeometry(70, 48), new THREE.MeshStandardMaterial({map:canvasTex(512, 512, (x)=>{ x.fillStyle = '#A8A297'; x.fillRect(0,0,512,512); x.strokeStyle = 'rgba(120,112,100,.35)'; x.lineWidth = 3; for(let k=0;k<=512;k+=128){ x.beginPath(); x.moveTo(k,0); x.lineTo(k,512); x.moveTo(0,k); x.lineTo(512,k); x.stroke(); } }), roughness:.9}));
+        fl.material.map.wrapS = fl.material.map.wrapT = THREE.RepeatWrapping; fl.material.map.repeat.set(36,36); fl.rotation.x = -Math.PI/2; fl.position.y = -2.6; fl.receiveShadow = false; scene.add(fl);
+        scene.fog = new THREE.Fog(0xDCE3F2, 22, 75);
+        const lm = mat(0x5A4630, {roughness:.7}); [[-4.4,-2.5],[4.4,-2.5],[-4.4,2.5],[4.4,2.5]].forEach(([x,z])=>{ const l = box(.22, 2.5, .22, lm, x, -1.45, z); scene.add(l); });
+        scene.add(box(9.1,.32,.08, lm, 0, -.42, 2.62)); scene.add(box(9.1,.32,.08, lm, 0, -.42, -2.62));
+        sun.shadow.mapSize.set(coarse ? 1024 : 2048, coarse ? 1024 : 2048); } Object.assign(sun.shadow.camera, {left:-6,right:6,top:6,bottom:-5}); sun.shadow.bias = -0.0006; sun.shadow.normalBias = .02;
       scene.add(sun);
       const top = box(9.4,.3,5.6, mat(0xA88762,{roughness:.75, polygonOffset:true, polygonOffsetFactor:4, polygonOffsetUnits:8})); top.receiveShadow = true; scene.add(top);
       scene.add(box(9.5,.1,5.7, mat(0x6E5034), 0, -.2, 0));
@@ -1413,173 +1495,226 @@ const Lab = (function(){
     series.forEach(sr=>{ x.fillStyle = sr.col; x.strokeStyle = sr.col; x.lineWidth = 2.5; if(sr.line){ x.beginPath(); x.moveTo(X(sr.line[0][0]), Y(sr.line[0][1])); x.lineTo(X(sr.line[1][0]), Y(sr.line[1][1])); x.stroke(); } sr.pts.forEach(p=>{ x.beginPath(); x.arc(X(p[0]), Y(p[1]), 9, 0, 7); x.fill(); }); }); }
 
   /* ----- constants ----- */
-  const VS = [1.5,3.0,4.5,6.0], RXS = [12,18,22,27], R1 = 10, R2 = 15, V2 = 6, ES = [3.0,4.5,6.0], RIS = [.5,1.0,1.5,2.0], RHS = [2,4,6,8,10];
-  const Ib = v => .12*Math.pow(v, .55);
+  /* ===================== circuit engine (drag-to-wire) ===================== */
+  const VMAX = 6, VSTEP = .5, RXS = [12,18,22,27], RW = .005, RAM = .05, RVM = 1e7, RPS = .1, IFUSE = 2, ITRIP = 3;
+  const Ib = v => .12*Math.pow(Math.max(v, 0), .55);
+  const TY = .2; // post top height above the table
 
   /* ----- part setup ----- */
-  const defaults = i => ({wrong:0, ans:{}, V:1.5, comp:'res', Rx:pick1(RXS), recs:{}, ROk:false,
-    cfg:'ser', rec2:{}, RpOk:false,
-    E:pick1(ES), ri:pick1(RIS), Rh:10, pts:{}, EOk:false, rOk:false});
+  const defaults = i => ({wrong:0, ans:{}, wires:[], V:3, sw:0, comp:'res', Rx:pick1(RXS), fuse:0, recs:{}, ROk:false, wiredOk:false, ele:false});
   const restoreS = i => { const s = defaults(i); try { if(S.ps && S.ps[i]) Object.assign(s, JSON.parse(JSON.stringify(S.ps[i]))); } catch(e){} return s; };
-  const fresh = i => ({i, s:restoreS(i), labels:[], celebrate:false, dirty:false, ctrlSig:'', warn:null, tt:0});
+  const fresh = i => ({i, s:restoreS(i), labels:[], celebrate:false, dirty:false, ctrlSig:'', warn:null, tt:0, selT:null, selW:null});
   function clearWorld(){ while(R.world.children.length) R.world.remove(R.world.children[0]); }
-  function fitNarrow(){ const el = R.renderer.domElement, a = el.clientWidth/Math.max(1, el.clientHeight); if(a < 1){ const k = Math.min(1.25, .8/a); R.camera.position.sub(R.controls.target).multiplyScalar(k).add(R.controls.target); } }
-  function rebuild(){ clearWorld(); P.labels = []; P.flows = []; if(P.i===0) buildP1(); else if(P.i===1) buildP2(); else buildP3(); labelsDOM(); }
+  function fitNarrow(){ const el = R.renderer.domElement, a = el.clientWidth/Math.max(1, el.clientHeight), c = CAMS[P.i]; if(a < 1){ const k = Math.min(c.nk || 1.2, Math.max(1, .9/a)); R.camera.position.sub(R.controls.target).multiplyScalar(k).add(R.controls.target); if(c.nx){ R.controls.target.x += c.nx; R.camera.position.x += c.nx; } } }
+  function rebuild(){ clearWorld(); P.lcdA = P.lcdV = P.lcdVm = null; P.labels = []; P.comps = {}; P.terms = {}; P.wireObjs = []; P.tmp = null; buildP1(); drawWires(); labelsDOM(); }
   function build(){ P.ctrlSig = ''; const cam = CAMS[P.i]; R.camera.position.copy(cam.pos); R.controls.target.copy(cam.tgt); fitNarrow(); rebuild(); sync(); refresh(); }
-  function supply(x, z, id){ const g = new THREE.Group(); if(id) g.userData.id = id; g.add(at(box(.7,.4,.45, mat(0x2B3050)), 0,.2,0)); const d = lcd(.36,.14); d.position.set(-.1,.27,.226); g.add(d); g.userData.d = d;
-    g.add(at(cyl(.035,.035,.05, mat(0xE25555), 12), .2,.42,.12)); g.add(at(cyl(.035,.035,.05, mat(0x222222), 12), .2,.42,-.12)); g.add(hitBox(.8,.6,.6,.25)); g.position.set(x, TABLE_Y, z); R.world.add(g); return g; }
 
-  /* ===== part 1: Ohm ===== */
-  const I1 = () => P.s.comp==='res' ? P.s.V/P.s.Rx : Ib(P.s.V);
-  function buildP1(){ const s = P.s;
-    P.ps = supply(-1.75, 0, 'ps'); P.labels.push({obj:P.ps, dy:.62, text:()=>'แหล่งจ่ายไฟ (แตะเพื่อเปลี่ยน)'});
-    P.am = meter(0, -.95, 0xF2C94C, 'A'); P.labels.push({obj:P.am, dy:.45, text:()=>'แอมมิเตอร์'});
-    P.vm = meter(2.0, 0, 0xF2C94C, 'V'); P.vm.rotation.y = -.5; P.labels.push({obj:P.vm, dy:.45, text:()=>'โวลต์มิเตอร์'});
-    const loop = [[-1.5,-.12],[-1.5,-.75],[1.2,-.75],[1.2,-.3]], back = [[1.2,.3],[1.2,.75],[-1.5,.75],[-1.5,.12]];
-    wire(loop, 0xE25555); wire(back, 0x2B3050); wire([[1.2,-.3],[1.6,-.3],[1.85,-.05]], 0xE25555); wire([[1.2,.3],[1.6,.3],[1.85,.05]], 0x2B3050);
-    if(s.comp==='res'){ P.cmp = resistor(1.2, 0, true, 'cmp'); wire([[1.2,-.3],[1.2,.3]]); }
-    else { const g = new THREE.Group(); g.userData.id = 'cmp'; g.add(at(cyl(.08,.1,.12, METAL(), 16), 0,.06,0)); P.glow = sph(.13, new THREE.MeshStandardMaterial({color:0xFFF8E0, emissive:0xFFC23D, emissiveIntensity:0, transparent:true, opacity:.75}), 20); P.glow.position.y = .24; g.add(P.glow); g.add(hitBox(.4,.5,.4,.2)); g.position.set(1.2, TABLE_Y, 0); R.world.add(g); P.cmp = g; wire([[1.2,-.3],[1.2,-.08]]); wire([[1.2,.08],[1.2,.3]]); }
-    P.labels.push({obj:P.cmp, dy:.42, text:()=>P.s.comp==='res' ? 'ตัวต้านทานปริศนา' : 'หลอดไฟ'});
-    P.f = flow([...loop, [1.2,.3], ...back], 14);
-    updP1();
-  }
-  function updP1(){ const s = P.s; if(!P.ps) return; const I = I1(); lcdSet(P.ps.userData.d, s.V.toFixed(1), 'V'); lcdSet(P.am.userData.d, (I*1000).toFixed(1), 'mA'); lcdSet(P.vm.userData.d, s.V.toFixed(2), 'V'); P.f.I = I; if(P.glow) P.glow.material.emissiveIntensity = Math.min(2, s.V*I*1.2); }
-  function rec1(){ const s = P.s, I = +(I1()*1000).toFixed(1), k = s.comp + '|' + s.V, first = !s.recs[k]; s.recs[k] = {comp:s.comp, V:s.V, I}; P.lastRec = k;
-    P.say = `${s.comp==='res' ? 'ตัวต้านทาน' : 'หลอดไฟ'} V = ${s.V.toFixed(1)} V กระแส ${I.toFixed(1)} mA${first ? ' บันทึกแล้ว' : ''}ครับ`; }
-  function checkR(v){ const s = P.s, rs = Object.keys(s.recs).filter(k=>s.recs[k].comp==='res'), x = num(v); if(!rs.length){ P.warn = 'วัดค่ากับตัวต้านทานก่อนครับ'; return; } if(x===null){ P.warn = 'พิมพ์ความต้านทานเป็นตัวเลข หน่วย Ω'; return; }
-    const r = s.recs[rs.includes(P.lastRec) ? P.lastRec : rs[rs.length - 1]], t = r.V/(r.I/1000);
-    if(rel(x, t, .03)){ s.ROk = true; P.say = `ถูกต้องครับ R = V/I = ${r.V} ÷ ${(r.I/1000).toFixed(4)} ≈ ${t.toFixed(1)} Ω`; return; }
-    s.wrong += 1;
-    if(rel(x, r.V/r.I, .03)) P.warn = hint(['กระแสเป็น mA ต้องแปลงเป็น A ก่อนครับ', '1 mA = 0.001 A ครับ ลองแปลงแล้วหารใหม่']);
-    else if(rel(x, r.I/1000/r.V, .03) || rel(x, r.I/r.V, .03)) P.warn = 'กลับเศษส่วนอยู่ครับ R = V/I';
-    else if(rel(x, r.V*r.I/1000, .03)) P.warn = 'R = V ÷ I ครับ ไม่ใช่คูณ';
-    else P.warn = hint([`ใช้แถวของตัวต้านทาน: V = ${r.V} V, I = ${r.I} mA ครับ`, 'R = V/I โดยใช้ V เป็นโวลต์ และ I เป็นแอมแปร์ครับ']);  if(P.warn && escN(P.s, 'checkR') >= 3){ try{ const _w = String(`ถูกต้องครับ R = V/I = ${r.V} ÷ ${(r.I/1000).toFixed(4)} ≈ ${t.toFixed(1)} Ω`).replace(/^ถูกต้อง(แล้ว)?(ครับ)?[ !:,]*/,''); P.warn = '📘 ลองมาหลายครั้งแล้ว ดูวิธีทำครับ: ' + _w + ' → พิมพ์ค่านี้แล้วกดตรวจอีกครั้ง'; }catch(_){} }}
+  /* ----- 3D parts ----- */
+  const TCOL = {'+':0xE03C3C, '-':0x22263A, 'n':0xC8A24A};
+  function post(g, tid, lx, lz, pol, hitR){ const t = new THREE.Group(); t.add(at(cyl(.035,.045,.05, mat(0x3A3F55,{roughness:.5}), 14), 0,.025,0)); t.add(at(cyl(.016,.016,TY - .05, METAL(), 8), 0,(TY + .05)/2,0));
+    const cap = cyl(.045,.045,.045, mat(TCOL[pol] || TCOL.n, {roughness:.35, metalness:.2}), 18); cap.position.y = TY - .02; t.add(cap);
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(.075,.012,8,28), new THREE.MeshBasicMaterial({color:0x2E6BE6, transparent:true, opacity:0, depthTest:false})); ring.rotation.x = Math.PI/2; ring.position.y = TY + .005; ring.renderOrder = 6; t.add(ring);
+    const hb = new THREE.Mesh(new THREE.SphereGeometry(hitR || .11, 10, 8), HITM); hb.position.y = TY - .02; t.add(hb); t.userData.id = 't:' + tid;
+    t.position.set(lx, 0, lz); g.add(t); P.terms[tid] = {g:t, ring, pol, comp:g.userData.cid}; return t; }
+  function termPos(tid){ const t = P.terms[tid]; return t ? t.g.localToWorld(V(0, TY, 0)) : null; }
+  function comp(cid, kind, x, z, ry){ const g = new THREE.Group(); g.userData.cid = cid; g.position.set(x, TABLE_Y, z); g.rotation.y = ry || 0; R.world.add(g); P.comps[cid] = {g, kind}; return g; }
+  function supplyC(x, z){ const g = comp('ps', 'src', x, z);
+    g.add(at(box(.8,.42,.46, mat(0x2B3050,{roughness:.45})), 0,.21,0)); g.add(at(box(.82,.04,.48, mat(0x3A4166)), 0,.44,0));
+    const d = lcd(.32,.12); d.position.set(-.16,.29,.231); g.add(d); g.userData.d = d;
+    const kn = new THREE.Group(); kn.userData.id = 'knob'; const kc = cyl(.07,.08,.07, mat(0xF2994A,{roughness:.35}), 24); kc.rotation.x = Math.PI/2; kn.add(kc); kn.add(at(box(.014,.055,.012, mat(0xffffff)), 0,.032,.04)); kn.add(at(hitBox(.3,.3,.3,0), 0,0,.05)); kn.position.set(.22,.29,.25); g.add(kn); g.userData.kn = kn;
+    const pl = new THREE.Group(); pl.position.set(0, 0, .3); g.add(pl); pl.userData.cid = 'ps';
+    post(pl, 'ps+', -.3, 0, '+'); post(pl, 'ps-', .08, 0, '-');
+    P.labels.push({obj:g, dy:.62, text:()=>'แหล่งจ่ายไฟ'}); return g; }
+  function switchC(x, z){ const g = comp('sw', 'sw', x, z); g.add(at(box(.66,.04,.2, mat(0x6B4A2E,{roughness:.6})), 0,.02,0));
+    post(g, 'swa', -.28, 0, 'n'); post(g, 'swb', .28, 0, 'n');
+    const pv = new THREE.Group(); pv.position.set(-.28, TY - .03, 0); const lv = box(.56,.022,.03, METAL()); lv.position.x = .28; pv.add(lv); const hd = box(.06,.05,.05, mat(0xE03C3C,{roughness:.4})); hd.position.set(.58,0,0); pv.add(hd); g.add(pv); g.userData.lv = pv;
+    const hb = hitBox(.3,.3,.3,.2); hb.position.x = 0; const tap = new THREE.Group(); tap.userData.id = 'sw'; tap.add(hb); g.add(tap);
+    P.labels.push({obj:g, dy:.42, text:()=>P.s.sw ? 'สวิตช์ (ปิดวงจร)' : 'สวิตช์ (เปิดวงจร)'}); return g; }
+  function holderC(x, z){ const g = comp('X', P.s.comp==='res' ? 'res' : 'bulb', x, z); g.add(at(box(.74,.04,.24, mat(0xEFE6D2,{roughness:.6})), 0,.02,0));
+    post(g, 'Xa', -.3, 0, 'n'); post(g, 'Xb', .3, 0, 'n');
+    if(P.s.comp==='res'){ const r = new THREE.Group(); const b = cyl(.05,.05,.24, mat(0xD9B98A), 16); b.rotation.z = Math.PI/2; r.add(b);
+      [-.07,-.025,.02,.08].forEach((o,k)=>{ const c = cyl(.052,.052,.018, mat([0x8B4513,0x111111,0xE25555,0xD8B04A][k]), 16); c.rotation.z = Math.PI/2; c.position.x = o; r.add(c); });
+      const l = cyl(.007,.007,.6, METAL(), 6); l.rotation.z = Math.PI/2; r.add(l); r.position.y = TY - .03; g.add(r); }
+    else { const bg = new THREE.Group(); bg.add(at(cyl(.045,.05,.08, METAL(), 16), 0,.04,0)); P.bm = new THREE.MeshStandardMaterial({color:0xFFF6D8, emissive:0xFFB830, emissiveIntensity:0, transparent:true, opacity:.8, roughness:.1}); bg.add(at(sph(.085, P.bm, 20), 0,.16,0));
+      P.glow = new THREE.Sprite(new THREE.SpriteMaterial({map:canvasTex(128,128,(x)=>{ const gr = x.createRadialGradient(64,64,4,64,64,64); gr.addColorStop(0,'rgba(255,225,130,1)'); gr.addColorStop(1,'rgba(255,190,60,0)'); x.fillStyle = gr; x.fillRect(0,0,128,128); }), transparent:true, depthWrite:false, blending:THREE.AdditiveBlending})); P.glow.position.y = .16; P.glow.scale.set(.6,.6,1); bg.add(P.glow);
+      bg.position.set(0, .04, 0); g.add(bg); [-1,1].forEach(sd=>g.add(at(box(.26,.01,.012, METAL()), sd*.15, .05, 0))); }
+    P.labels.push({obj:g, dy:.5, text:()=>P.s.comp==='res' ? 'ตัวต้านทานปริศนา' : 'หลอดไฟ'});
+    // the other device lies on the table: tap to swap
+    const sp = new THREE.Group(); sp.userData.id = 'swapX'; sp.userData.hy = .05;
+    if(P.s.comp==='res'){ sp.add(at(cyl(.045,.05,.06, METAL(), 14), 0,.03,0)); sp.add(at(sph(.075, mat(0xFFF6D8,{transparent:true, opacity:.85, roughness:.1}), 16), 0,.12,0)); }
+    else { const b = cyl(.04,.04,.2, mat(0xD9B98A), 14); b.rotation.z = Math.PI/2; b.position.y = .04; sp.add(b); const l = cyl(.006,.006,.4, METAL(), 6); l.rotation.z = Math.PI/2; l.position.y = .04; sp.add(l); }
+    sp.add(hitBox(.42,.3,.3,.08)); sp.position.set(-.2, TABLE_Y, 1.05); R.world.add(sp); P.spare = sp;
+    P.labels.push({obj:sp, dy:.24, text:()=>P.s.comp==='res' ? 'หลอดไฟ (แตะสลับ)' : 'ตัวต้านทาน (แตะสลับ)'}); return g; }
+  function meterC(cid, x, z, letter, col){ const g = comp(cid, cid, x, z); g.add(at(box(.62,.3,.36, mat(col,{roughness:.45})), 0,.15,0));
+    const d = lcd(.4,.15); d.position.set(0,.2,.181); g.add(d); g.userData.d = d;
+    g.add(at(new THREE.Mesh(new THREE.CircleGeometry(.05, 20), new THREE.MeshBasicMaterial({map:canvasTex(64,64,(x)=>{ x.fillStyle = '#1C2236'; x.beginPath(); x.arc(32,32,30,0,7); x.fill(); x.fillStyle = '#fff'; x.font = '700 40px sans-serif'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(letter, 32, 34); })})), .22,.07,.181));
+    const pl = new THREE.Group(); pl.position.set(0, 0, .28); g.add(pl); pl.userData.cid = cid; post(pl, cid + '+', -.2, 0, '+'); post(pl, cid + '-', .2, 0, '-');
+    P.labels.push({obj:g, dy:.44, text:()=>cid==='am' ? 'แอมมิเตอร์' : 'โวลต์มิเตอร์'}); return g; }
 
-  /* ===== part 2: series / parallel ===== */
-  const Rt = () => P.s.cfg==='ser' ? R1 + R2 : R1*R2/(R1 + R2), I2 = () => V2/Rt();
-  function buildP2(){ const s = P.s;
-    P.ps = supply(-1.75, 0); P.labels.push({obj:P.ps, dy:.62, text:()=>'แหล่งจ่ายไฟ 6.0 V'});
-    P.am = meter(0, -.95, 0xF2C94C, 'A'); P.labels.push({obj:P.am, dy:.45, text:()=>'แอมมิเตอร์ (กระแสรวม)'});
-    P.vm = meter(-1.75, -1.1, 0xF2C94C, 'V'); P.labels.push({obj:P.vm, dy:.45, text:()=>'โวลต์มิเตอร์ (คร่อมแหล่งจ่าย)'});
-    const sw = new THREE.Group(); sw.userData.id = 'sw'; sw.add(at(box(.5,.06,.36, mat(0x5B6280)), 0,.03,0)); const lev = box(.05,.05,.3, METAL()); lev.position.y = .1; lev.rotation.x = s.cfg==='ser' ? .5 : -.5; sw.add(lev); sw.add(hitBox(.6,.4,.5,.1)); sw.position.set(-.6, TABLE_Y, 1.25); R.world.add(sw); P.sw = sw;
-    P.labels.push({obj:sw, dy:.3, text:()=>`สวิตช์เลือกการต่อ: ${P.s.cfg==='ser' ? 'อนุกรม' : 'ขนาน'}`});
-    const loop = [[-1.5,-.12],[-1.5,-.75],[1.2,-.75]], back = [[1.2,.75],[-1.5,.75],[-1.5,.12]];
-    wire(loop, 0xE25555); wire(back, 0x2B3050); wire([[-1.6,-.2],[-1.75,-.6],[-1.75,-.92]], 0xE25555);
-    if(s.cfg==='ser'){ const a = resistor(1.2, -.38, true), b = resistor(1.2, .38, true); wire([[1.2,-.75],[1.2,.75]]); P.rl = [a, b];
-      P.f = [flow([...loop, [1.2,.75], ...back], 14)]; }
-    else { const a = resistor(.8, 0, true), b = resistor(1.6, 0, true); P.rl = [a, b]; wire([[1.2,-.75],[1.2,-.5],[.8,-.5],[.8,.5],[1.2,.5],[1.2,.75]]); wire([[1.2,-.5],[1.6,-.5],[1.6,.5],[1.2,.5]]);
-      P.f = [flow([[-1.5,-.12],[-1.5,-.75],[1.2,-.75],[1.2,-.5],[.8,-.5],[.8,.5],[1.2,.5],[1.2,.75],[-1.5,.75],[-1.5,.12]], 14), flow([[1.2,-.5],[1.6,-.5],[1.6,.5],[1.2,.5]], 5)]; }
-    P.labels.push({obj:P.rl[0], dy:.22, text:()=>`R₁ = ${R1} Ω`}); P.labels.push({obj:P.rl[1], dy:.22, text:()=>`R₂ = ${R2} Ω`});
-    updP2();
-  }
-  function updP2(){ const s = P.s; if(!P.ps) return; lcdSet(P.ps.userData.d, V2.toFixed(1), 'V'); lcdSet(P.am.userData.d, I2().toFixed(3), 'A'); lcdSet(P.vm.userData.d, V2.toFixed(2), 'V');
-    if(s.cfg==='ser') P.f[0].I = I2(); else { P.f[0].I = V2/R1; P.f[1].I = V2/R2; } }
-  function rec2(){ const s = P.s, I = +I2().toFixed(3); s.rec2[s.cfg] = {cfg:s.cfg, I}; P.lastCfg = s.cfg; P.say = `${s.cfg==='ser' ? 'ต่ออนุกรม' : 'ต่อขนาน'} กระแสรวม ${I.toFixed(3)} A บันทึกแล้วครับ`; }
-  function checkRp(v){ const s = P.s, x = num(v); if(!s.rec2.par){ P.warn = 'สลับเป็นการต่อแบบขนานแล้ววัดกระแสก่อนครับ'; return; } if(x===null){ P.warn = 'พิมพ์ความต้านทานเป็นตัวเลข หน่วย Ω'; return; }
-    const t = V2/s.rec2.par.I;
-    if(rel(x, t, .03)){ s.RpOk = true; P.say = `ถูกต้องครับ R = V/I = 6 ÷ ${s.rec2.par.I} = ${t.toFixed(1)} Ω ตรงกับ 1/R = 1/10 + 1/15 → R = 6 Ω`; return; }
-    s.wrong += 1;
-    if(rel(x, R1 + R2, .03)) P.warn = hint(['25 Ω คือแบบอนุกรมครับ แบบขนานใช้ 1/R = 1/R₁ + 1/R₂', 'การต่อขนานมีทางให้กระแสมากขึ้น ความต้านทานรวมจึงน้อยลงครับ']);
-    else if(rel(x, 1/R1 + 1/R2, .03)) P.warn = 'นั่นคือ 1/R ครับ ต้องกลับเศษเป็นส่วนอีกครั้ง';
-    else if(rel(x, (R1 + R2)/2, .03)) P.warn = 'ไม่ใช่ค่าเฉลี่ยครับ ใช้ 1/R = 1/R₁ + 1/R₂ หรือ R = V/I';
-    else P.warn = hint([`ใช้ V = 6 V และกระแสรวมแบบขนาน ${s.rec2.par.I} A แล้ว R = V/I ครับ`, 'R = R₁R₂/(R₁ + R₂) สำหรับสองตัวต่อขนานครับ']);  if(P.warn && escN(P.s, 'checkRp') >= 3){ try{ const _w = String(`ถูกต้องครับ R = V/I = 6 ÷ ${s.rec2.par.I} = ${t.toFixed(1)} Ω ตรงกับ 1/R = 1/10 + 1/15 → R = 6 Ω`).replace(/^ถูกต้อง(แล้ว)?(ครับ)?[ !:,]*/,''); P.warn = '📘 ลองมาหลายครั้งแล้ว ดูวิธีทำครับ: ' + _w + ' → พิมพ์ค่านี้แล้วกดตรวจอีกครั้ง'; }catch(_){} }}
+  /* ----- wires ----- */
+  const WCOL = [0xE03C3C, 0x22263A, 0x2E9E5B, 0x2E6BE6, 0xF2994A, 0x8E5BD9];
+  function wireCurve(a, b){ const d = a.distanceTo(b), up = Math.min(.32, .1 + d*.12), m = a.clone().lerp(b, .5); m.y = Math.max(a.y, b.y) + up;
+    return new THREE.CatmullRomCurve3([a, V(a.x, a.y + up*.55, a.z), m, V(b.x, b.y + up*.55, b.z), b]); }
+  function wireColor(w, k){ const pa = P.terms[w[0]] && P.terms[w[0]].pol, pb = P.terms[w[1]] && P.terms[w[1]].pol; return pa==='+' || pb==='+' ? WCOL[0] : pa==='-' || pb==='-' ? WCOL[1] : WCOL[2 + k%4]; }
+  function drawWires(){ (P.wireObjs || []).forEach(o=>R.world.remove(o.g)); P.wireObjs = [];
+    P.s.wires = P.s.wires.filter(w=>P.terms[w[0]] && P.terms[w[1]]);
+    P.s.wires.forEach((w,k)=>{ const a = termPos(w[0]), b = termPos(w[1]); if(!a || !b) return; const cv = wireCurve(a, b), g = new THREE.Group(); g.userData.id = 'w:' + k;
+      const sel = P.selW===k, m = new THREE.Mesh(new THREE.TubeGeometry(cv, 40, .014, 8, false), mat(sel ? 0xFFD54A : wireColor(w, k), {roughness:.45, emissive:sel ? 0xFFB300 : 0x000000, emissiveIntensity:sel ? .6 : 0}));
+      m.castShadow = true; g.add(m); g.add(new THREE.Mesh(new THREE.TubeGeometry(cv, 16, .05, 6, false), HITM));
+      const nd = Math.max(3, Math.round(cv.getLength()/.12)), dots = Array.from({length:nd}, (_,j)=>{ const d = sph(.018, mat(0x4FC3F7,{emissive:0x1E88E5, emissiveIntensity:.9}), 8); d.userData.u = j/nd; d.visible = false; d.renderOrder = 5; g.add(d); return d; });
+      R.world.add(g); P.wireObjs.push({g, cv, dots, w}); });
+    termRings(); }
+  function termRings(){ const used = {}; P.s.wires.forEach(w=>{ used[w[0]] = 1; used[w[1]] = 1; });
+    Object.entries(P.terms).forEach(([tid, t])=>{ t.ring.material.opacity = P.selT===tid ? .95 : (P.selT || P.dragT) ? .45 : 0; t.ring.material.color.setHex(P.selT===tid ? 0xF2994A : 0x2E6BE6); }); }
+  function connect(a, b){ const s = P.s; if(!a || !b || a===b){ return false; }
+    if(s.wires.some(w=>(w[0]===a && w[1]===b) || (w[0]===b && w[1]===a))){ P.say = 'สองขั้วนี้ต่อกันอยู่แล้วครับ'; return false; }
+    if(P.terms[a].comp===P.terms[b].comp && P.terms[a].comp!=='ps'){ P.say = 'ต่อสายระหว่างสองขั้วของอุปกรณ์ตัวเดียวกัน = ลัดวงจรอุปกรณ์นั้นครับ ผมต่อให้ตามที่สั่ง ลองดูผล'; }
+    if(s.wires.length >= 12){ P.warn = 'สายเยอะเกินไปแล้วครับ ถอดสายที่ไม่ใช้ออกก่อน'; return false; }
+    s.wires.push([a, b]); s.trip = 0; SFX.drop(); P.selW = null; return true; }
+  function delWire(k){ const s = P.s; if(k==null || !s.wires[k]) return; s.wires.splice(k, 1); P.selW = null; SFX.click(); P.say = 'ถอดสายแล้วครับ'; }
 
-  /* ===== part 3: EMF & internal resistance ===== */
-  const I3 = () => P.s.E/(P.s.Rh + P.s.ri), V3 = () => P.s.E - I3()*P.s.ri;
-  function buildP3(){ const s = P.s;
-    const cell = new THREE.Group(); const b = cyl(.17,.17,.7, mat(0x2B3050), 24); b.rotation.z = Math.PI/2; cell.add(b); const tp = cyl(.06,.06,.06, METAL(), 12); tp.rotation.z = Math.PI/2; tp.position.x = .38; cell.add(tp);
-    const lb = cyl(.172,.172,.25, mat(0xF2994A), 24); lb.rotation.z = Math.PI/2; lb.position.x = .1; cell.add(lb); cell.position.set(-1.4, TABLE_Y + .17, 0); R.world.add(cell); P.cell = cell;
-    P.labels.push({obj:cell, dy:.35, text:()=>'เซลล์ไฟฟ้า (E, r = ?)'});
-    P.vm = meter(-1.4, -1.05, 0xF2C94C, 'V'); P.labels.push({obj:P.vm, dy:.45, text:()=>'โวลต์มิเตอร์ (คร่อมขั้วเซลล์)'});
-    P.am = meter(0, .95, 0xF2C94C, 'A'); P.am.rotation.y = 0; P.labels.push({obj:P.am, dy:.45, text:()=>'แอมมิเตอร์'});
-    const rh = new THREE.Group(); rh.userData.id = 'rh'; rh.add(at(box(.3,.08,1.3, mat(0x5B6280)), 0,.04,0)); const coil = cyl(.09,.09,1.1, mat(0xC98F5A,{metalness:.4}), 20); coil.rotation.x = Math.PI/2; coil.position.y = .17; rh.add(coil);
-    rh.add(at(box(.03,.03,1.1, METAL()), 0,.32,0)); P.sl = box(.12,.1,.1, mat(0x1C2236)); rh.add(P.sl); rh.add(hitBox(.6,.6,1.5,.2)); rh.position.set(1.3, TABLE_Y, 0); R.world.add(rh); P.rh = rh;
-    P.labels.push({obj:rh, dy:.6, text:()=>`รีโอสแตต R = ${P.s.Rh} Ω`});
-    const loop = [[-1.0,0],[-.6,0],[-.6,-.7],[1.3,-.7],[1.3,-.65]], back = [[1.3,.65],[1.3,.75],[-1.85,.75],[-1.85,0],[-1.78,0]];
-    wire(loop, 0xE25555); wire(back, 0x2B3050); wire([[-1.0,0],[-1.0,-.4],[-1.25,-.85]], 0xE25555); wire([[-1.78,0],[-1.78,-.4],[-1.55,-.85]], 0x2B3050);
-    P.f = flow([...loop, [1.3,.65], ...back], 16);
-    updP3();
-  }
-  function updP3(){ const s = P.s; if(!P.rh) return; P.sl.position.set(0,.3, -.55 + 1.1*s.Rh/10); lcdSet(P.vm.userData.d, V3().toFixed(2), 'V'); lcdSet(P.am.userData.d, I3().toFixed(3), 'A'); P.f.I = I3(); }
-  function rec3(){ const s = P.s, p = {R:s.Rh, I:+I3().toFixed(3), V:+V3().toFixed(2)}, first = !s.pts[s.Rh]; s.pts[s.Rh] = p; P.lastPt = s.Rh; P.say = `R = ${s.Rh} Ω กระแส ${p.I.toFixed(3)} A ความต่างศักย์ปลายเซลล์ ${p.V.toFixed(2)} V${first ? ' บันทึกแล้ว' : ''}ครับ`; }
-  function fit(){ const v = Object.values(P.s.pts); if(v.length < 2) return null; const n = v.length, mx = v.reduce((a,p)=>a + p.I, 0)/n, my = v.reduce((a,p)=>a + p.V, 0)/n; let sxy = 0, sxx = 0; v.forEach(p=>{ sxy += (p.I - mx)*(p.V - my); sxx += (p.I - mx)**2; }); const m = sxy/sxx; return {m, b:my - m*mx}; }
-  function checkE(v){ const s = P.s, f = fit(), x = num(v); if(!f){ P.warn = 'วัดอย่างน้อย 2 ค่าก่อนครับ'; return; } if(x===null){ P.warn = 'พิมพ์ E เป็นตัวเลข หน่วย V'; return; }
-    if(rel(x, f.b, .02) || rel(x, s.E, .02)){ s.EOk = true; P.say = `ถูกต้องครับ ต่อกราฟไปตัดแกน V ที่ I = 0 ได้ E ≈ ${f.b.toFixed(2)} V`; return; }
-    s.wrong += 1;
-    if(Object.values(s.pts).some(p=>Math.abs(x - p.V) < .02)) P.warn = hint(['นั่นคือ V ปลายเซลล์ขณะมีกระแสครับ E ต้องมากกว่า เพราะมีแรงดันตกคร่อม r', 'E คือจุดตัดแกน V ของกราฟ (เมื่อ I = 0) ครับ']);
-    else P.warn = hint(['ใช้ V = E − Ir กับสองแถวในตาราง แก้สมการหา E ครับ', 'ต่อเส้นตรงในกราฟไปตัดแกนตั้ง ค่านั้นคือ E ครับ']);  if(P.warn && escN(P.s, 'checkE') >= 3){ try{ const _w = String(`ถูกต้องครับ ต่อกราฟไปตัดแกน V ที่ I = 0 ได้ E ≈ ${f.b.toFixed(2)} V`).replace(/^ถูกต้อง(แล้ว)?(ครับ)?[ !:,]*/,''); P.warn = '📘 ลองมาหลายครั้งแล้ว ดูวิธีทำครับ: ' + _w + ' → พิมพ์ค่านี้แล้วกดตรวจอีกครั้ง'; }catch(_){} }}
-  function checkr(v){ const s = P.s, f = fit(), x = num(v); if(!f){ P.warn = 'วัดอย่างน้อย 2 ค่าก่อนครับ'; return; } if(x===null){ P.warn = 'พิมพ์ r เป็นตัวเลข หน่วย Ω'; return; }
-    if(rel(x, -f.m, .06) || rel(x, s.ri, .06)){ s.rOk = true; P.say = `ถูกต้องครับ r = −ความชัน ≈ ${(-f.m).toFixed(2)} Ω`; return; }
-    s.wrong += 1;
-    if(Object.values(s.pts).some(p=>rel(x, p.V/p.I, .03))) P.warn = 'V/I ของแต่ละแถวคือความต้านทานภายนอก R ครับ ไม่ใช่ r';
-    else if(Object.values(s.pts).some(p=>rel(x, s.E/p.I, .03) || rel(x, f.b/p.I, .03))) P.warn = 'E/I คือความต้านทานรวม R + r ครับ ลองลบ R ออก';
-    else P.warn = hint(['r = −ความชันของกราฟ V กับ I = ΔV/ΔI (ไม่คิดเครื่องหมาย) ครับ', 'เลือกสองแถว r = (V₁ − V₂)/(I₂ − I₁) ครับ']);  if(P.warn && escN(P.s, 'checkr') >= 3){ try{ const _w = String(`ถูกต้องครับ r = −ความชัน ≈ ${(-f.m).toFixed(2)} Ω`).replace(/^ถูกต้อง(แล้ว)?(ครับ)?[ !:,]*/,''); P.warn = '📘 ลองมาหลายครั้งแล้ว ดูวิธีทำครับ: ' + _w + ' → พิมพ์ค่านี้แล้วกดตรวจอีกครั้ง'; }catch(_){} }}
+  /* ----- nodal solver ----- */
+  function solveNet(els, nodes){ const n = nodes.length, ix = {}; nodes.forEach((t,k)=>ix[t] = k);
+    const G = Array.from({length:n}, ()=>new Float64Array(n + 1));
+    for(let k=0;k<n;k++) G[k][k] += 1e-9;
+    els.forEach(e=>{ const a = ix[e.a], b = ix[e.b], g = 1/e.R; G[a][a] += g; G[b][b] += g; G[a][b] -= g; G[b][a] -= g; if(e.E){ G[a][n] += e.E*g; G[b][n] -= e.E*g; } });
+    for(let c=0;c<n;c++){ let p = c; for(let r=c+1;r<n;r++) if(Math.abs(G[r][c]) > Math.abs(G[p][c])) p = r; [G[c], G[p]] = [G[p], G[c]]; const d = G[c][c] || 1e-15;
+      for(let r=0;r<n;r++){ if(r===c) continue; const f = G[r][c]/d; if(!f) continue; for(let q=c;q<=n;q++) G[r][q] -= f*G[c][q]; } }
+    const v = {}; nodes.forEach((t,k)=>v[t] = G[k][n]/(G[k][k] || 1e-15)); return v; }
+  function solve(){ const s = P.s, X = P.comps.X ? P.comps.X.kind : 'res';
+    const nodes = Object.keys(P.terms); let Rb = 10, out = null;
+    for(let it=0; it<12; it++){
+      const els = [];
+      els.push({id:'ps', a:'ps+', b:'ps-', R:RPS, E:s.trip ? 0 : s.V});
+      if(s.sw) els.push({id:'sw', a:'swa', b:'swb', R:.001});
+      els.push({id:'X', a:'Xa', b:'Xb', R:X==='res' ? s.Rx : Rb});
+      if(!s.fuse) els.push({id:'am', a:'am+', b:'am-', R:RAM});
+      els.push({id:'vm', a:'vm+', b:'vm-', R:RVM});
+      s.wires.forEach((w,k)=>els.push({id:'w' + k, a:w[0], b:w[1], R:RW}));
+      const v = solveNet(els, nodes), I = {}; els.forEach(e=>I[e.id] = e.E ? (e.E - (v[e.a] - v[e.b]))/e.R : (v[e.a] - v[e.b])/e.R);
+      out = {v, I};
+      if(X==='bulb'){ const vb = Math.abs(v.Xa - v.Xb), nr = vb > .02 ? vb/Ib(vb) : 6; if(Math.abs(nr - Rb) < .01) break; Rb = .5*Rb + .5*nr; } else break; }
+    let ev = null;
+    if(!s.fuse && Math.abs(out.I.am) > IFUSE){ s.fuse = 1; ev = 'fuse'; }
+    else if(!s.trip && Math.abs(out.I.ps) > ITRIP){ s.trip = 1; ev = 'trip'; }
+    if(ev){ crackle(); P.ev = ev; return solve(); }
+    out.Rb = Rb; P.sol = out; return out; }
+  const crackle = () => { for(let k=0;k<7;k++) setTimeout(()=>SFX.tick(), k*28 + Math.random()*20); SFX.pop(); };
+  const readA = () => P.s.fuse ? 0 : P.sol.I.am, readV = () => P.sol.v['vm+'] - P.sol.v['vm-'];
+  const pX = () => ({V:P.sol.v.Xa - P.sol.v.Xb, I:P.sol.I.X});
 
-  function sync(){ if(P.i===0) updP1(); else if(P.i===1) updP2(); else updP3(); }
+  /* ----- wiring diagnosis (part 1) ----- */
+  function diagnose(){ const s = P.s, I = P.sol.I, x = pX(), Ia = readA(), Vv = readV(), out = [];
+    const loop = Math.abs(I.ps) > 1e-4, xi = Math.abs(x.I) > 1e-4;
+    const okLoop = xi && loop, amSer = !s.fuse && Math.abs(Ia) > 1e-4 && Math.abs(Math.abs(Ia) - Math.abs(x.I)) <= .02*Math.abs(x.I) + 1e-5;
+    const vmX = Math.abs(x.V) > .005 && Math.abs(Math.abs(Vv) - Math.abs(x.V)) <= .02*Math.abs(x.V) + .002;
+    const swIn = s.sw ? (Math.abs(I.sw) > 1e-4 && Math.abs(Math.abs(I.sw) - Math.abs(x.I)) <= .02*Math.abs(x.I) + 1e-5) : null;
+    let msg = null;
+    if(s.fuse) msg = 'ฟิวส์แอมมิเตอร์ขาด! แอมมิเตอร์มีความต้านทานน้อยมาก ถ้าต่อคร่อม (ขนาน) กับแหล่งจ่ายหรืออุปกรณ์ กระแสจะสูงมาก ต้องต่อแอมมิเตอร์แบบอนุกรม แก้สายแล้วกด 🔧 เปลี่ยนฟิวส์ครับ';
+    else if(s.trip) msg = 'แหล่งจ่ายตัดไฟเพราะลัดวงจร (สายต่อจากขั้ว + ไปขั้ว − โดยไม่ผ่านอุปกรณ์) ถอดสายที่ลัดวงจรออกครับ';
+    else if(!s.sw && s.wires.length >= 4) msg = 'สวิตช์ยังเปิดอยู่ แตะสวิตช์เพื่อปิดวงจรครับ';
+    else if(s.sw && !loop && s.wires.length >= 4) msg = Math.abs(Vv) > s.V*.8 && !xi ? 'โวลต์มิเตอร์ต่ออนุกรมอยู่ ความต้านทานของโวลต์มิเตอร์สูงมาก กระแสจึงแทบไม่ไหล ต้องต่อโวลต์มิเตอร์คร่อม (ขนาน) กับอุปกรณ์ครับ' : 'วงจรยังไม่ครบรอบ (วงจรเปิด) ไล่ดูว่ามีขั้วไหนยังไม่ได้ต่อครับ';
+    else if(okLoop && Ia < -1e-4) msg = 'แอมมิเตอร์ต่อขั้วกลับ ค่าติดลบ ขั้ว + ของแอมมิเตอร์ต้องอยู่ฝั่งขั้ว + ของแหล่งจ่ายครับ';
+    else if(okLoop && vmX && Vv < -.005) msg = 'โวลต์มิเตอร์ต่อขั้วกลับ ค่าติดลบ ขั้ว + ของโวลต์มิเตอร์ต้องต่อฝั่งที่มีศักย์สูงกว่าครับ';
+    else if(okLoop && !amSer) msg = 'แอมมิเตอร์ยังไม่ได้ต่ออนุกรมกับ' + (s.comp==='res' ? 'ตัวต้านทาน' : 'หลอดไฟ') + ' กระแสทั้งหมดต้องไหลผ่านแอมมิเตอร์ครับ';
+    else if(okLoop && !vmX) msg = 'โวลต์มิเตอร์ยังไม่ได้ต่อคร่อม' + (s.comp==='res' ? 'ตัวต้านทาน' : 'หลอดไฟ') + ' ต่อสายจากขั้วโวลต์มิเตอร์ไปที่สองขั้วของอุปกรณ์ครับ';
+    else if(okLoop && swIn===false) msg = 'สวิตช์ยังไม่ได้อยู่ในวงจรหลัก ต่อสวิตช์อนุกรมกับวงจรครับ';
+    const ok = okLoop && amSer && vmX && Ia > 0 && Vv > 0 && swIn===true && !s.fuse && !s.trip;
+    return {ok, msg, checks:[['วงจรครบรอบ มีกระแสไหล', okLoop], ['สวิตช์อยู่ในวงจรและปิดอยู่', swIn===true], ['แอมมิเตอร์ต่ออนุกรม ขั้วถูก', amSer && Ia > 0], ['โวลต์มิเตอร์ต่อคร่อมอุปกรณ์ ขั้วถูก', vmX && Vv > 0]]}; }
+
+  /* ----- part 1: Ohm's law ----- */
+  function buildP1(){ supplyC(-.95, -.78); switchC(-.95, .5); holderC(.5, -.78); meterC('am', .45, .5, 'A', 0xF2C94C); meterC('vm', -.15, -.12, 'V', 0x7FD1AE); }
+  function updP1(){ const s = P.s; if(!P.comps.ps) return; solve(); const ps = P.comps.ps.g;
+    if(P.lcdV !== s.V + '|' + s.trip){ P.lcdV = s.V + '|' + s.trip; lcdSet(ps.userData.d, s.trip ? 'OFF' : s.V.toFixed(1), s.trip ? '' : 'V'); } ps.userData.kn.rotation.z = -s.V/VMAX*4.5;
+    const a = s.fuse ? 'FUSE' : readA().toFixed(3), v = readV().toFixed(2); if(P.lcdA !== a){ P.lcdA = a; lcdSet(P.comps.am.g.userData.d, a, s.fuse ? '' : 'A'); } if(P.lcdVm !== v){ P.lcdVm = v; lcdSet(P.comps.vm.g.userData.d, v, 'V'); }
+    P.comps.sw.g.userData.lv.rotation.z = s.sw ? 0 : .7;
+    if(P.bm){ const pw = Math.abs(pX().V*pX().I); P.bm.emissiveIntensity = Math.min(2.2, pw*1.4); P.glow.material.opacity = Math.min(1, pw*.7); P.glow.visible = pw > .02; }
+    P.dg = diagnose(); if(P.dg.ok && !s.wiredOk){ s.wiredOk = true; SFX.ok(); P.say = 'ต่อวงจรถูกต้องแล้วครับ! แอมมิเตอร์อนุกรม โวลต์มิเตอร์คร่อมอุปกรณ์ ต่อไปปรับแรงดันแล้วอ่านค่าครับ'; }
+    if(P.dg.ok) rec1(true); }
+  function rec1(silent){ const s = P.s; if(!P.dg || !P.dg.ok){ return; } const Vr = +readV().toFixed(2), Ia = +readA().toFixed(3), k = s.comp + '|' + s.V, first = !s.recs[k];
+    if(!first && s.recs[k].V===Vr && s.recs[k].I===Ia) return; s.recs[k] = {comp:s.comp, V:Vr, I:Ia}; P.lastRec = k; if(first && !silent){ P.say = `${s.comp==='res' ? 'ตัวต้านทาน' : 'หลอดไฟ'}: V = ${Vr} V, I = ${Ia} A บันทึกแล้วครับ`; } else if(first) P.say = `บันทึก V = ${Vr} V, I = ${Ia} A แล้วครับ`; }
+  function setV(v){ const s = P.s; s.V = Math.max(0, Math.min(VMAX, Math.round(v/VSTEP)*VSTEP)); s.trip = 0; }
+  function checkR(v){ const s = P.s, rs = Object.keys(s.recs).filter(k=>s.recs[k].comp==='res' && s.recs[k].I > 0), x = num(v); if(!rs.length){ P.warn = 'วัดค่ากับตัวต้านทานก่อนครับ'; return; }
+    if(x===null){ P.warn = 'พิมพ์ความต้านทานเป็นตัวเลข หน่วย Ω'; return; }
+    const r = s.recs[rs.includes(P.lastRec) ? P.lastRec : rs[rs.length - 1]], t = r.V/r.I;
+    if(rel(x, t, .03)){ s.ROk = true; P.say = `ถูกต้องครับ R = V/I = ${r.V} ÷ ${r.I} ≈ ${t.toFixed(1)} Ω`; return; }
+    s.wrong += 1;
+    if(rel(x, r.I/r.V, .05)) P.warn = 'สลับตัวเศษกับตัวส่วนครับ R = V ÷ I ไม่ใช่ I ÷ V';
+    else if(rel(x, r.V*r.I, .05)) P.warn = 'R = V ÷ I ครับ ไม่ใช่ V × I';
+    else if(rel(x, t/1000, .05) || rel(x, t*1000, .05)) P.warn = 'ระวังหน่วยครับ กระแสในตารางเป็นแอมแปร์ (A) แล้ว';
+    else P.warn = hint([`ใช้แถวล่าสุด: V = ${r.V} V, I = ${r.I} A แล้ว R = V/I ครับ`, 'ความต้านทาน = ความต่างศักย์ ÷ กระแส ลองกดเครื่องคิดเลขอีกครั้งครับ']);
+    if(P.warn && escN(P.s, 'checkR') >= 3) P.warn = `📘 ลองมาหลายครั้งแล้ว ดูวิธีทำครับ: R = V/I = ${r.V} ÷ ${r.I} ≈ ${t.toFixed(1)} Ω → พิมพ์ค่านี้แล้วกดตรวจอีกครั้ง`; }
+  function sync(){ updP1(); }
+
+  /* ----- schematic (target + what was actually wired) ----- */
+  
+  function schSym(kind, a, b, col, extra){ const [x1,y1] = a, [x2,y2] = b, mx = (x1 + x2)/2, my = (y1 + y2)/2, L = Math.hypot(x2 - x1, y2 - y1) || 1, ux = (x2 - x1)/L, uy = (y2 - y1)/L, nx = -uy, ny = ux, h = 14;
+    const P2 = (s, n) => `${(mx + ux*s + nx*n).toFixed(1)},${(my + uy*s + ny*n).toFixed(1)}`;
+    let body = '', gap = 16;
+    if(kind==='res'){ gap = 18; const pts = [P2(-18,0)]; for(let k=0;k<6;k++) pts.push(P2(-15 + k*6, k%2 ? -7 : 7)); pts.push(P2(18,0)); body = `<polyline points="${pts.join(' ')}" fill="none" stroke="${col}" stroke-width="2.2"/>`; }
+    else if(kind==='bulb'){ body = `<circle cx="${mx}" cy="${my}" r="${h}" fill="#fff" stroke="${col}" stroke-width="2.2"/><path d="M${P2(-10,-10)} L${P2(10,10)} M${P2(-10,10)} L${P2(10,-10)}" stroke="${col}" stroke-width="2"/>`; }
+    else if(kind==='am' || kind==='vm'){ body = `<circle cx="${mx}" cy="${my}" r="${h}" fill="#fff" stroke="${col}" stroke-width="2.2"/><text x="${mx}" y="${my + 5}" font-size="15" font-weight="700" text-anchor="middle" fill="${col}">${kind==='am' ? 'A' : 'V'}</text>`; }
+    else if(kind==='src'){ gap = 6; body = `<path d="M${P2(-4,-16)} L${P2(-4,16)}" stroke="${col}" stroke-width="2.5"/><path d="M${P2(5,-8)} L${P2(5,8)}" stroke="${col}" stroke-width="5"/>`; }
+    else if(kind==='sw'){ gap = 16; body = extra ? `<path d="M${P2(-16,0)} L${P2(16,0)}" stroke="${col}" stroke-width="2.2"/>` : `<path d="M${P2(-16,0)} L${P2(12,-12)}" stroke="${col}" stroke-width="2.2"/>`; body += `<circle cx="${P2(-16,0).split(',')[0]}" cy="${P2(-16,0).split(',')[1]}" r="3" fill="${col}"/><circle cx="${P2(16,0).split(',')[0]}" cy="${P2(16,0).split(',')[1]}" r="3" fill="${col}"/>`; }
+    return `<path d="M${x1},${y1} L${P2(-gap,0)} M${P2(gap,0)} L${x2},${y2}" stroke="${col}" stroke-width="2"/>` + body; }
+  function schTarget(){ const c = '#1C2236';
+    return `<svg viewBox="0 0 260 150" width="100%" style="max-width:300px;display:block;margin:auto"><path d="M30,30 H230 V120 H30 Z" fill="none" stroke="${c}" stroke-width="2"/>
+      <rect x="62" y="22" width="56" height="16" fill="#fff"/>${schSym('sw',[62,30],[118,30],c,1)}
+      <rect x="146" y="22" width="56" height="16" fill="#fff"/>${schSym('am',[146,30],[202,30],c)}
+      <rect x="222" y="48" width="16" height="46" fill="#fff"/>${schSym(P.s.comp==='res' ? 'res' : 'bulb',[230,48],[230,94],c)}
+      <rect x="22" y="58" width="16" height="34" fill="#fff"/>${schSym('src',[30,92],[30,58],c)}<text x="44" y="68" font-size="12" fill="#E03C3C">+</text>
+      <path d="M230,40 H252 V60 M252,82 V110 H230" fill="none" stroke="#2E9E5B" stroke-width="2"/>${schSym('vm',[252,60],[252,82],'#2E9E5B')}</svg>`; }
+  function schActual(){ const s = P.s, X = s.comp==='res' ? 'res' : 'bulb', sx = x => 30 + (x + 1.35)*90, sy = z => 14 + (z + .85)*62;
+    const tp = tid => { const p = termPos(tid); return p ? [+sx(p.x).toFixed(1), +sy(p.z).toFixed(1)] : null; };
+    const syms = [['src','ps+','ps-'],['sw','swa','swb'],[X,'Xa','Xb'],['am','am+','am-'],['vm','vm+','vm-']].map(([k,a,b])=>{ const A = tp(a), B = tp(b); return A && B ? schSym(k, A, B, '#1C2236', s.sw) : ''; }).join('');
+    const ws = s.wires.map((w,k)=>{ const A = tp(w[0]), B = tp(w[1]); if(!A || !B) return ''; const c = '#' + wireColor(w, k).toString(16).padStart(6,'0'); return `<path d="M${A[0]},${A[1]} L${B[0]},${B[1]}" stroke="${P.selW===k ? '#F5B400' : c}" stroke-width="${P.selW===k ? 4 : 2.4}" opacity=".85"/>`; }).join('');
+    const dots = Object.keys(P.terms).map(t=>{ const A = tp(t); return A ? `<circle cx="${A[0]}" cy="${A[1]}" r="4.5" fill="${P.terms[t].pol==='+' ? '#E03C3C' : P.terms[t].pol==='-' ? '#22263A' : '#C8A24A'}"/>` : ''; }).join('');
+    return `<svg viewBox="0 0 260 150" width="100%" style="max-width:300px;display:block;margin:auto;background:#FAFBFE;border-radius:10px">${syms}${ws}${dots}</svg>`; }
 
   /* ----- answers ----- */
-  const OKA = [{lin:'prop', bulb:'curve'}, {q:'less'}, {q:'down'}];
-  const WRONG = [{lin:'ยังไม่ถูกครับ ดูตาราง V เพิ่ม 2 เท่า กระแสเพิ่มกี่เท่า', bulb:'ยังไม่ถูกครับ ลองคำนวณ V/I ของหลอดไฟที่แรงดันต่ำและสูงเทียบกัน'}, {q:'ยังไม่ถูกครับ เทียบความต้านทานรวมแบบขนานกับ 10 Ω'}, {q:'ยังไม่ถูกครับ ดูตาราง เมื่อ I มากขึ้น V ปลายเซลล์เปลี่ยนอย่างไร'}];
+  const OKA = [{lin:'prop', bulb:'curve'}];
+  const WRONG = [{lin:'ยังไม่ถูกครับ ดูตาราง V เพิ่ม 2 เท่า กระแสเพิ่มกี่เท่า', bulb:'ยังไม่ถูกครับ ลองคำนวณ V/I ของหลอดไฟที่แรงดันต่ำและสูงเทียบกัน'}];
   const SOLS = {
-    "R": {id:"rv", f:() => { let _w; try{ const s = P.s, rs = Object.keys(s.recs).filter(k=>s.recs[k].comp==='res'), x = 0;
-if(!rs.length){ _w = 'วัดค่ากับตัวต้านทานก่อนครับ'; return null; }
-if(x===null){ _w = 'พิมพ์ความต้านทานเป็นตัวเลข หน่วย Ω'; return null; }
-const r = s.recs[rs.includes(P.lastRec) ? P.lastRec : rs[rs.length - 1]], t = r.V/(r.I/1000);
- return String(`ถูกต้องครับ R = V/I = ${r.V} ÷ ${(r.I/1000).toFixed(4)} ≈ ${t.toFixed(1)} Ω`); }catch(e){ return null; } }},
-    "Rp": {id:"pv", f:() => { let _w; try{ const s = P.s, x = 0;
-if(!s.rec2.par){ _w = 'สลับเป็นการต่อแบบขนานแล้ววัดกระแสก่อนครับ'; return null; }
-if(x===null){ _w = 'พิมพ์ความต้านทานเป็นตัวเลข หน่วย Ω'; return null; }
-const t = V2/s.rec2.par.I;
- return String(`ถูกต้องครับ R = V/I = 6 ÷ ${s.rec2.par.I} = ${t.toFixed(1)} Ω ตรงกับ 1/R = 1/10 + 1/15 → R = 6 Ω`); }catch(e){ return null; } }},
-    "E": {id:"ev", f:() => { let _w; try{ const s = P.s, f = fit(), x = 0;
-if(!f){ _w = 'วัดอย่างน้อย 2 ค่าก่อนครับ'; return null; }
-if(x===null){ _w = 'พิมพ์ E เป็นตัวเลข หน่วย V'; return null; }
- return String(`ถูกต้องครับ ต่อกราฟไปตัดแกน V ที่ I = 0 ได้ E ≈ ${f.b.toFixed(2)} V`); }catch(e){ return null; } }},
-    "r": {id:"iv", f:() => { let _w; try{ const s = P.s, f = fit(), x = 0;
-if(!f){ _w = 'วัดอย่างน้อย 2 ค่าก่อนครับ'; return null; }
-if(x===null){ _w = 'พิมพ์ r เป็นตัวเลข หน่วย Ω'; return null; }
- return String(`ถูกต้องครับ r = −ความชัน ≈ ${(-f.m).toFixed(2)} Ω`); }catch(e){ return null; } }}
+    "R": {id:"rv", f:() => { try{ const s = P.s, rs = Object.keys(s.recs).filter(k=>s.recs[k].comp==='res' && s.recs[k].I > 0); if(!rs.length) return null; const r = s.recs[rs.includes(P.lastRec) ? P.lastRec : rs[rs.length - 1]], t = r.V/r.I; return `ถูกต้องครับ R = V/I = ${r.V} ÷ ${r.I} ≈ ${t.toFixed(1)} Ω`; }catch(e){ return null; } }}
   };
   function answer(q, v){ const s = P.s; P.warn = null; P.say = null; if(v===OKA[P.i][q]){ s.ans[q] = v; toast('ถูกต้อง'); } else { s.wrong += 1; P.warn = escW(P.s, q, WRONG[P.i][q], OKA[P.i][q]); s.lk = s.lk || {}; s.lk[q] = true; } refresh(); }
 
   /* ----- missions ----- */
-  const nres = () => Object.values(P.s.recs).filter(r=>r.comp==='res').length, nbulb = () => Object.values(P.s.recs).filter(r=>r.comp==='bulb').length, npts = () => Object.keys(P.s.pts).length;
+  const nres = () => new Set(Object.values(P.s.recs).filter(r=>r.comp==='res' && r.I > 0).map(r=>r.V)).size, nbulb = () => new Set(Object.values(P.s.recs).filter(r=>r.comp==='bulb' && r.I > 0).map(r=>r.V)).size;
   function check(){
     const s = P.s, m = S.miss[P.i]; let ch = false; const set = k => { if(!m[k]){ m[k] = 1; ch = true; } };
-    if(P.i===0){ if(nres() >= 3) set('v3'); if(s.ROk) set('R'); if(s.ans.lin) set('lin'); if(s.ans.bulb) set('bulb'); }
-    else if(P.i===1){ if(s.rec2.ser) set('ser'); if(s.rec2.par) set('par'); if(s.RpOk) set('Rp'); if(s.ans.q) set('q'); }
-    else { if(npts() >= 3) set('pts'); if(s.EOk) set('E'); if(s.rOk) set('r'); if(s.ans.q) set('q'); }
+    if(s.wiredOk) set('wire'); if(nres() >= 3) set('v3'); if(s.ROk) set('R'); if(nbulb() >= 2) set('bulb');
+    if(ch) SFX.ok();
     return ch;
   }
   function refresh(){
     check();
     const m = S.miss[P.i];
-    if(PARTS[P.i].miss.every(x=>m[x[0]]) && eqDone(P.i) && !S.labDone[P.i]){ S.labDone[P.i] = true; P.celebrate = true; toast(P.i < PARTS.length - 1 ? `${PARTS[P.i].k}เสร็จแล้ว ปลดล็อก${PARTS[P.i+1].k}` : 'ทดลองครบทุกตอนแล้ว ปลดล็อกแบบทดสอบหลังเรียน'); renderRail(); }
+    if(PARTS[P.i].miss.every(x=>m[x[0]]) && eqDone(P.i) && !S.labDone[P.i]){ S.labDone[P.i] = true; P.celebrate = true; SFX.done(); toast(P.i < PARTS.length - 1 ? `${PARTS[P.i].k}เสร็จแล้ว ปลดล็อก${PARTS[P.i+1].k}` : 'ทดลองครบทุกตอนแล้ว ปลดล็อกแบบทดสอบหลังเรียน'); renderRail(); }
     try { S.ps = S.ps || {}; S.ps[P.i] = JSON.parse(JSON.stringify(P.s)); } catch(e){}
+    if(P.warn && P.warn !== P.lastWarn) SFX.bad(); P.lastWarn = P.warn;
     save(); refreshUI();
   }
   function mascotSay(){ if(P && P.mg && Date.now() - P.mg.t < 15000 && P.mg.t > (window.__mgClr || 0)) return ['think', P.mg.msg];
     const s = P.s, m = S.miss[P.i];
     if(P.warn) return [s.wrong >= 3 ? 'cry' : 'shock', P.warn];
-    if(S.labDone[P.i] && P.celebrate) return ['yay', P.i < PARTS.length - 1 ? `ครบทุกภารกิจแล้วครับ ไป${PARTS[P.i+1].k}กันต่อ` : 'ทำครบทุกตอนแล้วครับ บันทึกผลลงใบกิจกรรม แล้วไปทำแบบทดสอบหลังเรียนได้เลย'];
+    if(S.labDone[P.i] && P.celebrate) return ['yay', P.i < PARTS.length - 1 ? `ครบทุกภารกิจแล้วครับ ไป${PARTS[P.i+1].k} กันต่อ` : 'ทำครบทุกตอนแล้วครับ บันทึกผลลงใบกิจกรรม แล้วไปทำแบบทดสอบหลังเรียนได้เลย'];
     if(P.say) return ['wow', P.say];
-    if(P.i===0){ if(!m.v3) return ['think', `กดปุ่มแรงดันบนจอหรือแตะแหล่งจ่ายไฟ วัดตัวต้านทานให้ครบ 3 ค่าครับ (ได้ ${nres()})`];
-      if(!m.R) return ['think','คำนวณความต้านทานของตัวต้านทานปริศนาครับ'];
-      if(!m.lin) return ['think','กระแสสัมพันธ์กับความต่างศักย์อย่างไรครับ'];
-      if(!m.bulb) return nbulb() < 2 ? ['think', `สลับเป็นหลอดไฟ แล้ววัดอย่างน้อย 2 ค่าแรงดันครับ (ได้ ${nbulb()})`] : ['think','กราฟ I-V ของหลอดไฟเป็นอย่างไรครับ'];
-      return ['yay','ตัวต้านทานเป็นไปตามกฎของโอห์ม แต่หลอดไฟความต้านทานเพิ่มเมื่อร้อนครับ']; }
-    if(P.i===1){ if(!m.ser) return ['think','กด 📏 อ่านค่า บนจอ เพื่อวัดกระแสแบบอนุกรมครับ'];
-      if(!m.par) return ['think','แตะสวิตช์หรือกดปุ่มบนจอ เปลี่ยนเป็นแบบขนานครับ'];
-      if(!m.Rp) return ['think','คำนวณความต้านทานรวมแบบขนานครับ'];
-      if(!m.q) return ['think','ความต้านทานรวมแบบขนานเทียบกับตัวที่น้อยที่สุดเป็นอย่างไรครับ'];
-      return ['yay','อนุกรม R รวมเพิ่ม ขนาน R รวมลดลงครับ']; }
-    if(!m.pts) return ['think', `กดปุ่ม R บนจอหรือแตะรีโอสแตต วัดให้ครบ 3 ค่าครับ (ได้ ${npts()})`];
-    if(!m.E) return ['think','หาแรงเคลื่อนไฟฟ้าจากจุดตัดแกน V ของกราฟครับ'];
-    if(!m.r) return ['think','หาความต้านทานภายในจากความชันของกราฟครับ'];
-    if(!m.q) return ['think','กระแสมากขึ้น V ปลายเซลล์เปลี่ยนอย่างไรครับ'];
-    return ['yay','V = E − Ir ยิ่งกระแสมาก แรงดันตกคร่อม r ยิ่งมากครับ'];
+    if(P.selT) return ['think', 'เลือกขั้วต้นทางแล้ว แตะขั้วปลายทางเพื่อต่อสายครับ (แตะที่ว่างเพื่อยกเลิก)'];
+    if(P.dg && P.dg.msg) return [s.fuse || s.trip ? 'shock' : 'think', P.dg.msg];
+    if(!m.wire) return ['think', s.wires.length ? 'ต่อสายต่อให้ครบตามแผนภาพในแผงข้างครับ ลากจากขั้วหนึ่งไปอีกขั้ว หรือแตะขั้วต้นแล้วแตะขั้วปลาย' : 'ต่อวงจรตามแผนภาพในแผงข้างครับ ลากจากขั้วหนึ่งไปอีกขั้ว (หรือแตะขั้วต้นแล้วแตะขั้วปลาย) เริ่มจากขั้ว + สีแดงของแหล่งจ่ายไฟ'];
+    if(!m.v3) return ['think', `หมุนปุ่มสีส้มบนแหล่งจ่ายไฟหรือกด V +/− วัดให้ครบ 3 ค่าแรงดันครับ (ได้ ${nres()})`];
+    if(!m.R) return ['think','คำนวณความต้านทานของตัวต้านทานปริศนา R = V/I ครับ'];
+    if(!m.bulb) return ['think', `แตะหลอดไฟบนโต๊ะเพื่อสลับกับตัวต้านทาน แล้ววัดอย่างน้อย 2 ค่าแรงดันครับ (ได้ ${nbulb()})`];
+    return ['yay','ตัวต้านทานเป็นไปตามกฎของโอห์ม แต่หลอดไฟความต้านทานเพิ่มเมื่อร้อนครับ'];
   }
-  function dock(html){ const st = $('#stage'); if(!st) return; let d = $('#dock'); if(!d){ d = document.createElement('div'); d.id = 'dock'; d.style.cssText = 'position:absolute;top:10px;left:10px;right:64px;z-index:4;display:flex;flex-wrap:wrap;gap:6px;align-items:center'; st.appendChild(d); }
+  function dock(html){ const st = $('#stage'); if(!st) return; let d = $('#dock'); if(!d){ d = document.createElement('div'); d.id = 'dock'; st.appendChild(d); }
+    const full = st.classList.contains('full'), nar = innerWidth <= 860, below = nar && !full, fb = nar && full; let bar = $('#dockbar');
+    if(below && !bar){ bar = document.createElement('div'); bar.id = 'dockbar'; st.insertAdjacentElement('afterend', bar); }
+    const host = below ? bar : st, mode = below ? 'b' : fb ? 'f' : 's';
+    if(d.parentNode !== host || d.dataset.m !== mode){ host.appendChild(d); d.dataset.m = mode; d.classList.toggle('fb', fb); d.style.cssText = below ? 'display:flex;flex-wrap:wrap;gap:8px;align-items:stretch' : fb ? '' : 'position:absolute;top:10px;left:10px;right:64px;z-index:4;display:flex;flex-wrap:wrap;gap:6px;align-items:center'; }
+    if(bar){ const on = below && !!html; bar.classList.toggle('on', on); st.classList.toggle('hasbar', on); if(on){ const g = parseFloat(getComputedStyle(st.parentNode).rowGap) || 0; bar.style.marginTop = (-g - 1) + 'px'; } }
+    st.classList.toggle('dockfb', fb && !!html); if(fb) st.style.setProperty('--dockb', d.offsetHeight + 'px');
     if(d.dataset.h !== html){ d.innerHTML = html; d.dataset.h = html; } const hn = $('.hint', st); if(hn) hn.style.display = html ? 'none' : ''; }
   const DB = (v, t, on, main) => `<button class="btn ${main ? 'ok' : on ? '' : 'ghost'} sm" style="min-height:38px;padding:0 12px;font-size:14px${main ? ';font-weight:600' : ''}" type="button" data-act="lab" data-v="${v}">${t}</button>`;
   const PILL = t => `<span class="status on" style="background:#fff;color:#1E2340">${t}</span>`;
@@ -1596,41 +1731,22 @@ if(x===null){ _w = 'พิมพ์ r เป็นตัวเลข หน่�
     const panel = $('#panel');
     if(!$('#pCtrl', panel)) panel.innerHTML = `<div class="box" id="pMiss"></div>${$('#pRes') ? '' : '<div class="box" id="pRes"></div>'}<div class="box" id="pCtrl"></div>`;
     const B = (v, t, on) => `<button class="btn ${on ? '' : 'ghost'} sm" type="button" data-act="lab" data-v="${v}">${t}</button>`;
-    const done = t => `<div><span class="status on">${t}</span></div>`;
-    const Q = (key, title, opts, cond) => cond ? `<div class="cc" style="margin-top:8px"><h3>📦 สรุปจากหลักฐาน · ${title}</h3>${s.ans[key] ? done(opts.find(o=>o[0]===s.ans[key])[1]) : (s.lk && s.lk[key]) ? `<div class="row" style="gap:6px;opacity:.5;pointer-events:none">${opts.map(([v,t])=>B('x', t)).join('')}</div><div class="lock">🔒 ข้อสรุปยังไม่ตรงกับหลักฐาน ต้องกลับไปดูตัวเลขในตารางก่อนจึงจะตอบใหม่ได้</div>${B('ev:'+key, '🔍 ดูหลักฐาน', false)}` : `<div class="row" style="gap:6px">${opts.map(([v,t])=>B('ans:'+key+':'+v, t)).join('')}</div>`}</div>` : '';
     const IN = (id, ph, act, label) => `<div class="row" style="gap:6px;flex-wrap:nowrap"><input id="${id}" inputmode="decimal" placeholder="${ph}" aria-label="${ph}" style="flex:1;min-width:0;padding:8px 10px;border:1.5px solid #D6DCEA;border-radius:10px;font:inherit;font-size:15px">${B(act, label, true)}${B('help:' + act, '💡', false)}</div>`;
     const grid = (cols, rows) => `<div style="display:grid;grid-template-columns:${cols};gap:4px 10px;font-size:14px">${rows}</div>`;
     const FORM = t => `<div style="background:#EEF3FF;border-radius:12px;padding:10px 12px;font-size:14px;line-height:1.5">${t}</div>`;
     const HL = c => c ? ' style="color:#2E6BE6;font-weight:700"' : '';
     let ctrls = '', sig = '', res = '', dk = '';
-    if(P.i===0){
-      const ks = Object.keys(s.recs).sort((a,b)=>s.recs[a].comp.localeCompare(s.recs[b].comp) || s.recs[a].V - s.recs[b].V);
-      sig = JSON.stringify(['p0', ks.length, s.ROk, s.ans, nres(), nbulb()]);
-      ctrls = FORM('<b>กฎของโอห์ม</b> V = IR → R = {V|I}<br><span class="note">1 mA = 10⁻³ A</span>')
-        + (nres() && !s.ROk && !m.R ? `<h2 style="margin-top:6px">ความต้านทานของตัวต้านทานปริศนา (Ω)</h2>${IN('rv','เช่น 15','R','ตรวจ')}` : '')
-        + ''
-        + '';
-      res = `<h2>กราฟ I กับ V</h2><canvas id="pc" width="600" height="300" style="width:100%;height:auto;display:block"></canvas><div class="note"><span style="color:#2E6BE6">●</span> ตัวต้านทาน · <span style="color:#F2994A">●</span> หลอดไฟ</div>`
-        + (ks.length ? `<div style="margin-top:8px">` + grid('auto auto auto', `<b>อุปกรณ์</b><b>V (V)</b><b>I (mA)</b>${ks.map(k=>{ const r = s.recs[k], h = HL(P.lastRec===k); return `<span${h}>${r.comp==='res' ? 'ตัวต้านทาน' : 'หลอดไฟ'}</span><span${h}>${r.V.toFixed(1)}</span><span${h}>${r.I.toFixed(1)}</span>`; }).join('')}`) + '</div>' : '');
-      dk = VS.map(v=>DB('V:' + v, v.toFixed(1) + ' V', s.V===v)).join('') + DB('comp', s.comp==='res' ? 'ตัวต้านทาน ▸' : 'หลอดไฟ ▸', 1);
-    } else if(P.i===1){
-      sig = JSON.stringify(['p1', Object.keys(s.rec2), s.RpOk, s.ans]);
-      ctrls = FORM(`<b>อนุกรม</b> R = R₁ + R₂ · <b>ขนาน</b> {1|R} = {1|R₁} + {1|R₂}<br><span class="note">R₁ = ${R1} Ω · R₂ = ${R2} Ω · V = ${V2} V · R รวม = {V|I}</span>`)
-        + (s.rec2.par && !s.RpOk && !m.Rp ? `<h2 style="margin-top:6px">ความต้านทานรวมแบบขนาน (Ω)</h2>${IN('pv','เช่น 8','Rp','ตรวจ')}` : '')
-        + '';
-      res = `<h2>แอมมิเตอร์ · ${I2().toFixed(3)} A</h2>` + (Object.keys(s.rec2).length ? grid('auto auto auto', `<b>การต่อ</b><b>V (V)</b><b>I รวม (A)</b>${['ser','par'].filter(k=>s.rec2[k]).map(k=>{ const h = HL(P.lastCfg===k); return `<span${h}>${k==='ser' ? 'อนุกรม' : 'ขนาน'}</span><span${h}>${V2.toFixed(1)}</span><span${h}>${s.rec2[k].I.toFixed(3)}</span>`; }).join('')}`) : '<div class="note">กด 📏 อ่านค่า เพื่อบันทึก</div>');
-      dk = DB('m2','📏 อ่านค่า', 0, 1) + DB('cfg:ser','อนุกรม', s.cfg==='ser') + DB('cfg:par','ขนาน', s.cfg==='par');
-    } else {
-      const ks = Object.keys(s.pts).map(Number).sort((a,b)=>b - a), f = fit();
-      sig = JSON.stringify(['p2', ks.length, s.EOk, s.rOk, s.ans]);
-      ctrls = FORM('<b>เซลล์ไฟฟ้า</b> V = E − Ir · I = {E|R + r}<br><span class="note">กราฟ V กับ I: จุดตัดแกน V = E · ความชัน = −r</span>')
-        + (ks.length >= 2 && !s.EOk && !m.E ? `<h2 style="margin-top:6px">แรงเคลื่อนไฟฟ้า E (V)</h2>${IN('ev','เช่น 4.5','E','ตรวจ')}` : '')
-        + (ks.length >= 2 && !s.rOk && !m.r ? `<h2 style="margin-top:6px">ความต้านทานภายใน r (Ω)</h2>${IN('iv','เช่น 1.0','r','ตรวจ')}` : '')
-        + '';
-      res = `<h2>กราฟ V กับ I</h2><canvas id="pc" width="600" height="300" style="width:100%;height:auto;display:block"></canvas>`
-        + (ks.length ? `<div style="margin-top:8px">` + grid('auto auto auto', `<b>R (Ω)</b><b>I (A)</b><b>V (V)</b>${ks.map(k=>{ const p = s.pts[k], h = HL(P.lastPt===k); return `<span${h}>${p.R}</span><span${h}>${p.I.toFixed(3)}</span><span${h}>${p.V.toFixed(2)}</span>`; }).join('')}`) + '</div>' : '');
-      dk = RHS.map(r=>DB('rh:' + r, r + ' Ω', s.Rh===r)).join('');
-    }
+    const ks = Object.keys(s.recs).filter(k=>s.recs[k].I > 0).sort((a,b)=>s.recs[a].comp.localeCompare(s.recs[b].comp) || s.recs[a].V - s.recs[b].V), dg = P.dg || {checks:[]};
+    sig = JSON.stringify(['p0', ks.length, s.ROk, nres(), !!m.R, s.comp, s.wires, s.sw, P.selW, dg.checks.map(c=>c[1])]);
+    ctrls = FORM('<b>กฎของโอห์ม</b> V = IR → R = {V|I}<br><span class="note">แอมมิเตอร์ต่ออนุกรม · โวลต์มิเตอร์ต่อคร่อม (ขนาน) · ขั้ว + ต่อฝั่ง + ของแหล่งจ่าย</span>')
+      + `<div class="row" style="gap:10px;margin-top:8px;align-items:flex-start;flex-wrap:wrap"><div style="flex:1 1 140px;min-width:140px"><div class="note" style="text-align:center;font-weight:600">แผนภาพที่ต้องต่อ</div>${schTarget()}</div><div style="flex:1 1 140px;min-width:140px"><div class="note" style="text-align:center;font-weight:600">วงจรที่ต่อจริง</div>${schActual()}</div></div>`
+      + `<div style="margin-top:6px;font-size:14px;line-height:1.7">${dg.checks.map(([t,ok])=>`<div>${ok ? '✅' : '⬜'} ${t}</div>`).join('')}</div>`
+      + `<div class="row" style="gap:6px;margin-top:6px">${B('swap', s.comp==='res' ? 'เปลี่ยนเป็นหลอดไฟ ▸' : 'เปลี่ยนเป็นตัวต้านทาน ▸', 1)}${s.wires.length ? B('clr', '🧹 ล้างสายทั้งหมด', false) : ''}</div>`
+      + (nres() && !s.ROk && !m.R ? `<h2 style="margin-top:8px">ความต้านทานของตัวต้านทานปริศนา (Ω)</h2>${IN('rv','เช่น 15','R','ตรวจ')}` : '');
+    res = `<h2>กราฟ I กับ V</h2><canvas id="pc" width="600" height="300" style="width:100%;height:auto;display:block"></canvas><div class="note"><span style="color:#2E6BE6">●</span> ตัวต้านทาน · <span style="color:#F2994A">●</span> หลอดไฟ</div>`
+      + (ks.length ? `<div style="margin-top:8px">` + grid('auto auto auto', `<b>อุปกรณ์</b><b>V (V)</b><b>I (A)</b>${ks.map(k=>{ const r = s.recs[k], h = HL(P.lastRec===k); return `<span${h}>${r.comp==='res' ? 'ตัวต้านทาน' : 'หลอดไฟ'}</span><span${h}>${r.V.toFixed(2)}</span><span${h}>${r.I.toFixed(3)}</span>`; }).join('')}`) + '</div>' : '<div class="note">ต่อวงจรให้ถูก แล้วค่าจะบันทึกลงตารางอัตโนมัติ</div>');
+    dk = DB('V:-' + VSTEP, 'V −') + PILL(`${s.V.toFixed(1)} V`) + DB('V:' + VSTEP, 'V +') + DB('sw', s.sw ? '⏻ เปิดสวิตช์' : '⏻ ปิดสวิตช์', s.sw)
+      + (P.selW!=null ? DB('del', '🗑 ถอดสาย', 0, 1) : '') + (s.fuse ? DB('fuse', '🔧 เปลี่ยนฟิวส์', 0, 1) : '') + DB('ele', s.ele ? '👁 e⁻ ✓' : '👁 e⁻', s.ele);
     dock(dk);
     if(res){ const r = $('#pRes'); if(r.dataset.h !== res){ r.innerHTML = res; r.dataset.h = res; drawPlot(); } }
     sig += JSON.stringify(s.lk || {}); if(sig !== P.ctrlSig || !$('#pCtrl').innerHTML){ $('#pCtrl').innerHTML = ctrls; P.ctrlSig = sig; }
@@ -1639,54 +1755,71 @@ if(x===null){ _w = 'พิมพ์ r เป็นตัวเลข หน่�
     setHTML('#pMiss', missBox(P.i, part, k=>!!(m[k]), nextBtn));
   }
   function drawPlot(){ const cv = $('#pc'), s = P.s; if(!cv) return;
-    if(P.i===0){ const v = Object.values(s.recs), ym = Math.max(100, ...v.map(r=>r.I)); plot(cv, [{col:'#2E6BE6', pts:v.filter(r=>r.comp==='res').map(r=>[r.V, r.I])}, {col:'#F2994A', pts:v.filter(r=>r.comp==='bulb').map(r=>[r.V, r.I])}], 6, Math.ceil(ym/100)*100, 'V (V)', 'I (mA)'); }
-    else if(P.i===2){ const v = Object.values(s.pts), f = fit(), xm = Math.max(.5, Math.ceil(Math.max(...v.map(p=>p.I), .1)*2.5)/2), ym = Math.ceil(s.E + .5); plot(cv, [{col:'#E25555', pts:v.map(p=>[p.I, p.V]), line:f ? [[0, f.b], [xm, f.b + f.m*xm]] : null}], xm, ym, 'I (A)', 'V (V)'); } }
+    const v = Object.values(s.recs).filter(r=>r.I > 0), ym = Math.max(.1, ...v.map(r=>r.I)); plot(cv, [{col:'#2E6BE6', pts:v.filter(r=>r.comp==='res').map(r=>[r.V, r.I])}, {col:'#F2994A', pts:v.filter(r=>r.comp==='bulb').map(r=>[r.V, r.I])}], 6, Math.ceil(ym*10)/10, 'V (V)', 'I (A)'); }
 
   /* ----- actions ----- */
-  function act(fn){ P.warn = null; P.say = null; fn(); sync(); refresh(); }
+  function act(fn){ P.warn = null; P.say = null; P.ev = null; fn(); drawWires(); sync(); if(P.ev){ P.warn = P.dg && P.dg.msg; P.ev = null; } refresh(); }
   const val = id => { const e = $('#' + id); return e ? e.value : ''; };
-  const cyc = (arr, v) => arr[(arr.indexOf(v) + 1) % arr.length];
   function action(v){
     if(typeof v==='string' && v.startsWith('mg:')){ const id = v.slice(3), g = mgGet(P.i, id), dn = !!(S.miss[P.i] && S.miss[P.i][id]); P.warn = null; P.say = dn ? 'ภารกิจนี้ทำเสร็จแล้วครับ ✓' : (g ? g[1] : null); P.mg = P.say ? {msg:P.say, t:Date.now()} : null; refresh(); if(!dn && !mgFlash(g)){ const nx = (PARTS[P.i].miss.find(x=>!(S.miss[P.i] && S.miss[P.i][x[0]])) || [])[0]; const alt = g && g[3] ? g[3] : (g && nx && nx!==id ? g[1] + ' (ทำข้อที่มี ▶ ทำต่อ ให้เสร็จก่อนนะครับ)' : ''); if(alt){ P.say = alt; P.mg = {msg:alt, t:Date.now()}; refresh(); } } return; }
     if(P) P.mg = null;
-    if(typeof v==='string' && v.startsWith('help:')){ const a = v.slice(5), so = SOLS[a], gs = Object.values((typeof GUIDE!=='undefined' && GUIDE[P.i]) || {}), nxm = (PARTS[P.i].miss.find(x=>!(S.miss[P.i] && S.miss[P.i][x[0]])) || [])[0], g = (so && gs.find(x=>x[0]==='#' + so.id)) || mgGet(P.i, nxm); const fm = g ? String(g[1]).replace(/ ?ใส่ช่องคำตอบครับ$/,'').replace(/ ครับ$/,'') + (g[2] && g[2].length ? '<ol style="margin:4px 0 0;padding-left:20px">' + g[2].map(t=>'<li>' + t + '</li>').join('') + '</ol>' : '') : 'ดูขั้นตอนในคำอธิบายของตอนนี้ (ปุ่ม ⓘ)'; const d = so ? autoHelp('ตัวช่วยคำนวณทีละขั้น', fm, so.f()) : null; P.warn = null; if(!d){ P.warn = 'ทำการทดลองให้มีข้อมูลในตารางก่อน แล้วค่อยกด 💡 ครับ'; refresh(); return; } helpOpen(d); return; }
+    if(typeof v==='string' && v.startsWith('help:')){ const a = v.slice(5), so = SOLS[a], gs = Object.values((typeof GUIDE!=='undefined' && GUIDE[P.i]) || {}), nxm = (PARTS[P.i].miss.find(x=>!(S.miss[P.i] && S.miss[P.i][x[0]])) || [])[0], g = (so && gs.find(x=>x[0]==='#' + so.id)) || mgGet(P.i, nxm); const fm = g ? String(g[1]).replace(/ ?ใส่ช่องคำตอบครับ$/,'').replace(/ ครับ$/,'') + (g[2] && g[2].length ? '<ol style="margin:4px 0 0;padding-left:20px">' + g[2].map(t=>'<li>' + t + '</li>').join('') + '</ol>' : '') : 'ดูขั้นตอนในคำอธิบายของตอนนี้ (ปุ่ม ⓘ)'; const d = so ? autoHelp('ตัวช่วยคำนวณทีละขั้น', fm, so.f()) : null; P.warn = null; if(!d){ P.warn = 'ทำการทดลองให้มีข้อมูลในตารางก่อนครับ'; refresh(); return; } helpOpen(d); return; }
     if(typeof v==='string' && v.startsWith('ev:')){ const s0 = P.s; s0.lk = s0.lk || {}; s0.lk[v.slice(3)] = false; P.warn = null; P.say = 'ดูตัวเลขในตารางผล (กรอบที่กระพริบ) แล้วกลับมาเลือกข้อสรุปใหม่ครับ'; refresh(); setTimeout(()=>flashEl('#pRes'), 80); return; }
     if(!P) return; const s = P.s;
     if(v==='camL') camRotate(-Math.PI/7); else if(v==='camR') camRotate(Math.PI/7);
     else if(v==='zin') camZoom(.82); else if(v==='zout') camZoom(1.2);
     else if(v==='camReset'){ R.camera.position.copy(CAMS[P.i].pos); R.controls.target.copy(CAMS[P.i].tgt); fitNarrow(); }
     else if(v==='resetPart'){ if(S.ps) delete S.ps[P.i]; P = fresh(P.i); build(); }
-    else if(v.startsWith('V:')) act(()=>{ s.V = +v.slice(2); updP1(); rec1(); });
-    else if(v==='psn') act(()=>{ s.V = cyc(VS, s.V); updP1(); rec1(); });
-    else if(v==='comp') act(()=>{ s.comp = s.comp==='res' ? 'bulb' : 'res'; rebuild(); updP1(); rec1(); });
-    else if(v==='R') act(()=>checkR(val('rv'))); else if(v.startsWith('R:')) act(()=>{ const r = s.recs[P.lastRec]; checkR(v.slice(2)==='auto' ? String(r.V/(r.I/1000)) : v.slice(2)); });
-    else if(v==='m2') act(rec2);
-    else if(v.startsWith('cfg:')) act(()=>{ s.cfg = v.slice(4); rebuild(); updP2(); rec2(); });
-    else if(v==='cfgT') act(()=>{ s.cfg = s.cfg==='ser' ? 'par' : 'ser'; rebuild(); updP2(); rec2(); });
-    else if(v==='Rp') act(()=>checkRp(val('pv'))); else if(v.startsWith('Rp:')) act(()=>checkRp(v.slice(3)==='auto' ? String(V2/s.rec2.par.I) : v.slice(3)));
-    else if(v.startsWith('rh:')) act(()=>{ s.Rh = +v.slice(3); updP3(); rec3(); });
-    else if(v==='rhn') act(()=>{ s.Rh = cyc(RHS, s.Rh); updP3(); rec3(); });
-    else if(v==='E') act(()=>checkE(val('ev'))); else if(v.startsWith('E:')) act(()=>checkE(v.slice(2)==='auto' ? String(fit().b) : v.slice(2)));
-    else if(v==='r') act(()=>checkr(val('iv'))); else if(v.startsWith('r:')) act(()=>checkr(v.slice(2)==='auto' ? String(-fit().m) : v.slice(2)));
+    else if(v.startsWith('V:')) act(()=>{ setV(s.V + (+v.slice(2))); SFX.tick(); });
+    else if(v.startsWith('Vs:')) act(()=>setV(+v.slice(3)));
+    else if(v==='sw') act(()=>{ s.sw = s.sw ? 0 : 1; s.trip = 0; SFX.pop(); });
+    else if(v==='swap') act(()=>{ s.comp = s.comp==='res' ? 'bulb' : 'res'; rebuild(); SFX.pick(); P.say = s.comp==='res' ? 'ใส่ตัวต้านทานปริศนาแล้วครับ' : 'ใส่หลอดไฟแทนตัวต้านทานแล้ว สายยังต่ออยู่ที่ขั้วเดิม วัดอย่างน้อย 2 ค่าแรงดันครับ'; });
+    else if(v==='del') act(()=>delWire(P.selW));
+    else if(v==='clr') act(()=>{ s.wires = []; P.selW = null; P.selT = null; s.trip = 0; P.say = 'ล้างสายทั้งหมดแล้วครับ'; });
+    else if(v==='fuse') act(()=>{ s.fuse = 0; SFX.click(); P.say = 'เปลี่ยนฟิวส์แล้วครับ ถ้ายังต่อแอมมิเตอร์คร่อมอยู่ ฟิวส์จะขาดอีก'; });
+    else if(v==='ele') act(()=>{ s.ele = !s.ele; if(s.ele) P.say = 'จุดสีฟ้าคืออิเล็กตรอน วิ่งสวนทางกับกระแส (จากขั้ว − ไป +) ยิ่งกระแสมากยิ่งเร็ว ของจริงช้ามาก (ไม่ถึง 1 mm/s) ภาพนี้เร่งให้เห็นครับ'; });
+    else if(v.startsWith('wire:')) act(()=>{ const [a,b] = v.slice(5).split(','); if(P.terms[a] && P.terms[b]) connect(a, b); });
+    else if(v==='R') act(()=>checkR(val('rv'))); else if(v.startsWith('R:')) act(()=>{ const rs = Object.keys(s.recs).filter(k=>s.recs[k].comp==='res' && s.recs[k].I > 0), r = s.recs[rs.includes(P.lastRec) ? P.lastRec : rs[rs.length - 1]]; checkR(v.slice(2)==='auto' ? (r ? String(r.V/r.I) : '') : v.slice(2)); });
     else if(v.startsWith('ans:')){ const [,q,a] = v.split(':'); answer(q, a); }
   }
 
-  /* ----- pointer ----- */
+  /* ----- pointer: wiring by drag or tap-tap ----- */
   let drag = null; const ndc = new THREE.Vector2();
   function pick(e){ const r = R.renderer.domElement.getBoundingClientRect(); ndc.set(((e.clientX-r.left)/r.width)*2-1, -((e.clientY-r.top)/r.height)*2+1); R.raycaster.setFromCamera(ndc, R.camera); }
   function rootOf(o){ while(o && !o.userData.id) o = o.parent; return o; }
+  function hitAt(e){ pick(e); const h = R.raycaster.intersectObjects(R.world.children, true).filter(x=>rootOf(x.object)); const t = h.find(x=>rootOf(x.object).userData.id.startsWith('t:')); return t ? rootOf(t.object) : h.length ? rootOf(h[0].object) : null; }
+  function nearTerm(e, lim, not){ let best = lim, id = null; Object.entries(P.terms).forEach(([tid, t])=>{ if(tid===not) return; const p = scr(termPos(tid)), d = Math.hypot(p.x - e.clientX, p.y - e.clientY); if(d < best){ best = d; id = tid; } }); return id; }
+  function tmpWire(a, b){ if(P.tmp){ R.world.remove(P.tmp); P.tmp = null; } if(!a || !b) return; P.tmp = new THREE.Mesh(new THREE.TubeGeometry(wireCurve(a, b), 20, .012, 6, false), mat(0xF2994A, {transparent:true, opacity:.8})); R.world.add(P.tmp); }
   function bindPointer(){
-    const el = R.renderer.domElement;
+    const el = R.renderer.domElement; let down = null;
     el.addEventListener('pointerdown', e=>{
-      if(!P || drag) return; pick(e);
-      const h = R.raycaster.intersectObjects(R.world.children, true).find(x=>rootOf(x.object));
-      let g = h ? rootOf(h.object) : null; const lim = Math.max(60, el.clientWidth*.1);
-      if(!g){ const cands = P.i===0 ? [P.ps, P.cmp] : P.i===1 ? [P.sw] : [P.rh]; let best = lim; cands.forEach(o=>{ if(!o) return; const p = scr(o.getWorldPosition(V(0,0,0)).add(V(0,.2,0))), d = Math.hypot(p.x - e.clientX, p.y - e.clientY); if(d < best){ best = d; g = o; } }); }
-      if(!g) return; drag = {id:g.userData.id, x:e.clientX, y:e.clientY, pid:e.pointerId};
+      down = {x:e.clientX, y:e.clientY, t:performance.now()};
+      if(drag && performance.now() - (drag.ts || 0) > 1500){ drag = null; R.controls.enabled = true; }
+      if(!P || drag) return;
+      let g = hitAt(e), id = g ? g.userData.id : null;
+      const nt = nearTerm(e, 34); if(nt && (!id || id.startsWith('w:'))){ id = 't:' + nt; }
+      if(!id && P.comps.ps){ const kn = P.comps.ps.g.userData.kn, p = scr(kn.getWorldPosition(V(0,0,0))); if(Math.hypot(p.x - e.clientX, p.y - e.clientY) < 40) id = 'knob'; }
+      if(!id) return;
+      drag = {id, x:e.clientX, y:e.clientY, pid:e.pointerId, moved:false, V0:P.s.V, ts:performance.now()};
+      if(id.startsWith('t:')){ P.dragT = id.slice(2); termRings(); SFX.pick(); }
+      e.stopImmediatePropagation(); e.preventDefault(); R.controls.enabled = false; try{ el.setPointerCapture(e.pointerId); }catch(_){}
     }, {capture:true});
-    const end = e=>{ if(!drag || e.pointerId!==drag.pid) return; const d = drag; drag = null; if(Math.abs(e.clientX-d.x) + Math.abs(e.clientY-d.y) > 8) return;
-      if(d.id==='ps') action('psn'); else if(d.id==='cmp') action('comp'); else if(d.id==='sw') action('cfgT'); else if(d.id==='rh') action('rhn'); };
-    el.addEventListener('pointerup', end); el.addEventListener('pointercancel', end);
+    el.addEventListener('pointermove', e=>{ if(!drag || e.pointerId!==drag.pid) return; drag.ts = performance.now(); if(!drag.moved && Math.abs(e.clientX-drag.x) + Math.abs(e.clientY-drag.y) > 6) drag.moved = true; if(!drag.moved) return;
+      if(drag.id.startsWith('t:')){ pick(e); const pt = new THREE.Vector3(); const a = termPos(drag.id.slice(2)); const nt = nearTerm(e, 40, drag.id.slice(2)); const b = nt ? termPos(nt) : (R.raycaster.ray.intersectPlane(new THREE.Plane(UP, -(TABLE_Y + TY)), pt) ? pt.clone() : null); tmpWire(a, b);
+        if(nt !== drag.tgt){ drag.tgt = nt; Object.entries(P.terms).forEach(([tid, t])=>{ t.ring.material.opacity = tid===nt ? 1 : .45; t.ring.material.color.setHex(tid===nt ? 0x2E9E5B : 0x2E6BE6); }); } }
+      else if(drag.id==='knob'){ const dv = drag.y - e.clientY + (e.clientX - drag.x)*.5, nv = Math.max(0, Math.min(VMAX, Math.round((drag.V0 + dv*.03)/VSTEP)*VSTEP)); if(nv!==P.s.V){ P.s.V = nv; P.s.trip = 0; SFX.tick(); updP1(); P.dirty = true; } } });
+    const end = e=>{ if(!drag || e.pointerId!==drag.pid) return; const d = drag; drag = null; down = null; R.controls.enabled = true; P.dragT = null; tmpWire(null);
+      if(d.id.startsWith('t:')){ const a = d.id.slice(2);
+        if(d.moved){ const b = d.tgt || nearTerm(e, 40, a); P.selT = null; if(b) act(()=>connect(a, b)); else { termRings(); P.say = 'ปล่อยนิ้วให้ใกล้ขั้วปลายทางครับ (วงสีเขียวคือขั้วที่จะต่อ)'; refresh(); } }
+        else { if(P.selT && P.selT!==a){ const b0 = P.selT; P.selT = null; act(()=>connect(b0, a)); } else { P.selT = P.selT===a ? null : a; P.selW = null; termRings(); refresh(); } }
+        return; }
+      if(d.id.startsWith('w:')){ if(!d.moved){ const k = +d.id.slice(2); P.selW = P.selW===k ? null : k; P.selT = null; SFX.click(); drawWires(); refresh(); } return; }
+      if(d.id==='sw'){ if(!d.moved) action('sw'); return; }
+      if(d.id==='swapX'){ if(!d.moved) action('swap'); return; }
+      if(d.id==='knob'){ if(d.moved) act(()=>{}); return; } };
+    el.addEventListener('pointerup', end); el.addEventListener('pointercancel', end); window.addEventListener('pointerup', end); window.addEventListener('pointercancel', end);
+    // tap on empty space clears a pending terminal / wire selection
+    el.addEventListener('pointerup', e=>{ if(drag || !down || !P) return; const mv = Math.abs(e.clientX - down.x) + Math.abs(e.clientY - down.y); down = null; if(mv < 6 && (P.selT || P.selW!=null)){ P.selT = null; P.selW = null; drawWires(); refresh(); } });
   }
 
   /* ----- loop ----- */
@@ -1697,13 +1830,19 @@ if(x===null){ _w = 'พิมพ์ r เป็นตัวเลข หน่�
     const dt = Math.min(.05, (t-last)/1000 || 0); last = t;
     R.controls.update();
     if(P){
-      P.tt += dt; runFlows(dt);
+      P.tt += dt;
+      // electrons drift opposite to conventional current
+      if(P.sol && P.wireObjs) P.wireObjs.forEach((o,k)=>{ const I = P.sol.I['w' + k] || 0, on = P.s.ele && Math.abs(I) > 1e-4; o.dots.forEach(d=>{ d.visible = on; if(!on) return; d.userData.u = ((d.userData.u - Math.sign(I)*Math.min(1.5, .15 + Math.abs(I)*1.2)*dt/Math.max(.3, o.cv.getLength())) % 1 + 1) % 1; d.position.copy(o.cv.getPointAt(d.userData.u)); }); });
+      if(P.selT && P.terms[P.selT]) P.terms[P.selT].ring.material.opacity = .6 + .4*Math.sin(P.tt*8);
       uiT += dt; if(uiT > .3){ uiT = 0; if(check()) refresh(); else if(!(document.activeElement && document.activeElement.tagName==='INPUT')) refreshUI(); }
       if(P.dirty){ P.dirty = false; refresh(); }
       placeLabels();
     }
     R.renderer.render(R.scene, R.camera);
   }
+
+  window.__P = () => P; window.__scr = (o, dy) => { const v = o.getWorldPosition(new THREE.Vector3()); v.y += dy || 0; return scr(v); };
+  window.__tp = tid => scr(termPos(tid)); window.__cam = () => R ? [R.camera.position.toArray().map(v=>+v.toFixed(3)), R.controls.enabled] : null;
 
 
   /* ----- labels ----- */
@@ -1733,7 +1872,7 @@ if(x===null){ _w = 'พิมพ์ r เป็นตัวเลข หน่�
       if(R.ro) R.ro.disconnect(); R.ro = new ResizeObserver(resize); R.ro.observe(box); resize();
       if(!R.active){ R.active = true; requestAnimationFrame(tick); }
     },
-    stop(){ if(R){ R.active = false; if(R.ro) R.ro.disconnect(); } },
+    stop(){ SFX.amb({}); if(R){ R.active = false; if(R.ro) R.ro.disconnect(); } },
     refreshUI(){ if(P){ P.ctrlSig = ''; refreshUI(); } },
     action
   };
