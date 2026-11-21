@@ -486,12 +486,13 @@ const CONF = {
   title:'ลมฟ้าอากาศ', short:'ม.1 ลมฟ้าอากาศ', subject:'วิทยาศาสตร์ ม.1', senior:true,
   tags:['วิทยาศาสตร์ ม.1','ลมฟ้าอากาศรอบตัวเรา','ห้องแลป 3 มิติ'],
   sub:'รู้จักและอ่านค่าเครื่องมือในสถานีตรวจอากาศ วัดความกดอากาศที่ระดับความสูงต่างกัน จำลองลมบกลมทะเล ทำเมฆในขวด และอ่านแผนที่อากาศเพื่อพยากรณ์',
-  key:'parkilab-m1-wx-v1', file:'ParK_iLab-M1-weather-worksheet.pdf',
-  hint:'แตะเครื่องมือเพื่อเลือกแล้วตอบชื่อ · ลากบารอมิเตอร์ไปวางตามระดับความสูง · แตะหลอดไฟเพื่อสลับกลางวันกลางคืน · แตะขวดเพื่อบีบและปล่อย',
+  key:'parkilab-m1-wx-v2', file:'ParK_iLab-M1-weather-worksheet.pdf',
+  hint:'แตะเครื่องมือเพื่อเลือก · ลากพื้นที่ว่างเพื่อหมุนมุมมอง · ใช้สองนิ้วเพื่อซูม',
+  hints:['แตะเครื่องมือที่มีป้าย ? แล้วเลือกชื่อ จากนั้นแตะเพื่ออ่านค่าจากภาพขยาย · ลากพื้นที่ว่างเพื่อหมุน','ลากบารอมิเตอร์ไปวางที่ธงบนภูเขา (หรือกดปุ่มระดับ) · แตะหลอดไฟเพื่อสลับกลางวันกลางคืน','แตะธูปเพื่อใส่ควัน · แตะขวดเพื่อบีบและปล่อย · แตะหมุดเมืองบนแผนที่อากาศ'],
   observe:'อ่านค่าจากเครื่องมือให้ถูกหน่วย บันทึกเป็นตาราง แล้วอธิบายความสัมพันธ์ระหว่างองค์ประกอบของลมฟ้าอากาศ',
   guide:[
-    {h:'จุดประสงค์', li:['ระบุเครื่องมือวัดองค์ประกอบของลมฟ้าอากาศ และอ่านค่าได้ถูกต้อง','อธิบายความสัมพันธ์ระหว่างความกดอากาศกับความสูงและการเกิดลม','อธิบายการเกิดลมบกลมทะเล และการเกิดเมฆ','แปลความหมายแผนที่อากาศเพื่อพยากรณ์อากาศอย่างง่าย']},
-    {h:'ใช้ห้องแลป 3 มิติอย่างไร', li:['<b>แตะเครื่องมือ</b> ในสถานีตรวจอากาศ แล้วเลือกชื่อในแผงด้านขวา จากนั้นอ่านค่าจากภาพขยาย','<b>ลากบารอมิเตอร์</b> ไปวางที่ระดับความสูงต่าง ๆ บนภูเขา <b>แตะหลอดไฟ</b> เพื่อสลับกลางวันกลางคืนบนแบบจำลองชายฝั่ง','<b>ลากธูป</b> ไปที่ปากขวด แล้ว <b>แตะขวด</b> เพื่อบีบและปล่อย','<b>แตะเมือง</b> บนแผนที่อากาศเพื่อดูข้อมูล']},
+    {h:'จุดประสงค์', li:['ระบุเครื่องมือวัดองค์ประกอบของลมฟ้าอากาศ และอ่านค่าได้ถูกต้อง','อธิบายความสัมพันธ์ระหว่างความกดอากาศกับความสูงและการเกิดลม','อธิบายการเกิดลมบกลมทะเล และการเกิดเมฆ','แปลความหมายแผนที่อากาศเพื่อพยากรณ์อากาศอย่างง่าย','อ่านและออกเสียงคำศัพท์ภาษาอังกฤษเกี่ยวกับลมฟ้าอากาศ']},
+    {h:'ใช้ห้องแลป 3 มิติอย่างไร', li:['<b>แตะเครื่องมือ</b> ในสถานีตรวจอากาศ แล้วเลือกชื่อในแผงด้านล่าง จากนั้นแตะอีกครั้งเพื่ออ่านค่าจากภาพขยาย','<b>ลากบารอมิเตอร์</b> ไปวางที่ธงบนภูเขา หรือกดปุ่มระดับความสูง','<b>แตะหลอดไฟ</b> เหนือแบบจำลองชายฝั่งเพื่อสลับกลางวันกลางคืน','<b>แตะธูป</b> เพื่อใส่ควันในขวด แล้ว <b>แตะขวด</b> เพื่อบีบและปล่อย','<b>แตะหมุดเมือง</b> บนแผนที่อากาศเพื่อดูข้อมูล','ทุกการแตะในฉากมีปุ่มในแผงด้านล่างใช้แทนได้ แตะ <b>คำศัพท์ Vocabulary</b> เพื่อฟังเสียง']},
     'POE',
     {h:'ข้อควรระวัง (เมื่อทดลองจริง)', li:['ติดตั้งเครื่องมือในที่โล่ง ห่างจากอาคารและต้นไม้','อ่านเทอร์โมมิเตอร์ในระดับสายตา และไม่จับกระเปาะ','ระวังหลอดไฟร้อนในแบบจำลองลมบกลมทะเล','จุดธูปในพื้นที่ปลอดภัยและดับให้สนิทหลังใช้']}
   ]
@@ -512,19 +513,24 @@ const QUIZ = [
   {q:'ในการทำเมฆในขวด ทำไมต้องใส่ควันธูป', o:['ทำให้อากาศในขวดร้อนขึ้น','เป็นอนุภาคให้ไอน้ำควบแน่นเกาะ','ทำให้ความดันในขวดสูงขึ้น','ทำให้ไอน้ำระเหยได้เร็วขึ้น'], a:1, why:'ไอน้ำต้องมีอนุภาคเล็ก ๆ ให้เกาะเพื่อควบแน่นเป็นละอองน้ำ'},
   {q:'บนแผนที่อากาศ ตัวอักษร L หมายถึงอะไร', o:['บริเวณความกดอากาศสูง อากาศแจ่มใส','บริเวณความกดอากาศต่ำ มักมีเมฆมากและฝนตก','บริเวณที่มีลมสงบ','บริเวณทะเล'], a:1, why:'L คือหย่อมความกดอากาศต่ำ อากาศลอยตัวขึ้น ทำให้เกิดเมฆและฝน'},
   {q:'บริเวณที่อยู่ใต้อิทธิพลความกดอากาศสูง (H) มักมีลักษณะอากาศอย่างไร', o:['ท้องฟ้าโปร่ง อากาศแห้ง','ฝนตกหนัก มีเมฆมาก','พายุฟ้าคะนองเกิดบ่อย','อากาศชื้น ลมพัดเข้าหาศูนย์กลาง'], a:0, why:'อากาศจมตัวลง ไม่เกิดเมฆ ท้องฟ้าจึงโปร่ง'},
-  {q:'พายุหมุนเขตร้อนที่มีความเร็วลมใกล้ศูนย์กลางสูงที่สุดเรียกว่าอะไรเมื่อเกิดในมหาสมุทรแปซิฟิกตะวันตก', o:['พายุดีเปรสชัน','พายุโซนร้อน','ไต้ฝุ่น','ลมบก'], a:2, why:'พายุหมุนเขตร้อนที่รุนแรงที่สุดในแปซิฟิกตะวันตกเรียกว่าไต้ฝุ่น'}
+  {q:'พายุหมุนเขตร้อนที่มีความเร็วลมใกล้ศูนย์กลางสูงที่สุดเรียกว่าอะไรเมื่อเกิดในมหาสมุทรแปซิฟิกตะวันตก', o:['พายุดีเปรสชัน','พายุโซนร้อน','ไต้ฝุ่น','ลมบก'], a:2, why:'พายุหมุนเขตร้อนที่รุนแรงที่สุดในแปซิฟิกตะวันตกเรียกว่าไต้ฝุ่น'},
+  {q:'คำว่า "Barometer" หมายถึงข้อใด', o:['บารอมิเตอร์ เครื่องวัดความกดอากาศ','เครื่องวัดฝน','ศรลม','เทอร์โมมิเตอร์'], a:0, say:['Barometer'], why:'Barometer = บารอมิเตอร์ ใช้วัดความกดอากาศ (air pressure) หน่วย hPa'},
+  {q:'คำว่า "Relative humidity" หมายถึงข้อใด', o:['ความชื้นสัมพัทธ์','ความกดอากาศ','อัตราเร็วลม','ปริมาณฝน'], a:0, say:['Relative humidity'], why:'Relative humidity = ความชื้นสัมพัทธ์ บอกเป็นร้อยละ (%)'},
+  {q:'"Sea breeze" คือลมแบบใด', o:['ลมทะเล พัดจากทะเลเข้าหาฝั่งตอนกลางวัน','ลมบก พัดจากบกออกทะเลตอนกลางคืน','ลมมรสุม','พายุไต้ฝุ่น'], a:0, say:['Sea breeze'], why:'Sea breeze = ลมทะเล ส่วน Land breeze = ลมบก'},
+  {q:'"Wind vane" ใช้ทำอะไร', o:['บอกทิศทางลม','วัดอัตราเร็วลม','วัดความชื้น','วัดปริมาณฝน'], a:0, say:['Wind vane'], why:'Wind vane = ศรลม บอกทิศทางที่ลมพัดมา'},
+  {q:'"Weather forecast" หมายถึงข้อใด', o:['การพยากรณ์อากาศ','แผนที่ประเทศ','สถานีรถไฟ','การวัดอุณหภูมิร่างกาย'], a:0, say:['Weather forecast'], why:'Weather forecast = การพยากรณ์อากาศ ใช้ข้อมูลเช่นแผนที่อากาศคาดการณ์ลมฟ้าอากาศล่วงหน้า'}
 ];
 
 const PARTS = [
-  {k:'ตอนที่ 1', t:'เครื่องมือตรวจอากาศ', d:'แตะเครื่องมือ 5 ชนิดในสถานีตรวจอากาศ แล้วระบุชื่อ จากนั้นอ่านค่าความชื้นสัมพัทธ์ ทิศทางลม และปริมาณน้ำฝน', time:'ประมาณ 20 นาที', bg:'#E8F2FE',
+  {k:'ตอนที่ 1', t:'เครื่องมือตรวจอากาศ', d:'แตะเครื่องมือ 5 ชนิดในสถานีตรวจอากาศ แล้วระบุชื่อ จากนั้นอ่านค่าความชื้นสัมพัทธ์ ทิศทางและอัตราเร็วลม ปริมาณน้ำฝน และความกดอากาศ', time:'ประมาณ 20 นาที', bg:'#E8F2FE',
    pred:{q:'ศรลมชี้หัวลูกศรไปทางทิศใต้ แปลว่าลมพัดมาจากทิศใด', o:['ทิศใต้','ทิศเหนือ','บอกไม่ได้']},
-   miss:[['parts','ระบุชื่อเครื่องมือตรวจอากาศครบ 5 ชนิด']]},
+   miss:[['parts','ระบุชื่อเครื่องมือตรวจอากาศครบ 5 ชนิด'],['rh','อ่านไฮโกรมิเตอร์ แล้วหาความชื้นสัมพัทธ์'],['wind','อ่านทิศทางลมและอัตราเร็วลม'],['rain','อ่านปริมาณน้ำฝนและความกดอากาศ']]},
   {k:'ตอนที่ 2', t:'ความกดอากาศและลม', d:'ลากบารอมิเตอร์ขึ้นภูเขาเพื่อวัดความกดอากาศที่ระดับความสูงต่าง ๆ แล้วใช้แบบจำลองชายฝั่งดูลมทะเลตอนกลางวันและลมบกตอนกลางคืน', time:'ประมาณ 20 นาที', bg:'#FFF4D6',
    pred:{q:'เมื่อนำบารอมิเตอร์ขึ้นไปบนยอดเขา ค่าความกดอากาศจะเป็นอย่างไร', o:['ลดลง','เพิ่มขึ้น','เท่าเดิม']},
-   miss:[['alt','วัดความกดอากาศอย่างน้อย 3 ระดับความสูง'],['breeze','สังเกตลมทะเล (กลางวัน) และลมบก (กลางคืน)']]},
+   miss:[['alt','วัดความกดอากาศครบ 4 ระดับความสูง'],['day','สังเกตลมทะเลตอนกลางวัน'],['night','สังเกตลมบกตอนกลางคืน'],['hl','ระบุบริเวณความกดอากาศสูง (H) ตอนกลางคืน']]},
   {k:'ตอนที่ 3', t:'เมฆและการพยากรณ์อากาศ', d:'ทำเมฆในขวดโดยใส่น้ำอุ่นและควันธูป บีบแล้วปล่อยขวด จากนั้นอ่านแผนที่อากาศที่มีหย่อมความกดอากาศสูงและต่ำเพื่อพยากรณ์', time:'ประมาณ 20 นาที', bg:'#E3F7EF',
    pred:{q:'เมื่อปล่อยมือจากขวดที่บีบไว้ (อากาศขยายตัว) จะเกิดอะไรขึ้นในขวด', o:['เกิดฝ้าคล้ายเมฆ','ไม่มีอะไรเกิดขึ้น','น้ำเดือด']},
-   miss:[['cloud','ทำเมฆในขวดให้สำเร็จ']]}
+   miss:[['try','บีบแล้วปล่อยขวดที่ยังไม่มีควัน'],['cloud','ใส่ควันธูป แล้วบีบปล่อยจนเกิดเมฆ'],['city','แตะดูข้อมูลเมือง A B C บนแผนที่อากาศ'],['fc','พยากรณ์อากาศของเมือง A B C']]}
 ];
 const PART_ART = [
   `<svg width="200" height="110" viewBox="0 0 200 110" aria-hidden="true"><rect x="20" y="30" width="40" height="34" fill="#fff" stroke="#9AA3B5"/><path d="M28 64 v40 M52 64 v40" stroke="#9AA3B5" stroke-width="3"/><path d="M100 104 v-70" stroke="#5B6280" stroke-width="3"/>${[0,1,2].map(k=>`<circle cx="${100+18*Math.cos(k*2.1)}" cy="${34+6*Math.sin(k*2.1)}" r="6" fill="#5B8DEF"/>`).join('')}<path d="M150 104 v-60 M132 44 h36" stroke="#5B6280" stroke-width="3"/><path d="M168 44 l-8 -6 v12z" fill="#E25555"/></svg>`,
@@ -534,7 +540,7 @@ const PART_ART = [
 
 const SHEET = [
   {title:'ตอนที่ 1 เครื่องมือตรวจอากาศ', cols:['เครื่องมือ','สิ่งที่วัด · ค่าที่อ่านได้'], rows:[
-    ['p1a','ไฮโกรมิเตอร์','กระเปาะแห้ง ........ °C · กระเปาะเปียก ........ °C · RH ........ %'],
+    ['p1a','ไฮโกรมิเตอร์ (Hygrometer)','กระเปาะแห้ง ........ °C · กระเปาะเปียก ........ °C · RH ........ %'],
     ['p1b','ศรลม / แอนนิโมมิเตอร์','ลมพัดมาจากทิศ ................ · อัตราเร็ว ........ km/h'],
     ['p1c','เครื่องวัดปริมาณน้ำฝน / บารอมิเตอร์','........ mm · ........ hPa'],
     ['p1d','หัวลูกศรของศรลมชี้ไปทาง',['ทิศที่ลมพัดมา','ทิศที่ลมพัดไป','ทิศเหนือเสมอ']]], concl:'p1s', cq:'สรุปองค์ประกอบของลมฟ้าอากาศ 6 อย่าง พร้อมเครื่องมือที่ใช้วัดแต่ละอย่าง'},
@@ -549,30 +555,39 @@ const SHEET = [
     ['p3c','พยากรณ์อากาศเมือง A · B · C','........ · ........ · ........'],
     ['p3d','บริเวณที่มักมีเมฆมากและฝนตก',['ความกดอากาศต่ำ (L)','ความกดอากาศสูง (H)','ทุกบริเวณเท่ากัน']]], concl:'p3s', cq:'อธิบายการเกิดเมฆจากการทดลองเมฆในขวด และเขียนรายงานพยากรณ์อากาศของเมืองหนึ่งจากแผนที่อากาศ'}
 ];
-const GUIDE = [{"parts": ["[data-v^=\"name:\"]", "แตะเครื่องมือแต่ละชิ้น แล้วเลือกชื่อให้ครบ 5 ชนิดครับ", [], ""], "rh": ["[data-v^=\"ans:rh:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"], "wind": ["[data-v^=\"ans:wind:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"], "rain": ["[data-v^=\"ans:rain:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"]}, {"alt": ["[data-v^=\"lev:\"]", "เลือกระดับความสูงอย่างน้อย 3 ระดับ แล้วอ่านความกดอากาศครับ", [], ""], "breeze": ["sun", "สลับกลางวันและกลางคืน แล้วดูทิศทางควันครับ", ["ดูตอนกลางวัน (ลมทะเล)", "ดูตอนกลางคืน (ลมบก)"], ""], "altq": ["[data-v^=\"ans:altq:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"], "hl": ["[data-v^=\"ans:hl:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"]}, {"cloud": ["smoke", "ใส่ควันธูปในขวด บีบขวด แล้วปล่อย ดูเมฆครับ", ["ใส่ควันธูป", "บีบขวด", "ปล่อยขวด"], ""], "why": ["[data-v^=\"ans:why:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"], "map": ["[data-v^=\"ans:map:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"], "sign": ["[data-v^=\"ans:sign:\"]", "อ่านผลในตาราง แล้วเลือกคำตอบในกล่องคำถามด้านล่างครับ", [], "คำถามนี้จะขึ้นเมื่อทำการทดลองข้อก่อนหน้าครบ ลองทำข้อที่มี ▶ ทำต่อ ก่อนครับ"]}];
+const GUIDE = [
+ {parts:['[data-v^="sel:"]','แตะเครื่องมือที่มีป้าย ? ทีละชิ้น แล้วเลือกชื่อให้ครบ 5 ชนิดครับ',[],''],
+  rh:['[data-v="view:screen"]','แตะตู้สกรีน (ไฮโกรมิเตอร์) แล้วตอบทีละขั้นในแผงด้านล่างครับ',['อ่านกระเปาะแห้ง','อ่านกระเปาะเปียก','หาผลต่าง','เปิดตารางหา RH'],'ระบุชื่อเครื่องมือให้ครบก่อน แล้วจึงอ่านค่าได้ครับ'],
+  wind:['[data-v="view:vane"]','แตะศรลมเพื่อดูทิศทางลม แล้วแตะแอนนิโมมิเตอร์เพื่ออ่านอัตราเร็วลมครับ',['ทิศที่ลมพัดมา (ศรลม)','อัตราเร็วลม (แอนนิโมมิเตอร์)'],'ระบุชื่อเครื่องมือให้ครบก่อน แล้วจึงอ่านค่าได้ครับ'],
+  rain:['[data-v="view:rain"]','แตะเครื่องวัดน้ำฝนและบารอมิเตอร์ แล้วอ่านค่าจากภาพขยายครับ',['ปริมาณน้ำฝน (mm)','ความกดอากาศ (hPa)'],'ระบุชื่อเครื่องมือให้ครบก่อน แล้วจึงอ่านค่าได้ครับ']},
+ {alt:['[data-v^="lev:"]','ลากบารอมิเตอร์ไปวางที่ธงทีละระดับ หรือกดปุ่มระดับความสูงให้ครบ 4 ระดับครับ',[],''],
+  day:['[data-v="sun"]','เปิดหลอดไฟ (กลางวัน) แล้วรอดูควันและลูกศรลมครับ',[],''],
+  night:['[data-v="sun"]','ปิดหลอดไฟ (กลางคืน) แล้วรอดูควันและลูกศรลมครับ',[],'ดูตอนกลางวันก่อน แล้วค่อยปิดไฟครับ'],
+  hl:['[data-v^="hl:"]','ตอบว่ากลางคืนบริเวณใดมีความกดอากาศสูงครับ',[],'สังเกตลมบกตอนกลางคืนก่อน แล้วคำถามจะขึ้นครับ']},
+ {try:['[data-v="sq"]','ยังไม่ใส่ควัน กด “บีบขวด” แล้ว “ปล่อยขวด” ครับ',['บีบขวด','ปล่อยขวด'],''],
+  cloud:['[data-v="smoke"]','ใส่ควันธูป แล้วบีบปล่อยขวดอีกครั้งครับ',['ใส่ควันธูป','บีบขวด','ปล่อยขวด'],''],
+  city:['[data-v^="city:"]','แตะหมุดเมือง A B C บนแผนที่ หรือกดปุ่มเมืองครับ',[],''],
+  fc:['[data-v^="fc:"]','เลือกพยากรณ์อากาศของแต่ละเมืองครับ',[],'ดูข้อมูลเมืองให้ครบ 3 เมืองก่อนครับ']}
+];
 const ENDQ = [
- [{k:'rh', q:'{n}อ่านไฮโกรมิเตอร์ ความชื้นสัมพัทธ์ขณะนี้เท่าใด', o:[['66','66%'],['73','73%'],['86','86%']], a:'73',
-   h:['อ่านกระเปาะแห้งและกระเปาะเปียก แล้วหาผลต่าง','ใช้ตารางความชื้นสัมพัทธ์ข้างเครื่องมือ'], why:'จากผลต่างอุณหภูมิกระเปาะแห้งและกระเปาะเปียก อ่านตารางได้ความชื้นสัมพัทธ์ 73%'},
-  {k:'wind', q:'ศรลมชี้ไปทางทิศตะวันตกเฉียงใต้ ลมพัดมาจากทิศใด', o:[['sw','ทิศตะวันตกเฉียงใต้'],['ne','ทิศตะวันออกเฉียงเหนือ'],['n','ทิศเหนือ']], a:'sw',
-   h:['หัวศรลมชี้ไปทางที่ลมพัดมา','ศรลมหันหัวเข้าหาลม'], why:'หัวศรลมชี้ไปทางที่ลมพัดมา ลมจึงพัดมาจากทิศตะวันตกเฉียงใต้'},
-  {k:'rain', q:'{n}อ่านเครื่องวัดน้ำฝน ได้ปริมาณน้ำฝนเท่าใด', o:[['15','15 mm'],['25','25 mm'],['35','35 mm']], a:'25',
-   h:['อ่านระดับน้ำในกระบอกตวงของเครื่องวัด','ดูขีดสเกลตรงระดับน้ำ'], why:'ระดับน้ำในเครื่องวัดน้ำฝนอยู่ที่ 25 mm'},
+ [{k:'diff', q:'ถ้าผลต่างของกระเปาะแห้งกับกระเปาะเปียกน้อยมาก แสดงว่าอากาศเป็นอย่างไร', o:[['wet','ความชื้นสัมพัทธ์สูง อากาศชื้น'],['dry','อากาศแห้งมาก'],['hot','อากาศร้อนมาก']], a:'wet',
+   h:['ดูตาราง ผลต่างน้อย RH เป็นอย่างไร','อากาศชื้น น้ำระเหยจากผ้าชุบน้ำได้น้อย'], why:'อากาศชื้น น้ำระเหยจากกระเปาะเปียกได้น้อย อุณหภูมิจึงลดลงน้อย ผลต่างน้อย ความชื้นสัมพัทธ์สูง'},
+  {k:'vane', q:'หัวลูกศรของศรลม (Wind vane) ชี้ไปทางใด', o:[['from','ทิศที่ลมพัดมา'],['to','ทิศที่ลมพัดไป'],['n','ทิศเหนือเสมอ']], a:'from',
+   h:['ศรลมหันหัวเข้าหาลมเหมือนไก่บนหลังคา','หางที่กว้างถูกลมผลักไปด้านหลัง'], why:'หางศรลมมีพื้นที่มาก ถูกลมผลัก หัวลูกศรจึงหันเข้าหาทิศที่ลมพัดมา'},
   {k:'tool', q:'เครื่องมือใดใช้วัดอัตราเร็วลม', o:[['ane','แอนนิโมมิเตอร์'],['baro','บารอมิเตอร์'],['hyg','ไฮโกรมิเตอร์']], a:'ane',
    h:['เครื่องมือที่มีถ้วยหมุนตามลม','บารอมิเตอร์วัดความกดอากาศ ไฮโกรมิเตอร์วัดความชื้น'], why:'แอนนิโมมิเตอร์ใช้วัดอัตราเร็วลม'}],
  [{k:'alt', q:'{n}ลากบารอมิเตอร์ขึ้นภูเขา ความกดอากาศเป็นอย่างไร', o:[['up','ยิ่งสูง ยิ่งเพิ่มขึ้น'],['down','ยิ่งสูง ยิ่งลดลง'],['same','เท่าเดิมทุกระดับ']], a:'down',
-   h:['ดูค่า hPa ที่ 0, 1000, 2000 m','บนที่สูงมีอากาศกดทับอยู่ด้านบนน้อยลง'], why:'ยิ่งสูง อากาศที่กดทับด้านบนยิ่งน้อย ความกดอากาศจึงลดลง'},
+   h:['ดูค่า hPa ที่ 0, 1000, 2000, 3000 m','บนที่สูงมีอากาศกดทับอยู่ด้านบนน้อยลง'], why:'ยิ่งสูง อากาศที่กดทับด้านบนยิ่งน้อย ความกดอากาศจึงลดลง'},
   {k:'hl', q:'ลมพัดจากบริเวณใดไปบริเวณใด', o:[['lh','จากความกดอากาศต่ำไปสูง'],['hl','จากความกดอากาศสูงไปต่ำ'],['sea','จากทะเลไปบกเสมอ']], a:'hl',
    h:['อากาศเย็นหนาแน่นกว่า ความกดอากาศสูงกว่า','ลมทะเลกับลมบกพัดคนละทิศ ไม่ได้มาจากทะเลเสมอ'], why:'ลมพัดจากบริเวณความกดอากาศสูง (อากาศเย็น) ไปบริเวณความกดอากาศต่ำ (อากาศร้อน)'},
   {k:'seabreeze', q:'{n}ดูแบบจำลองตอนกลางวัน ลมพัดไปทางใด', o:[['toland','จากทะเลเข้าหาบก'],['tosea','จากบกออกสู่ทะเล'],['up','ขึ้นตรงไปบนฟ้า']], a:'toland',
    h:['กลางวัน บกหรือทะเลร้อนกว่า','อากาศเหนือบกร้อนลอยขึ้น ความกดอากาศต่ำ'], why:'กลางวันบกร้อนกว่า ความกดอากาศต่ำ ลมจึงพัดจากทะเลเข้าหาบก (ลมทะเล)'}],
  [{k:'why', q:'{n}บีบแล้วปล่อยขวดที่มีควันธูป เกิดเมฆเพราะอะไร', o:[['heat','อากาศร้อนขึ้นจนน้ำในขวดเดือดเป็นไอ'],['cool','อากาศขยายตัว เย็นลง ไอน้ำควบแน่น'],['smoke','ควันธูปลอยขึ้นแล้วกลายเป็นเมฆเอง']], a:'cool',
-   h:['ตอนปล่อยมือ อากาศในขวดขยายตัวหรือหดตัว','ขวดที่ไม่มีควัน เมฆเกิดยากกว่า เพราะไอน้ำไม่มีที่เกาะ'], why:'อากาศขยายตัวและเย็นลง ไอน้ำควบแน่นเกาะอนุภาคควันเป็นละอองน้ำ เกิดเป็นเมฆ'},
+   h:['ตอนปล่อยมือ อากาศในขวดขยายตัวหรือหดตัว','ดูเทอร์โมมิเตอร์ในขวดตอนปล่อยมือ'], why:'อากาศขยายตัวและเย็นลง ไอน้ำควบแน่นเกาะอนุภาคควันเป็นละอองน้ำ เกิดเป็นเมฆ'},
   {k:'smoke', q:'ควันธูปช่วยให้เกิดเมฆได้ง่ายขึ้นอย่างไร', o:[['nuc','เป็นอนุภาคให้ไอน้ำเกาะ'],['heat','ทำให้อากาศในขวดร้อนขึ้น'],['color','ทำให้เมฆมีสีเทาสวย']], a:'nuc',
    h:['เทียบขวดที่มีควันกับไม่มีควัน','ไอน้ำต้องมีอนุภาคเล็ก ๆ ให้เกาะก่อนกลายเป็นหยดน้ำ'], why:'อนุภาคควันเป็นแกนให้ไอน้ำควบแน่นเกาะ จึงเกิดเมฆได้ง่ายขึ้น'},
   {k:'sign', q:'{n}เห็นสัญลักษณ์ L บนแผนที่อากาศ หมายถึงอะไร', o:[['high','ความกดอากาศสูง ฟ้าโปร่ง'],['low','ความกดอากาศต่ำ มีเมฆและฝน'],['wind','บริเวณที่ไม่มีลมพัด']], a:'low',
-   h:['L ย่อมาจาก Low','อากาศลอยตัวขึ้นแล้วเย็นลง เกิดอะไร'], why:'L คือหย่อมความกดอากาศต่ำ อากาศลอยตัวขึ้น เกิดเมฆและฝน'},
-  {k:'map', q:'จากแผนที่อากาศ เมืองใดมีโอกาสฝนตกมากที่สุด', o:[['A','เมือง A'],['B','เมือง B'],['C','เมือง C']], a:'A',
-   h:['ดูว่าเมืองใดอยู่ใกล้หย่อมความกดอากาศต่ำ (L)','หย่อม L มีเมฆและฝน'], why:'เมือง A อยู่ใกล้หย่อมความกดอากาศต่ำ จึงมีโอกาสฝนตกมากที่สุด'}]
+   h:['L ย่อมาจาก Low','อากาศลอยตัวขึ้นแล้วเย็นลง เกิดอะไร'], why:'L คือหย่อมความกดอากาศต่ำ อากาศลอยตัวขึ้น เกิดเมฆและฝน'}]
 ];
 
 const PD = !CONF.uni && /ป\.\d|ม\.1(?!\d)/.test(CONF.subject || ''), NOG = CONF.uni || PD, MD = !!CONF.uni && !!CONF.resCard, MDC = CONF.resCard==='C';
@@ -695,6 +710,9 @@ function render(){
 document.getElementById('main').addEventListener('click', e=>{
   const a = e.target.closest('[data-act]'); if(!a || a.disabled) return;
   const act = a.dataset.act, v = a.dataset.v;
+  if(act==='sfx'){ const m = SFX.toggle(); a.innerHTML = m ? SND_OFF : SND_ON; a.setAttribute('aria-label', m ? 'เปิดเสียง' : 'ปิดเสียง'); toast(m ? 'ปิดเสียงแล้ว' : 'เปิดเสียงแล้ว'); return; }
+  if(act==='say'){ SFX.speak(v); return; }
+  if(act!=='ans' && act!=='pred') SFX.click(); else SFX.pick();
   if(act==='go') go(v);
   if(act==='part') go('lab', {part:+v});
   if(act==='ans'){ const st = S[ui.view], q0 = Math.min(NQ - 1, Math.max(0, ui.q)); ui.q = q0; st.a[q0] = +v; st.a.length = NQ; save(); if(q0<NQ-1) { setTimeout(()=>{ if(ui.q===q0){ ui.q = q0 + 1; render(); } }, 180); } render(); }
@@ -789,7 +807,7 @@ function vQuiz(kind){
       <h1 style="font-size:22px">ข้อ ${ui.q+1} จาก ${NQ}</h1>${isPre && !S.pre.skip ? `<button class="btn ghost sm" type="button" data-act="skipPre" style="margin-top:6px">ข้ามไปก่อน ทำทีหลังได้ ${ICON.arrow}</button>` : ''}</div>
       <div class="qdots" role="group" aria-label="ไปที่ข้อ">${st.a.map((x,i)=>`<button type="button" class="qdot ${x!==null?'ans':''} ${i===ui.q?'cur':''}" data-act="q" data-v="${i}" aria-label="ข้อ ${i+1}">${i+1}</button>`).join('')}</div></div>
     <section class="card pad" style="display:flex;flex-direction:column;gap:20px">
-      <h2 class="qtext">${esc(it.q)}</h2>${fig}
+      <h2 class="qtext">${esc(it.q)}</h2>${it.say ? `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:-8px">${it.say.map(w=>`<button class="chip" type="button" data-act="say" data-v="${w}" style="display:inline-flex;align-items:center;gap:6px">${SPK}ฟังเสียง ${w}</button>`).join('')}</div>` : ''}${fig}
       <div class="opts" role="radiogroup" aria-label="ตัวเลือก">${[0,1,2,3].map(j=>`<button type="button" role="radio" class="opt ${it.pics?'pic':''}" aria-checked="${st.a[ui.q]===j}" data-act="ans" data-v="${j}">${optHTML(it,j)}</button>`).join('')}</div>
     </section>
     <div class="row spread">
@@ -857,7 +875,7 @@ function eqSt(i){ S.eq = S.eq || {}; const st = S.eq[i] = S.eq[i] || {a:{}, w:{}
 const eqQOk = (st, q) => st.a[q.k]===q.a && (!q.r || st.r[q.k]===q.ra);
 function eqDone(i){ const st = eqSt(i); return EQ(i).every(q=>eqQOk(st, q)); }
 function eqAnswer(v){ const [i, k, o] = v.split('|'), q = EQ(+i).find(x=>x.k===k), st = eqSt(+i); if(!q || st.a[k]===q.a) return false;
-  st.a[k] = o; if(o!==q.a){ st.w[k] = (st.w[k] || 0) + 1; } else toast(q.r ? 'ข้อสรุปถูกต้อง ต่อไปเลือกเหตุผล' : 'ถูกต้อง เก่งมาก!'); save(); return o===q.a; }
+  st.a[k] = o; if(o!==q.a){ st.w[k] = (st.w[k] || 0) + 1; SFX.bad(); } else SFX.ok(), toast(q.r ? 'ข้อสรุปถูกต้อง ต่อไปเลือกเหตุผล' : 'ถูกต้อง เก่งมาก!'); save(); return o===q.a; }
 function eqReason(v){ const [i, k, o] = v.split('|'), q = EQ(+i).find(x=>x.k===k), st = eqSt(+i); if(!q || !q.r || st.a[k]!==q.a || st.r[k]===q.ra) return false;
   st.r[k] = o; if(o!==q.ra){ st.wr[k] = (st.wr[k] || 0) + 1; } else toast('ถูกต้องทั้งข้อสรุปและเหตุผล'); save(); return o===q.ra; }
 const EQPOS = (()=>{ const m = {}; if(typeof ENDQ==='undefined') return m; let h = 2166136261; for(const ch of String(CONF.key) + 'eq'){ h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619) >>> 0; }
@@ -1101,13 +1119,14 @@ function vLab(){
     </header>
     <div class="labgrid">
       ${PD ? '<div class="pdwrap" id="pdwrap">' : ''}<section class="stage" id="stage"${MDC ? ' data-mdc' : ''} aria-label="โต๊ะทดลอง 3 มิติ">
-        <div class="hint">${ICON.move}<span>${CONF.hint}</span></div>
+        <div class="hint">${ICON.move}<span>${(CONF.hints || [])[ui.part] || CONF.hint}</span></div>
         <div class="camctl">
 ${CONF.hs ? '' : `${PD ? '' : `          <button class="ibtn" type="button" data-act="lab" data-v="camL" aria-label="หมุนมุมมองไปทางซ้าย">${ICON.rotL}</button>
           <button class="ibtn" type="button" data-act="lab" data-v="camR" aria-label="หมุนมุมมองไปทางขวา">${ICON.rotR}</button>`}
           <button class="ibtn" type="button" data-act="lab" data-v="zin" aria-label="ซูมเข้า">${ICON.zin}</button>
           <button class="ibtn" type="button" data-act="lab" data-v="zout" aria-label="ซูมออก">${ICON.zout}</button>`}
           <button class="ibtn" type="button" data-act="lab" data-v="camReset" aria-label="มุมมองเริ่มต้น">${ICON.cube}</button>
+          <button class="ibtn" type="button" data-act="sfx" aria-label="${SFX.muted ? 'เปิดเสียง' : 'ปิดเสียง'}">${SFX.muted ? SND_OFF : SND_ON}</button>
 ${PD ? `          <button class="ibtn" type="button" data-act="guideinfo" aria-label="คู่มือการทำกิจกรรม" style="font-weight:700;font-size:20px;color:var(--primary-d)">ⓘ</button>
           <button class="ibtn" type="button" data-act="full" id="fullBtn" aria-label="ขยายเต็มจอ" style="font-size:20px">⛶</button>` : ''}
 ${CONF.uni ? `          <button class="ibtn" type="button" data-act="whyopen" aria-label="อธิบายการทดลองตอนนี้" style="font-weight:700;font-size:18px;color:var(--primary-d)">ⓘ</button>
@@ -1258,6 +1277,59 @@ function vResult(){
   </div>`;
 }
 
+/* ---------- sound effects + speech (Web Audio, no files) ---------- */
+const SPK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>';
+const SND_ON = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>';
+const SND_OFF = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9l5 6M21 9l-5 6"/></svg>';
+const SFX = (function(){
+  let ac = null, master = null, noise = null, ch = {}, last = {}, muted = false;
+  try { muted = localStorage.getItem('parkilab-sfx-mute') === '1'; } catch(_){}
+  const VOL = .32;
+  function unlock(){
+    if(ac){ if(ac.state === 'suspended') ac.resume(); return; }
+    try {
+      ac = new (window.AudioContext || window.webkitAudioContext)();
+      master = ac.createGain(); master.gain.value = muted ? 0 : VOL; master.connect(ac.destination);
+      const len = ac.sampleRate*2, buf = ac.createBuffer(1, len, ac.sampleRate), d = buf.getChannelData(0);
+      for(let i=0;i<len;i++) d[i] = Math.random()*2 - 1; noise = buf;
+      const mk = (type, freq, q, lfo) => { const src = ac.createBufferSource(); src.buffer = noise; src.loop = true;
+        const f = ac.createBiquadFilter(); f.type = type; f.frequency.value = freq; f.Q.value = q;
+        const g = ac.createGain(); g.gain.value = 0; src.connect(f); f.connect(g); g.connect(master); src.start();
+        if(lfo){ const o = ac.createOscillator(), og = ac.createGain(); o.frequency.value = lfo; og.gain.value = freq*.35; o.connect(og); og.connect(f.frequency); o.start(); }
+        return g; };
+      const buzz = () => { const o = ac.createOscillator(); o.type = 'sawtooth'; o.frequency.value = 210; const v = ac.createOscillator(), vg = ac.createGain(); v.frequency.value = 9; vg.gain.value = 14; v.connect(vg); vg.connect(o.frequency); v.start();
+        const f = ac.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 900; const g = ac.createGain(); g.gain.value = 0; o.connect(f); f.connect(g); g.connect(master); o.start(); return g; };
+      ch = { rain: mk('bandpass', 2600, .6), boil: mk('lowpass', 520, 1.2, 3.1), wind: mk('bandpass', 420, 1.4, .18), hiss: mk('highpass', 5200, .7), sizzle: mk('highpass', 2800, 1.5, 7), buzz: buzz() };
+    } catch(_){ ac = null; }
+  }
+  addEventListener('pointerdown', unlock, {capture:true, passive:true});
+  addEventListener('keydown', unlock, {capture:true});
+  function tone(f0, f1, dur, type='sine', vol=.5, delay=0){
+    if(!ac || muted) return; const t = ac.currentTime + delay, o = ac.createOscillator(), g = ac.createGain();
+    o.type = type; o.frequency.setValueAtTime(f0, t); if(f1) o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + .012); g.gain.exponentialRampToValueAtTime(.001, t + dur);
+    o.connect(g); g.connect(master); o.start(t); o.stop(t + dur + .02);
+  }
+  const AMB = {rain:.5, boil:.9, wind:.55, hiss:.12, sizzle:.18, buzz:.07};
+  return {
+    unlock,
+    get muted(){ return muted; },
+    toggle(){ muted = !muted; try { localStorage.setItem('parkilab-sfx-mute', muted ? '1' : '0'); } catch(_){} if(master) master.gain.setTargetAtTime(muted ? 0 : VOL, ac.currentTime, .05); if(!muted){ unlock(); tone(660, 990, .12, 'sine', .4); } return muted; },
+    click(){ tone(820, 620, .05, 'triangle', .25); },
+    pick(){ tone(380, 620, .09, 'sine', .35); },
+    drop(){ tone(240, 140, .12, 'sine', .45); },
+    ok(){ tone(660, 0, .12, 'sine', .4); tone(990, 0, .18, 'sine', .35, .09); },
+    bad(){ tone(220, 170, .22, 'square', .12); },
+    done(){ [523, 659, 784, 1046].forEach((f,k)=>tone(f, 0, .22, 'triangle', .35, k*.09)); },
+    pop(){ tone(900 + Math.random()*700, 1500, .04, 'sine', .12); },
+    tick(){ tone(2400 + Math.random()*800, 0, .03, 'square', .06); },
+    noise(type='lowpass', freq=800, dur=.3, vol=.4){ if(!ac || muted || !noise) return; const t = ac.currentTime, src = ac.createBufferSource(); src.buffer = noise; const f = ac.createBiquadFilter(); f.type = type; f.frequency.value = freq; const g = ac.createGain(); g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + .02); g.gain.exponentialRampToValueAtTime(.001, t + dur); src.connect(f); f.connect(g); g.connect(master); src.start(t, Math.random()); src.stop(t + dur + .05); },
+    thunder(){ if(!ac || muted || !noise) return; const t = ac.currentTime + .25, src = ac.createBufferSource(); src.buffer = noise; const f = ac.createBiquadFilter(); f.type = 'lowpass'; f.frequency.setValueAtTime(900, t); f.frequency.exponentialRampToValueAtTime(140, t + 1.2); const g = ac.createGain(); g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(1.1, t + .04); g.gain.exponentialRampToValueAtTime(.35, t + .6); g.gain.linearRampToValueAtTime(.7, t + .9); g.gain.exponentialRampToValueAtTime(.001, t + 3); src.connect(f); f.connect(g); g.connect(master); src.start(t, Math.random()); src.stop(t + 3.1); },
+    speak(w){ try{ const u = new SpeechSynthesisUtterance(w); u.lang = 'en-US'; u.rate = .8; const vs = speechSynthesis.getVoices().filter(x=>/^en/i.test(x.lang)); if(vs.length) u.voice = vs.find(x=>/en-US/i.test(x.lang)) || vs[0]; speechSynthesis.cancel(); speechSynthesis.speak(u); } catch(_){ toast('อุปกรณ์นี้อ่านออกเสียงไม่ได้'); } },
+    amb(lv){ if(!ac) return; Object.keys(ch).forEach(k=>{ const v = Math.max(0, Math.min(1, (lv && lv[k]) || 0))*AMB[k]; if(Math.abs((last[k]||0) - v) > .01){ last[k] = v; ch[k].gain.setTargetAtTime(v, ac.currentTime, .25); } }); }
+  };
+})();
+
 /* ---------- PDF ---------- */
 async function makePdf(btn){
   const el = $('#pdfsheet'), pages = sheetPages();
@@ -1295,297 +1367,414 @@ const Lab = (function(){
   const TABLE_Y = 0.15;
   const V = (x,y,z) => new THREE.Vector3(x,y,z), UP = V(0,1,0);
   const CAMS = [
-    {pos:V(0, 2.6, 5.2), tgt:V(0, .8, 0)},
-    {pos:V(0, 2.8, 5.4), tgt:V(0, .8, 0)},
-    {pos:V(0, 2.4, 4.8), tgt:V(.2, .8, 0)}
+    {pos:V(0, 2.9, 5.7), tgt:V(.05, .95, -.4)},
+    [{pos:V(-1.2, 2.6, 4.6), tgt:V(-1.4, 1.2, -.4)}, {pos:V(1.55, 1.75, 2.9), tgt:V(1.55, .75, -.1)}],
+    [{pos:V(-1.6, 1.75, 2.6), tgt:V(-1.55, 1.2, .2)}, {pos:V(1.05, 1.7, 3.2), tgt:V(1.05, 1.3, -.6)}]
   ];
-  function mat(c, o={}){ return new THREE.MeshStandardMaterial(Object.assign({color:c, roughness:.55, metalness:0}, o)); }
-  const METAL = () => mat(0xB9C0CE, {metalness:.8, roughness:.3});
-  const GLASS = (op=.2) => new THREE.MeshStandardMaterial({color:0xDCEBFB, transparent:true, opacity:op, roughness:.05, side:THREE.DoubleSide, depthWrite:false});
-  const TRANS = (c, op) => new THREE.MeshStandardMaterial({color:c, transparent:true, opacity:op, roughness:.15, depthWrite:false});
+  function mat(c, o={}){ return new THREE.MeshStandardMaterial(Object.assign({color:c, roughness:.6, metalness:0}, o)); }
+  const GLASS = (op=.22) => new THREE.MeshStandardMaterial({color:0xE4F1FF, transparent:true, opacity:op, roughness:.05, metalness:.1, side:THREE.DoubleSide, depthWrite:false});
+  const TRANS = (c, op) => new THREE.MeshStandardMaterial({color:c, transparent:true, opacity:op, roughness:.2, depthWrite:false});
+  const HITM = new THREE.MeshBasicMaterial({transparent:true, opacity:0, depthWrite:false});
+  const WATER = () => new THREE.MeshStandardMaterial({color:0x7FB8F0, transparent:true, opacity:.78, roughness:.08, metalness:.1});
   function shadowAll(g){ g.traverse(m=>{ if(m.isMesh && !(m.material && m.material.transparent)){ m.castShadow = true; m.receiveShadow = true; } }); return g; }
   function box(w,h,d,m,x=0,y=0,z=0){ const o = new THREE.Mesh(new THREE.BoxGeometry(w,h,d), m); o.position.set(x,y,z); return o; }
   function cyl(rt,rb,h,m,seg=24,open=false){ return new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,seg,1,open), m); }
   function sph(r,m,s=20){ return new THREE.Mesh(new THREE.SphereGeometry(r,s,Math.round(s*.7)), m); }
+  function at(o, x, y, z){ o.position.set(x, y, z); return o; }
   function canvasTex(w, h, draw){ const c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d'), w, h); const t = new THREE.CanvasTexture(c); t.userData = {c}; return t; }
-  function textPlane(text, color, w, h, flat=true){
-    const tex = canvasTex(512, Math.round(512*h/w), (x, cw, ch)=>{
-      x.fillStyle = color; x.beginPath(); x.roundRect ? x.roundRect(4,4,cw-8,ch-8,24) : x.rect(4,4,cw-8,ch-8); x.fill();
-      x.fillStyle = '#fff'; x.font = `600 ${Math.round(ch*.42)}px Mitr, Anuphan, sans-serif`; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(text, cw/2, ch/2+4);
-    });
-    const m = new THREE.Mesh(new THREE.PlaneGeometry(w,h), new THREE.MeshStandardMaterial({map:tex, roughness:.8, polygonOffset:true, polygonOffsetFactor:-2, polygonOffsetUnits:-4}));
-    if(flat) m.rotation.x = -Math.PI/2; return m;
-  }
+  function hitBox(w,h,d,x,y,z){ const m = new THREE.Mesh(new THREE.BoxGeometry(w,h,d), HITM); m.position.set(x,y,z); return m; }
+  let SD = 1; const rnd = () => { SD = (SD*9301 + 49297) % 233280; return SD/233280; };
+  const seedOf = str => { let h = 7; for(const c of String(str || 'x')) h = (h*31 + c.charCodeAt(0)) % 100003; return h; };
 
+  /* ----- textures ----- */
+  const TX = {};
+  function softTex(){ return TX.soft || (TX.soft = canvasTex(128, 128, (x)=>{ const g = x.createRadialGradient(64,64,0,64,64,64); g.addColorStop(0,'rgba(255,255,255,1)'); g.addColorStop(.45,'rgba(255,255,255,.75)'); g.addColorStop(1,'rgba(255,255,255,0)'); x.fillStyle = g; x.fillRect(0,0,128,128); })); }
+  function puffTex(){ return TX.puff || (TX.puff = canvasTex(256, 256, (x)=>{ let sd = 3; const r = ()=>{ sd = (sd*9301 + 49297) % 233280; return sd/233280; };
+    for(let k=0;k<26;k++){ const cx = 50 + r()*156, cy = 70 + r()*110, rr = 26 + r()*44; const g = x.createRadialGradient(cx,cy,0,cx,cy,rr); g.addColorStop(0,'rgba(255,255,255,.95)'); g.addColorStop(.6,'rgba(250,252,255,.55)'); g.addColorStop(1,'rgba(255,255,255,0)'); x.fillStyle = g; x.beginPath(); x.arc(cx,cy,rr,0,Math.PI*2); x.fill(); }
+    const sh = x.createLinearGradient(0,120,0,230); sh.addColorStop(0,'rgba(170,182,205,0)'); sh.addColorStop(1,'rgba(150,162,190,.35)'); x.globalCompositeOperation = 'source-atop'; x.fillStyle = sh; x.fillRect(0,0,256,256); })); }
+  function wispTex(){ return TX.wisp || (TX.wisp = canvasTex(512, 256, (x)=>{ let sd = 9; const r = ()=>{ sd = (sd*9301 + 49297) % 233280; return sd/233280; }; x.lineCap = 'round';
+    for(let k=0;k<34;k++){ const y0 = 50 + r()*150, x0 = 30 + r()*120, len = 220 + r()*220, cv = (r() - .5)*120; x.strokeStyle = `rgba(255,255,255,${(.25 + r()*.45).toFixed(2)})`; x.lineWidth = 2 + r()*7; x.beginPath(); x.moveTo(x0, y0); x.quadraticCurveTo(x0 + len*.5, y0 + cv - 40, x0 + len, y0 - 30 - r()*60); x.stroke(); }
+    x.filter = 'blur(2px)'; x.drawImage(x.canvas, 0, 0); })); }
+  function veilTex(){ return TX.veil || (TX.veil = canvasTex(256, 128, (x)=>{ const g = x.createRadialGradient(128,64,10,128,64,128); g.addColorStop(0,'rgba(255,255,255,.95)'); g.addColorStop(.7,'rgba(255,255,255,.55)'); g.addColorStop(1,'rgba(255,255,255,0)'); x.fillStyle = g; x.fillRect(0,0,256,128); })); }
+  function rippleTex(){ return TX.rip || (TX.rip = canvasTex(256, 256, (x)=>{ let sd = 21; const r = ()=>{ sd = (sd*9301 + 49297) % 233280; return sd/233280; };
+    for(let row=0; row<10; row++) for(let col=0; col<14; col++){ const cx = 20 + col*16 + (row%2)*8 + r()*5, cy = 30 + row*20 + Math.sin(col*.7)*4, d = Math.hypot(cx-128, cy-128); if(d > 115) continue; const rr = 5 + r()*4, a = .9*(1 - d/125); const g = x.createRadialGradient(cx,cy,0,cx,cy,rr); g.addColorStop(0,`rgba(255,255,255,${a.toFixed(2)})`); g.addColorStop(1,'rgba(255,255,255,0)'); x.fillStyle = g; x.beginPath(); x.arc(cx,cy,rr,0,Math.PI*2); x.fill(); } })); }
+  function haloTex(){ return TX.halo || (TX.halo = canvasTex(256, 256, (x)=>{ const g = x.createRadialGradient(128,128,0,128,128,128); g.addColorStop(0,'rgba(255,250,225,1)'); g.addColorStop(.12,'rgba(255,245,210,.9)'); g.addColorStop(.25,'rgba(255,255,255,.1)'); g.addColorStop(.72,'rgba(255,255,255,.05)'); g.addColorStop(.8,'rgba(255,225,200,.55)'); g.addColorStop(.84,'rgba(200,225,255,.45)'); g.addColorStop(.9,'rgba(255,255,255,0)'); x.fillStyle = g; x.fillRect(0,0,256,256); })); }
+  function sprite(tex, w, h, op=1, col=0xffffff){ const s = new THREE.Sprite(new THREE.SpriteMaterial({map:tex, transparent:true, opacity:op, depthWrite:false, color:col})); s.scale.set(w, h, 1); return s; }
+
+  /* ----- clouds ----- */
+  const SG = () => TX.sg || (TX.sg = new THREE.SphereGeometry(1, 18, 12));
+  const cloudMat = (c=0xffffff, e=.36) => new THREE.MeshStandardMaterial({color:c, roughness:1, metalness:0, emissive:c, emissiveIntensity:e});
+  /* o: w,h,d (size) n (spheres) r (sphere radius) seed col e sy (y squash) flat (flat base) */
+  function puff(o){ const g = new THREE.Group(); SD = o.seed || 1; const m = o.m || cloudMat(o.col || 0xffffff, o.e===undefined ? .36 : o.e);
+    for(let k=0;k<o.n;k++){ const u = rnd()*2 - 1, v = rnd(), w = rnd()*2 - 1, fall = 1 - Math.min(1, u*u + w*w)*.55;
+      const r = o.r*(.6 + rnd()*.55)*fall, y = (o.flat ? r*.45 : (rnd() - .5)*r) + v*o.h*fall*(o.peak ? 1 - Math.abs(u)*.6 : 1);
+      const s = new THREE.Mesh(SG(), m); s.position.set(u*o.w*.5, y, w*o.d*.5); s.scale.set(r, r*(o.sy || 1), r); g.add(s); }
+    return g; }
+  /* rain streaks inside a box */
+  function rainFx(w, d, top, bot, n, col=0x9FC4F0, op=.7, sp=5){ const pos = new Float32Array(n*6), dr = [];
+    for(let k=0;k<n;k++) dr.push({x:(Math.random() - .5)*w, z:(Math.random() - .5)*d, y:bot + Math.random()*(top - bot), l:.12 + Math.random()*.1, v:sp*(.8 + Math.random()*.4)});
+    const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    const ls = new THREE.LineSegments(geo, new THREE.LineBasicMaterial({color:col, transparent:true, opacity:op, depthWrite:false}));
+    ls.userData.step = dt => { for(let k=0;k<n;k++){ const q = dr[k]; q.y -= q.v*dt; if(q.y < bot){ q.y = top; q.x = (Math.random() - .5)*w; q.z = (Math.random() - .5)*d; } pos.set([q.x, q.y, q.z, q.x - .012, q.y - q.l, q.z], k*6); } geo.attributes.position.needsUpdate = true; };
+    ls.userData.step(0); ls.frustumCulled = false; return ls; }
+  function snowFx(w, d, top, bot, n){ const pos = new Float32Array(n*3), fl = [];
+    for(let k=0;k<n;k++) fl.push({x:(Math.random() - .5)*w, z:(Math.random() - .5)*d, y:bot + Math.random()*(top - bot), ph:Math.random()*6, v:.35 + Math.random()*.25});
+    const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    const pts = new THREE.Points(geo, new THREE.PointsMaterial({map:softTex(), size:.075, transparent:true, depthWrite:false, color:0xffffff}));
+    pts.userData.step = (dt, t) => { for(let k=0;k<n;k++){ const q = fl[k]; q.y -= q.v*dt; if(q.y < bot){ q.y = top; } pos.set([q.x + Math.sin(t/700 + q.ph)*.06, q.y, q.z + Math.cos(t/900 + q.ph)*.05], k*3); } geo.attributes.position.needsUpdate = true; };
+    pts.userData.step(0, 0); pts.frustumCulled = false; return pts; }
+
+  /* ----- renderer + world ----- */
   function initR(){
     if(R) return true;
     try{
       const renderer = new THREE.WebGLRenderer({antialias:true});
       renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
       renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-      const scene = new THREE.Scene(); scene.background = new THREE.Color(0xEDF1FA);
-      const camera = new THREE.PerspectiveCamera(42, 1, 0.3, 60);
+      const scene = new THREE.Scene(); scene.background = new THREE.Color(0xCFE3F8); scene.fog = new THREE.Fog(0xCFE3F8, 16, 42);
+      const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 80);
       const controls = new THREE.OrbitControls(camera, renderer.domElement);
       controls.enablePan = false; controls.enableDamping = true; controls.dampingFactor = .08;
-      controls.minDistance = 3; controls.maxDistance = 15; controls.maxPolarAngle = 1.45; controls.minPolarAngle = .15;
-      scene.add(new THREE.HemisphereLight(0xffffff, 0xC9D3EC, .85));
-      const sun = new THREE.DirectionalLight(0xffffff, .85); sun.position.set(4, 9, 6); sun.castShadow = true;
-      sun.shadow.mapSize.set(1024,1024); Object.assign(sun.shadow.camera, {left:-6,right:6,top:6,bottom:-5}); sun.shadow.bias = -0.0006; sun.shadow.normalBias = .02;
+      controls.minDistance = 2.5; controls.maxDistance = 16; controls.maxPolarAngle = 1.48; controls.minPolarAngle = .2;
+      const hemi = new THREE.HemisphereLight(0xEAF4FF, 0x6C8B5A, .85); scene.add(hemi);
+      const sun = new THREE.DirectionalLight(0xFFF4E0, .95); sun.position.set(5, 10, 6); sun.castShadow = true;
+      sun.shadow.mapSize.set(1024,1024); Object.assign(sun.shadow.camera, {left:-6,right:6,top:6,bottom:-6, near:1, far:30}); sun.shadow.bias = -0.0006; sun.shadow.normalBias = .02;
       scene.add(sun);
-      const top = box(9.4,.3,5.6, mat(0xA88762,{roughness:.75, polygonOffset:true, polygonOffsetFactor:4, polygonOffsetUnits:8})); top.receiveShadow = true; scene.add(top);
-      scene.add(box(9.5,.1,5.7, mat(0x6E5034), 0, -.2, 0));
-      const tex = canvasTex(1024, 580, (cx)=>{
-        const wg = cx.createLinearGradient(0,0,0,580); wg.addColorStop(0,'#A88762'); wg.addColorStop(1,'#9C7A55'); cx.fillStyle = wg; cx.fillRect(0,0,1024,580);
-        let sd = 7; const rnd = ()=>{ sd = (sd*9301+49297)%233280; return sd/233280; };
-        for(let y=-20;y<600;y+=11){ cx.strokeStyle = `rgba(70,45,20,${(.10+rnd()*.18).toFixed(3)})`; cx.lineWidth = 3+rnd()*5; cx.beginPath(); const ph = rnd()*6; cx.moveTo(0,y); for(let x=0;x<=1024;x+=16) cx.lineTo(x, y+Math.sin(x/170+ph)*7+Math.sin(x/53+ph*2)*2); cx.stroke(); }
-        for(let k=0;k<2;k++){ const kx = 80+rnd()*860, ky = 40+rnd()*500; cx.strokeStyle = 'rgba(70,45,20,.13)'; cx.lineWidth = 2; for(let r=6;r<30;r+=8){ cx.beginPath(); cx.ellipse(kx,ky,r*2.4,r*.7,0,0,Math.PI*2); cx.stroke(); } }
-        for(let k=1;k<6;k++){ cx.fillStyle = 'rgba(60,38,15,.35)'; cx.fillRect(0,k*96.6,1024,1.5); }
-        cx.fillStyle = 'rgba(255,245,230,.45)'; cx.font = '600 22px sans-serif'; cx.fillText('ParK_iLab · ปาร์คณัฐพล', 24, 556);
-      });
-      const mp = new THREE.Mesh(new THREE.PlaneGeometry(8.6, 4.9), new THREE.MeshStandardMaterial({map:tex, roughness:.85, polygonOffset:true, polygonOffsetFactor:1, polygonOffsetUnits:1}));
-      mp.rotation.x = -Math.PI/2; mp.position.y = TABLE_Y + .002; mp.receiveShadow = true; scene.add(mp);
+      /* sky dome */
+      const skyTex = canvasTex(8, 256, ()=>{});
+      const sky = new THREE.Mesh(new THREE.SphereGeometry(40, 32, 16), new THREE.MeshBasicMaterial({map:skyTex, side:THREE.BackSide, fog:false, depthWrite:false}));
+      scene.add(sky);
+      /* island */
+      const grass = canvasTex(512, 512, (x)=>{ x.fillStyle = '#79B35A'; x.fillRect(0,0,512,512); let sd = 5; const r = ()=>{ sd = (sd*9301 + 49297) % 233280; return sd/233280; };
+        for(let k=0;k<5200;k++){ const g = 90 + r()*80; x.fillStyle = `rgba(${40 + r()*50|0},${g|0},${40 + r()*30|0},.55)`; x.fillRect(r()*512, r()*512, 2 + r()*3, 2 + r()*5); }
+        for(let k=0;k<60;k++){ x.fillStyle = 'rgba(255,240,150,.5)'; x.beginPath(); x.arc(r()*512, r()*512, 2, 0, 7); x.fill(); } });
+      grass.wrapS = grass.wrapT = THREE.RepeatWrapping; grass.repeat.set(3, 3);
+      const soil = canvasTex(512, 64, (x)=>{ const g = x.createLinearGradient(0,0,0,64); g.addColorStop(0,'#5E8C44'); g.addColorStop(.18,'#8B6A45'); g.addColorStop(1,'#5E4430'); x.fillStyle = g; x.fillRect(0,0,512,64); let sd = 2; const r = ()=>{ sd = (sd*9301 + 49297) % 233280; return sd/233280; }; for(let k=0;k<300;k++){ x.fillStyle = 'rgba(40,25,10,.25)'; x.fillRect(r()*512, 14 + r()*50, 3, 2); } });
+      soil.wrapS = THREE.RepeatWrapping; soil.repeat.set(6, 1);
+      const isl = new THREE.Mesh(new THREE.CylinderGeometry(4.4, 4.0, .6, 72), [mat(0xffffff, {map:soil, roughness:1}), mat(0xffffff, {map:grass, roughness:1}), mat(0x4A3626)]);
+      isl.position.y = TABLE_Y - .3; isl.receiveShadow = true; scene.add(isl);
       const world = new THREE.Group(); scene.add(world);
-      R = {renderer, scene, camera, controls, world, raycaster:new THREE.Raycaster(), active:false, ro:null};
+      R = {renderer, scene, camera, controls, world, hemi, sun, sky, skyTex, isl, raycaster:new THREE.Raycaster(), active:false, ro:null};
       bindPointer();
       return true;
     }catch(e){ R = null; return false; }
   }
+  function setSky(top, mid, bot, fog){ const c = R.skyTex.userData.c, x = c.getContext('2d'); const g = x.createLinearGradient(0,0,0,256); g.addColorStop(0, top); g.addColorStop(.42, mid); g.addColorStop(.52, bot); g.addColorStop(1, bot); x.fillStyle = g; x.fillRect(0,0,8,256); R.skyTex.needsUpdate = true; R.scene.fog.color.set(fog || bot); R.scene.background.set(fog || bot); }
+  function tree(x, z, s=1, k=0){ const g = new THREE.Group(); g.add(at(cyl(.05*s, .07*s, .4*s, mat(0x7A5434), 8), 0, .2*s, 0));
+    const leaf = mat([0x3F8A4A, 0x4E9A52, 0x5FA85A][k % 3], {roughness:.9, flatShading:true});
+    if(k % 2){ g.add(at(new THREE.Mesh(new THREE.IcosahedronGeometry(.32*s, 0), leaf), 0, .62*s, 0)); g.add(at(new THREE.Mesh(new THREE.IcosahedronGeometry(.24*s, 0), leaf), .14*s, .82*s, .05*s)); }
+    else { g.add(at(new THREE.Mesh(new THREE.ConeGeometry(.3*s, .6*s, 7), leaf), 0, .6*s, 0)); g.add(at(new THREE.Mesh(new THREE.ConeGeometry(.22*s, .45*s, 7), leaf), 0, .9*s, 0)); }
+    g.position.set(x, TABLE_Y, z); return shadowAll(g); }
+  function treeRing(skipFront, n=16, r0=3.75, sc=1){ SD = 33; for(let k=0;k<n;k++){ const a = k/n*Math.PI*2 + rnd()*.2; const x = Math.sin(a)*r0*(.95 + rnd()*.08), z = -Math.cos(a)*r0*(.95 + rnd()*.08); if(skipFront && z > (skipFront===2 ? -1.6 : 1.2) && (skipFront===2 || Math.abs(x) < 3)) continue; R.world.add(tree(x, z, (.8 + rnd()*.5)*sc, k)); } }
+  function labelAdd(obj, dy, text){ P.labels.push({obj, dy, text}); }
+  function lcdTex(w, h){ return canvasTex(w, h, ()=>{}); }
+  function drawLCD(t, s, col='#1E2A20', bg='#C9E8B5'){ const c = t.userData.c, x = c.getContext('2d'); x.fillStyle = bg; x.fillRect(0,0,c.width,c.height); x.fillStyle = col; x.font = `600 ${Math.round(c.height*.6)}px Mitr, sans-serif`; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(s, c.width/2, c.height/2 + 2); t.needsUpdate = true; }
 
-  /* ----- shared equipment ----- */
-  function makeBeaker(id, r=.42, h=.9){
-    const g = new THREE.Group(); g.userData.id = id;
-    const gl = cyl(r, r*.96, h, GLASS(.22), 32, true); gl.position.y = h/2; g.add(gl);
-    const bot = cyl(r*.96, r*.96, .03, GLASS(.32), 32); bot.position.y = .015; g.add(bot);
-    const rim = new THREE.Mesh(new THREE.TorusGeometry(r, .016, 6, 32), GLASS(.45)); rim.rotation.x = Math.PI/2; rim.position.y = h; g.add(rim);
-    for(let k=1;k<=3;k++){ const t = box(.12,.012,.01, mat(0x9AA3B5), -r*.55, h*k/4, r*.97); g.add(t); }
-    const water = cyl(r*.93, r*.93, 1, TRANS(0x8EC5F5, .5), 32); g.add(water);
-    Object.assign(g.userData, {water, r, h}); setLevel(g, .5); return g;
-  }
-  function setLevel(g, lv){ const u = g.userData, hh = Math.max(.001, lv*u.h*.92); u.water.scale.y = hh; u.water.position.y = .03 + hh/2; u.water.visible = lv > .01; u.lv = lv; }
-  function makeHot(id, x, z){
-    const g = new THREE.Group(); g.userData.id = id;
-    g.add(box(1.1,.22,1.0, mat(0xC9D1E3), 0,.11,0));
-    const pl = cyl(.44,.44,.04, mat(0x3A3F55,{roughness:.4, emissive:0xFF3B1F, emissiveIntensity:0}), 32); pl.position.y = .24; g.add(pl);
-    const kn = cyl(.08,.08,.06, mat(0xF2994A), 16); kn.rotation.x = Math.PI/2; kn.position.set(.34,.11,.52); g.add(kn);
-    const led = sph(.035, mat(0x666666,{emissive:0xFF3B1F, emissiveIntensity:0}), 8); led.position.set(-.34,.14,.51); g.add(led);
-    Object.assign(g.userData, {plate:pl, led, knob:kn}); shadowAll(g); g.position.set(x, TABLE_Y, z); R.world.add(g); return g;
-  }
-  function setHot(g, on){ g.userData.plate.material.emissiveIntensity = on ? .6 : 0; g.userData.led.material.emissiveIntensity = on ? 1.2 : 0; g.userData.knob.rotation.z = on ? -1.2 : 0; }
-  const HOT_TOP = .26;
-  function makeSteam(n){ const arr = []; for(let k=0;k<n;k++){ const m = sph(.11, TRANS(0xFFFFFF, 0), 10); m.visible = false; m.userData.t = k/n*2; R.world.add(m); arr.push(m); } return arr; }
-  function runSteam(arr, src, on, dt, top){
-    arr.forEach(m=>{
-      const u = m.userData; u.t += dt;
-      if(u.live === undefined) u.live = on;
-      if(u.t > 2){ u.t -= 2; u.live = on; }
-      if(!u.live){ m.visible = false; return; }
-      const f = u.t/2; m.visible = true;
-      m.position.set(src.x + Math.sin(u.t*3 + u.phase)*.12*f, src.y + top + f*1.6, src.z + Math.cos(u.t*2 + u.phase)*.1*f);
-      m.scale.setScalar(.6 + f*1.4); m.material.opacity = .45*(1-f);
-    });
-  }
-  function at(o, x, y, z){ o.position.set(x, y, z); return o; }
-  const HITM = new THREE.MeshBasicMaterial({transparent:true, opacity:0, depthWrite:false});
-  function hitBox(w,h,d,y){ const m = new THREE.Mesh(new THREE.BoxGeometry(w,h,d), HITM); m.position.y = y; return m; }
-  function rayNear(ray, x, z, y0, y1){ let best = 99; if(!ray) return best; const p = new THREE.Vector3(); for(let y=y0; y<=y1; y+=.05){ const t = (y - ray.origin.y)/ray.direction.y; if(!(t > 0)) continue; ray.at(t, p); best = Math.min(best, Math.hypot(p.x - x, p.z - z)); } return best; }
-
-  /* ----- constants ----- */
-  const INST = {screen:['ไฮโกรมิเตอร์ (ในตู้สกรีน)','วัดอุณหภูมิและความชื้นสัมพัทธ์'], anemo:['แอนนิโมมิเตอร์','วัดอัตราเร็วลม'], vane:['ศรลม','บอกทิศทางที่ลมพัดมา'], rain:['เครื่องวัดปริมาณน้ำฝน','วัดปริมาณน้ำฝนเป็นมิลลิเมตร'], baro:['บารอมิเตอร์','วัดความกดอากาศ']};
-  const IK = Object.keys(INST);
-  const IPOS = {screen:[-1.7,-.35], anemo:[-.6,-.75], vane:[.55,-.75], rain:[1.6,-.3], baro:[.0,.65]};
-  const MT = {x:-1.35, z:-.35, R:1.05, H:1.6}, LEV = [0,1000,2000,3000], HPA = [1013, 899, 795, 701];
-  const levPos = k => { const y = LEV[k]/3000*MT.H*.92, r = MT.R*(1 - y/MT.H) + .04, a = .55; return {x:MT.x + Math.sin(a)*r, y:TABLE_Y + y, z:MT.z + Math.cos(a)*r}; };
-  const CST = {x:1.25, z:-.25};
-  const CITY = {A:{n:'เมือง A', u:.22, v:.78, info:'ใกล้ศูนย์กลาง L · 1002 hPa · เมฆมาก ลมแรง'}, B:{n:'เมือง B', u:.86, v:.24, info:'ใกล้ศูนย์กลาง H · 1022 hPa · ท้องฟ้าโปร่ง'}, C:{n:'เมือง C', u:.58, v:.86, info:'อยู่ระหว่าง L และ H · 1012 hPa · มีเมฆบางส่วน'}};
+  /* ----- shared helpers ----- */
+  function item(id, g){ g.userData.id = id; P.items[id] = g; R.world.add(g); return g; }
+  function textSprite(t, col='#1E2A55', bg='rgba(255,255,255,.85)', h=.11){ const ms = document.createElement('canvas').getContext('2d'); ms.font = '600 32px Mitr, Anuphan, sans-serif'; const W = Math.max(96, Math.ceil(ms.measureText(t).width) + 44);
+    const tex = canvasTex(W, 64, (x)=>{ x.fillStyle = bg; x.beginPath(); x.roundRect ? x.roundRect(4,8,W - 8,48,18) : x.rect(4,8,W - 8,48); x.fill(); x.fillStyle = col; x.font = '600 32px Mitr, Anuphan, sans-serif'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(t, W/2, 34); }); return sprite(tex, h*W/64, h, 1); }
+  function setText(sp, t, col, bg){ const n = textSprite(t, col, bg, sp.scale.y); sp.material.map.dispose(); sp.material.map = n.material.map; sp.scale.x = n.scale.x; sp.material.needsUpdate = true; }
+  const WHITE = () => mat(0xFAFBFD, {roughness:.55});
+  const METAL = () => mat(0xB9C0CE, {metalness:.75, roughness:.3});
+  function fence(r, n){ const g = new THREE.Group(), m = mat(0xF4F1EA, {roughness:.8}); for(let k=0;k<n;k++){ const a = k/n*Math.PI*2; if(Math.cos(a) > .82) continue; g.add(at(box(.05, .32, .05, m), Math.sin(a)*r, .16, -Math.cos(a)*r)); }
+    for(const y of [.12, .26]){ const pts = []; for(let k=0;k<=64;k++){ const a = k/64*Math.PI*2; pts.push(V(Math.sin(a)*r, y, -Math.cos(a)*r)); } const tube = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts, true), 128, .012, 5, true), m); g.add(tube); }
+    g.position.y = TABLE_Y; return shadowAll(g); }
+  function thermoSVG(cx, T, lab, wet, lo=20, hi=40){ const y = v => 160 - (v - lo)/(hi - lo)*140; let t = `<rect x="${cx-9}" y="12" width="18" height="155" rx="9" fill="#fff" stroke="#9AA3B5" stroke-width="1.5"/>`;
+    for(let v=lo; v<=hi; v++){ const L = v%5===0 ? 10 : 5; t += `<line x1="${cx+9}" x2="${cx+9+L}" y1="${y(v)}" y2="${y(v)}" stroke="#2B3050" stroke-width="${v%5 ? 1 : 1.6}"/>`; if(v%5===0) t += `<text x="${cx-14}" y="${y(v)+4}" font-size="11" text-anchor="end" fill="#2B3050">${v}</text>`; }
+    t += `<rect x="${cx-3}" y="${y(T)}" width="6" height="${172 - y(T)}" fill="#E04A4A"/><circle cx="${cx}" cy="176" r="12" fill="#E04A4A"/>`; if(wet) t += `<circle cx="${cx}" cy="176" r="15" fill="#5B8DEF" opacity=".35"/>`;
+    return t + `<text x="${cx}" y="206" font-size="12" text-anchor="middle" fill="#2B3050" font-weight="600">${lab}</text>`; }
 
   /* ----- part setup ----- */
-  const defaults = i => ({wrong:0, ans:{}, named:{}, seen:{}, view:null, at:null, rec:{}, day:false, Tl:28, Ts:28, dayT:0, nightT:0, daySeen:false, nightSeen:false, wasDay:false, smoke:false, squeezed:false, fog:0, triedNo:false, cloudOk:false, city:{}});
+  const defaults = i => [
+    {sel:null, named:{}, view:null, hy:{}, wd:null, ws:null, rn:null, bp:null, wrong:0},
+    {stn:0, at:null, rec:{}, day:false, Tl:28, Ts:28, dayT:0, nightT:0, daySeen:false, nightSeen:false, hl:null, wrong:0},
+    {stn:0, smoke:false, sq:false, tried:{}, city:{}, fc:{}, wrong:0}
+  ][i];
   const restoreS = i => { const s = defaults(i); try { if(S.ps && S.ps[i]) Object.assign(s, JSON.parse(JSON.stringify(S.ps[i]))); } catch(e){} return s; };
-  const fresh = i => ({i, s:restoreS(i), labels:[], celebrate:false, dirty:false, ctrlSig:'', warn:null, sel:null});
+  const fresh = i => ({i, s:restoreS(i), labels:[], celebrate:false, dirty:false, ctrlSig:'', warn:null, items:{}});
   function clearWorld(){ while(R.world.children.length) R.world.remove(R.world.children[0]); }
   function build(){
-    clearWorld(); P.labels = []; P.ctrlSig = ''; P.items = {}; P.sel = null;
-    const cam = CAMS[P.i]; R.camera.position.copy(cam.pos); R.controls.target.copy(cam.tgt);
-    if(P.i===0) buildP1(); else if(P.i===1) buildP2(); else buildP3();
-    labelsDOM(); sync(); refresh();
+    clearWorld(); P.labels = []; P.ctrlSig = ''; P.items = {}; P.fx = [];
+    const C = R.controls; C.enabled = true; C.minDistance = 2.2; C.maxDistance = 13; C.maxPolarAngle = 1.48; C.minPolarAngle = .2;
+    R.camera.userData.f0 = 42; resize(); R.hemi.intensity = .85; R.sun.intensity = .95;
+    [buildP1, buildP2, buildP3][P.i]();
+    camHome(); labelsDOM(); refresh();
   }
-  function item(id, g, home){ g.userData.id = id; g.userData.home = home; g.position.copy(home); shadowAll(g); R.world.add(g); P.items[id] = g; return g; }
-  function goHome(g){ g.position.copy(g.userData.home); g.rotation.set(0,0,0); }
+  function camOf(){ let cam = CAMS[P.i]; if(Array.isArray(cam)) cam = cam[P.s.stn || 0]; return cam; }
+  function camGo(){ const cam = camOf(), st = $('#stage'), w = st ? st.clientWidth : 1000, h = st ? st.clientHeight : 600, off = cam.pos.clone().sub(cam.tgt); if(w/h < 1) off.multiplyScalar(Math.min(1.3, 1 + (1 - w/h)*.5)); else if(P.i > 0) off.multiplyScalar(1.4); P.camTo = {t:cam.tgt.clone(), p:cam.tgt.clone().add(off), k:0}; }
+  function setStn(k){ if(P.s.stn===k) return; P.s.stn = k; camGo(); }
+  function camHome(){ P.camTo = null; const cam = camOf(), st = $('#stage'), w = st ? st.clientWidth : 1000, h = st ? st.clientHeight : 600, t = cam.tgt.clone(), off = cam.pos.clone().sub(cam.tgt);
+    if(w/h < 1) off.multiplyScalar(Math.min(1.3, 1 + (1 - w/h)*.5)); else if(P.i > 0) off.multiplyScalar(1.4);
+    R.controls.target.copy(t); R.camera.position.copy(t).add(off); }
+  const SEED = () => seedOf(S.nick);
 
-  /* ===== part 1: weather station ===== */
+  /* ===== PART 1: weather station ===== */
+  const INST = {
+    screen:{th:'ไฮโกรมิเตอร์ (ในตู้สกรีน)', en:'Hygrometer', d:'วัดอุณหภูมิและความชื้นสัมพัทธ์', look:'ตู้ไม้สีขาวมีบานเกล็ด ข้างในมีเทอร์โมมิเตอร์ 2 อัน'},
+    anemo:{th:'แอนนิโมมิเตอร์', en:'Anemometer', d:'วัดอัตราเร็วลม', look:'มีถ้วย 3 ใบหมุนรอบแกน'},
+    vane:{th:'ศรลม', en:'Wind vane', d:'บอกทิศทางที่ลมพัดมา', look:'ลูกศรมีหางกว้าง หมุนตามลม มีป้ายทิศ'},
+    rain:{th:'เครื่องวัดปริมาณน้ำฝน', en:'Rain gauge', d:'วัดปริมาณน้ำฝนเป็นมิลลิเมตร', look:'กระบอกมีกรวยรับน้ำด้านบน'},
+    baro:{th:'บารอมิเตอร์', en:'Barometer', d:'วัดความกดอากาศเป็น hPa', look:'หน้าปัดกลมมีเข็มติดผนังบ้าน'}
+  };
+  const IK = Object.keys(INST);
+  const RH = {1:93, 2:86, 3:79, 4:73, 5:66, 6:60};
+  const D8 = [['N','เหนือ',0],['NE','ตะวันออกเฉียงเหนือ',45],['E','ตะวันออก',90],['SE','ตะวันออกเฉียงใต้',135],['S','ใต้',180],['SW','ตะวันตกเฉียงใต้',225],['W','ตะวันตก',270],['NW','ตะวันตกเฉียงเหนือ',315]];
+  function vals1(){ const h = SEED(); const Td = 30 + h % 4, d = 2 + (h >> 2) % 4; return {Td, Tw:Td - d, d, rh:RH[d], wd:D8[(h >> 4) % 8], ws:8 + (h >> 3) % 21, mm:12 + (h >> 5) % 27, hpa:1002 + 2*((h >> 6) % 7)}; }
   function buildP1(){
-    const W = R.world, s = P.s, white = mat(0xFFFFFF,{roughness:.6}), pole = METAL(); P.inst = {};
-    const grass = cyl(2.6,2.6,.02, mat(0xBFE3A0,{roughness:.9}), 40); grass.position.set(0, TABLE_Y + .01, -.2); W.add(grass);
-    const mk = (k, g) => { g.userData.id = 'in:'+k; const [x,z] = IPOS[k]; g.position.set(x, TABLE_Y, z); shadowAll(g); W.add(g); P.inst[k] = g; P.labels.push({obj:g, dy:g.userData.lab || 1.3, text:()=>labelFor(k)}); };
-    // stevenson screen
-    let g = new THREE.Group(); for(let q=0;q<4;q++) g.add(at(cyl(.02,.02,.8, white, 6), (q%2 ? .22 : -.22), .4, (q<2 ? .18 : -.18)));
-    g.add(at(box(.6,.5,.48, white), 0,1.05,0)); for(let q=0;q<6;q++) g.add(at(box(.61,.012,.02, mat(0xDDE3EE)), 0,.85 + q*.08,.245)); g.add(at(box(.66,.04,.54, white), 0,1.32,0)); g.add(hitBox(.7,1.4,.6,.7)); g.userData.lab = 1.55; mk('screen', g);
-    // anemometer
-    g = new THREE.Group(); g.add(at(cyl(.02,.025,1.4, pole, 8), 0,.7,0)); const rot = new THREE.Group(); rot.position.y = 1.42; for(let q=0;q<3;q++){ const a = q/3*Math.PI*2; const arm = box(.32,.012,.012, pole); arm.position.set(Math.cos(a)*.16, 0, Math.sin(a)*.16); arm.rotation.y = -a; rot.add(arm); const cp = new THREE.Mesh(new THREE.SphereGeometry(.06,12,8,0,Math.PI*2,0,Math.PI/2), mat(0x5B8DEF,{side:THREE.DoubleSide})); cp.rotation.z = Math.PI/2; cp.position.set(Math.cos(a)*.32, 0, Math.sin(a)*.32); cp.rotation.y = -a; rot.add(cp); } g.add(rot); g.userData.rot = rot; g.add(hitBox(.7,1.6,.7,.8)); g.userData.lab = 1.65; mk('anemo', g);
-    // wind vane (points toward SW = -x,+z)
-    g = new THREE.Group(); g.add(at(cyl(.02,.025,1.3, pole, 8), 0,.65,0)); const vn = new THREE.Group(); vn.position.y = 1.32; vn.add(at(box(.7,.015,.015, pole), 0,0,0)); const head = new THREE.Mesh(new THREE.ConeGeometry(.05,.14,10), mat(0xE25555)); head.rotation.z = -Math.PI/2; head.position.x = .4; vn.add(head); vn.add(at(box(.14,.12,.01, mat(0x5B6280)), -.33,0,0)); vn.rotation.y = -Math.PI*.75; g.add(vn);
-    [['N',0,-1],['E',1,0],['S',0,1],['W',-1,0]].forEach(([t,dx,dz])=>{ const tp = textPlane({N:'เหนือ',E:'ออก',S:'ใต้',W:'ตก'}[t], '#5B6280', .34, .16); tp.position.set(dx*.42, .03, dz*.42); g.add(tp); });
-    g.add(hitBox(.8,1.5,.8,.75)); g.userData.lab = 1.55; mk('vane', g);
-    // rain gauge
-    g = new THREE.Group(); g.add(at(cyl(.15,.15,.55, mat(0x9AA3B5,{metalness:.5}), 20), 0,.275,0)); g.add(at(cyl(.2,.08,.15, mat(0xB9C0CE,{metalness:.5}), 20, true), 0,.62,0)); g.add(hitBox(.45,.8,.45,.35)); g.userData.lab = .95; mk('rain', g);
-    // barometer on stand
-    g = new THREE.Group(); g.add(at(box(.5,.5,.4, mat(0xC9A35A)), 0,.25,0)); const dial = cyl(.17,.17,.05, mat(0xF4F6FB), 24); dial.rotation.x = Math.PI/2; dial.position.set(0,.68,.0); g.add(dial); g.add(at(cyl(.19,.19,.04, mat(0xD9A441,{metalness:.6}), 24), 0,.68,-.03)); g.children[g.children.length-1].rotation.x = Math.PI/2;
-    const nd = box(.012,.13,.01, mat(0xE25555)); nd.position.set(.03,.72,.03); nd.rotation.z = -.4; g.add(nd); g.add(hitBox(.55,.9,.45,.45)); g.userData.lab = 1.0; mk('baro', g);
+    setSky('#4F8FDB', '#9CC7F2', '#DCEBFA', '#CFE3F8');
+    treeRing(true, 14); const V1 = vals1(); P.v1 = V1;
+    R.world.add(fence(2.75, 46));
+    const grav = new THREE.Mesh(new THREE.CircleGeometry(2.7, 64), mat(0x6FAE52, {roughness:1})); grav.rotation.x = -Math.PI/2; grav.position.y = TABLE_Y + .004; grav.receiveShadow = true; R.world.add(grav);
+    const path = new THREE.Mesh(new THREE.PlaneGeometry(.5, 2.4), mat(0xD9CBB0, {roughness:1})); path.rotation.x = -Math.PI/2; path.position.set(0, TABLE_Y + .006, 2.2); R.world.add(path);
+    const W = WHITE(), M = METAL();
+    /* Stevenson screen */
+    let g = new THREE.Group(); [[-.24,-.2],[.24,-.2],[-.24,.2],[.24,.2]].forEach(([x,z])=>g.add(at(box(.05, .9, .05, W), x, .45, z)));
+    g.add(at(box(.62, .55, .5, W), 0, 1.15, 0)); for(let q=0;q<7;q++){ const sl = box(.6, .012, .07, mat(0xE9EDF3)); sl.rotation.x = .55; sl.position.set(0, .93 + q*.075, .26); g.add(sl); }
+    const roof = box(.74, .05, .62, W); roof.position.y = 1.46; roof.rotation.x = -.08; g.add(roof); g.add(at(box(.66, .04, .54, W), 0, .88, 0));
+    [[-.08, false],[.08, true]].forEach(([x, wet])=>{ g.add(at(cyl(.012, .012, .36, GLASS(.6), 8), x, 1.17, .27)); g.add(at(sph(.022, mat(0xE04A4A), 10), x, .98, .27)); if(wet) g.add(at(cyl(.03, .03, .08, mat(0xFFFFFF, {roughness:1}), 10), x, .99, .27)); });
+    g.add(hitBox(.8, 1.6, .7, 0, .8, 0)); g.position.set(-1.75, TABLE_Y, -.35); shadowAll(g); item('screen', g);
+    /* anemometer */
+    g = new THREE.Group(); g.add(at(cyl(.025, .03, 1.7, M, 10), 0, .85, 0)); const rot = new THREE.Group(); rot.position.y = 1.72;
+    for(let q=0;q<3;q++){ const a = q/3*Math.PI*2; const arm = cyl(.008, .008, .3, M, 6); arm.rotation.z = Math.PI/2; arm.position.set(Math.cos(a)*.15, 0, Math.sin(a)*.15); arm.rotation.y = -a; rot.add(arm);
+      const cp = new THREE.Mesh(new THREE.SphereGeometry(.065, 14, 10, 0, Math.PI*2, 0, Math.PI/2), mat(0x2F80ED, {side:THREE.DoubleSide, roughness:.4})); cp.rotation.z = Math.PI/2; cp.position.set(Math.cos(a)*.31, 0, Math.sin(a)*.31); cp.rotation.y = -a; rot.add(cp); }
+    rot.add(at(cyl(.03, .03, .06, M, 10), 0, 0, 0)); g.add(rot); P.rot = rot;
+    const disp = lcdTex(160, 64); const dp = new THREE.Mesh(new THREE.PlaneGeometry(.26, .1), new THREE.MeshBasicMaterial({map:disp})); dp.position.set(0, .8, .04); g.add(at(box(.3, .14, .05, mat(0x34405E)), 0, .8, 0)); g.add(dp); drawLCD(disp, `${V1.ws} km/h`, '#1E2A20', '#C9E8B5');
+    g.add(hitBox(.75, 1.9, .75, 0, .95, 0)); g.position.set(-.6, TABLE_Y, -1.35); shadowAll(g); item('anemo', g);
+    /* wind vane */
+    g = new THREE.Group(); g.add(at(cyl(.025, .03, 1.6, M, 10), 0, .8, 0));
+    const cross = new THREE.Group(); cross.position.y = 1.35; D8.filter((_,k)=>k%2===0).forEach(([k,,deg])=>{ const a = deg*Math.PI/180; const arm = cyl(.008, .008, .34, M, 6); arm.rotation.order = 'YXZ'; arm.rotation.x = Math.PI/2; arm.rotation.y = -a; arm.position.set(Math.sin(a)*.17, 0, -Math.cos(a)*.17); cross.add(arm); const t = textSprite(k, '#fff', 'rgba(30,42,85,.9)', .11); t.position.set(Math.sin(a)*.38, 0, -Math.cos(a)*.38); cross.add(t); }); g.add(cross);
+    const vn = new THREE.Group(); vn.position.y = 1.58; vn.add(at(cyl(.01, .01, .8, M, 6), 0, 0, 0)).children; vn.children[0].rotation.x = Math.PI/2;
+    const head = new THREE.Mesh(new THREE.ConeGeometry(.055, .16, 12), mat(0xE25555)); head.rotation.x = -Math.PI/2; head.position.z = -.46; vn.add(head);
+    const tail = new THREE.Mesh(new THREE.BoxGeometry(.012, .16, .2), mat(0x34405E)); tail.position.z = .36; vn.add(tail);
+    vn.rotation.y = -V1.wd[2]*Math.PI/180; g.add(vn); P.vn = vn; P.vn0 = vn.rotation.y;
+    g.add(hitBox(.8, 1.9, .8, 0, .95, 0)); g.position.set(.6, TABLE_Y, -1.35); shadowAll(g); item('vane', g);
+    const comp = textSprite('N ↑', '#fff', 'rgba(229,85,85,.9)', .14); comp.position.set(.6, TABLE_Y + .1, -2.35); R.world.add(comp);
+    /* rain gauge */
+    g = new THREE.Group(); g.add(at(cyl(.17, .18, .06, mat(0x7A8296), 20), 0, .03, 0));
+    g.add(at(cyl(.15, .15, .55, mat(0xC9D2E0, {metalness:.6, roughness:.3}), 24), 0, .33, 0));
+    const fun = new THREE.Mesh(new THREE.CylinderGeometry(.2, .06, .14, 24, 1, true), mat(0xDCE3EE, {metalness:.6, roughness:.25, side:THREE.DoubleSide})); fun.position.y = .67; g.add(fun);
+    { const rim = new THREE.Mesh(new THREE.TorusGeometry(.2, .012, 8, 28), M); rim.rotation.x = Math.PI/2; rim.position.y = .74; g.add(rim); }
+    g.add(hitBox(.55, .9, .55, 0, .45, 0)); g.position.set(.1, TABLE_Y, -.05); shadowAll(g); item('rain', g);
+    /* hut with barometer */
+    g = new THREE.Group(); g.add(at(box(1.0, .8, .75, mat(0xEFE3C8)), 0, .4, 0)); const rf = new THREE.Mesh(new THREE.ConeGeometry(.78, .42, 4), mat(0x3D6FB6, {flatShading:true})); rf.rotation.y = Math.PI/4; rf.scale.set(1, 1, .8); g.add(at(rf, 0, 1.0, 0));
+    g.add(at(box(.24, .44, .02, mat(0x8A5A3A)), -.25, .22, .38));
+    const dial = canvasTex(256, 256, (x)=>drawBaroFace(x, V1.hpa)); const df = new THREE.Mesh(new THREE.CircleGeometry(.14, 40), new THREE.MeshBasicMaterial({map:dial})); df.position.set(.2, .5, .385); g.add(df);
+    { const rim = new THREE.Mesh(new THREE.TorusGeometry(.145, .014, 8, 32), mat(0xD9A441, {metalness:.7, roughness:.3})); rim.position.set(.2, .5, .385); g.add(rim); }
+    g.add(hitBox(.5, .5, .2, .2, .5, .4)); g.position.set(1.5, TABLE_Y, .8); g.rotation.y = -.7; shadowAll(g); item('baro', g);
+    IK.forEach(k=>{ const dy = {screen:1.6, anemo:1.95, vane:1.85, rain:.95, baro:.85}[k]; labelAdd(P.items[k], dy, ()=>{ const s = P.s; return s.named[k] ? (s.view===k ? `${INST[k].en} ${INST[k].th.split(' (')[0]}` : INST[k].en) : (s.sel===k ? 'เลือกอยู่' : '?'); }); });
+    P.amb = {wind:.22};
   }
-  function labelFor(k){ const s = P.s; if(!S.miss[0].parts) return s.named[k] ? INST[k][0] : (P.sel===k ? 'เลือกอยู่' : '?'); return INST[k][0]; }
-  function syncP1(){ IK.forEach(k=>{ const g = P.inst[k]; g.traverse(o=>{ if(o.isMesh && o.material && o.material.emissive && o.material!==HITM){ o.material.emissive.setHex(P.sel===k ? 0x3B82F6 : 0); o.material.emissiveIntensity = P.sel===k ? .35 : 0; } }); }); }
-  function drawInst(){
-    const c = $('#iv'); if(!c) return; const x = c.getContext('2d'), s = P.s, W = c.width, H = c.height, v = s.view;
-    x.fillStyle = '#F7F9FC'; x.fillRect(0,0,W,H); x.textAlign = 'center'; x.fillStyle = '#2B3050'; x.font = '13px sans-serif';
-    if(!v){ x.fillStyle = '#5B6280'; x.fillText(S.miss[0].parts ? 'แตะเครื่องมือเพื่อดูค่าที่อ่านได้' : 'ระบุชื่อเครื่องมือให้ครบก่อน', W/2, H/2); return; }
-    const therm = (cx, T, lab, wet) => { x.fillStyle = '#fff'; x.strokeStyle = '#9AA3B5'; x.lineWidth = 1.5; x.beginPath(); x.roundRect ? x.roundRect(cx-8, 20, 16, 130, 8) : x.rect(cx-8,20,16,130); x.fill(); x.stroke(); x.beginPath(); x.arc(cx, 155, 12, 0, 7); x.fillStyle = '#E04A4A'; x.fill(); if(wet){ x.fillStyle = 'rgba(91,141,239,.35)'; x.beginPath(); x.arc(cx, 155, 15, 0, 7); x.fill(); }
-      const y = T => 145 - (T - 20)/20*115; x.fillStyle = '#E04A4A'; x.fillRect(cx-3, y(T), 6, 150 - y(T)); x.fillStyle = '#5B6280'; x.font = '9px sans-serif'; x.textAlign = 'right'; for(let t=20;t<=40;t+=2){ x.fillRect(cx+8, y(t), t%10 ? 4 : 8, 1); if(t%10===0) x.fillText(t, cx-12, y(t)+3); } x.textAlign = 'center'; x.font = '12px sans-serif'; x.fillStyle = '#2B3050'; x.fillText(lab, cx, 185); };
-    if(v==='screen'){ therm(45, 32, 'กระเปาะแห้ง', false); therm(105, 28, 'กระเปาะเปียก', true);
-      x.textAlign = 'left'; x.font = '600 12px sans-serif'; x.fillText('ตาราง RH (%) ที่กระเปาะแห้ง 32 °C', 140, 30); x.font = '12px sans-serif';
-      [['ผลต่าง (°C)','RH'],['1','93'],['2','86'],['3','79'],['4','73'],['5','66']].forEach(([a,b],k)=>{ x.fillStyle = k ? '#2B3050' : '#5B6280'; x.fillText(a, 150, 54 + k*22); x.fillText(b, 240, 54 + k*22); }); x.strokeStyle = '#C9D1E3'; x.strokeRect(140, 38, 140, 136); }
-    if(v==='vane'){ x.save(); x.translate(W/2, H/2); x.strokeStyle = '#C9D1E3'; x.beginPath(); x.arc(0,0,72,0,7); x.stroke(); x.fillStyle = '#5B6280'; x.font = '12px sans-serif';
-      [['เหนือ',0,-88],['ใต้',0,94],['ตะวันออก',100,4],['ตะวันตก',-100,4],['ตต.เฉียงใต้',-70,72],['ตอ.เฉียงเหนือ',70,-66]].forEach(([t,a,b])=>x.fillText(t,a,b));
-      x.rotate(Math.PI*.75); x.strokeStyle = '#2B3050'; x.lineWidth = 4; x.beginPath(); x.moveTo(-60,0); x.lineTo(50,0); x.stroke(); x.fillStyle = '#E25555'; x.beginPath(); x.moveTo(66,0); x.lineTo(46,-10); x.lineTo(46,10); x.fill(); x.fillStyle = '#5B6280'; x.fillRect(-66,-12,14,24); x.restore();
-      x.fillStyle = '#2B3050'; x.font = '12px sans-serif'; x.fillText('หัวลูกศรชี้ไปทางที่ลมพัดมา', W/2, H - 6); }
-    if(v==='rain'){ x.fillStyle = '#DCEBFB'; x.fillRect(W/2 - 30, 30, 60, 140); x.fillStyle = '#8EC5F5'; const y = mm => 170 - mm/50*140; x.fillRect(W/2 - 30, y(25), 60, 170 - y(25)); x.strokeStyle = '#9AB4D8'; x.strokeRect(W/2 - 30, 30, 60, 140);
-      x.fillStyle = '#2B3050'; x.textAlign = 'right'; x.font = '10px sans-serif'; for(let mm=0;mm<=50;mm+=5){ x.fillRect(W/2 + 30, y(mm), mm%10 ? 6 : 12, 1); if(mm%10===0) x.fillText(mm, W/2 + 60, y(mm)+3); } x.textAlign = 'center'; x.font = '12px sans-serif'; x.fillText('กระบอกตวงน้ำฝน (mm)', W/2, 190); }
-    if(v==='anemo'){ x.font = '600 34px sans-serif'; x.fillStyle = '#3B82C4'; x.fillText('18', W/2, H/2); x.font = '13px sans-serif'; x.fillStyle = '#2B3050'; x.fillText('กิโลเมตรต่อชั่วโมง (km/h)', W/2, H/2 + 24); x.fillText('ถ้วยหมุนเร็ว = ลมแรง', W/2, H/2 + 46); }
-    if(v==='baro'){ x.save(); x.translate(W/2, H/2 + 6); x.fillStyle = '#fff'; x.strokeStyle = '#D9A441'; x.lineWidth = 6; x.beginPath(); x.arc(0,0,80,0,7); x.fill(); x.stroke(); x.fillStyle = '#2B3050'; x.font = '10px sans-serif';
-      for(let p=960;p<=1060;p+=10){ const a = -Math.PI*1.25 + (p - 960)/100*Math.PI*1.5; x.fillText(p, Math.cos(a)*62, Math.sin(a)*62 + 3); } const a = -Math.PI*1.25 + (1008 - 960)/100*Math.PI*1.5; x.strokeStyle = '#E25555'; x.lineWidth = 3; x.beginPath(); x.moveTo(0,0); x.lineTo(Math.cos(a)*52, Math.sin(a)*52); x.stroke(); x.font = '12px sans-serif'; x.fillText('hPa', 0, 30); x.restore(); x.fillText('ความกดอากาศ 1008 hPa', W/2, H - 4); }
-  }
-  function tapInst(k){ const s = P.s;
-    if(!S.miss[0].parts){ P.sel = k; P.warn = null; P.say = null; syncP1(); return refresh(); }
-    s.view = k; s.seen[k] = 1; P.say = `${INST[k][0]}: ${INST[k][1]} ดูค่าในแผงด้านขวา`; refresh(); }
-  function nameInst(k){ const s = P.s; if(!P.sel) return; if(k===P.sel){ s.named[k] = 1; toast(`${INST[k][0]}: ${INST[k][1]}`); P.warn = null; P.sel = null; } else { s.wrong += 1; P.warn = `ยังไม่ถูก เครื่องมือที่เลือกไม่ใช่${INST[k][0]} สังเกตรูปร่างอีกครั้ง`; } syncP1(); refresh(); }
+  function drawBaroFace(x, hpa){ x.fillStyle = '#FBFCFE'; x.beginPath(); x.arc(128,128,126,0,7); x.fill(); x.strokeStyle = '#1E2A55'; x.fillStyle = '#1E2A55'; x.textAlign = 'center'; x.textBaseline = 'middle';
+    const ang = p => -Math.PI*1.25 + (p - 960)/100*Math.PI*1.5;
+    for(let p=960; p<=1060; p+=2){ const a = ang(p), L = p%10===0 ? 18 : 9; x.lineWidth = p%10 ? 1.5 : 3; x.beginPath(); x.moveTo(128 + Math.cos(a)*110, 128 + Math.sin(a)*110); x.lineTo(128 + Math.cos(a)*(110 - L), 128 + Math.sin(a)*(110 - L)); x.stroke(); if(p%20===0){ x.font = '600 17px Mitr, sans-serif'; x.fillText(p, 128 + Math.cos(a)*74, 128 + Math.sin(a)*74); } }
+    x.font = '600 18px Mitr, sans-serif'; x.fillText('hPa', 128, 172); const a = ang(hpa); x.strokeStyle = '#E25555'; x.lineWidth = 5; x.beginPath(); x.moveTo(128 - Math.cos(a)*18, 128 - Math.sin(a)*18); x.lineTo(128 + Math.cos(a)*100, 128 + Math.sin(a)*100); x.stroke(); x.fillStyle = '#1E2A55'; x.beginPath(); x.arc(128,128,8,0,7); x.fill(); }
+  function tap1(k){ const s = P.s; if(!INST[k]) return; P.warn = null;
+    if(IK.some(x=>!s.named[x])){ if(s.named[k]){ P.say = `${INST[k].en} (${INST[k].th}) ${INST[k].d} ระบุแล้ว ✓ ลองแตะเครื่องมือที่ยังเป็น ? ครับ`; refresh(); return; } s.sel = k; SFX.pick(); P.say = `เลือกเครื่องมือนี้แล้ว: ${INST[k].look} เลือกชื่อในแผงด้านล่างครับ`; refresh(); return; }
+    s.view = k; s.sel = null; SFX.pick(); P.say = `${INST[k].en} (${INST[k].th}) ${INST[k].d} ดูภาพขยายในแผงด้านล่างครับ`; refresh(); }
+  function name1(k){ const s = P.s, id = s.sel; if(!id) return;
+    if(k===id){ s.named[id] = 1; s.sel = null; SFX.speak(INST[id].en); P.warn = null; P.say = `ถูกต้อง! ${INST[id].en} = ${INST[id].th} ${INST[id].d}`; }
+    else { s.wrong += 1; P.warn = `ยังไม่ใช่ครับ ${INST[k].th} ${INST[k].look} แต่ชิ้นที่เลือก${INST[id].look}`; }
+    refresh(); }
+  const HYS = ['dry','wet','diff','rh'];
+  function hyOpts(step){ const v = P.v1; return {dry:[v.Td, v.Tw, v.Td + 1], wet:[v.Tw, v.Td, v.Tw - 1], diff:[v.d, v.Td + v.Tw, v.d + 1], rh:[v.rh, RH[v.d - 1], RH[v.d + 1]]}[step]; }
+  function hy1(step, a){ const s = P.s, v = P.v1, want = hyOpts(step)[0]; a = +a; if(s.hy[step]!==undefined) return;
+    if(a===want){ s.hy[step] = a; SFX.ok(); P.warn = null; P.say = {dry:`กระเปาะแห้ง ${v.Td} °C ถูกต้อง ต่อไปอ่านกระเปาะเปียก (wet bulb) ที่มีผ้าชุบน้ำหุ้ม`, wet:`กระเปาะเปียก ${v.Tw} °C ถูกต้อง น้ำระเหยดึงความร้อนไป จึงต่ำกว่ากระเปาะแห้ง ต่อไปหาผลต่าง`, diff:`ผลต่าง = ${v.Td} − ${v.Tw} = ${v.d} °C ต่อไปเปิดตารางหาความชื้นสัมพัทธ์ (RH)`, rh:`ผลต่าง ${v.d} °C เปิดตารางได้ RH = ${v.rh}% ถูกต้องครับ`}[step]; }
+    else { s.wrong += 1; P.warn = {dry: a===v.Tw ? 'นั่นคือกระเปาะเปียก (มีผ้าชุบน้ำหุ้ม) อ่านอีกอันที่ไม่มีผ้าครับ' : 'อ่านที่ปลายแถบสีแดง แต่ละขีดเล็ก = 1 °C ครับ', wet: a===v.Td ? 'นั่นคือกระเปาะแห้ง ดูอันที่มีผ้าชุบน้ำหุ้ม (สีฟ้า) ครับ' : 'อ่านที่ปลายแถบสีแดงของกระเปาะเปียก แต่ละขีดเล็ก = 1 °C ครับ', diff: a===v.Td + v.Tw ? 'ผลต่างต้อง “ลบ” กัน ไม่ใช่บวกครับ กระเปาะแห้ง − กระเปาะเปียก' : `ลองคำนวณ ${v.Td} − ${v.Tw} ใหม่ครับ`, rh:`ดูแถวผลต่าง ${v.d} °C ในตาราง แล้วอ่านค่า RH ในแถวเดียวกันครับ`}[step]; }
+    refresh(); }
+  function wind1(kind, a){ const s = P.s, v = P.v1;
+    if(kind==='d'){ if(s.wd) return; if(a===v.wd[0]){ s.wd = a; SFX.ok(); P.warn = null; P.say = `ใช่! หัวลูกศรชี้ไปทิศ${v.wd[1]} แปลว่าลมพัดมาจากทิศ${v.wd[1]} เรียกว่า “ลม${v.wd[1]}”`; } else { s.wrong += 1; const opp = D8[(D8.findIndex(x=>x[0]===v.wd[0]) + 4) % 8][0]; P.warn = a===opp ? 'หัวลูกศรของศรลมชี้ไปทางที่ลมพัด “มา” ไม่ใช่ทางที่ลมพัดไปครับ' : 'ดูป้ายทิศ N E S W ใต้ศรลม แล้วดูว่าหัวลูกศรสีแดงชี้ไปทางไหนครับ'; } }
+    else { if(s.ws) return; if(a==='kmh'){ s.ws = v.ws; SFX.ok(); P.warn = null; P.say = `อัตราเร็วลม (wind speed) ${v.ws} km/h ถ้วยยิ่งหมุนเร็ว ลมยิ่งแรงครับ`; } else { s.wrong += 1; P.warn = a==='hpa' ? 'hPa เป็นหน่วยของความกดอากาศ ไม่ใช่อัตราเร็วลมครับ' : 'mm เป็นหน่วยของปริมาณฝนครับ อัตราเร็วลมเป็นระยะทางต่อเวลา'; } }
+    refresh(); }
+  function gaugeOpts(mm){ const o = [mm, (mm + 1)%5 ? mm + 1 : mm - 1, Math.round(mm/5)*5===mm ? mm + 2 : Math.round(mm/5)*5]; return [...new Set(o)].sort((a,b)=>a-b); }
+  function rain1(a){ const s = P.s, v = P.v1; if(s.rn) return; a = +a; if(a===v.mm){ s.rn = a; SFX.ok(); P.warn = null; P.say = `ปริมาณน้ำฝน ${v.mm} mm ถูกต้องครับ`; } else { s.wrong += 1; P.warn = Math.abs(a - v.mm)===1 ? `ห่างไป 1 ขีด ขีดเล็กแต่ละขีด = 1 mm นับจากเลข ${Math.floor(v.mm/10)*10} ใหม่ครับ` : 'อย่าปัดเป็นเลขกลม ๆ ครับ นับขีดเล็กทีละ 1 mm'; } refresh(); }
+  function baro1(a){ const s = P.s, v = P.v1; if(s.bp) return; a = +a; if(a===v.hpa){ s.bp = a; SFX.ok(); P.warn = null; P.say = `ความกดอากาศ ${v.hpa} hPa ถูกต้องครับ (ระดับน้ำทะเลเฉลี่ยประมาณ 1013 hPa)`; } else { s.wrong += 1; P.warn = Math.abs(a - v.hpa)===1 ? 'ขีดเล็กแต่ละขีดบนหน้าปัด = 2 hPa ไม่ใช่ 1 hPa ครับ' : 'ดูว่าเข็มสีแดงอยู่เลยเลขใดไปกี่ขีด ขีดละ 2 hPa ครับ'; } refresh(); }
+  function zoom1(k){ const v = P.v1;
+    if(k==='screen') return `<svg viewBox="0 0 330 215" width="100%" style="max-width:420px" role="img" aria-label="ภาพขยายไฮโกรมิเตอร์">${thermoSVG(40, v.Td, 'กระเปาะแห้ง', false)}${thermoSVG(115, v.Tw, 'กระเปาะเปียก', true)}
+      <text x="170" y="22" font-size="12" font-weight="600" fill="#1E2A55">ตาราง RH (%) · แห้ง 30–33 °C</text><rect x="170" y="30" width="150" height="160" rx="8" fill="#fff" stroke="#C9D1E3"/><text x="190" y="50" font-size="12" fill="#5B6280">ผลต่าง (°C)</text><text x="290" y="50" font-size="12" fill="#5B6280" text-anchor="middle">RH</text>
+      ${[1,2,3,4,5,6].map((d,j)=>`<text x="215" y="${74 + j*21}" font-size="13" fill="#2B3050" text-anchor="middle">${d}</text><text x="290" y="${74 + j*21}" font-size="13" fill="#2B3050" text-anchor="middle">${RH[d]}</text>`).join('')}</svg>`;
+    if(k==='vane'){ const a = v.wd[2]; return `<svg viewBox="0 0 240 230" width="240" role="img" aria-label="ภาพขยายศรลมมองจากด้านบน"><circle cx="120" cy="112" r="82" fill="#F7F9FC" stroke="#C9D1E3"/>${D8.map(([k,,d])=>{ const r = d*Math.PI/180; return `<text x="${120 + Math.sin(r)*98}" y="${116 - Math.cos(r)*98}" font-size="${k.length>1 ? 11 : 15}" font-weight="600" text-anchor="middle" fill="${k==='N' ? '#E25555' : '#2B3050'}">${k}</text>`; }).join('')}
+      <g transform="rotate(${a} 120 112)"><line x1="120" y1="168" x2="120" y2="52" stroke="#2B3050" stroke-width="5"/><path d="M120 38 L109 60 L131 60z" fill="#E25555"/><rect x="108" y="160" width="24" height="22" fill="#5B6280"/></g><text x="120" y="226" font-size="12" text-anchor="middle" fill="#2B3050">มองจากด้านบน · หัวลูกศรชี้ไปทางที่ลมพัดมา</text></svg>`; }
+    if(k==='anemo') return `<div style="font-size:34px;font-weight:700;color:#2F80ED">${v.ws}</div><div class="note">ตัวเลขบนหน้าจอของแอนนิโมมิเตอร์ (หน่วย?)</div>`;
+    if(k==='rain'){ const lo = Math.max(0, Math.floor(v.mm/10)*10 - 5), hi = Math.min(50, lo + 20), H = 200, y = q => 10 + (hi - q)/(hi - lo)*(H - 20); let t = ''; for(let q=lo; q<=hi; q++){ const L = q%10===0 ? 34 : q%5===0 ? 24 : 14; t += `<line x1="60" x2="${60 + L}" y1="${y(q)}" y2="${y(q)}" stroke="#1E2A55" stroke-width="${q%5 ? 1.2 : 2.2}"/>`; if(q%10===0) t += `<text x="100" y="${y(q) + 5}" font-size="15" fill="#1E2A55" font-weight="600">${q}</text>`; }
+      return `<svg viewBox="0 0 160 ${H}" width="160" height="${H}" role="img" aria-label="ภาพขยายกระบอกตวงน้ำฝน"><rect x="20" y="6" width="44" height="${H - 12}" rx="6" fill="#EEF4FB" stroke="#9AB0CC"/><rect x="22" y="${y(v.mm)}" width="40" height="${H - 8 - y(v.mm)}" fill="#7FB8F0" opacity=".8"/><line x1="18" x2="66" y1="${y(v.mm)}" y2="${y(v.mm)}" stroke="#2F80ED" stroke-width="2"/>${t}<text x="100" y="${H - 4}" font-size="12" fill="#5A6480">mm</text></svg><div class="note">กระบอกตวงน้ำฝน · ขีดเล็ก = 1 mm</div>`; }
+    if(k==='baro'){ const ang = p => -135 + (p - 960)/100*270; const lo = v.hpa - 10 - (v.hpa % 10), arr = []; for(let p=lo; p<=lo + 30; p+=2) arr.push(p);
+      return `<svg viewBox="0 0 240 150" width="240" role="img" aria-label="ภาพขยายหน้าปัดบารอมิเตอร์"><path d="M20 130 A100 100 0 0 1 220 130" fill="#FBFCFE" stroke="#D9A441" stroke-width="6"/>${arr.map(p=>{ const r = (p - lo - 15)/15*70*Math.PI/180; const L = p%10===0 ? 18 : 9; return `<line x1="${120 + Math.sin(r)*96}" y1="${132 - Math.cos(r)*96}" x2="${120 + Math.sin(r)*(96 - L)}" y2="${132 - Math.cos(r)*(96 - L)}" stroke="#1E2A55" stroke-width="${p%10 ? 1.5 : 3}"/>${p%10===0 ? `<text x="${120 + Math.sin(r)*64}" y="${136 - Math.cos(r)*64}" font-size="14" font-weight="600" text-anchor="middle" fill="#1E2A55">${p}</text>` : ''}`; }).join('')}
+        <line x1="120" y1="132" x2="${120 + Math.sin((v.hpa - lo - 15)/15*70*Math.PI/180)*90}" y2="${132 - Math.cos((v.hpa - lo - 15)/15*70*Math.PI/180)*90}" stroke="#E25555" stroke-width="4"/><circle cx="120" cy="132" r="6" fill="#1E2A55"/><text x="120" y="148" font-size="11" text-anchor="middle" fill="#5B6280">hPa · ขีดเล็ก = 2 hPa</text></svg>`; }
+    return ''; }
 
-  /* ===== part 2: pressure & wind ===== */
+  /* ===== PART 2: pressure & wind ===== */
+  const MT = {x:-1.75, z:-.7, R:1.4, H:2.4}, LEV = [0,1000,2000,3000], HPA = [1013, 899, 795, 701];
+  const levPos = k => { const y = LEV[k]/3000*MT.H*.9, r = MT.R*(1 - y/MT.H) + .05, a = .6; return V(MT.x + Math.sin(a)*r, TABLE_Y + y, MT.z + Math.cos(a)*r); };
+  const CST = {x:1.55, z:-.1};
   function buildP2(){
-    const W = R.world, s = P.s;
-    const mt = new THREE.Mesh(new THREE.ConeGeometry(MT.R, MT.H, 32, 6), mat(0x8DBF73,{roughness:.9, flatShading:true})); mt.position.set(MT.x, TABLE_Y + MT.H/2, MT.z); mt.receiveShadow = true; W.add(mt);
-    const snow = new THREE.Mesh(new THREE.ConeGeometry(MT.R*.22, MT.H*.22, 32), mat(0xFFFFFF)); snow.position.set(MT.x, TABLE_Y + MT.H*.89, MT.z); W.add(snow);
-    P.flags = LEV.map((h,k)=>{ const p = levPos(k); const f = new THREE.Group(); f.add(at(cyl(.008,.008,.22, mat(0x5B6280), 6), 0,.11,0)); f.add(at(box(.1,.06,.01, mat(0xF2994A)), .05,.19,0)); f.position.set(p.x, p.y, p.z); W.add(f); P.labels.push({obj:f, dy:.3, text:()=>`${h} m${s.rec[k] ? ' · ' + s.rec[k] + ' hPa' : ''}`}); return f; });
-    const bg = new THREE.Group(); bg.add(at(cyl(.12,.12,.06, mat(0xD9A441,{metalness:.6}), 24), 0,.12,0)); bg.children[0].rotation.x = Math.PI/2; const face = cyl(.1,.1,.065, mat(0xF4F6FB), 24); face.rotation.x = Math.PI/2; face.position.y = .12; bg.add(face); bg.add(at(box(.08,.06,.06, mat(0x8C6A43)), 0,.03,0)); bg.add(hitBox(.35,.35,.3,.12));
-    item('baro', bg, V(-.2, TABLE_Y, 1.05)); P.labels.push({obj:bg, dy:.35, text:()=>s.at!==null ? `${HPA[s.at]} hPa` : 'บารอมิเตอร์'});
-    // coast model
-    const sand = box(.8,.18,1.0, mat(0xE8D49A,{roughness:.95})); sand.position.set(CST.x - .4, TABLE_Y + .09, CST.z); W.add(sand);
-    const sea = box(.8,.16,1.0, TRANS(0x5BA3E0,.85)); sea.position.set(CST.x + .4, TABLE_Y + .08, CST.z); W.add(sea);
-    W.add(at(box(1.64,.6,.02, GLASS(.18)), CST.x, TABLE_Y + .4, CST.z - .51));
-    const sun = new THREE.Group(); sun.userData.id = 'sun'; const sp = sph(.13, new THREE.MeshStandardMaterial({color:0xFFF3C4, emissive:0xFFB020, emissiveIntensity:0}), 16); sun.add(sp); sun.add(hitBox(.4,.4,.4,0)); sun.position.set(CST.x, TABLE_Y + 1.25, CST.z); W.add(sun); P.sunM = sp;
-    W.add(at(cyl(.015,.015,1.15, METAL(), 6), CST.x + .85, TABLE_Y + .6, CST.z)); W.add(at(box(.85,.015,.015, METAL()), CST.x + .42, TABLE_Y + 1.25, CST.z));
-    P.labels.push({obj:sun, dy:.25, text:()=>s.day ? 'กลางวัน (หลอดไฟเปิด)' : 'กลางคืน (แตะเพื่อเปิดไฟ)'});
-    const lt = new THREE.Object3D(); lt.position.set(CST.x - .4, TABLE_Y + .2, CST.z + .3); W.add(lt); P.labels.push({obj:lt, dy:.0, text:()=>`บก ${s.Tl.toFixed(1)} °C`});
-    const st = new THREE.Object3D(); st.position.set(CST.x + .4, TABLE_Y + .2, CST.z + .3); W.add(st); P.labels.push({obj:st, dy:.0, text:()=>`ทะเล ${s.Ts.toFixed(1)} °C`});
-    const hl = (side) => { const o = new THREE.Object3D(); o.position.set(CST.x + side*.4, TABLE_Y + .9, CST.z); W.add(o); P.labels.push({obj:o, dy:0, text:()=>{ const d = s.Tl - s.Ts; if(Math.abs(d) < 1) return ''; const landWarm = d > 0; return (side < 0) === landWarm ? 'L (อากาศร้อนลอยขึ้น)' : 'H'; }}); };
-    hl(-1); hl(1);
-    P.air = Array.from({length:28}, (_,k)=>{ const m = sph(.03, TRANS(0x9AA3B5,.7), 6); m.userData.u = k/28; W.add(m); return m; });
+    const s = P.s; dayNight(true);
+    treeRing(2, 16, 3.9, .8);
+    const mt = new THREE.Group(); mt.position.set(MT.x, TABLE_Y, MT.z);
+    mt.add(at(new THREE.Mesh(new THREE.ConeGeometry(MT.R, MT.H, 40, 8), mat(0x86A86A, {roughness:.95, flatShading:true})), 0, MT.H/2, 0));
+    mt.add(at(new THREE.Mesh(new THREE.ConeGeometry(MT.R*.24, MT.H*.24, 24, 2), mat(0xFFFFFF, {flatShading:true})), 0, MT.H*.885, 0));
+    SD = 41; for(let k=0;k<10;k++){ const a = rnd()*Math.PI*2, hh = rnd()*.6, rr = MT.R*(1 - hh/MT.H) - .03; const tr = tree(Math.sin(a)*rr*.9, Math.cos(a)*rr*.9, .45, k); tr.position.y = hh; mt.add(tr); }
+    shadowAll(mt); R.world.add(mt);
+    P.flags = LEV.map((h,k)=>{ const p = levPos(k); const f = new THREE.Group(); f.add(at(cyl(.008, .008, .26, mat(0x5B6280), 6), 0, .13, 0)); f.add(at(box(.13, .08, .01, mat(0xF2994A)), .065, .22, 0)); f.position.copy(p); f.userData.id = 'lev:' + k; f.add(hitBox(.4, .4, .4, 0, .15, 0)); R.world.add(f);
+      labelAdd(f, .36, ()=>`${h.toLocaleString()} m${s.rec[k] ? ' · ' + s.rec[k] + ' hPa' : ''}`); return f; });
+    const bg = new THREE.Group(); const body = cyl(.12, .12, .06, mat(0xD9A441, {metalness:.6, roughness:.3}), 28); body.rotation.x = Math.PI/2; bg.add(at(body, 0, .14, 0));
+    const face = new THREE.Mesh(new THREE.CircleGeometry(.1, 28), new THREE.MeshBasicMaterial({map:canvasTex(128, 128, (x)=>{ x.fillStyle = '#fff'; x.beginPath(); x.arc(64,64,63,0,7); x.fill(); x.strokeStyle = '#1E2A55'; for(let k=0;k<24;k++){ const a = -Math.PI*1.25 + k/23*Math.PI*1.5; x.lineWidth = k%4 ? 1 : 3; x.beginPath(); x.moveTo(64 + Math.cos(a)*58, 64 + Math.sin(a)*58); x.lineTo(64 + Math.cos(a)*48, 64 + Math.sin(a)*48); x.stroke(); } })})); face.position.set(0, .14, .032); bg.add(face);
+    const ndl = box(.008, .08, .004, mat(0xE25555)); ndl.position.set(0, .14, .036); ndl.geometry.translate(0, .035, 0); ndl.position.y = .14; bg.add(ndl); P.ndl = ndl;
+    bg.add(at(box(.09, .07, .07, mat(0x8C6A43)), 0, .035, 0)); bg.add(hitBox(.42, .42, .36, 0, .14, 0));
+    item('baro', bg); bg.position.set(-.3, TABLE_Y, 1.4); labelAdd(bg, .38, ()=>s.at!==null ? `${HPA[s.at]} hPa` : 'บารอมิเตอร์ · Barometer');
+    /* coast model on a tray */
+    const tray = new THREE.Group(); tray.position.set(CST.x, TABLE_Y, CST.z); R.world.add(tray);
+    tray.add(at(box(2.0, .08, 1.3, mat(0x8A6440)), 0, .04, 0));
+    const sand = box(.98, .2, 1.2, mat(0xE8D49A, {roughness:.95})); sand.position.set(-.5, .18, 0); tray.add(sand);
+    const wtex = canvasTex(256, 256, (x)=>{ x.fillStyle = '#3E8ED8'; x.fillRect(0,0,256,256); for(let k=0;k<70;k++){ x.strokeStyle = `rgba(255,255,255,${(.15 + Math.random()*.25).toFixed(2)})`; x.lineWidth = 2; x.beginPath(); const y = Math.random()*256, x0 = Math.random()*256; x.moveTo(x0, y); x.quadraticCurveTo(x0 + 12, y - 5, x0 + 24, y); x.stroke(); } }); wtex.wrapS = wtex.wrapT = THREE.RepeatWrapping; P.wtex = wtex;
+    const sea = new THREE.Mesh(new THREE.BoxGeometry(.98, .16, 1.2), new THREE.MeshStandardMaterial({map:wtex, transparent:true, opacity:.9, roughness:.15, metalness:.1})); sea.position.set(.5, .16, 0); tray.add(sea);
+    const palm = new THREE.Group(); palm.add(at(cyl(.025, .035, .55, mat(0x8A6440), 8), 0, .27, 0)); for(let k=0;k<6;k++){ const lf = new THREE.Mesh(new THREE.SphereGeometry(.18, 10, 6), mat(0x3F9A4A, {flatShading:true})); lf.scale.set(1, .12, .35); lf.position.set(Math.cos(k)*.13, .55, Math.sin(k)*.13); lf.rotation.y = -k; lf.rotation.z = -.4; palm.add(lf); } palm.position.set(-.8, .28, -.35); shadowAll(palm); tray.add(palm);
+    tray.add(at(box(2.0, .9, .02, GLASS(.14)), 0, .55, -.62));
+    /* lamp */
+    const lamp = new THREE.Group(); lamp.userData.id = 'sun'; lamp.add(at(cyl(.015, .015, 1.6, METAL(), 8), .95, .8, -.55)); lamp.add(at(box(1.0, .02, .02, METAL()), .45, 1.6, -.55));
+    const bulb = sph(.13, new THREE.MeshStandardMaterial({color:0xFFF3C4, emissive:0xFFB020, emissiveIntensity:0}), 20); bulb.position.set(-.05, 1.42, -.2); lamp.add(bulb); lamp.add(at(new THREE.Mesh(new THREE.ConeGeometry(.2, .16, 20, 1, true), mat(0x34405E, {side:THREE.DoubleSide})), -.05, 1.53, -.2));
+    lamp.add(hitBox(.55, .55, .55, -.05, 1.45, -.2)); tray.add(lamp); P.bulb = bulb; P.lampL = new THREE.PointLight(0xFFD27A, 0, 3.5); P.lampL.position.set(-.05, 1.3, -.2); tray.add(P.lampL);
+    labelAdd(lamp.children[2], .25, ()=>s.day ? 'กลางวัน (แตะเพื่อปิดไฟ)' : 'กลางคืน (แตะเพื่อเปิดไฟ)');
+    /* thermometers */
+    const tl = new THREE.Object3D(); tl.position.set(-.5, .32, .5); tray.add(tl); labelAdd(tl, 0, ()=>`บก ${s.Tl.toFixed(1)} °C`);
+    const ts = new THREE.Object3D(); ts.position.set(.5, .3, .5); tray.add(ts); labelAdd(ts, 0, ()=>`ทะเล ${s.Ts.toFixed(1)} °C`);
+    P.hL = textSprite('L', '#fff', 'rgba(217,83,79,.92)', .2); P.hH = textSprite('H', '#fff', 'rgba(59,130,196,.92)', .2); tray.add(P.hL); tray.add(P.hH);
+    /* incense on the shore + smoke + circulation */
+    const inc = new THREE.Group(); inc.add(at(cyl(.006, .006, .3, mat(0x8C3B2B), 6), 0, .15, 0)); inc.add(at(sph(.012, new THREE.MeshStandardMaterial({color:0x8A2A10, emissive:0xFF5A1F, emissiveIntensity:1}), 8), 0, .3, 0)); inc.position.set(0, .26, .2); tray.add(inc);
+    P.smk = []; for(let k=0;k<14;k++){ const sp = sprite(softTex(), .08, .08, .5, 0xB8BDC6); sp.userData.u = k/14; tray.add(sp); P.smk.push(sp); }
+    P.air = []; for(let k=0;k<26;k++){ const m = sph(.025, TRANS(0x7F8AA8, .75), 6); m.userData.u = k/26; m.userData.z = (Math.random() - .5)*.8; tray.add(m); P.air.push(m); }
+    const arw = new THREE.Group(); const am = new THREE.MeshBasicMaterial({color:0x2F80ED}); const sh = cyl(.02, .02, .7, am, 8); sh.rotation.z = Math.PI/2; arw.add(sh); const hd = new THREE.Mesh(new THREE.ConeGeometry(.06, .14, 12), am); hd.rotation.z = -Math.PI/2; hd.position.x = .42; arw.add(hd); arw.position.set(0, .45, .45); tray.add(arw); P.arw = arw;
+    P.windL = textSprite('ลมทะเล · Sea breeze', '#fff', 'rgba(47,128,237,.92)', .17); P.windL.position.set(0, .62, .45); tray.add(P.windL);
+    P.amb = {wind:.05};
+    syncP2();
   }
-  function stepP2(dt){
-    const s = P.s; const tl = s.day ? 38 : 22, ts = s.day ? 30 : 26;
-    if(s.day || s.wasDay){ s.Tl += (tl - s.Tl)*Math.min(1, dt*.5); s.Ts += (ts - s.Ts)*Math.min(1, dt*.08); }
+  function dayNight(init){ const s = P.s, day = s.day || !s.daySeen || P.i!==1;
+    if(day) setSky('#4F8FDB', '#9CC7F2', '#DCEBFA', '#CFE3F8'); else setSky('#0E1A3D', '#24366A', '#3B4C7E', '#2E3E6C');
+    R.hemi.intensity = day ? .85 : .32; R.sun.intensity = day ? .95 : .12; }
+  function syncP2(){ const s = P.s, g = P.items.baro; if(!P.dragBaro){ if(s.at!==null){ const p = levPos(s.at); g.position.set(p.x + .16, p.y, p.z + .05); } else g.position.set(-.3, TABLE_Y, 1.4); }
+    if(P.ndl) P.ndl.rotation.z = s.at===null ? .4 : .4 - (1013 - HPA[s.at])/320*2.2; }
+  function placeBaro(k){ const s = P.s; setStn(0); s.at = k; s.rec[k] = HPA[k]; SFX.drop(); P.say = `ที่ระดับ ${LEV[k].toLocaleString()} m อ่านได้ ${HPA[k]} hPa${Object.keys(s.rec).length < 4 ? ' ลองระดับอื่นต่อ' : ' ครบ 4 ระดับแล้ว! ยิ่งสูงความกดอากาศ (air pressure) ยิ่งลดลง'}`; syncP2(); refresh(); }
+  function toggleSun(){ const s = P.s; setStn(1); s.day = !s.day; s.dayT = 0; s.nightT = 0; SFX.click(); dayNight(); P.say = s.day ? 'เปิดไฟแล้ว (กลางวัน) พื้นดินร้อนเร็วกว่าน้ำ สังเกตอุณหภูมิและควันธูป' : 'ปิดไฟแล้ว (กลางคืน) พื้นดินเย็นเร็วกว่าน้ำ สังเกตอุณหภูมิและควันธูป'; refresh(); }
+  function stepP2(dt, t){ const s = P.s; const tl = s.day ? 38 : 22, ts = s.day ? 30 : 26;
+    if(s.day || s.daySeen){ s.Tl += (tl - s.Tl)*Math.min(1, dt*.6); s.Ts += (ts - s.Ts)*Math.min(1, dt*.12); }
     const d = s.Tl - s.Ts;
-    if(s.day && d >= 3){ s.dayT += dt; if(s.dayT >= 3 && !s.daySeen){ s.daySeen = true; P.say = 'กลางวัน: บกร้อนกว่าทะเล อากาศเหนือบกลอยขึ้น (L) ลมพัดจากทะเลเข้าหาฝั่ง = ลมทะเล ลองแตะหลอดไฟเพื่อเปลี่ยนเป็นกลางคืน'; P.dirty = true; } }
-    if(!s.day && d <= -2){ s.nightT += dt; if(s.nightT >= 3 && !s.nightSeen){ s.nightSeen = true; P.say = 'กลางคืน: บกเย็นเร็วกว่าทะเล อากาศเหนือทะเลอุ่นกว่า ลมพัดจากบกออกสู่ทะเล = ลมบก'; P.dirty = true; } }
-    P.sunM.material.emissiveIntensity = s.day ? 1.2 : 0;
-    const str = Math.min(1, Math.abs(d)/5), dir = d > 0 ? -1 : 1; // dir: surface flow sign along +x (sea->land is -x)
-    const pts = [[.6, .22], [-.6, .22], [-.6, .75], [.6, .75]]; // sea->land surface, rise over land, aloft back, sink
-    P.air.forEach(m=>{ const u = m.userData; if(str < .1){ m.visible = false; return; } m.visible = true; u.u = (u.u + dt*.12*str) % 1;
-      let q = Math.floor(u.u*4), f = u.u*4 - q; const A = pts[q], B = pts[(q+1)%4]; let x = A[0] + (B[0]-A[0])*f, y = A[1] + (B[1]-A[1])*f; x *= -dir;
-      m.position.set(CST.x + x, TABLE_Y + y, CST.z + (u.u*7 % 1 - .5)*.6); });
-  }
-  function dropBaro(k){ const s = P.s; s.at = k; s.rec[k] = HPA[k]; P.say = `ที่ระดับ ${LEV[k]} m อ่านได้ ${HPA[k]} hPa`; }
-  function syncP2(){ const s = P.s, g = P.items.baro; if(!(drag && drag.g===g)){ if(s.at!==null){ const p = levPos(s.at); g.position.set(p.x + .12, p.y, p.z + .05); } else goHome(g); } }
+    if(s.day && d >= 3){ s.dayT += dt; if(s.dayT >= 3 && !s.daySeen){ s.daySeen = true; SFX.ok(); P.say = 'กลางวัน: บกร้อนกว่าทะเล อากาศเหนือบกลอยขึ้น (L) ลมพัดจากทะเลเข้าหาฝั่ง = ลมทะเล (Sea breeze) ลองปิดไฟเป็นกลางคืน'; P.dirty = true; } }
+    if(!s.day && d <= -2){ s.nightT += dt; if(s.nightT >= 3 && !s.nightSeen){ s.nightSeen = true; SFX.ok(); P.say = 'กลางคืน: บกเย็นเร็วกว่าทะเล อากาศเหนือทะเลอุ่นกว่า ลมพัดจากบกออกสู่ทะเล = ลมบก (Land breeze)'; P.dirty = true; } }
+    P.bulb.material.emissiveIntensity = s.day ? 1.4 : 0; P.lampL.intensity = s.day ? 1.6 : 0; P.wtex.offset.x = (t/9000) % 1;
+    const str = Math.min(1, Math.abs(d)/5), dir = d > 0 ? -1 : 1, on = str >= .2;
+    P.hL.visible = P.hH.visible = on; if(on){ P.hL.position.set(d > 0 ? -.5 : .5, 1.0, 0); P.hH.position.set(d > 0 ? .5 : -.5, .55, 0); }
+    P.arw.visible = P.windL.visible = on; if(on){ P.arw.rotation.y = dir < 0 ? Math.PI : 0; const lab = d > 0 ? 'ลมทะเล · Sea breeze' : 'ลมบก · Land breeze'; if(P.windTxt !== lab){ P.windTxt = lab; setText(P.windL, lab, '#fff', 'rgba(47,128,237,.92)'); } }
+    const pts = [[.6, .3], [-.6, .3], [-.6, .9], [.6, .9]];
+    P.air.forEach(m=>{ const u = m.userData; if(!on){ m.visible = false; return; } m.visible = true; u.u = (u.u + dt*.12*str) % 1; const q = Math.floor(u.u*4), f = u.u*4 - q, A = pts[q], B = pts[(q + 1) % 4]; m.position.set(-dir*(A[0] + (B[0] - A[0])*f), A[1] + (B[1] - A[1])*f, u.z); });
+    P.smk.forEach(sp=>{ const u = sp.userData; u.u = (u.u + dt*.25) % 1; const drift = on ? dir*u.u*.7*str : 0; sp.position.set(drift, .32 + u.u*.55*(on ? .55 : 1), .2 + Math.sin(u.u*9 + t/600)*.02); sp.material.opacity = .55*(1 - u.u); sp.scale.setScalar(.06 + u.u*.12); });
+    P.amb = {wind:.05 + str*.25, rain:.06}; }
+  function hl2(a){ const s = P.s; if(s.hl) return; if(a==='land'){ s.hl = a; SFX.ok(); P.warn = null; P.say = 'ใช่! กลางคืนบกเย็นกว่า อากาศเย็นหนาแน่น ความกดอากาศสูง (H) ลมจึงพัดจาก H บนบกไป L เหนือทะเล'; } else { s.wrong += 1; P.warn = 'กลางคืนทะเลอุ่นกว่าบก อากาศอุ่นลอยขึ้น เป็นความกดอากาศต่ำ (L) ดูป้าย H ในแบบจำลองอีกครั้งครับ'; } refresh(); }
 
-  /* ===== part 3: cloud & forecast ===== */
+  /* ===== PART 3: cloud in a bottle + weather map ===== */
+  const CITY = {A:{n:'เมือง A', u:.24, v:.62, hpa:1002, info:'ใกล้ศูนย์กลาง L · 1002 hPa · เมฆมาก ลมแรง', fc:'rain'}, B:{n:'เมือง B', u:.8, v:.3, hpa:1022, info:'ใกล้ศูนย์กลาง H · 1022 hPa · ท้องฟ้าโปร่ง', fc:'sun'}, C:{n:'เมือง C', u:.56, v:.78, hpa:1012, info:'อยู่ระหว่าง L และ H · 1012 hPa · มีเมฆบางส่วน', fc:'part'}};
+  const FC = {rain:'ฝนตก มีเมฆมาก', part:'มีเมฆบางส่วน', sun:'ท้องฟ้าโปร่ง'};
+  const BD = {x:1.05, z:-.7, w:2.5, h:1.7};
   function buildP3(){
-    const W = R.world, s = P.s;
-    const bt = new THREE.Group(); bt.userData.id = 'bottle'; const body = cyl(.22,.22,.8, GLASS(.3), 28, true); body.position.y = .42; bt.add(body); bt.add(at(cyl(.1,.22,.18, GLASS(.3), 28, true), 0,.91,0)); bt.add(at(cyl(.07,.07,.1, mat(0x5B8DEF), 16), 0,1.04,0));
-    bt.add(at(cyl(.21,.21,.08, TRANS(0x8EC5F5,.7), 24), 0,.06,0)); const fog = cyl(.2,.2,.7, new THREE.MeshStandardMaterial({color:0xFFFFFF, transparent:true, opacity:0, depthWrite:false}), 24); fog.position.y = .45; bt.add(fog); const smk = cyl(.19,.19,.6, new THREE.MeshStandardMaterial({color:0x9AA3B5, transparent:true, opacity:0, depthWrite:false}), 20); smk.position.y = .5; bt.add(smk);
-    bt.add(hitBox(.55,1.15,.55,.55)); bt.position.set(-1.4, TABLE_Y, -.1); shadowAll(bt); W.add(bt); Object.assign(P, {bottle:bt, fog, smk});
-    P.labels.push({obj:bt, dy:1.25, text:()=>s.squeezed ? 'กำลังบีบขวด (แตะเพื่อปล่อย)' : 'ขวดมีน้ำอุ่น (แตะเพื่อบีบ)'});
-    const inc = new THREE.Group(); inc.add(at(cyl(.008,.008,.5, mat(0x8C3B2B), 6), 0,.25,0)); inc.add(at(sph(.014, new THREE.MeshStandardMaterial({color:0x8A2A10, emissive:0xFF5A1F, emissiveIntensity:1}), 8), 0,.5,0)); inc.add(at(box(.12,.04,.12, mat(0x5B6280)), 0,.02,0)); inc.add(hitBox(.25,.6,.25,.28));
-    item('inc', inc, V(-.6, TABLE_Y, .95)); P.labels.push({obj:inc, dy:.65, text:()=>s.smoke ? '' : 'ธูป (ควัน)'});
-    // weather map board
-    const tex = canvasTex(640, 440, (x, w, h)=>drawMap(x, w, h)); const board = new THREE.Mesh(new THREE.PlaneGeometry(2.0, 1.375), new THREE.MeshBasicMaterial({map:tex})); const fr = box(2.08,1.45,.05, mat(0x5B6280));
-    const bd = new THREE.Group(); fr.position.z = -.03; bd.add(fr); bd.add(board); bd.position.set(.75, TABLE_Y + .95, -.5); bd.rotation.x = -.12; W.add(bd); P.board = bd;
-    W.add(at(box(.06,.3,.06, mat(0x5B6280)), .75, TABLE_Y + .15, -.55));
-    Object.entries(CITY).forEach(([k,c])=>{ const pin = new THREE.Group(); pin.userData.id = 'city:'+k; pin.add(sph(.05, mat(0xE25555), 12)); pin.add(hitBox(.18,.18,.18,0)); pin.position.set((c.u - .5)*2.0, (.5 - c.v)*1.375, .04); bd.add(pin); P.labels.push({obj:pin, dy:.1, text:()=>c.n}); });
+    setSky('#4F8FDB', '#9CC7F2', '#DCEBFA', '#CFE3F8'); treeRing(2, 16, 3.9, .8);
+    const s = P.s;
+    const tb = new THREE.Group(); const wood = mat(0xB98A5C, {roughness:.7}); tb.add(at(box(1.3, .07, .85, wood), 0, .78, 0)); [[-.58,-.34],[.58,-.34],[-.58,.34],[.58,.34]].forEach(([x,z])=>tb.add(at(box(.06, .76, .06, mat(0x8A6440)), x, .38, z))); tb.position.set(-1.6, TABLE_Y, .3); shadowAll(tb); R.world.add(tb);
+    const top = TABLE_Y + .815;
+    const bt = item('bottle', new THREE.Group()); bt.position.set(-1.75, top, .3);
+    const prof = [[0,0],[.15,0],[.17,.02],[.175,.08],[.17,.15],[.18,.2],[.175,.42],[.17,.48],[.175,.52],[.17,.56],[.12,.66],[.07,.72],[.055,.76],[.055,.8],[0,.8]].map(([r,y])=>new THREE.Vector2(r, y));
+    const body = new THREE.Mesh(new THREE.LatheGeometry(prof, 32), GLASS(.28)); body.renderOrder = 3; bt.add(body); bt.add(at(cyl(.062, .062, .05, mat(0x2F80ED, {roughness:.4})), 0, .815, 0));
+    bt.add(at(cyl(.16, .16, .08, WATER(), 28), 0, .045, 0));
+    const lcd = lcdTex(128, 64); const th = new THREE.Mesh(new THREE.PlaneGeometry(.13, .065), new THREE.MeshBasicMaterial({map:lcd})); th.position.set(0, .48, .165); bt.add(th);
+    const fogC = new THREE.Group(); [[0,.3,.32],[0,.45,.3],[0,.18,.3],[0,.58,.2]].forEach(([x,y,w])=>{ const sp = sprite(softTex(), w, w, 0); sp.position.set(x, y, 0); sp.renderOrder = 4; fogC.add(sp); }); bt.add(fogC);
+    const smk = new THREE.Group(); for(let k=0;k<5;k++){ const sp = sprite(softTex(), .12, .2, 0, 0xB8BDC6); sp.position.set((Math.random() - .5)*.12, .2 + k*.1, 0); sp.renderOrder = 4; smk.add(sp); } bt.add(smk);
+    bt.add(hitBox(.5, .95, .5, 0, .42, 0)); P.bt = {body, lcd, fogC, smk, fog:0, T:33, Tlcd:null, sqk:0};
+    const inc = item('incense', new THREE.Group()); inc.position.set(-1.2, top, .42);
+    inc.add(at(cyl(.07, .08, .06, mat(0xC9A25A)), 0, .03, 0)); const stick = cyl(.008, .008, .5, mat(0x9A4A2A), 6); stick.rotation.z = .25; inc.add(at(stick, -.06, .28, 0)); inc.add(at(sph(.014, mat(0xFF7A3A, {emissive:0xFF4A1A, emissiveIntensity:1.2}), 8), -.12, .52, 0));
+    P.incSmoke = []; for(let k=0;k<4;k++){ const sp = sprite(softTex(), .1, .16, .35, 0xC9CDD4); sp.position.set(-.12, .56 + k*.09, 0); inc.add(sp); P.incSmoke.push(sp); }
+    inc.add(hitBox(.35, .7, .35, -.05, .3, 0));
+    labelAdd(bt, .98, ()=>s.sq ? 'บีบอยู่ (แตะเพื่อปล่อย)' : 'ขวดมีน้ำอุ่น (แตะเพื่อบีบ)'); labelAdd(inc, .78, ()=>s.smoke ? 'ใส่ควันแล้ว ✓' : 'ธูป · Smoke');
+    /* weather map board */
+    const tex = canvasTex(1024, 700, (x, w, h)=>drawMap(x, w, h)); const board = new THREE.Mesh(new THREE.PlaneGeometry(BD.w, BD.h), new THREE.MeshBasicMaterial({map:tex}));
+    const bd = new THREE.Group(); bd.add(at(box(BD.w + .1, BD.h + .1, .05, mat(0x34405E)), 0, 0, -.03)); bd.add(board); bd.position.set(BD.x, TABLE_Y + 1.25, BD.z); bd.rotation.x = -.08; R.world.add(bd); P.board = bd;
+    [-1, 1].forEach(k=>R.world.add(at(box(.07, .45, .07, mat(0x34405E)), BD.x + k*(BD.w/2 - .2), TABLE_Y + .2, BD.z - .05)));
+    P.icons = {};
+    Object.entries(CITY).forEach(([k,c])=>{ const pin = new THREE.Group(); pin.userData.id = 'city:' + k; pin.add(at(sph(.055, mat(0xE25555), 14), 0, 0, .05)); pin.add(at(cyl(.008, .008, .06, METAL(), 6), 0, 0, .02)).children; pin.add(hitBox(.3, .3, .2, 0, 0, .05)); pin.position.set((c.u - .5)*BD.w, (.5 - c.v)*BD.h, .02); bd.add(pin); labelAdd(pin, .12, ()=>`${c.n}${s.fc[k] ? ' · ' + FC[CITY[k].fc] : ''}`);
+      const ic = weatherIcon(c.fc); ic.position.set(pin.position.x + .32, pin.position.y + .05, .18); ic.visible = !!s.fc[k]; bd.add(ic); P.icons[k] = ic; });
+    P.amb = {};
   }
+  function weatherIcon(kind){ const g = new THREE.Group();
+    if(kind!=='rain'){ const sun = sph(.08, new THREE.MeshStandardMaterial({color:0xFFD34D, emissive:0xFFB020, emissiveIntensity:.8}), 16); sun.position.set(kind==='part' ? -.06 : 0, kind==='part' ? .06 : 0, 0); g.add(sun); }
+    if(kind!=='sun'){ const c = puff({w:.24, h:.06, d:.1, n:8, r:.06, seed:kind==='rain' ? 5 : 9, col:kind==='rain' ? 0x9AA4B5 : 0xffffff, e:.35, flat:true}); g.add(c); }
+    if(kind==='rain'){ for(let k=0;k<4;k++){ const d = cyl(.006, .006, .06, mat(0x4D8DF0), 4); d.position.set(-.08 + k*.05, -.07, .02); d.rotation.z = .3; g.add(d); } }
+    return g; }
   function drawMap(x, w, h){
-    x.fillStyle = '#EAF4FE'; x.fillRect(0,0,w,h); x.fillStyle = '#D6E9C6'; x.beginPath(); x.moveTo(0, h*.45); x.bezierCurveTo(w*.3, h*.35, w*.45, h*.6, w*.6, h*.55); x.bezierCurveTo(w*.75, h*.5, w*.9, h*.62, w, h*.58); x.lineTo(w, h); x.lineTo(0, h); x.fill();
-    x.strokeStyle = '#7C8796'; x.lineWidth = 2; const iso = (cx, cy, n, lab0, step) => { for(let q=1;q<=n;q++){ x.beginPath(); x.ellipse(cx, cy, q*44, q*32, -.2, 0, 7); x.stroke(); x.fillStyle = '#5B6280'; x.font = '15px sans-serif'; x.fillText(lab0 + step*q, cx + q*44 - 18, cy - 4); } };
-    iso(w*.3, h*.55, 3, 1002, 4); iso(w*.76, h*.38, 3, 1022, -4);
-    x.font = '700 60px sans-serif'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillStyle = '#D9534F'; x.fillText('L', w*.3, h*.55); x.fillStyle = '#3B82C4'; x.fillText('H', w*.76, h*.38);
-    x.font = '600 20px sans-serif'; x.fillStyle = '#2B3050'; x.textAlign = 'left'; x.fillText('แผนที่อากาศ (ค่าความกดอากาศเป็น hPa)', 16, 28);
+    x.fillStyle = '#CFE6FA'; x.fillRect(0,0,w,h);
+    x.fillStyle = '#D5EAC3'; x.strokeStyle = '#7FA36A'; x.lineWidth = 3; x.beginPath(); x.moveTo(0, h*.18); x.bezierCurveTo(w*.25, h*.1, w*.42, h*.28, w*.5, h*.22); x.bezierCurveTo(w*.62, h*.15, w*.8, h*.05, w, h*.12); x.lineTo(w, h*.62); x.bezierCurveTo(w*.85, h*.7, w*.7, h*.58, w*.62, h*.72); x.bezierCurveTo(w*.55, h*.86, w*.42, h*.98, w*.36, h); x.lineTo(0, h); x.closePath(); x.fill(); x.stroke();
+    const iso = (cx, cy, n, lab0, step) => { for(let q=n;q>=1;q--){ x.strokeStyle = '#5B6280'; x.lineWidth = 2.5; x.beginPath(); x.ellipse(cx, cy, q*70, q*50, -.2, 0, 7); x.stroke(); x.fillStyle = 'rgba(255,255,255,.85)'; const tx = cx + q*70*Math.cos(-.5) - 8, ty = cy + q*50*Math.sin(-.5); x.fillRect(tx - 26, ty - 14, 52, 24); x.fillStyle = '#34405E'; x.font = '600 19px Mitr, sans-serif'; x.textAlign = 'center'; x.fillText(lab0 + step*q, tx, ty + 5); } };
+    iso(w*.24, h*.62, 3, 1002, 4); iso(w*.8, h*.3, 3, 1022, -4);
+    x.textAlign = 'center'; x.textBaseline = 'middle'; x.font = '700 92px Mitr, sans-serif'; x.fillStyle = '#D9534F'; x.fillText('L', w*.24, h*.62); x.fillStyle = '#2F6FC8'; x.fillText('H', w*.8, h*.3);
+    x.strokeStyle = '#2F80ED'; x.fillStyle = '#2F80ED'; x.lineWidth = 4; [[.66,.42,.44,.55],[.7,.18,.4,.38],[.62,.62,.42,.72]].forEach(([a,b,c,d])=>{ x.beginPath(); x.moveTo(w*a, h*b); x.quadraticCurveTo(w*(a + c)/2, h*(Math.min(b, d) - .05), w*c, h*d); x.stroke(); const an = Math.atan2(h*d - h*(Math.min(b, d) - .05), w*c - w*(a + c)/2); x.beginPath(); x.moveTo(w*c, h*d); x.lineTo(w*c - 18*Math.cos(an - .4), h*d - 18*Math.sin(an - .4)); x.lineTo(w*c - 18*Math.cos(an + .4), h*d - 18*Math.sin(an + .4)); x.fill(); });
+    x.textBaseline = 'alphabetic'; x.textAlign = 'left'; x.fillStyle = 'rgba(255,255,255,.9)'; x.fillRect(12, 12, 560, 44); x.fillStyle = '#1E2A55'; x.font = '600 26px Mitr, sans-serif'; x.fillText('แผนที่อากาศ · Weather map (hPa)', 24, 44);
+    x.fillStyle = 'rgba(255,255,255,.9)'; x.fillRect(w - 330, h - 64, 318, 52); x.font = '500 19px Mitr, sans-serif'; x.fillStyle = '#D9534F'; x.fillText('L = ความกดอากาศต่ำ', w - 318, h - 42); x.fillStyle = '#2F6FC8'; x.fillText('H = ความกดอากาศสูง', w - 318, h - 18); x.fillStyle = '#2F80ED'; x.fillText('→ ลม', w - 110, h - 30);
   }
-  function syncP3(){ const s = P.s, inc = P.items.inc; if(!(drag && drag.g===inc)){ if(s.smoke) inc.position.set(-1.4 + .12, TABLE_Y + 1.05, -.1); else goHome(inc); }
-    P.bottle.scale.set(s.squeezed ? .82 : 1, 1, s.squeezed ? .82 : 1); P.fog.material.opacity = s.fog; P.smk.material.opacity = s.smoke ? .12 : 0; }
-  function tapBottle(){ const s = P.s; s.squeezed = !s.squeezed;
-    if(s.squeezed){ s.fog = 0; P.say = 'บีบขวด อากาศในขวดถูกอัด อุณหภูมิสูงขึ้นเล็กน้อย'; }
-    else { if(s.smoke){ s.fog = .75; s.cloudOk = true; P.say = 'ปล่อยมือ อากาศขยายตัวและเย็นลง ไอน้ำควบแน่นเกาะควันธูป เกิดเมฆในขวด!'; } else { s.fog = .08; s.triedNo = true; P.say = 'ปล่อยมือ เกิดฝ้าจางมาก แทบมองไม่เห็น ลองลากธูปไปใส่ควันในขวดแล้วทำอีกครั้ง'; } }
-    sync(); refresh(); }
-  function tapCity(k){ const s = P.s; s.city[k] = 1; P.say = `${CITY[k].n}: ${CITY[k].info}`; refresh(); }
+  const baseT3 = () => 33;
+  function squeeze3(){ const s = P.s, b = P.bt; setStn(0); s.sq = !s.sq;
+    if(s.sq){ b.T = baseT3() + 1.8; b.fog = Math.max(0, b.fog - .7); SFX.noise('lowpass', 300, .18, .5); P.say = 'บีบขวด อากาศในขวดถูกอัด อุณหภูมิสูงขึ้นเล็กน้อย กด “ปล่อยขวด” ครับ'; }
+    else { b.T = baseT3() - 1.8; SFX.noise('bandpass', 1800, .35, .35);
+      if(!s.smoke){ b.fog = .12; s.tried.no = 1; P.say = 'ปล่อยมือ อุณหภูมิลดลง เกิดฝ้าจางมาก แทบมองไม่เห็น เพราะไอน้ำไม่มีอนุภาคให้เกาะ ลองใส่ควันธูปครับ'; }
+      else { b.fog = 1; s.tried.cloud = 1; P.say = 'ว้าว! เกิดเมฆในขวด (cloud) อากาศขยายตัว เย็นลง ไอน้ำควบแน่น (condensation) เกาะอนุภาคควันครับ'; } }
+    refresh(); }
+  function city3(k){ const s = P.s; if(!CITY[k]) return; setStn(1); s.city[k] = 1; SFX.pick(); P.warn = null; P.say = `${CITY[k].n}: ${CITY[k].info}`; refresh(); }
+  function fc3(k, a){ const s = P.s; if(s.fc[k]) return; const c = CITY[k];
+    if(a===c.fc){ s.fc[k] = a; SFX.ok(); P.warn = null; P.icons[k].visible = true; P.say = `${c.n}: ${FC[a]} ถูกต้อง! ${a==='rain' ? 'ใกล้ L อากาศลอยตัวขึ้น เกิดเมฆและฝน' : a==='sun' ? 'ใกล้ H อากาศจมตัวลง ท้องฟ้าโปร่ง' : 'อยู่ระหว่าง L กับ H มีเมฆบางส่วน'}`; }
+    else { s.wrong += 1; P.warn = a==='rain' ? `${c.n} ${c.hpa} hPa อยู่ใกล้ L ไหม? ฝนมักตกบริเวณความกดอากาศต่ำ (L) ครับ` : a==='sun' ? `${c.n} ${c.hpa} hPa อยู่ใกล้ H ไหม? ท้องฟ้าโปร่งมักอยู่บริเวณความกดอากาศสูง (H) ครับ` : `${c.n} อยู่ใกล้ศูนย์กลาง${c.fc==='rain' ? ' L' : ' H'} มากกว่า ไม่ได้อยู่ระหว่างกลางครับ`; }
+    refresh(); }
 
-  /* ----- generic drop ----- */
-  function targets(){
-    if(P.i===1) return LEV.map((_,k)=>{ const p = levPos(k); return ['lev:'+k, p.x, p.z, p.y - .1, p.y + .4, .35]; });
-    if(P.i===2) return [['bottle', -1.4, -.1, TABLE_Y + .8, TABLE_Y + 1.3, .4]];
-    return [];
-  }
-  function onDrop(d){
-    const near = (x, z, y0, y1) => Math.min(Math.hypot(d.g.position.x - x, d.g.position.z - z), rayNear(d.ray, x, z, y0, y1));
-    let best = null, bd = 99; targets().forEach(([k,x,z,y0,y1,r])=>{ const n = near(x, z, y0, y1); if(n < r && n < bd){ bd = n; best = k; } });
-    P.warn = null; P.say = null; const s = P.s;
-    if(P.i===1){ if(best) dropBaro(+best.slice(4)); else s.at = null; }
-    else if(P.i===2){ if(best==='bottle'){ s.smoke = true; P.say = 'ใส่ควันธูปในขวดแล้ว ปิดฝา แล้วแตะขวดเพื่อบีบและปล่อย'; } else s.smoke = s.smoke; }
-    sync(); refresh();
-  }
-  function sync(){ if(P.i===0) syncP1(); else if(P.i===1) syncP2(); else syncP3(); }
-
-  /* ----- answers ----- */
-  const OK = {rh:'73', wind:'sw', rain:'25', altq:'dec', hl:'hl', why:'cool', map:'A', sign:'low'};
-  const WRONG = {rh:'ยังไม่ถูก หาผลต่าง 32 − 28 ก่อน แล้วเปิดตารางที่ผลต่างนั้น', wind:'ยังไม่ถูก หัวลูกศรของศรลมชี้ไปทางที่ลมพัดมา', rain:'ยังไม่ถูก อ่านระดับน้ำในกระบอกตวงในระดับสายตาอีกครั้ง', altq:'ยังไม่ถูก ดูค่าที่บันทึกได้ ยิ่งสูงค่ายิ่งเป็นอย่างไร', hl:'ยังไม่ถูก ดูแบบจำลอง ลมผิวพื้นพัดจากด้านที่อากาศเย็น (H) ไปด้านใด', why:'ยังไม่ถูก เมื่อปล่อยขวด อากาศขยายตัว แล้วอุณหภูมิเป็นอย่างไร ไอน้ำเปลี่ยนเป็นอะไร', map:'ยังไม่ถูก เมืองใดอยู่ใกล้หย่อมความกดอากาศต่ำ (L) มากที่สุด', sign:'ยังไม่ถูก บริเวณความกดอากาศต่ำ อากาศลอยตัวขึ้นหรือจมตัวลง'};
-  function answer(q, v){ const s = P.s; P.warn = null; P.say = null; if(v===OK[q]){ s.ans[q] = v; toast('ถูกต้อง'); } else { s.wrong += 1; P.warn = escW(P.s, q, WRONG[q], OK[q]); } refresh(); }
+  /* ===== vocabulary ===== */
+  const VOC = [
+    [['Weather station','สถานีตรวจอากาศ'],['Hygrometer','ไฮโกรมิเตอร์'],['Relative humidity','ความชื้นสัมพัทธ์'],['Anemometer','แอนนิโมมิเตอร์'],['Wind vane','ศรลม'],['Rain gauge','เครื่องวัดฝน'],['Barometer','บารอมิเตอร์']],
+    [['Air pressure','ความกดอากาศ'],['Altitude','ความสูง'],['Sea breeze','ลมทะเล'],['Land breeze','ลมบก'],['High pressure','ความกดอากาศสูง'],['Low pressure','ความกดอากาศต่ำ']],
+    [['Cloud','เมฆ'],['Condensation','การควบแน่น'],['Weather map','แผนที่อากาศ'],['Weather forecast','การพยากรณ์อากาศ'],['Sunny','ท้องฟ้าโปร่ง'],['Rainy','ฝนตก']]
+  ];
+  function vocabBox(i){ const L = VOC[i] || []; if(!L.length) return '';
+    return `<div style="flex-basis:100%;display:flex;flex-direction:column;gap:6px;margin-top:4px"><h2 style="margin:0">คำศัพท์ Vocabulary <span class="note" style="font-weight:400">แตะเพื่อฟังเสียง</span></h2><div style="display:flex;gap:6px;flex-wrap:wrap">${L.map(([e,t])=>`<button class="chip" type="button" data-act="say" data-v="${e}" style="display:inline-flex;align-items:center;gap:6px">${SPK}<b>${e}</b> <span style="color:var(--ink2)">${t}</span></button>`).join('')}</div></div>`; }
 
   /* ----- missions ----- */
   function check(){
     const s = P.s, m = S.miss[P.i]; let ch = false; const set = k => { if(!m[k]){ m[k] = 1; ch = true; } };
-    if(P.i===0){ if(IK.every(k=>s.named[k])) set('parts'); if(s.ans.rh) set('rh'); if(s.ans.wind) set('wind'); if(s.ans.rain) set('rain'); }
-    else if(P.i===1){ if(Object.keys(s.rec).length >= 3) set('alt'); if(s.ans.altq) set('altq'); if(s.daySeen && s.nightSeen) set('breeze'); if(s.ans.hl) set('hl'); }
-    else { if(s.cloudOk) set('cloud'); if(s.ans.why) set('why'); if(s.ans.map) set('map'); if(s.ans.sign) set('sign'); }
+    if(P.i===0){ if(IK.every(k=>s.named[k])) set('parts'); if(s.hy.rh!==undefined) set('rh'); if(s.wd && s.ws) set('wind'); if(s.rn && s.bp) set('rain'); }
+    else if(P.i===1){ if(LEV.every((_,k)=>s.rec[k])) set('alt'); if(s.daySeen) set('day'); if(s.nightSeen) set('night'); if(s.hl) set('hl'); }
+    else { if(s.tried.no) set('try'); if(s.tried.cloud) set('cloud'); if(Object.keys(CITY).every(k=>s.city[k])) set('city'); if(Object.keys(CITY).every(k=>s.fc[k])) set('fc'); }
+    if(ch) SFX.ok();
     return ch;
   }
   function refresh(){
     check();
     const m = S.miss[P.i];
-    if(PARTS[P.i].miss.every(x=>m[x[0]]) && eqDone(P.i) && !S.labDone[P.i]){ S.labDone[P.i] = true; P.celebrate = true; toast(P.i < PARTS.length - 1 ? `${PARTS[P.i].k}เสร็จแล้ว ปลดล็อก${PARTS[P.i+1].k}` : 'ทดลองครบทุกตอนแล้ว ปลดล็อกแบบทดสอบหลังเรียน'); renderRail(); }
+    if(PARTS[P.i].miss.every(x=>m[x[0]]) && eqDone(P.i) && !S.labDone[P.i]){ S.labDone[P.i] = true; P.celebrate = true; SFX.done(); toast(P.i<PARTS.length-1 ? `${PARTS[P.i].k}เสร็จแล้ว! ปลดล็อก${PARTS[P.i+1].k}` : 'ทดลองครบทุกตอนแล้ว! ปลดล็อกแบบทดสอบหลังเรียน'); renderRail(); }
     try { S.ps = S.ps || {}; S.ps[P.i] = JSON.parse(JSON.stringify(P.s)); } catch(e){}
+    if(P.warn && P.warn !== P.lastWarn) SFX.bad(); P.lastWarn = P.warn;
     save(); refreshUI();
   }
   function mascotSay(){ if(P && P.mg && Date.now() - P.mg.t < 15000 && P.mg.t > (window.__mgClr || 0)) return ['think', P.mg.msg];
     const s = P.s, m = S.miss[P.i];
     if(P.warn) return [s.wrong >= 3 ? 'cry' : 'shock', P.warn];
-    if(S.labDone[P.i] && P.celebrate) return ['yay', P.i < PARTS.length - 1 ? `ครบทุกภารกิจแล้ว ลองเทียบผลกับสมมติฐาน แล้วไป${PARTS[P.i+1].k}ต่อได้เลย` : 'ครบทุกตอนแล้ว ไปทำแบบทดสอบหลังเรียน'];
-    if(P.say) return ['wow', P.say];
-    if(P.i===0){
-      if(!m.parts) return P.sel ? ['think','เครื่องมือที่เลือกเรืองแสงอยู่ เลือกชื่อในแผงด้านขวา'] : ['think','แตะเครื่องมือที่มีป้าย ? ทีละชิ้น แล้วเลือกชื่อให้ถูก'];
-      if(!m.rh) return ['think','แตะตู้สกรีนเพื่ออ่านไฮโกรมิเตอร์ แล้วหาความชื้นสัมพัทธ์จากตาราง'];
-      if(!m.wind) return ['think','แตะศรลมเพื่อดูทิศทางลม'];
-      if(!m.rain) return ['think','แตะเครื่องวัดปริมาณน้ำฝนเพื่ออ่านค่า'];
-      return ['yay','สถานีตรวจอากาศวัดอุณหภูมิ ความชื้น ความกดอากาศ ทิศทางและอัตราเร็วลม และปริมาณน้ำฝน'];
-    }
-    if(P.i===1){
-      if(!m.alt) return ['think', `ลากบารอมิเตอร์ไปวางที่ธงบนภูเขาทีละระดับ (บันทึกแล้ว ${Object.keys(s.rec).length} ระดับ)`];
-      if(!m.altq) return ['think','ดูค่าที่บันทึกได้ แล้วสรุปความสัมพันธ์'];
-      if(!m.breeze) return ['think', !s.daySeen ? (s.day ? 'กลางวัน… สังเกตอุณหภูมิบกและทะเล และทิศทางควัน' : 'แตะหลอดไฟเหนือแบบจำลองชายฝั่งเพื่อเป็นกลางวัน') : (s.day ? 'แตะหลอดไฟเพื่อปิด (เป็นกลางคืน)' : 'กลางคืน… สังเกตอุณหภูมิและทิศทางควัน')];
-      if(!m.hl) return ['think','สรุปว่าลมพัดจากบริเวณใดไปบริเวณใด'];
-      return ['yay','ยิ่งสูงความกดอากาศยิ่งต่ำ และลมพัดจากความกดอากาศสูงไปต่ำเสมอ'];
-    }
-    if(!m.cloud) return ['think', !s.smoke ? (s.triedNo ? 'ลากธูปไปที่ปากขวดเพื่อใส่ควัน' : 'แตะขวดเพื่อบีบ แล้วแตะอีกครั้งเพื่อปล่อย ลองแบบยังไม่มีควันก่อนก็ได้') : 'แตะขวดเพื่อบีบ แล้วแตะอีกครั้งเพื่อปล่อย'];
-    if(!m.why) return ['think','อธิบายว่าทำไมจึงเกิดเมฆเมื่อปล่อยขวด'];
-    if(!m.map) return ['think', Object.keys(s.city).length < 3 ? 'แตะหมุดเมือง A B C บนแผนที่อากาศเพื่อดูข้อมูล' : 'เมืองใดมีโอกาสฝนตกมากที่สุด'];
-    if(!m.sign) return ['think','บริเวณ L บนแผนที่มีลักษณะอากาศอย่างไร'];
-    return ['yay','อากาศลอยตัวขึ้นแล้วเย็นลง ไอน้ำควบแน่นเป็นเมฆ บริเวณความกดอากาศต่ำจึงมักมีเมฆและฝน'];
-  }
+    if(S.labDone[P.i] && P.celebrate) return ['yay', P.i<PARTS.length-1 ? `ภารกิจครบแล้ว! คำทำนายตรงกับผลไหม? กดปุ่ม "ไป${PARTS[P.i+1].k} กันต่อ" ได้เลย` : 'เก่งมาก! ทดลองครบทั้ง 3 ตอนแล้ว ไปทำแบบทดสอบหลังเรียนกันเลย'];
+    if(P.say) return ['happy', P.say];
+    if(P.i===0){ if(!m.parts) return s.sel ? ['think','เครื่องมือที่เลือกมีป้าย “เลือกอยู่” เลือกชื่อในแผงด้านล่าง'] : ['think', `แตะเครื่องมือที่มีป้าย ? ทีละชิ้น แล้วเลือกชื่อ (เหลือ ${IK.filter(k=>!s.named[k]).length} ชิ้น)`];
+      if(!m.rh) return ['think','แตะตู้สกรีน อ่าน Hygrometer ทีละขั้น: กระเปาะแห้ง → กระเปาะเปียก → ผลต่าง → ตาราง RH'];
+      if(!m.wind) return ['think','แตะศรลม (Wind vane) ดูทิศที่ลมพัดมา แล้วแตะแอนนิโมมิเตอร์ (Anemometer) อ่านอัตราเร็วลม'];
+      if(!m.rain) return ['think','แตะเครื่องวัดฝน (Rain gauge) และบารอมิเตอร์ (Barometer) ที่ผนังบ้าน แล้วอ่านค่า'];
+      return ['yay','สถานีตรวจอากาศ (Weather station) วัดอุณหภูมิ ความชื้น ความกดอากาศ ทิศและอัตราเร็วลม และปริมาณฝน']; }
+    if(P.i===1){ if(!m.alt) return ['think', `ลากบารอมิเตอร์ไปวางที่ธงบนภูเขาทีละระดับ (บันทึกแล้ว ${Object.keys(s.rec).length}/4 ระดับ)`];
+      if(!m.day) return ['think', s.day ? 'กลางวัน… รอดูอุณหภูมิบกกับทะเล ควันธูป และลูกศรลม' : 'แตะหลอดไฟเหนือแบบจำลองชายฝั่ง (หรือกดปุ่ม) ให้เป็นกลางวัน'];
+      if(!m.night) return ['think', s.day ? 'แตะหลอดไฟเพื่อปิด ให้เป็นกลางคืน' : 'กลางคืน… รอดูอุณหภูมิและควันธูปเปลี่ยนทิศ'];
+      if(!m.hl) return ['think','ตอบคำถามในแผง: กลางคืนบริเวณใดมีความกดอากาศสูง (H)'];
+      return ['yay','ยิ่งสูงความกดอากาศยิ่งต่ำ และลมพัดจากความกดอากาศสูง (H) ไปต่ำ (L) เสมอ']; }
+    if(!m.try) return ['think','ยังไม่ใส่ควัน แตะขวดเพื่อบีบ แล้วแตะอีกครั้งเพื่อปล่อย'];
+    if(!m.cloud) return ['think', !s.smoke ? 'แตะธูป (หรือกดปุ่ม) เพื่อใส่ควันในขวด' : 'บีบขวดแล้วปล่อย ดูเมฆในขวด'];
+    if(!m.city) return ['think', `แตะหมุดเมืองบนแผนที่อากาศ (Weather map) ให้ครบ (ดูแล้ว ${Object.keys(s.city).length}/3)`];
+    if(!m.fc) return ['think','พยากรณ์อากาศ (Weather forecast) แต่ละเมือง: ใกล้ L หรือใกล้ H?'];
+    return ['yay','อากาศลอยตัวขึ้นแล้วเย็นลง ไอน้ำควบแน่นเป็นเมฆ บริเวณ L จึงมักมีเมฆและฝน บริเวณ H ท้องฟ้าโปร่ง']; }
   function refreshUI(){
     if(!P || !$('#panel')) return;
     const s = P.s, m = S.miss[P.i], part = PARTS[P.i];
@@ -1597,102 +1786,113 @@ const Lab = (function(){
       <div class="note">เลือกตามเหตุผลของตัวเอง แล้วใช้ผลการทดลองตรวจสอบ</div></div></div>`);
     const panel = $('#panel');
     if(!$('#pMiss', panel)) panel.innerHTML = `<div class="box" id="pMiss"></div>`;
-    const B = (v, t, on) => `<button class="btn ${on ? '' : 'ghost'} sm" type="button" data-act="lab" data-v="${v}">${t}</button>`;
-    const done = t => `<div><span class="status on">${t}</span></div>`;
-    const Q = (key, title, opts, cond) => cond ? `<h2 style="margin-top:6px">${title}</h2>${s.ans[key] ? done(opts.find(o=>o[0]===s.ans[key])[1]) : `<div class="row" style="gap:6px">${opts.map(([v,t])=>B('ans:'+key+':'+v, t)).join('')}</div>`}` : '';
-    const grid = (cols, rows) => `<div style="display:grid;grid-template-columns:${cols};gap:4px 10px;font-size:14px">${rows}</div>`;
-    let ctrls = '', sig = '', res = '';
+    let ctrls = '', res = '', sig = '';
+    const B = (v, t, on) => `<button class="btn ${on ? 'ok' : 'ghost'} sm" type="button" data-act="lab" data-v="${v}">${t}</button>`;
+    const DONE = t => `<div><span class="status on">${t}</span></div>`;
+    const TG = (v, on, n) => `<div class="ctl"><span class="n">${n}</span><button type="button" role="switch" class="toggle" aria-checked="${on}" aria-label="${n}" data-act="lab" data-v="${v}"></button></div>`;
+    const SEG = (lab, arr) => `<div class="seg" role="group" aria-label="${lab}">${arr.map(([v,t,on])=>`<button type="button" aria-pressed="${!!on}" data-act="lab" data-v="${v}">${t}</button>`).join('')}</div>`;
+    const ORD = (arr, key) => arr.slice().sort((a,b)=>(seedOf(key + a) % 5) - (seedOf(key + b) % 5));
     if(P.i===0){
-      sig = JSON.stringify(['p0', s.named, P.sel, s.view, s.seen, s.ans, !!m.parts]);
-      ctrls = (!m.parts ? `<h2>เครื่องมือตรวจอากาศ</h2>${P.sel ? `<div class="note">เครื่องมือที่เลือก (เรืองแสง) คือ?</div><div class="row" style="gap:6px">${IK.map(k=>B('name:'+k, INST[k][0])).join('')}</div>` : '<div class="note">แตะเครื่องมือที่มีป้าย ? เพื่อเลือก</div>'}<div class="row" style="gap:6px">${IK.map((k,j)=>B('sel:'+k, s.named[k] ? '✓ ' + INST[k][0] : 'เครื่องมือ ' + (j+1), P.sel===k)).join('')}</div>`
-        : `<h2>อ่านค่า</h2><div class="row" style="gap:6px">${IK.map(k=>B('view:'+k, INST[k][0], s.view===k)).join('')}</div>`)
-        + ''
-        + ''
-        + '';
-      if(!$('#iv')) $('#pRes').innerHTML = `<h2>ภาพขยายเครื่องมือ</h2><canvas id="iv" width="300" height="200" style="width:100%;display:block;border-radius:12px"></canvas>`;
-      drawInst();
+      const v = P.v1, all = IK.every(k=>s.named[k]);
+      sig = JSON.stringify(['p0', s.sel, s.named, s.view, s.hy, s.wd, s.ws, s.rn, s.bp]);
+      if(!all) ctrls = `<h2>เครื่องมือตรวจอากาศ</h2><div class="row" style="gap:6px">${IK.map((k,j)=>B('sel:' + k, s.named[k] ? INST[k].th.split(' (')[0] + ' ✓' : 'เครื่องมือ ' + (j + 1), s.sel===k)).join('')}</div>${s.sel ? `<h2 style="margin-top:6px">เครื่องมือที่เลือกชื่ออะไร</h2><div class="row" style="gap:6px">${IK.map(k=>B('name:' + k, `${INST[k].th.split(' (')[0]} ${INST[k].en}`)).join('')}</div>` : ''}`;
+      else { const k = s.view; ctrls = `<h2>อ่านค่า (แตะเครื่องมือหรือกดปุ่ม)</h2><div class="row" style="gap:6px">${IK.map(x=>B('view:' + x, INST[x].th.split(' (')[0] + ({screen:s.hy.rh!==undefined, vane:!!s.wd, anemo:!!s.ws, rain:!!s.rn, baro:!!s.bp}[x] ? ' ✓' : ''), k===x)).join('')}</div>`;
+        if(k==='screen'){ const nx = HYS.find(st=>s.hy[st]===undefined); const T = {dry:'① กระเปาะแห้ง (dry bulb) อ่านได้', wet:'② กระเปาะเปียก (wet bulb) อ่านได้', diff:'③ ผลต่าง = แห้ง − เปียก', rh:'④ ความชื้นสัมพัทธ์ (RH) จากตาราง'}, U = {dry:' °C', wet:' °C', diff:' °C', rh:'%'};
+          ctrls += HYS.filter(st=>s.hy[st]!==undefined || st===nx).map(st=>`<h2 style="margin-top:6px">${T[st]}</h2>${s.hy[st]!==undefined ? DONE(s.hy[st] + U[st]) : `<div class="row" style="gap:6px">${ORD(hyOpts(st), st).map(o=>B(`hy:${st}:${o}`, o + U[st])).join('')}</div>`}`).join(''); }
+        else if(k==='vane'){ const i = D8.findIndex(x=>x[0]===v.wd[0]); const op = [v.wd[0], D8[(i + 4) % 8][0], D8[(i + 2) % 8][0]];
+          ctrls += `<h2 style="margin-top:6px">ลมพัดมาจากทิศใด</h2>${s.wd ? DONE('ทิศ' + v.wd[1]) : `<div class="row" style="gap:6px">${ORD(op, 'wd').map(o=>B('wd:' + o, 'ทิศ' + D8.find(x=>x[0]===o)[1])).join('')}</div>`}`; }
+        else if(k==='anemo') ctrls += `<h2 style="margin-top:6px">อัตราเร็วลมเท่าใด</h2>${s.ws ? DONE(v.ws + ' km/h') : `<div class="row" style="gap:6px">${B('ws:hpa', v.ws + ' hPa')}${B('ws:kmh', v.ws + ' km/h')}${B('ws:mm', v.ws + ' mm')}</div>`}`;
+        else if(k==='rain') ctrls += `<h2 style="margin-top:6px">ปริมาณน้ำฝนเท่าใด</h2>${s.rn ? DONE(v.mm + ' mm') : `<div class="row" style="gap:6px">${gaugeOpts(v.mm).map(o=>B('rn:' + o, o + ' mm')).join('')}</div>`}`;
+        else if(k==='baro'){ const op = [...new Set([v.hpa, v.hpa + 1, v.hpa + 10 > 1060 ? v.hpa - 10 : v.hpa + 10])].sort((a,b)=>a - b); ctrls += `<h2 style="margin-top:6px">ความกดอากาศเท่าใด</h2>${s.bp ? DONE(v.hpa + ' hPa') : `<div class="row" style="gap:6px">${op.map(o=>B('bp:' + o, o + ' hPa')).join('')}</div>`}`; } }
+      res = all ? (s.view ? `<h2>ภาพขยาย: ${INST[s.view].th}</h2>${zoom1(s.view)}` : '<h2>ภาพขยาย</h2><div class="note">แตะเครื่องมือเพื่อดูค่าที่อ่านได้</div>') + `<div class="note" style="margin-top:4px">RH: ${s.hy.rh!==undefined ? s.hy.rh + '%' : '–'} · ลม: ${s.wd ? 'จากทิศ' + v.wd[1] : '–'} ${s.ws ? v.ws + ' km/h' : ''} · ฝน: ${s.rn ? v.mm + ' mm' : '–'} · ความกดอากาศ: ${s.bp ? v.hpa + ' hPa' : '–'}</div>`
+        : `<h2>เครื่องมือที่ระบุได้</h2><div class="note">${IK.map(k=>s.named[k] ? `${INST[k].th.split(' (')[0]} (${INST[k].en}): ${INST[k].d}` : '?').join('<br>')}</div>`;
     } else if(P.i===1){
-      sig = JSON.stringify(['p1', s.at, s.rec, s.day, s.ans, s.daySeen, s.nightSeen]);
-      ctrls = `<h2>อุปกรณ์</h2><div class="note">ลากบารอมิเตอร์ไปวางที่ธง หรือเลือกระดับ</div><div class="seg" role="group" aria-label="ระดับความสูง">${LEV.map((h,k)=>`<button type="button" aria-pressed="${s.at===k}" data-act="lab" data-v="lev:${k}">${h} m</button>`).join('')}</div>
-        <div class="ctl"><span class="n">หลอดไฟ (ดวงอาทิตย์)</span><button type="button" role="switch" class="toggle" aria-checked="${s.day}" aria-label="หลอดไฟ" data-act="lab" data-v="sun"></button></div>`
-        + ''
-        + '';
-      res = `<h2>ผลการวัด</h2>${grid('1fr auto', LEV.map((h,k)=>`<span>ความสูง ${h} m</span><span>${s.rec[k] ? s.rec[k] + ' hPa' : '–'}</span>`).join('') + `<span>บก / ทะเล</span><span>${s.Tl.toFixed(1)} / ${s.Ts.toFixed(1)} °C</span><span>ลมผิวพื้น</span><span>${Math.abs(s.Tl - s.Ts) < 1 ? 'ลมสงบ' : s.Tl > s.Ts ? 'ทะเล → บก (ลมทะเล)' : 'บก → ทะเล (ลมบก)'}</span>`)}<div class="note" style="margin-top:6px">ลมทะเล: ${s.daySeen ? '✓' : '–'} · ลมบก: ${s.nightSeen ? '✓' : '–'}</div>`;
+      sig = JSON.stringify(['p1', s.stn, s.at, s.rec, s.day, s.daySeen, s.nightSeen, s.hl]);
+      ctrls = `<h2>มุมมอง</h2>${SEG('มุมมอง', [['stn:0','ภูเขา',s.stn===0],['stn:1','แบบจำลองชายฝั่ง',s.stn===1]])}<h2 style="margin-top:6px">วัดความกดอากาศ</h2><div class="note">ลากบารอมิเตอร์ไปวางที่ธง หรือเลือกระดับ</div>${SEG('ระดับความสูง', LEV.map((h,k)=>['lev:' + k, `${h.toLocaleString()} m${s.rec[k] ? ' ✓' : ''}`, s.at===k]))}
+        <h2 style="margin-top:6px">แบบจำลองชายฝั่ง</h2>${TG('sun', s.day, 'หลอดไฟ (ดวงอาทิตย์)')}
+        ${s.daySeen && s.nightSeen ? `<h2 style="margin-top:6px">กลางคืน บริเวณใดมีความกดอากาศสูง (H)</h2>${s.hl ? DONE('บก (อากาศเย็น หนาแน่น)') : `<div class="row" style="gap:6px">${B('hl:sea','ทะเล')}${B('hl:land','บก')}</div>`}` : ''}`;
+      res = `<h2>ผลการวัด</h2><div class="note">${LEV.map((h,k)=>`${h.toLocaleString()} m: <b>${s.rec[k] ? s.rec[k] + ' hPa' : '–'}</b>`).join(' · ')}</div><div class="note">บก / ทะเล: <b id="tLS">${s.Tl.toFixed(1)} / ${s.Ts.toFixed(1)} °C</b></div><div class="note">ลมผิวพื้น: <b id="wLS">${Math.abs(s.Tl - s.Ts) < 1 ? 'ลมสงบ' : s.Tl > s.Ts ? 'ทะเล → บก (ลมทะเล)' : 'บก → ทะเล (ลมบก)'}</b></div><div class="note">ลมทะเล: ${s.daySeen ? '✓' : '–'} · ลมบก: ${s.nightSeen ? '✓' : '–'}</div>`;
     } else {
-      sig = JSON.stringify(['p2', s.smoke, s.squeezed, s.ans, s.cloudOk, s.city]);
-      ctrls = `<h2>เมฆในขวด</h2><div class="row" style="gap:6px">${!s.smoke ? B('smoke','ใส่ควันธูปในขวด') : ''}${B('bottle', s.squeezed ? 'ปล่อยขวด' : 'บีบขวด', s.squeezed)}</div>
-        <h2 style="margin-top:6px">แผนที่อากาศ</h2><div class="row" style="gap:6px">${Object.keys(CITY).map(k=>B('city:'+k, CITY[k].n, s.city[k])).join('')}</div>`
-        + ''
-        + ''
-        + '';
-      res = `<h2>ผลการสังเกต</h2>${grid('1fr auto', `<span>ปล่อยขวด (ไม่มีควัน)</span><span>${s.triedNo ? 'ฝ้าจางมาก' : '–'}</span><span>ปล่อยขวด (มีควัน)</span><span>${s.cloudOk ? 'เกิดเมฆชัดเจน ✓' : '–'}</span>${Object.keys(CITY).map(k=>`<span>${CITY[k].n}</span><span style="font-size:12px">${s.city[k] ? CITY[k].info.split(' · ').slice(1).join(' · ') : '–'}</span>`).join('')}`)}`;
+      sig = JSON.stringify(['p2', s.stn, s.smoke, s.sq, s.tried, s.city, s.fc]);
+      const allC = Object.keys(CITY).every(k=>s.city[k]);
+      ctrls = `<h2>มุมมอง</h2>${SEG('มุมมอง', [['stn:0','ขวดเมฆ',s.stn===0],['stn:1','แผนที่อากาศ',s.stn===1]])}<h2 style="margin-top:6px">เมฆในขวด</h2><div class="row" style="gap:6px">${B('smoke', s.smoke ? 'ใส่ควันแล้ว ✓' : 'ใส่ควันธูปในขวด', s.smoke)}${B('sq', s.sq ? 'ปล่อยขวด' : 'บีบขวด', s.sq)}</div>
+        <h2 style="margin-top:6px">แผนที่อากาศ</h2><div class="row" style="gap:6px">${Object.keys(CITY).map(k=>B('city:' + k, CITY[k].n + (s.city[k] ? ' ✓' : ''))).join('')}</div>
+        ${allC ? Object.keys(CITY).map(k=>`<h2 style="margin-top:6px">พยากรณ์ ${CITY[k].n}</h2>${s.fc[k] ? DONE(FC[s.fc[k]]) : `<div class="row" style="gap:6px">${['rain','part','sun'].map(a=>B(`fc:${k}:${a}`, FC[a])).join('')}</div>`}`).join('') : ''}`;
+      res = `<h2>ผลการสังเกต</h2><div class="note">อุณหภูมิในขวด: <b id="tB">${P.bt ? P.bt.T.toFixed(1) : '33.0'} °C</b></div><div class="note">ปล่อยขวด (ไม่มีควัน): ${s.tried.no ? 'ฝ้าจางมาก' : '–'} · (มีควัน): ${s.tried.cloud ? 'เกิดเมฆชัดเจน ✓' : '–'}</div>${Object.keys(CITY).map(k=>`<div class="note">${CITY[k].n}: ${s.city[k] ? CITY[k].info.split(' · ').slice(0, 2).join(' · ') : '–'}</div>`).join('')}`;
     }
-    if(res){ const r = $('#pRes'); if(r.dataset.h !== res){ r.innerHTML = res; r.dataset.h = res; } }
+    ctrls = `<div id="resBox" style="flex-basis:100%;display:flex;flex-direction:column;gap:4px"></div>` + ctrls + vocabBox(P.i);
     if(sig !== P.ctrlSig || !$('#pCtrl').innerHTML){ $('#pCtrl').innerHTML = ctrls; P.ctrlSig = sig; }
+    setHTML('#resBox', res); setHTML('#pRes', '');
     const doneP = S.labDone[P.i];
     const nextBtn = doneP ? nextPartBtn(P.i) : '';
     setHTML('#pMiss', missBox(P.i, part, k=>!!(m[k]), nextBtn));
   }
 
   /* ----- actions ----- */
-  function act(fn){ P.warn = null; P.say = null; fn(); sync(); refresh(); }
   function action(v){
     if(typeof v==='string' && v.startsWith('mg:')){ const id = v.slice(3), g = mgGet(P.i, id), dn = !!(S.miss[P.i] && S.miss[P.i][id]); P.warn = null; P.say = dn ? 'ภารกิจนี้ทำเสร็จแล้วครับ ✓' : (g ? g[1] : null); P.mg = P.say ? {msg:P.say, t:Date.now()} : null; refresh(); if(!dn && !mgFlash(g)){ const nx = (PARTS[P.i].miss.find(x=>!(S.miss[P.i] && S.miss[P.i][x[0]])) || [])[0]; const alt = g && g[3] ? g[3] : (g && nx && nx!==id ? g[1] + ' (ทำข้อที่มี ▶ ทำต่อ ให้เสร็จก่อนนะครับ)' : ''); if(alt){ P.say = alt; P.mg = {msg:alt, t:Date.now()}; refresh(); } } return; }
-    if(P) P.mg = null;
-    if(!P) return; const s = P.s;
-    if(v==='camL') camRotate(-Math.PI/7); else if(v==='camR') camRotate(Math.PI/7);
-    else if(v==='zin') camZoom(.82); else if(v==='zout') camZoom(1.2);
-    else if(v==='camReset'){ R.camera.position.copy(CAMS[P.i].pos); R.controls.target.copy(CAMS[P.i].tgt); }
-    else if(v==='resetPart'){ if(S.ps) delete S.ps[P.i]; P = fresh(P.i); build(); }
-    else if(v.startsWith('sel:')) tapInst(v.slice(4));
-    else if(v.startsWith('name:')) nameInst(v.slice(5));
-    else if(v.startsWith('view:')){ P.warn = null; tapInst(v.slice(5)); }
-    else if(v.startsWith('lev:')) act(()=>dropBaro(+v.slice(4)));
-    else if(v==='sun') act(()=>{ s.day = !s.day; if(s.day) s.wasDay = true; P.say = s.day ? 'เปิดหลอดไฟ = กลางวัน แสงแดดส่องทั้งบกและทะเลเท่ากัน' : 'ปิดหลอดไฟ = กลางคืน'; });
-    else if(v==='smoke') act(()=>{ s.smoke = true; P.say = 'ใส่ควันธูปในขวดแล้ว แตะขวดเพื่อบีบและปล่อย'; });
-    else if(v==='bottle'){ P.warn = null; tapBottle(); }
-    else if(v.startsWith('city:')){ P.warn = null; tapCity(v.slice(5)); }
-    else if(v.startsWith('ans:')){ const [,q,a] = v.split(':'); answer(q, a); }
+    if(!P) return; P.mg = null; const s = P.s; P.warn = null;
+    if(v==='camL'){ camRotate(-Math.PI/7); return; } if(v==='camR'){ camRotate(Math.PI/7); return; }
+    if(v==='zin'){ camZoom(.82); return; } if(v==='zout'){ camZoom(1.2); return; }
+    if(v==='camReset'){ camHome(); return; }
+    if(v==='resetPart'){ if(S.ps) delete S.ps[P.i]; P = fresh(P.i); build(); return; }
+    P.say = null;
+    if(v.startsWith('sel:')) tap1(v.slice(4));
+    else if(v.startsWith('name:')) name1(v.slice(5));
+    else if(v.startsWith('view:')){ if(IK.every(k=>s.named[k])) tap1(v.slice(5)); }
+    else if(v.startsWith('hy:')){ const [,st,a] = v.split(':'); hy1(st, a); }
+    else if(v.startsWith('wd:')) wind1('d', v.slice(3));
+    else if(v.startsWith('ws:')) wind1('s', v.slice(3));
+    else if(v.startsWith('rn:')) rain1(v.slice(3));
+    else if(v.startsWith('bp:')) baro1(v.slice(3));
+    else if(v.startsWith('lev:')) placeBaro(+v.slice(4));
+    else if(v==='sun') toggleSun();
+    else if(v.startsWith('hl:')) hl2(v.slice(3));
+    else if(v==='smoke'){ setStn(0); if(!s.smoke){ s.smoke = true; SFX.click(); P.say = 'ใส่ควันธูปในขวดแล้ว ควันเป็นอนุภาคเล็ก ๆ ให้ไอน้ำเกาะ ต่อไปบีบแล้วปล่อยขวด'; } refresh(); }
+    else if(v==='sq') squeeze3();
+    else if(v.startsWith('stn:')){ setStn(+v.slice(4)); SFX.click(); refresh(); }
+    else if(v.startsWith('city:')) city3(v.slice(5));
+    else if(v.startsWith('fc:')){ const [,k,a] = v.split(':'); fc3(k, a); }
   }
 
   /* ----- pointer ----- */
-  let drag = null; const ndc = new THREE.Vector2(), hit = new THREE.Vector3(), plane = new THREE.Plane(UP, -TABLE_Y);
+  let drag = null; const ndc = new THREE.Vector2();
   function pick(e){ const r = R.renderer.domElement.getBoundingClientRect(); ndc.set(((e.clientX-r.left)/r.width)*2-1, -((e.clientY-r.top)/r.height)*2+1); R.raycaster.setFromCamera(ndc, R.camera); }
-  function rootOf(o){ while(o && !o.userData.id) o = o.parent; return o; }
-  const movable = id => !!(P.items && P.items[id]);
+  function rootOf(o){ while(o && !(o.userData && o.userData.id)) o = o.parent; return o; }
+  function visChain(o){ for(let q = o; q; q = q.parent) if(!q.visible) return false; return true; }
+  function scrOf(o, dy=0){ const v = new THREE.Vector3(); o.getWorldPosition(v); v.y += dy; v.project(R.camera); const r = R.renderer.domElement.getBoundingClientRect(); return {x:r.left + (v.x*.5 + .5)*r.width, y:r.top + (-v.y*.5 + .5)*r.height}; }
   function bindPointer(){
     const el = R.renderer.domElement;
     el.addEventListener('pointerdown', e=>{
       if(!P || drag) return; pick(e);
-      const h = R.raycaster.intersectObjects(R.world.children, true).find(x=>rootOf(x.object));
-      if(!h) return; const g = rootOf(h.object);
+      const hs = R.raycaster.intersectObjects(R.world.children, true).filter(x=>rootOf(x.object) && visChain(x.object));
+      let g = hs.length ? rootOf(hs[0].object) : null;
+      if(P.i===1 && P.items.baro){ const sp = scrOf(P.items.baro, .14); if(Math.hypot(sp.x - e.clientX, sp.y - e.clientY) < 55) g = P.items.baro; }
+      if(!g) return;
       e.stopImmediatePropagation(); e.preventDefault();
-      const off = new THREE.Vector3(); if(R.raycaster.ray.intersectPlane(plane, hit)) off.set(g.position.x - hit.x, 0, g.position.z - hit.z);
-      drag = {g, id:g.userData.id, x:e.clientX, y:e.clientY, moved:false, pid:e.pointerId, off};
+      drag = {id:g.userData.id, g, x:e.clientX, y:e.clientY, moved:false, pid:e.pointerId};
       el.classList.add('dragging'); R.controls.enabled = false; try{ el.setPointerCapture(e.pointerId); }catch(_){}
     }, {capture:true});
     el.addEventListener('pointermove', e=>{
       if(!drag || e.pointerId!==drag.pid) return;
-      if(!drag.moved && Math.abs(e.clientX-drag.x)+Math.abs(e.clientY-drag.y) > 6){ if(!movable(drag.id)) return; drag.moved = true; }
-      if(!drag.moved) return;
-      pick(e); drag.ray = R.raycaster.ray.clone(); if(!R.raycaster.ray.intersectPlane(plane, hit)) return;
-      const g = drag.g; g.position.x = Math.max(-4.2, Math.min(4.2, hit.x + drag.off.x)); g.position.z = Math.max(-2.3, Math.min(2.3, hit.z + drag.off.z)); g.position.y = TABLE_Y + .5;
+      if(!drag.moved && Math.abs(e.clientX-drag.x)+Math.abs(e.clientY-drag.y) > 6) drag.moved = true;
+      if(!drag.moved || drag.id!=='baro') return;
+      P.dragBaro = true; pick(e); const pl = new THREE.Plane().setFromNormalAndCoplanarPoint(R.camera.position.clone().sub(R.controls.target).normalize(), V(MT.x, 1, MT.z)); const o = V(0,0,0);
+      if(R.raycaster.ray.intersectPlane(pl, o)) P.items.baro.position.copy(o).add(V(0, -.14, 0));
     });
     const end = e=>{
       if(!drag || e.pointerId!==drag.pid) return;
       const d = drag; drag = null; el.classList.remove('dragging'); R.controls.enabled = true;
-      if(!d.moved) return tap(d.id);
-      onDrop(d);
+      if(d.id==='baro' && d.moved){ P.dragBaro = false; let best = -1, bd = 70; LEV.forEach((_,k)=>{ const sp = scrOf(P.flags[k], .15); const dd = Math.hypot(sp.x - e.clientX, sp.y - e.clientY); if(dd < bd){ bd = dd; best = k; } }); if(best >= 0) placeBaro(best); else { P.s.at = null; P.say = 'วางบารอมิเตอร์ให้ตรงธงบนภูเขาครับ'; syncP2(); refresh(); } return; }
+      if(!d.moved) tap(d);
     };
     el.addEventListener('pointerup', end); el.addEventListener('pointercancel', end);
   }
-  function tap(id){
-    if(id.startsWith('in:')) return tapInst(id.slice(3));
-    if(id==='sun') return action('sun');
-    if(id==='bottle') return action('bottle');
-    if(id.startsWith('city:')) return action(id);
-    if(id==='baro'){ toast('ลากบารอมิเตอร์ไปวางที่ธงบนภูเขา'); return; }
-    if(id==='inc'){ toast('ลากธูปไปที่ปากขวดเพื่อใส่ควัน'); return; }
+  function tap(d){
+    const id = String(d.id);
+    if(P.i===0 && INST[id]){ if(IK.every(k=>P.s.named[k])) tap1(id); else tap1(id); }
+    else if(P.i===1){ if(id==='sun') toggleSun(); else if(id.startsWith('lev:')) placeBaro(+id.slice(4)); else if(id==='baro'){ P.say = 'ลากบารอมิเตอร์ไปวางที่ธงบนภูเขา หรือแตะที่ธงได้เลยครับ'; refresh(); } }
+    else if(P.i===2){ if(id==='bottle') squeeze3(); else if(id==='incense') action('smoke'); else if(id.startsWith('city:')) city3(id.slice(5)); }
   }
 
   /* ----- loop ----- */
@@ -1701,19 +1901,25 @@ const Lab = (function(){
     if(!R.active) return;
     requestAnimationFrame(tick);
     const dt = Math.min(.1, (t-last)/1000 || 0); last = t;
+    if(P && P.camTo){ const c = P.camTo; c.k = Math.min(1, c.k + dt*2.2); const e = c.k>=1 ? 1 : .18; R.camera.position.lerp(c.p, e); R.controls.target.lerp(c.t, e); if(c.k >= 1) P.camTo = null; }
     R.controls.update();
     if(P){
       const s = P.s;
-      if(P.i===0 && P.inst){ P.inst.anemo.userData.rot.rotation.y += dt*5; }
-      else if(P.i===1) stepP2(dt);
-      else if(P.i===2 && !s.squeezed && s.fog > 0){ s.fog = Math.max(s.smoke ? .55 : 0, s.fog - dt*.02); P.fog.material.opacity = s.fog; }
-      uiT += dt; if(uiT > .3){ uiT = 0; if(check()) refresh(); else { const nm = nk(mascotSay()[1]); if($('#bubbleMsg') && $('#bubbleMsg').textContent !== nm) refreshUI(); else if(P.i===1) refreshUI(); } }
+      if(P.i===0){ if(P.rot) P.rot.rotation.y -= dt*(1.5 + P.v1.ws*.25); if(P.vn) P.vn.rotation.y = P.vn0 + Math.sin(t/900)*.08 + Math.sin(t/370)*.03; }
+      if(P.i===1 && P.bulb){ stepP2(dt, t); const tl = $('#tLS'); if(tl) tl.textContent = `${s.Tl.toFixed(1)} / ${s.Ts.toFixed(1)} °C`; const wl = $('#wLS'); if(wl) wl.textContent = Math.abs(s.Tl - s.Ts) < 1 ? 'ลมสงบ' : s.Tl > s.Ts ? 'ทะเล → บก (ลมทะเล)' : 'บก → ทะเล (ลมบก)'; }
+      if(P.i===2 && P.bt){ const b = P.bt; const base = baseT3() + (s.sq ? 1.8 : 0); b.T += (base - b.T)*Math.min(1, dt*.35); if(!s.sq) b.fog = Math.max(0, b.fog - dt*.12);
+        const k = b.sqk += ((s.sq ? 1 : 0) - b.sqk)*Math.min(1, dt*8); b.body.scale.set(1 - k*.18, 1 - k*.03, 1 - k*.1);
+        b.fogC.children.forEach((c,j)=>{ c.material.opacity = b.fog*(.75 - j*.08); c.position.x = Math.sin(t/900 + j)*.03; }); b.smk.children.forEach((c,j)=>{ c.material.opacity = s.smoke ? .22 : 0; c.position.y = .15 + ((t/2400 + j*.2) % 1)*.55; });
+        (P.incSmoke || []).forEach((c,j)=>{ c.visible = !s.smoke; c.position.y = .56 + ((t/1800 + j*.25) % 1)*.4; c.material.opacity = .35*(1 - ((t/1800 + j*.25) % 1)); });
+        const tl = b.T.toFixed(1); if(tl !== b.Tlcd){ b.Tlcd = tl; drawLCD(b.lcd, tl + '°C'); const tb = $('#tB'); if(tb) tb.textContent = tl + ' °C'; }
+        Object.values(P.icons || {}).forEach((ic,j)=>{ if(ic.visible) ic.position.z = .18 + Math.sin(t/500 + j)*.02; }); }
+      SFX.amb(P.amb || {});
+      uiT += dt; if(uiT > .25){ uiT = 0; if(P.uiDirty){ P.uiDirty = false; if(check()) refresh(); else refreshUI(); } }
       if(P.dirty){ P.dirty = false; refresh(); }
       placeLabels();
     }
     R.renderer.render(R.scene, R.camera);
   }
-
 
   /* ----- labels ----- */
   function labelsDOM(){ const box = $('#labels'); if(box) box.innerHTML = P.labels.map((l,k)=>`<div data-l="${k}"></div>`).join(''); }
@@ -1722,16 +1928,17 @@ const Lab = (function(){
     const box = $('#labels'); if(!box) return; const w = box.clientWidth, h = box.clientHeight;
     box.querySelectorAll('[data-l]').forEach(el=>{
       const l = P.labels[+el.dataset.l]; if(!l) return; const t = l.text();
-      if(!t || !l.obj.visible){ el.hidden = true; return; }
+      if(!t || !visChain(l.obj)){ el.hidden = true; return; }
       l.obj.getWorldPosition(v3); v3.y += l.dy; v3.project(R.camera);
       el.style.transform = `translate(${(v3.x*.5+.5)*w}px, ${(-v3.y*.5+.5)*h}px) translate(-50%,-100%)`;
-      el.hidden = v3.z > 1; if(el.textContent !== t) el.textContent = t;
+      el.hidden = v3.z > 1 || Math.abs(v3.x) > 1.05 || Math.abs(v3.y) > 1.05; if(el.textContent !== t) el.textContent = t;
     });
   }
   function resize(){ const box = $('#stage'); if(!box || !R) return; const w = box.clientWidth, h = box.clientHeight; if(!w || !h) return; R.renderer.setSize(w, h, false); R.camera.aspect = w/h; { const f0 = R.camera.userData.f0 || (R.camera.userData.f0 = R.camera.fov), a = w/h; R.camera.fov = a < 1.25 ? Math.min(80, 2*Math.atan(Math.tan(f0*Math.PI/360)*1.25/a)*180/Math.PI) : f0; } R.camera.updateProjectionMatrix(); }
   function camRotate(a){ const off = R.camera.position.clone().sub(R.controls.target); off.applyAxisAngle(UP, a); R.camera.position.copy(R.controls.target).add(off); }
   function camZoom(f){ const off = R.camera.position.clone().sub(R.controls.target); off.setLength(Math.max(R.controls.minDistance, Math.min(R.controls.maxDistance, off.length()*f))); R.camera.position.copy(R.controls.target).add(off); }
 
+  window.__P = () => P; window.__scr = (o, dy) => { const v = new THREE.Vector3(); o.getWorldPosition(v); v.y += dy || 0; v.project(R.camera); const r = R.renderer.domElement.getBoundingClientRect(); return {x:r.left + (v.x*.5 + .5)*r.width, y:r.top + (-v.y*.5 + .5)*r.height}; }; window.__cam = () => [R.camera.position.toArray().map(x=>+x.toFixed(2)).join(','), R.controls.enabled];
   return {
     mount(i){
       const box = $('#stage');
@@ -1739,14 +1946,15 @@ const Lab = (function(){
       box.prepend(R.renderer.domElement);
       if(!P || P.i!==i){ P = fresh(i); build(); }
       else { P.celebrate = false; P.ctrlSig = ''; labelsDOM(); refreshUI(); }
-      if(R.ro) R.ro.disconnect(); R.ro = new ResizeObserver(resize); R.ro.observe(box); resize();
+      if(R.ro) R.ro.disconnect(); R.ro = new ResizeObserver(()=>{ resize(); }); R.ro.observe(box); resize();
       if(!R.active){ R.active = true; requestAnimationFrame(tick); }
     },
-    stop(){ if(R){ R.active = false; if(R.ro) R.ro.disconnect(); } },
+    stop(){ SFX.amb({}); if(R){ R.active = false; if(R.ro) R.ro.disconnect(); } },
     refreshUI(){ if(P){ P.ctrlSig = ''; refreshUI(); } },
     action
   };
 })();
+
 
 /* boot */
 render();
