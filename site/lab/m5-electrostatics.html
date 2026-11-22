@@ -96,6 +96,9 @@ main{flex:1;min-width:0;padding:28px 36px 48px}
 .ynb{min-width:70px;min-height:44px;border-radius:12px;border:2px solid var(--line2);background:#FAFBFE;font:inherit;font-size:14px;font-weight:600;cursor:pointer}.ynb.on{background:var(--primary);border-color:var(--primary);color:#fff}
 .qopen{width:100%;box-sizing:border-box;border:2px solid var(--line2);border-radius:14px;padding:12px;font:inherit;font-size:16px;line-height:1.6;resize:vertical}
 .qsep{display:inline-block;width:8px}
+.confrow{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:14px;background:#FFF8E6}.confrow>span{font-weight:600;font-size:15px}.confrow .seg{min-width:220px}
+.pstats{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}.pstat{font-size:12.5px;padding:3px 9px;border-radius:99px;background:var(--lock-bg);color:var(--muted);font-weight:600}.pstat.ok{background:var(--ok-soft);color:var(--ok)}
+.tqr{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:10px}.tq{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;border:1px solid var(--line);border-radius:14px;padding:10px}.tq span{font-size:13px;color:var(--muted)}.tq input{width:100%;font-size:11px;padding:4px;border:1px solid var(--line2);border-radius:8px}.qrbox{width:120px;height:120px}
 .regl{display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:14.5px;flex:1}.regl input,.regl select{font:inherit;font-size:16px;padding:10px 12px;border:2px solid var(--line2);border-radius:12px;background:#fff;min-width:0}
 .regrow{display:flex;gap:10px}.regsum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.regsum div{background:#F4F8FF;border-radius:12px;padding:8px 10px}.regsum span{display:block;font-size:12px;color:var(--muted)}.regsum b{font-size:15px}
 .sendbox{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#FFF8E6}.sendbox.ok{background:var(--ok-soft)}
@@ -512,7 +515,7 @@ const CONF = {
   title:'ไฟฟ้าสถิต', short:'ม.5 ฟิสิกส์ บทที่ 11 ไฟฟ้าสถิต', subject:'ฟิสิกส์ ม.5', senior:true, hs:true,
   tags:['ฟิสิกส์ ม.5','ไฟฟ้าสถิต','ห้องแลป 3 มิติ'],
   sub:'วัดแรงระหว่างทรงกลมมีประจุเพื่อตรวจสอบกฎของคูลอมบ์ วัดศักย์ไฟฟ้าระหว่างแผ่นโลหะคู่ขนานเพื่อหาสนามไฟฟ้า ศึกษาเครื่องกรองฝุ่นไฟฟ้าสถิต ทำให้อิเล็กโทรสโคปมีประจุโดยการเหนี่ยวนำ และวัดความจุของตัวเก็บประจุ',
-  key:'parkilab-m5-static-v4', send:'https://script.google.com/macros/s/AKfycbzikSz5G1vHksJ930PgTfCjj8UQRh4q4jCm4Z2dGH_9rlI327igHxsSuS1nQxDOSg33/exec', file:'ParK_iLab-M5-Physics-Ch11-electrostatics-worksheet.pdf',
+  key:'parkilab-m5-static-v5', site:'https://spiderpark-sciecce-2026.netlify.app/lab/m5-electrostatics.html', send:'https://script.google.com/macros/s/AKfycbzikSz5G1vHksJ930PgTfCjj8UQRh4q4jCm4Z2dGH_9rlI327igHxsSuS1nQxDOSg33/exec', file:'ParK_iLab-M5-Physics-Ch11-electrostatics-worksheet.pdf',
   hint:'ลากทรงกลม A เพื่อเปลี่ยนระยะ · ลากหัววัดระหว่างแผ่นโลหะ · หมุนปุ่มสีส้มบนแหล่งจ่ายไฟ · ลากแท่งประจุเข้าใกล้อิเล็กโทรสโคป · ลากแผ่นตัวเก็บประจุ',
   observe:'สังเกตค่าแรงเมื่อระยะเพิ่มเป็นสองเท่าหรือประจุเพิ่มขึ้น ค่าศักย์ไฟฟ้าที่ตำแหน่งต่าง ๆ ระหว่างแผ่น ฝุ่นที่ถูกดักเมื่อเปลี่ยนความต่างศักย์และความเร็วลม การกางของแผ่นโลหะบาง และประจุบนตัวเก็บประจุ',
   guide:[
@@ -524,43 +527,50 @@ const CONF = {
 };
 
 /* PISA-style test: 5 everyday situations; per situation 2 multiple choice + 1 yes/no table (auto-scored) + 1 written explanation (teacher-scored) */
+/* PISA-style tests, one everyday situation per lab part; {N} = the student's first name.
+   Per part: 2 multiple choice + 2 yes/no tables (auto-scored) + 1 written explanation (teacher-scored). */
 const SCEN = [
-  {t:'ไฟช็อตที่ลูกบิดประตู', txt:'ช่วงหน้าหนาวอากาศแห้ง นิดเดินลากเท้าบนพรมในห้อง แล้วเอื้อมมือไปจับลูกบิดประตูโลหะ รู้สึกเหมือนโดนไฟช็อตเบา ๆ และเห็นประกายไฟเล็ก ๆ ในที่มืด นิดจึงทดลองเดินบนพรมแล้วจับลูกบิดวันละ 10 ครั้ง เป็นเวลา 5 วัน แล้วจดผลไว้',
-   tab:[['วันที่','ความชื้นในอากาศ (%)','จำนวนครั้งที่ถูกช็อต (จาก 10 ครั้ง)'],['1','30','8'],['2','45','6'],['3','60','3'],['4','75','1'],['5','85','0']]},
-  {t:'ลูกโป่งกับเส้นผม', txt:'ต้นถูลูกโป่งสองลูกกับเส้นผม แล้วแขวนลูกโป่งด้วยด้ายจากจุดเดียวกัน ลูกโป่งทั้งสองแยกออกจากกัน ในชั้นเรียน ครูใช้เครื่องวัดแรงไฟฟ้าระหว่างทรงกลมโลหะเล็ก ๆ สองลูกที่มีประจุคงที่ ได้ผลดังตาราง',
+  {t:'ลูกโป่งกับเส้นผม', txt:'{N}ถูลูกโป่งสองลูกกับเส้นผม แล้วแขวนลูกโป่งด้วยด้ายจากจุดเดียวกัน ลูกโป่งทั้งสองแยกออกจากกัน วันต่อมาในชั้นเรียน ครูให้{N}ใช้เครื่องวัดแรงไฟฟ้าระหว่างทรงกลมโลหะเล็ก ๆ สองลูกที่มีประจุคงที่ แล้วบันทึกผลดังตาราง',
    tab:[['ระยะห่างระหว่างทรงกลม (cm)','แรงไฟฟ้า (mN)'],['10','3.6'],['20','0.9'],['30','0.4']]},
-  {t:'เครื่องฟอกอากาศไฟฟ้าสถิต', txt:'เครื่องฟอกอากาศบางรุ่นดูดอากาศผ่านลวดไฟฟ้าแรงสูงก่อน ทำให้ฝุ่น PM2.5 ได้รับประจุ จากนั้นอากาศผ่านช่องระหว่างแผ่นโลหะสองแผ่นที่ห่างกัน 5 mm และต่อกับความต่างศักย์ ฝุ่นที่มีประจุจะถูกดึงไปติดแผ่นโลหะ ผู้ผลิตทดสอบที่ความเร็วพัดลมคงที่ ได้ผลดังตาราง',
+  {t:'ไม้ตียุงไฟฟ้า', txt:'{N}ใช้ไม้ตียุงไฟฟ้าที่บ้าน ไม้ตียุงมีตะแกรงโลหะ 3 ชั้นวางขนานกัน ตะแกรงกลางต่อกับขั้วหนึ่งของวงจรไฟฟ้าแรงสูง ตะแกรงนอกทั้งสองข้างต่อกับอีกขั้วหนึ่ง ข้างกล่องเขียนว่า ความต่างศักย์ 1800 V และตะแกรงกลางห่างจากตะแกรงนอกข้างละ 3 mm เมื่อยุงบินเข้าไประหว่างตะแกรงจะเกิดประกายไฟดัง “เปาะ”'},
+  {t:'เครื่องฟอกอากาศไฟฟ้าสถิต', txt:'{N}ซื้อเครื่องฟอกอากาศมาไว้ในห้องนอนช่วงที่ฝุ่น PM2.5 สูง เครื่องดูดอากาศผ่านลวดไฟฟ้าแรงสูงก่อน ทำให้ฝุ่นได้รับประจุ จากนั้นอากาศผ่านช่องระหว่างแผ่นโลหะสองแผ่นที่ห่างกัน 5 mm และต่อกับความต่างศักย์ ฝุ่นที่มีประจุจะถูกดึงไปติดแผ่นโลหะ คู่มือของเครื่องมีผลทดสอบที่ความเร็วพัดลมคงที่ดังตาราง',
    tab:[['ความต่างศักย์ระหว่างแผ่น (V)','ฝุ่นที่ดักได้ (%)'],['0','5'],['2000','40'],['4000','70'],['6000','90']]},
-  {t:'ฟ้าผ่าและสายล่อฟ้า', txt:'ก่อนฝนฟ้าคะนอง ฐานเมฆมีประจุลบสะสมจำนวนมาก พื้นดินและอาคารที่อยู่ใต้เมฆจึงมีประจุบวกปรากฏขึ้นโดยไม่ได้สัมผัสเมฆ อาคารสูงจึงติดตั้งสายล่อฟ้า ซึ่งเป็นแท่งโลหะปลายแหลมบนยอดอาคาร ต่อด้วยสายทองแดงลงไปฝังในดิน'},
-  {t:'เครื่องกระตุกหัวใจ (AED)', txt:'เครื่อง AED ที่ติดตั้งในห้างและสนามบินใช้ตัวเก็บประจุ เครื่องจะชาร์จตัวเก็บประจุจนมีความต่างศักย์สูง แล้วปล่อยประจุผ่านแผ่นที่แปะบนหน้าอกผู้ป่วยเพื่อให้หัวใจกลับมาเต้นเป็นจังหวะ สมมติว่าตัวเก็บประจุมีความจุ 100 µF และชาร์จจนมีความต่างศักย์ 2000 V'}
+  {t:'ฟ้าผ่าและสายล่อฟ้า', txt:'ระหว่างที่{N}เดินกลับบ้าน เมฆฝนฟ้าคะนองก่อตัวขึ้น ฐานเมฆมีประจุลบสะสมจำนวนมาก พื้นดินและอาคารที่อยู่ใต้เมฆจึงมีประจุบวกปรากฏขึ้นโดยไม่ได้สัมผัสเมฆ อาคารสูงริมทางติดตั้งสายล่อฟ้า ซึ่งเป็นแท่งโลหะปลายแหลมบนยอดอาคาร ต่อด้วยสายทองแดงลงไปฝังในดิน'},
+  {t:'เครื่องกระตุกหัวใจ (AED)', txt:'{N}เห็นเครื่อง AED ติดอยู่ที่ห้างสรรพสินค้า เครื่องนี้ใช้ตัวเก็บประจุ เมื่อใช้งาน เครื่องจะชาร์จตัวเก็บประจุจนมีความต่างศักย์สูง แล้วปล่อยประจุผ่านแผ่นที่แปะบนหน้าอกผู้ป่วยเพื่อให้หัวใจกลับมาเต้นเป็นจังหวะ สมมติว่าตัวเก็บประจุมีความจุ 100 µF และชาร์จจนมีความต่างศักย์ 2000 V'}
 ];
 const QUIZ = [
-  /* 1 door knob */
-  {sc:0, q:'ทำไมร่างกายของนิดจึงมีประจุไฟฟ้าหลังเดินลากเท้าบนพรม', o:['การเสียดสีทำให้อิเล็กตรอนย้ายระหว่างเท้ากับพรม','พรมสร้างประจุไฟฟ้าขึ้นใหม่ให้ร่างกาย','ลูกบิดประตูส่งประจุมาให้ร่างกายก่อน','ร่างกายดึงไฟฟ้ามาจากปลั๊กไฟในห้อง'], a:0, why:'การเสียดสีทำให้อิเล็กตรอนย้ายจากวัตถุหนึ่งไปอีกวัตถุหนึ่ง ประจุไม่ได้ถูกสร้างขึ้นใหม่'},
-  {sc:0, q:'จากตาราง ข้อสรุปใดถูกต้อง', o:['อากาศชื้นมากขึ้น ถูกช็อตน้อยลง','อากาศชื้นมากขึ้น ถูกช็อตบ่อยขึ้น','ความชื้นไม่เกี่ยวกับการถูกช็อต','ถูกช็อตเฉพาะวันที่ชื้นเกิน 50%'], a:0, why:'ความชื้นเพิ่มจาก 30% เป็น 85% จำนวนครั้งที่ถูกช็อตลดจาก 8 เหลือ 0 ไอน้ำในอากาศช่วยให้ประจุรั่วออกจากร่างกาย'},
-  {sc:0, t:'yn', q:'ข้อความต่อไปนี้ถูกต้องหรือไม่', rows:[['ถ้านิดมีประจุลบ พรมจะมีประจุบวกในปริมาณเท่ากัน', true],['ประกายไฟเกิดจากประจุกระโดดผ่านอากาศระหว่างมือกับลูกบิด', true],['ถ้าลูกบิดเป็นไม้แทนโลหะ นิดจะถูกช็อตแรงขึ้น', false]], why:'ประจุอนุรักษ์ ร่างกายได้อิเล็กตรอนเท่าใด พรมก็เสียไปเท่านั้น · ประกายไฟคือประจุไหลผ่านอากาศ · ไม้เป็นฉนวน ประจุไหลผ่านได้ยาก จึงถูกช็อตน้อยลง ไม่ใช่แรงขึ้น'},
-  {sc:0, t:'open', q:'เสนอวิธีลดการถูกช็อตที่ลูกบิดประตู 1 วิธี และอธิบายเหตุผลโดยใช้ความรู้เรื่องประจุไฟฟ้า', model:'เช่น ใช้กุญแจโลหะแตะลูกบิดก่อน ประจุจะไหลผ่านกุญแจแทนนิ้ว หรือเพิ่มความชื้นในห้อง ไอน้ำช่วยให้ประจุรั่วออกจากร่างกายก่อนจับลูกบิด'},
-  /* 2 balloons */
-  {sc:1, q:'ลูกโป่งสองลูกที่ถูกับเส้นผมแล้วแยกออกจากกันเพราะอะไร', o:['มีประจุชนิดเดียวกันจึงผลักกัน','มีประจุต่างชนิดกันจึงผลักกัน','ด้ายที่แขวนมีประจุจึงดันออก','ลูกโป่งสองลูกหนักไม่เท่ากัน'], a:0, why:'ลูกโป่งทั้งสองถูกับเส้นผมแบบเดียวกัน จึงได้ประจุชนิดเดียวกัน ประจุชนิดเดียวกันผลักกัน'},
-  {sc:1, q:'จากตาราง ถ้าระยะห่างเป็น 40 cm แรงไฟฟ้าจะประมาณเท่าใด', o:['0.23 mN','0.45 mN','0.90 mN','1.80 mN'], a:0, why:'F ∝ 1/r² ระยะ 40 cm เป็น 4 เท่าของ 10 cm แรงจึงเหลือ 1/16 คือ 3.6 ÷ 16 ≈ 0.23 mN'},
-  {sc:1, t:'yn', q:'ข้อความต่อไปนี้ถูกต้องหรือไม่', rows:[['ถ้าลดระยะห่างเหลือครึ่งหนึ่ง แรงจะเพิ่มเป็น 4 เท่า', true],['ทรงกลมที่มีประจุมากกว่าจะออกแรงต่ออีกลูกมากกว่าแรงที่ได้รับกลับ', false],['ลูกโป่งที่มีประจุดูดเศษกระดาษที่เป็นกลางได้', true]], why:'F ∝ 1/r² ระยะครึ่งหนึ่ง แรงเพิ่ม 4 เท่า · แรงคู่กิริยา–ปฏิกิริยามีขนาดเท่ากันเสมอ · ประจุบนลูกโป่งเหนี่ยวนำให้กระดาษเกิดประจุตรงข้ามด้านใกล้ จึงดูดกัน'},
-  {sc:1, t:'open', q:'ต้นนำลูกโป่งที่ถูกับเส้นผมไปแตะผนัง ลูกโป่งติดผนังได้ ทั้งที่ผนังไม่มีประจุ อธิบายว่าเกิดขึ้นได้อย่างไร', model:'ประจุลบบนลูกโป่งผลักอิเล็กตรอนในผนังให้ออกห่าง ผิวผนังด้านใกล้ลูกโป่งจึงเป็นบวก (การเหนี่ยวนำ) ประจุต่างชนิดอยู่ใกล้กว่าจึงดูดกันมากกว่าแรงผลัก ลูกโป่งจึงติดผนัง'},
-  /* 3 air purifier */
+  /* part 1: Coulomb */
+  {sc:0, q:'ลูกโป่งสองลูกที่ถูกับเส้นผมแล้วแยกออกจากกันเพราะอะไร', o:['มีประจุชนิดเดียวกันจึงผลักกัน','มีประจุต่างชนิดกันจึงผลักกัน','ด้ายที่แขวนมีประจุจึงดันออก','ลูกโป่งสองลูกหนักไม่เท่ากัน'], a:0, why:'ลูกโป่งทั้งสองถูกับเส้นผมแบบเดียวกัน จึงได้ประจุชนิดเดียวกัน ประจุชนิดเดียวกันผลักกัน'},
+  {sc:0, q:'จากตาราง ถ้าระยะห่างเป็น 40 cm แรงไฟฟ้าจะประมาณเท่าใด', o:['0.23 mN','0.45 mN','0.90 mN','1.80 mN'], a:0, why:'F ∝ 1/r² ระยะ 40 cm เป็น 4 เท่าของ 10 cm แรงจึงเหลือ 1/16 คือ 3.6 ÷ 16 ≈ 0.23 mN'},
+  {sc:0, t:'yn', q:'ข้อความต่อไปนี้ถูกต้องหรือไม่', rows:[['ถ้าลดระยะห่างเหลือครึ่งหนึ่ง แรงจะเพิ่มเป็น 4 เท่า', true],['ถ้าประจุของทรงกลมลูกหนึ่งเพิ่มเป็น 2 เท่า แรงจะเพิ่มเป็น 2 เท่า', true],['ถ้าระยะห่างเพิ่มเป็น 2 เท่า แรงจะลดเหลือครึ่งหนึ่ง', false]], why:'F = kq₁q₂/r² แรงแปรผกผันกับ r² ระยะครึ่งหนึ่งแรงเพิ่ม 4 เท่า ระยะ 2 เท่าแรงเหลือ 1/4 · แรงแปรผันตรงกับประจุแต่ละลูก'},
+  {sc:0, t:'yn', q:'ข้อความต่อไปนี้ถูกต้องหรือไม่', rows:[['ทรงกลมที่มีประจุมากกว่าออกแรงต่ออีกลูกมากกว่าแรงที่ได้รับกลับ', false],['ลูกโป่งที่มีประจุดูดเศษกระดาษที่เป็นกลางได้', true],['การถูลูกโป่งกับเส้นผมทำให้เกิดประจุขึ้นใหม่', false]], why:'แรงที่ทรงกลมทั้งสองกระทำต่อกันมีขนาดเท่ากันเสมอ (กิริยา–ปฏิกิริยา) · ลูกโป่งเหนี่ยวนำให้กระดาษด้านใกล้มีประจุตรงข้ามจึงดูดกัน · การถูแค่ย้ายอิเล็กตรอน ไม่ได้สร้างประจุใหม่'},
+  {sc:0, t:'open', q:'{N}นำลูกโป่งที่ถูกับเส้นผมไปแตะผนัง ลูกโป่งติดผนังได้ ทั้งที่ผนังไม่มีประจุ อธิบายว่าเกิดขึ้นได้อย่างไร', model:'ประจุลบบนลูกโป่งผลักอิเล็กตรอนในผนังให้ออกห่าง ผิวผนังด้านใกล้จึงเป็นบวก (การเหนี่ยวนำ/แยกขั้ว) ประจุต่างชนิดอยู่ใกล้กว่า แรงดูดจึงมากกว่าแรงผลัก ลูกโป่งจึงติดผนัง'},
+  /* part 2: field between parallel plates */
+  {sc:1, q:'สนามไฟฟ้าระหว่างตะแกรงกลางกับตะแกรงนอกมีขนาดประมาณเท่าใด', o:['6 × 10⁵ V/m','600 V/m','5.4 V/m','6 × 10³ V/m'], a:0, why:'E = V/d = 1800 ÷ 0.003 = 6 × 10⁵ V/m (ต้องเปลี่ยน 3 mm เป็น 0.003 m)'},
+  {sc:1, q:'ทำไมจึงเกิดประกายไฟเมื่อยุงบินเข้าไประหว่างตะแกรง', o:['ตัวยุงเชื่อมช่องว่างให้ประจุไหลผ่าน','ยุงมีประจุบวกสะสมมาตั้งแต่ก่อนบินเข้ามา','ตะแกรงดูดยุงเข้ามาด้วยแรงแม่เหล็ก','ปีกยุงเสียดสีกับตะแกรงจนเกิดความร้อน'], a:0, why:'ตะแกรงสองชั้นมีความต่างศักย์สูง เมื่อยุงเข้าไปอยู่ระหว่างตะแกรง ตัวยุงช่วยเชื่อมช่องว่าง ประจุจึงไหลผ่านตัวยุงและอากาศ เกิดประกายไฟ'},
+  {sc:1, t:'yn', q:'ข้อความต่อไปนี้ถูกต้องหรือไม่', rows:[['ระหว่างตะแกรงที่ขนานกัน สนามไฟฟ้ามีขนาดเกือบเท่ากันทุกจุด', true],['สนามไฟฟ้าระหว่างตะแกรงชี้จากตะแกรงศักย์ต่ำไปตะแกรงศักย์สูง', false],['ถ้าความต่างศักย์เท่าเดิมแต่ตะแกรงห่างกันมากขึ้น สนามไฟฟ้าจะลดลง', true]], why:'สนามระหว่างแผ่นขนานสม่ำเสมอ · สนามไฟฟ้าชี้จากศักย์สูงไปศักย์ต่ำ · E = V/d ระยะมากขึ้น สนามลดลง'},
+  {sc:1, t:'yn', q:'ข้อความต่อไปนี้ถูกต้องหรือไม่', rows:[['ทุกจุดบนตะแกรงโลหะแผ่นเดียวกันมีศักย์ไฟฟ้าเท่ากัน', true],['จุดกึ่งกลางระหว่างตะแกรงทั้งสองมีศักย์ต่างจากตะแกรงแต่ละแผ่น 900 V', true],['เลื่อนประจุไปในแนวขนานกับตะแกรงต้องทำงานมาก', false]], why:'ตัวนำทั้งแผ่นมีศักย์เท่ากัน · สนามสม่ำเสมอ ศักย์ลดลงเชิงเส้น ครึ่งระยะจึงต่างกันครึ่งหนึ่ง 1800 ÷ 2 = 900 V · แนวขนานกับตะแกรงเป็นแนวศักย์เท่า งานเป็นศูนย์'},
+  {sc:1, t:'open', q:'{N}เผลอใช้นิ้วแตะตะแกรงนอกเพียงด้านเดียวแล้วไม่ถูกช็อต แต่เมื่อยุงตัวเล็กเข้าไปอยู่ระหว่างตะแกรงกลับเกิดประกายไฟ ใช้ความรู้เรื่องความต่างศักย์อธิบายความแตกต่างนี้', model:'แตะตะแกรงนอกด้านเดียว นิ้วสัมผัสจุดที่มีศักย์เดียวกัน ไม่มีความต่างศักย์คร่อมร่างกาย ประจุจึงไม่ไหลผ่าน แต่ยุงอยู่ระหว่างตะแกรงกลางกับตะแกรงนอกซึ่งต่างศักย์กัน 1800 V และห่างกันเพียง 3 mm สนามไฟฟ้าสูง ประจุจึงไหลผ่านตัวยุงเกิดประกายไฟ'},
+  /* part 3: electrostatic precipitator */
   {sc:2, q:'ถ้าต่อความต่างศักย์ 5000 V กับแผ่นที่ห่างกัน 5 mm สนามไฟฟ้าระหว่างแผ่นเท่าใด', o:['1 × 10⁶ V/m','1 × 10⁴ V/m','2.5 × 10⁴ V/m','1 × 10³ V/m'], a:0, why:'E = V/d = 5000 ÷ 0.005 = 1 × 10⁶ V/m (ต้องเปลี่ยน 5 mm เป็น 0.005 m)'},
-  {sc:2, q:'ที่ความต่างศักย์ 0 V ยังดักฝุ่นได้เพียง 5% เพราะอะไร', o:['ไม่มีสนามไฟฟ้า จึงไม่มีแรง F = qE ดึงฝุ่น','ฝุ่นเล็กเกินกว่าแผ่นโลหะจะมองเห็น','แผ่นโลหะร้อนเกินไปจนฝุ่นติดไม่ได้','พัดลมหยุดหมุนเมื่อไม่มีความต่างศักย์'], a:0, why:'เมื่อ V = 0 สนามไฟฟ้าระหว่างแผ่นเป็นศูนย์ ฝุ่นจึงไม่ถูกแรงไฟฟ้าดึง ที่ดักได้ 5% เป็นฝุ่นที่ชนแผ่นเอง'},
+  {sc:2, q:'ที่ความต่างศักย์ 0 V เครื่องดักฝุ่นได้เพียง 5% เพราะอะไร', o:['ไม่มีสนามไฟฟ้า จึงไม่มีแรงไฟฟ้าดึงฝุ่น','ฝุ่นเล็กเกินกว่าแผ่นโลหะจะดักเอาไว้ได้ทัน','แผ่นโลหะร้อนเกินไปจนฝุ่นติดไม่ได้','พัดลมหยุดหมุนเมื่อไม่มีความต่างศักย์'], a:0, why:'เมื่อ V = 0 สนามไฟฟ้าระหว่างแผ่นเป็นศูนย์ ฝุ่นจึงไม่ถูกแรงไฟฟ้าดึง ที่ดักได้ 5% เป็นฝุ่นที่ชนแผ่นเอง'},
   {sc:2, t:'yn', q:'ข้อความต่อไปนี้ถูกต้องหรือไม่', rows:[['เพิ่มความต่างศักย์ระหว่างแผ่น ฝุ่นถูกดักได้มากขึ้น', true],['ลดระยะห่างระหว่างแผ่นโดยความต่างศักย์เท่าเดิม สนามไฟฟ้าจะลดลง', false],['เปิดพัดลมแรงขึ้น ฝุ่นจะอยู่ระหว่างแผ่นนานขึ้น', false]], why:'จากตาราง V มากขึ้นดักได้มากขึ้น · E = V/d ระยะลดลง สนามเพิ่มขึ้น · ลมแรงขึ้นฝุ่นผ่านเร็วขึ้น อยู่ในสนามสั้นลง'},
-  {sc:2, t:'open', q:'เพื่อนบอกว่า “ตั้งความต่างศักย์ให้สูงที่สุดเท่าที่ทำได้ดีที่สุด” นักเรียนเห็นด้วยหรือไม่ อธิบายเหตุผล', model:'เห็นด้วยบางส่วน ความต่างศักย์สูงขึ้นทำให้สนามไฟฟ้าและแรงต่อฝุ่นมากขึ้นจึงดักได้มากขึ้น แต่ถ้าสูงเกินไปอาจเกิดประกายไฟ เกิดโอโซน สิ้นเปลืองไฟ และอันตราย จากตารางเพิ่มจาก 4000 เป็น 6000 V ได้เพิ่มเพียง 20%'},
-  /* 4 lightning */
-  {sc:3, q:'พื้นดินใต้เมฆมีประจุบวกปรากฏขึ้นได้อย่างไร', o:['ประจุลบในเมฆผลักอิเล็กตรอนที่ผิวดินออกไป','เมฆปล่อยประจุบวกลงมาที่พื้นดินก่อน','พื้นดินมีประจุบวกอยู่แล้วตลอดเวลา','แสงแดดทำให้ผิวดินสูญเสียโปรตอน'], a:0, why:'การเหนี่ยวนำ ประจุลบในเมฆผลักอิเล็กตรอนที่ผิวดินให้เคลื่อนออกไป ผิวดินใต้เมฆจึงเหลือประจุบวก'},
-  {sc:3, q:'ทำไมสายล่อฟ้าต้องต่อสายทองแดงลงไปในดิน', o:['ให้ประจุไหลลงดินโดยไม่ผ่านตัวอาคาร','ให้อาคารเก็บประจุไว้ได้มากขึ้น','ป้องกันไม่ให้เกิดเมฆฝนเหนืออาคาร','ทำให้แท่งโลหะบนยอดอาคารเย็นลง'], a:0, why:'ทองแดงเป็นตัวนำที่ดี เมื่อฟ้าผ่า ประจุจะไหลผ่านสายทองแดงลงดิน ไม่ไหลผ่านโครงสร้างอาคารและคนข้างใน'},
-  {sc:3, t:'yn', q:'ข้อความต่อไปนี้ถูกต้องหรือไม่', rows:[['ขณะฟ้าคะนอง ยืนหลบใต้ต้นไม้สูงกลางทุ่งปลอดภัย', false],['นั่งในรถยนต์ที่ปิดประตูสนิทปลอดภัยกว่ายืนกลางทุ่ง', true],['ประจุลบในเมฆเกิดขึ้นได้เองโดยไม่มีสิ่งใดเสียอิเล็กตรอนไป', false]], why:'ต้นไม้สูงเป็นจุดที่ฟ้าผ่าได้ง่าย · ตัวถังรถเป็นโลหะ ประจุไหลไปตามผิวด้านนอก · ประจุอนุรักษ์ เมฆได้อิเล็กตรอนมาจากการเสียดสีของหยดน้ำและน้ำแข็ง'},
-  {sc:3, t:'open', q:'อธิบายว่าทำไมการกางร่มด้ามโลหะยืนกลางสนามโล่งขณะฟ้าคะนองจึงอันตราย', model:'ร่มทำให้เราเป็นจุดสูงสุดในสนาม ปลายโลหะแหลมมีประจุเหนี่ยวนำสะสมหนาแน่น สนามไฟฟ้ารอบปลายสูง ฟ้าจึงผ่าลงจุดนั้นได้ง่าย และโลหะนำประจุผ่านร่างกายลงดิน'},
-  /* 5 AED */
+  {sc:2, t:'yn', q:'ข้อความต่อไปนี้ถูกต้องหรือไม่', rows:[['ฝุ่นที่มีประจุลบจะเคลื่อนไปหาแผ่นที่มีศักย์สูงกว่า', true],['แรงไฟฟ้าที่ฝุ่นได้รับขึ้นกับประจุของฝุ่นด้วย', true],['ฝุ่นที่ไม่มีประจุจะถูกแผ่นโลหะดึงได้แรงที่สุด', false]], why:'ประจุลบถูกแรงไฟฟ้าในทิศตรงข้ามสนาม จึงไปหาศักย์สูง · F = qE · ฝุ่นที่ไม่มีประจุ q = 0 แรงไฟฟ้าเป็นศูนย์'},
+  {sc:2, t:'open', q:'เพื่อนของ{N}บอกว่า “ตั้งความต่างศักย์ให้สูงที่สุดเท่าที่ทำได้ดีที่สุด” {N}ควรเห็นด้วยหรือไม่ อธิบายเหตุผลโดยใช้ข้อมูลในตาราง', model:'เห็นด้วยบางส่วน ความต่างศักย์สูงขึ้น สนามไฟฟ้าและแรง F = qE มากขึ้นจึงดักฝุ่นได้มากขึ้น แต่จากตาราง 4000 → 6000 V ได้เพิ่มเพียง 20% และถ้าสูงเกินไปอาจเกิดประกายไฟ เกิดโอโซน เปลืองไฟ และอันตราย'},
+  /* part 4: induction */
+  {sc:3, q:'พื้นดินใต้เมฆมีประจุบวกปรากฏขึ้นได้อย่างไร', o:['ประจุลบในเมฆผลักอิเล็กตรอนที่ผิวดินออก','เมฆปล่อยประจุบวกลงมาที่พื้นดินก่อนฝนตก','พื้นดินมีประจุบวกอยู่แล้วตลอดเวลา','แสงแดดทำให้ผิวดินสูญเสียโปรตอน'], a:0, why:'การเหนี่ยวนำ ประจุลบในเมฆผลักอิเล็กตรอนที่ผิวดินให้เคลื่อนออกไป ผิวดินใต้เมฆจึงเหลือประจุบวก'},
+  {sc:3, q:'ทำไมสายล่อฟ้าต้องต่อสายทองแดงลงไปในดิน', o:['ให้ประจุไหลลงดินโดยไม่ผ่านตัวอาคาร','ให้อาคารเก็บประจุไว้ได้มากขึ้น','ป้องกันไม่ให้เกิดเมฆฝนเหนือตัวอาคารสูง','ทำให้แท่งโลหะบนยอดอาคารเย็นลง'], a:0, why:'ทองแดงเป็นตัวนำที่ดี เมื่อฟ้าผ่า ประจุจะไหลผ่านสายทองแดงลงดิน ไม่ไหลผ่านโครงสร้างอาคารและคนข้างใน'},
+  {sc:3, t:'yn', q:'ข้อความต่อไปนี้ถูกต้องหรือไม่', rows:[['การเหนี่ยวนำทำให้ประจุในตัวนำแยกออกจากกันได้โดยไม่ต้องสัมผัส', true],['ต่อตัวนำลงดินขณะมีประจุลบอยู่ใกล้ แล้วตัดสายดินก่อนนำประจุลบออก ตัวนำจะมีประจุบวก', true],['ในพื้นดิน ประจุบวกเคลื่อนที่ขึ้นไปหาเมฆได้ง่ายกว่าอิเล็กตรอน', false]], why:'การเหนี่ยวนำแยกประจุโดยไม่สัมผัส · ขณะต่อดิน อิเล็กตรอนถูกผลักลงดิน ตัดสายดินแล้วจึงเหลือประจุบวก · ในตัวนำ อิเล็กตรอนเป็นตัวที่เคลื่อนที่ ไม่ใช่ประจุบวก'},
+  {sc:3, t:'yn', q:'ข้อความต่อไปนี้ถูกต้องหรือไม่', rows:[['ขณะฟ้าคะนอง ยืนหลบใต้ต้นไม้สูงกลางทุ่งปลอดภัย', false],['นั่งในรถยนต์ที่ปิดประตูสนิทปลอดภัยกว่ายืนกลางทุ่ง', true],['ประจุลบในเมฆเกิดขึ้นได้เองโดยไม่มีสิ่งใดเสียอิเล็กตรอนไป', false]], why:'ต้นไม้สูงเป็นจุดที่ฟ้าผ่าได้ง่าย · ตัวถังรถเป็นโลหะ ประจุไหลไปตามผิวด้านนอก · ประจุอนุรักษ์ เมฆได้อิเล็กตรอนมาจากการเสียดสีของหยดน้ำและเกล็ดน้ำแข็ง'},
+  {sc:3, t:'open', q:'อธิบายว่าทำไมการที่{N}กางร่มด้ามโลหะยืนกลางสนามโล่งขณะฟ้าคะนองจึงอันตราย', model:'ร่มทำให้เป็นจุดสูงสุดในสนาม ปลายโลหะแหลมมีประจุเหนี่ยวนำสะสมหนาแน่น สนามไฟฟ้ารอบปลายสูง ฟ้าจึงผ่าลงจุดนั้นได้ง่าย และโลหะนำประจุผ่านร่างกายลงดิน'},
+  /* part 5: capacitor */
   {sc:4, q:'ตัวเก็บประจุของเครื่อง AED เก็บประจุได้เท่าใด', o:['0.2 C','2 C','0.02 C','20 C'], a:0, why:'Q = CV = 100 × 10⁻⁶ F × 2000 V = 0.2 C'},
   {sc:4, q:'ตัวเก็บประจุนี้สะสมพลังงานได้เท่าใด', o:['200 J','400 J','100 J','0.2 J'], a:0, why:'U = ½CV² = ½ × 100 × 10⁻⁶ × 2000² = 200 J'},
   {sc:4, t:'yn', q:'ข้อความต่อไปนี้ถูกต้องหรือไม่', rows:[['ชาร์จด้วยความต่างศักย์สูงขึ้น ตัวเก็บประจุเก็บประจุได้มากขึ้น', true],['ถ้าความต่างศักย์เพิ่มเป็น 2 เท่า พลังงานที่สะสมเพิ่มเป็น 2 เท่า', false],['ตัวเก็บประจุยังเก็บประจุไว้ได้แม้ถอดออกจากแหล่งจ่ายแล้ว', true]], why:'Q = CV ประจุแปรผันตรงกับ V · U = ½CV² V เพิ่ม 2 เท่า พลังงานเพิ่ม 4 เท่า · ตัวเก็บประจุเก็บประจุไว้ได้หลังถอดออก จึงต้องระวังแม้ปิดเครื่อง'},
-  {sc:4, t:'open', q:'ก่อนปล่อยไฟฟ้า เครื่อง AED จะเตือนว่า “ห้ามสัมผัสตัวผู้ป่วย” ใช้ความรู้ไฟฟ้าอธิบายเหตุผล', model:'ร่างกายคนเป็นตัวนำไฟฟ้า ถ้าสัมผัสผู้ป่วยขณะปล่อยประจุ ประจุจะไหลผ่านร่างกายผู้ช่วยด้วย ผู้ช่วยได้รับอันตราย และพลังงานที่ไปถึงหัวใจผู้ป่วยลดลง'}
+  {sc:4, t:'yn', q:'ข้อความต่อไปนี้ถูกต้องหรือไม่', rows:[['ใช้ตัวเก็บประจุที่ความจุมากขึ้น ชาร์จที่ความต่างศักย์เท่าเดิม จะได้พลังงานมากขึ้น', true],['แผ่นทั้งสองของตัวเก็บประจุมีประจุชนิดเดียวกัน', false],['ความจุของตัวเก็บประจุขึ้นกับความต่างศักย์ที่ใช้ชาร์จ', false]], why:'U = ½CV² C มากขึ้น U มากขึ้น · แผ่นทั้งสองมีประจุขนาดเท่ากันแต่ชนิดตรงข้าม · C = ε₀A/d ขึ้นกับขนาดแผ่นและระยะห่าง ไม่ขึ้นกับ V'},
+  {sc:4, t:'open', q:'ก่อนปล่อยไฟฟ้า เครื่อง AED จะเตือนว่า “ห้ามสัมผัสตัวผู้ป่วย” ถ้า{N}เป็นผู้ช่วยเหลือ ใช้ความรู้ไฟฟ้าอธิบายว่าทำไมต้องทำตามคำเตือนนี้', model:'ร่างกายคนเป็นตัวนำไฟฟ้า ถ้าสัมผัสผู้ป่วยขณะปล่อยประจุ ประจุจะไหลผ่านร่างกายผู้ช่วยด้วย ผู้ช่วยได้รับอันตราย และพลังงานที่ไปถึงหัวใจผู้ป่วยลดลง'}
 ];
+QUIZ.forEach(it=>{ it.p = it.sc; });
 
 const PARTS = [
   {k:'ตอนที่ 1', t:'กฎของคูลอมบ์', d:'วัดแรงระหว่างทรงกลม A ที่รู้ประจุกับทรงกลม B ประจุปริศนา เปลี่ยนระยะและประจุ แล้วคำนวณประจุของ B', time:'ประมาณ 20 นาที', bg:'#E8F2FE',
@@ -663,7 +673,13 @@ const NQ = QUIZ.length, SR = !!CONF.senior, HS = !!CONF.hs;
 const QT = it => it.t || 'mc', AUTO = QUIZ.map((it,i)=>QT(it)!=='open' ? i : -1).filter(i=>i>=0), NA = AUTO.length;
 const qAns = (it, x) => QT(it)==='open' ? typeof x==='string' && x.trim().length >= 5 : QT(it)==='yn' ? Array.isArray(x) && it.rows.every((_,k)=>x[k]===0 || x[k]===1) : x!=null;
 const qOk = (it, x) => QT(it)==='yn' ? Array.isArray(x) && it.rows.every((r,k)=>x[k]===(r[1] ? 1 : 0)) : QT(it)==='open' ? null : x===it.a;
-const qScore = a => AUTO.reduce((n,i)=>n + (qOk(QUIZ[i], a[i]) ? 1 : 0), 0);
+const PQ = i => QUIZ.map((it,k)=>it.p===i ? k : -1).filter(k=>k>=0);
+const NAp = i => PQ(i).filter(k=>QT(QUIZ[k])!=='open').length;
+const qDone = (it, x, c) => qAns(it, x) && (c===0 || c===1);
+const nmQ = t => String(t).replace(/\{N\}/g, S.nick || 'นักเรียน');
+function pqS(i){ S.pq = S.pq || {}; const s = S.pq[i] = S.pq[i] || {}; ['pre','post'].forEach(k=>{ s[k] = s[k] || {a:[], c:[], done:false, score:null}; }); return s; }
+const pScore = (i, kind) => { const st = pqS(i)[kind]; return PQ(i).reduce((n,k,j)=>n + (QT(QUIZ[k])!=='open' && qOk(QUIZ[k], st.a[j]) ? 1 : 0), 0); };
+const UPART = (()=>{ try{ const n = +new URLSearchParams(location.search).get('part'); return n >= 1 && n <= PARTS.length ? n - 1 : null; }catch(_){ return null; } })();
 const fresh = () => ({
   qv:2, pre:{a:Array(NQ).fill(null), done:false, score:null},
   guideRead:false, labDone:PARTS.map(()=>false), pred:PARTS.map(()=>null),
@@ -692,14 +708,12 @@ function save(){ clearTimeout(saveT); saveT = setTimeout(()=>{ try{ localStorage
 const ui = { noLabels:false, view:'home', q:0, part:0, preSent:false, confirmReset:false };
 
 const RV = !!CONF.review;
-const PRE_OK = () => S.pre.done || !!S.pre.skip, POST_ST = () => S.post.done || S.post.a.some(x=>x!=null);
-const PRE_LOCK = () => !S.pre.done && POST_ST();
-const GR = () => NOG ? PRE_OK() : S.guideRead;
-const unlocked = i => RV || [!PRE_LOCK(), PRE_OK(), GR(), CONF.uni ? S.labDone.every(Boolean) : true, CONF.uni ? revDone() : S.labDone.every(Boolean)][i];
-const HIDE = i => (NOG && i===1) || (PD && i===3);
-const doneStep = i => [PRE_OK(), GR(), S.labDone.every(Boolean), CONF.uni ? revDone() : (PD || S.sheetDone), S.post.done][i];
-const partOpen = i => RV || GR();
-const curStep = () => { for(let i=0;i<5;i++){ if(!doneStep(i)) return i; } return 4; };
+const PRE_OK = () => true, POST_ST = () => false, PRE_LOCK = () => false;
+const GR = () => true;
+const HIDE = i => false;
+const partOpen = i => RV || pqS(i).pre.done;
+const pStage = i => { const q = pqS(i); return q.post.done ? 3 : S.labDone[i] ? 2 : q.pre.done ? 1 : 0; };
+const unlocked = i => true, doneStep = i => false, curStep = () => 0;
 
 function toast(msg){ msg = String(msg).replace(/ปลดล็อก(ตอนที่ ?\d+)/, 'ไป$1ต่อได้เลย'); if(/ทดลองครบทุกตอนแล้ว/.test(msg) && S.labDone && !S.labDone.every(Boolean)){ const left = PARTS.map((p,i)=>S.labDone[i] ? '' : p.k).filter(Boolean); msg = 'ตอนนี้เสร็จแล้ว! เหลือ ' + left.join(', '); } else if(/ต่อได้เลย$/.test(msg) && S.labDone && S.labDone.every(Boolean)) msg = CONF.uni ? 'ทดลองครบทุกตอนแล้ว! ไปสรุปและทบทวนต่อได้เลย' : 'ทดลองครบทุกตอนแล้ว! ไปทำแบบทดสอบหลังเรียนได้เลย';
   const t = $('#toast'); t.textContent = msg; t.hidden = false;
@@ -727,95 +741,111 @@ function showNick(force){
       <div class="regsum"><div><span>ชื่อ</span><b>${esc(v.n)}</b></div><div><span>ชั้น/ห้อง</span><b>${esc(v.g)}/${esc(v.r)}</b></div><div><span>เลขที่</span><b>${esc(v.no)}</b></div></div>
       <div class="row" style="justify-content:flex-end;gap:8px"><button class="btn ghost" type="button" id="nickBack">แก้ไข</button><button class="btn ok" type="button" id="nickYes">ยืนยัน เริ่มเลย ${ICON.arrow}</button></div>`;
     $('#nickBack').addEventListener('click', ()=>showNick());
-    $('#nickYes').addEventListener('click', ()=>{ S.stu = {name:v.n, grade:v.g, room:v.r, no:v.no}; S.nick = v.n.split(' ')[0]; if(!S.uid) S.uid = Date.now().toString(36) + Math.random().toString(36).slice(2,8); S.t0 = S.t0 || Date.now(); showNick.d = null; save(); m.hidden = true; render(); toast(`ยินดีที่ได้รู้จัก ${S.nick}!`); sendNow('start'); }); };
+    $('#nickYes').addEventListener('click', ()=>{ S.stu = {name:v.n, grade:v.g, room:v.r, no:v.no}; S.nick = v.n.split(' ')[0]; if(!S.uid) S.uid = Date.now().toString(36) + Math.random().toString(36).slice(2,8); S.t0 = S.t0 || Date.now(); showNick.d = null; save(); m.hidden = true; render(); toast(`ยินดีที่ได้รู้จัก ${S.nick}!`); }); };
   $('#nickGo').addEventListener('click', ok); m.querySelectorAll('input').forEach(x=>x.addEventListener('keydown', e=>{ if(e.key==='Enter') ok(); }));
   setTimeout(()=>$('#stName').focus(), 60);
 }
 const stuTxt = () => S.stu ? `${S.stu.name} · ${S.stu.grade}/${S.stu.room} เลขที่ ${S.stu.no}` : (S.nick || '');
 
-/* ---------- time on task + sending results to the teacher's Google Sheet ---------- */
-setInterval(()=>{ if(document.hidden || !S.stu) return; const k = ui.view==='lab' ? 'p' + ((ui.part|0) + 1) : ({pre:'pre', post:'post', sheet:'rev', picker:'lab', home:'home', guide:'home', result:'post'})[ui.view] || 'other';
-  S.tm = S.tm || {}; S.tm[k] = (S.tm[k] || 0) + 5; save(); }, 5000);
-function payload(stage){
-  const st = S.stu || {}, min = x => Math.round((x || 0)/6)/10, tm = S.tm || {}, d = new Date();
-  const o = {uid:S.uid, attempt:S.attempt || 1, sent_at:d.toLocaleString('th-TH'), stage, lab:CONF.short, grade:st.grade || '', room:st.room || '', no:st.no || '', name:st.name || '',
-    pre_score:S.pre.done ? S.pre.score : '', post_score:S.post.done ? S.post.score : '', max_score:NA,
-    gain:S.pre.done && S.post.done && S.pre.score < NA ? Math.round((S.post.score - S.pre.score)/(NA - S.pre.score)*100)/100 : '',
-    parts_done:S.labDone.filter(Boolean).length + '/' + PARTS.length};
-  ['pre','post'].forEach(k=>{ const a = S[k].a; QUIZ.forEach((it,i)=>{ const x = a[i], ty = QT(it);
-    o[`${k}_${i+1}`] = !S[k].done ? '' : ty==='open' ? String(x || '') : qOk(it, x) ? 1 : 0; }); });
-  PARTS.forEach((p,i)=>{ const st = (S.eq || {})[i] || {a:{}, w:{}, r:{}, wr:{}}, Qs = EQ(i);
-    o[`endq_p${i+1}`] = Qs.map(q=>`${q.k}:${eqQOk(st, q) ? 'ถูก' : 'ยัง'} ผิด${(st.w[q.k] || 0) + ((st.wr || {})[q.k] || 0)}`).join(' | ');
-    o[`endq_wrong_p${i+1}`] = Qs.reduce((n,q)=>n + (st.w[q.k] || 0) + ((st.wr || {})[q.k] || 0), 0);
-    o[`pred_p${i+1}`] = S.pred[i]==null ? '' : S.pred[i]===p.pred.o[p.pred.a || 0] ? 1 : 0;
-    const ps = (S.ps || {})[i] || {}, rec = {}; ['recs','pts','prec','st','crecs','ans','q1','q2','A','wrong'].forEach(k=>{ const v = ps[k]; if(v!=null && !(typeof v==='object' && !Object.keys(v).length)) rec[k] = v; });
-    o[`rec_p${i+1}`] = Object.keys(rec).length ? JSON.stringify(rec).slice(0, 1500) : ''; });
-  const r = S.rev || {}; o.map_done = r.mapDone ? 1 : 0; o.map_tries = r.tries || 0;
-  ['pre','p1','p2','p3','p4','p5','rev','post'].forEach(k=>{ o['min_' + k] = min(tm[k]); }); o.min_total = min(Object.values(tm).reduce((a,b)=>a + b, 0));
+/* ---------- time on task + sending results to the teacher's Google Sheet (one row per student per part) ---------- */
+setInterval(()=>{ if(document.hidden || !S.stu || ui.cp==null) return; const v = ui.view==='lab' ? 'lab' : ui.view==='pre' ? 'pre' : (ui.view==='post' || ui.view==='result') ? 'post' : null; if(!v) return;
+  const k = 'p' + (ui.cp + 1) + '_' + v; S.tm = S.tm || {}; S.tm[k] = (S.tm[k] || 0) + 5; save(); }, 5000);
+function payload(i){
+  const st = S.stu || {}, min = x => Math.round((x || 0)/6)/10, tm = S.tm || {}, q = pqS(i), na = NAp(i), p = PARTS[i];
+  const o = {uid:S.uid + '-p' + (i + 1), attempt:S.attempt || 1, sent_at:new Date().toLocaleString('th-TH'), stage:['เริ่ม','ก่อนเรียน','แล็บ','หลังเรียน'][pStage(i)],
+    lab:CONF.title + ' ตอนที่ ' + (i + 1), grade:st.grade || '', room:st.room || '', no:st.no || '', name:st.name || '',
+    pre_score:q.pre.done ? q.pre.score : '', post_score:q.post.done ? q.post.score : '', max_score:na,
+    gain:q.pre.done && q.post.done && q.pre.score < na ? Math.round((q.post.score - q.pre.score)/(na - q.pre.score)*100)/100 : ''};
+  const _open = [], _models = {};
+  ['pre','post'].forEach(k=>{ const s = q[k]; PQ(i).forEach((qi,j)=>{ const it = QUIZ[qi], x = s.a[j], key = `${k}_${j+1}`;
+    if(QT(it)==='open'){ o[key] = s.done ? String(x || '') : ''; _open.push(key); _models[key] = String(it.model).replace(/\{N\}/g, '(ชื่อนักเรียน)'); }
+    else o[key] = s.done ? (qOk(it, x) ? 1 : 0) : '';
+    o[`${k}_${j+1}_มั่นใจ`] = s.done ? (s.c[j]===1 ? 1 : 0) : ''; }); });
+  const es = (S.eq || {})[i] || {a:{}, w:{}, r:{}, wr:{}}, Qs = EQ(i);
+  o.endq = Qs.map(qq=>`${qq.k}:${eqQOk(es, qq) ? 'ถูก' : 'ยัง'} ผิด${(es.w[qq.k] || 0) + ((es.wr || {})[qq.k] || 0)}`).join(' | ');
+  o.endq_wrong = Qs.reduce((n,qq)=>n + (es.w[qq.k] || 0) + ((es.wr || {})[qq.k] || 0), 0);
+  o.predict = S.pred[i]==null ? '' : S.pred[i]===p.pred.o[p.pred.a || 0] ? 1 : 0;
+  const ps = (S.ps || {})[i] || {}, rec = {}; ['recs','pts','prec','st','crecs','ans','q1','q2','A','wrong'].forEach(k=>{ const v = ps[k]; if(v!=null && !(typeof v==='object' && !Object.keys(v).length)) rec[k] = v; });
+  o.lab_record = Object.keys(rec).length ? JSON.stringify(rec).slice(0, 1500) : '';
+  ['pre','lab','post'].forEach(k=>{ o['min_' + k] = min(tm['p' + (i + 1) + '_' + k]); });
+  o._open = _open; o._models = _models; o._items = PQ(i).map(qi=>String(QUIZ[qi].q).replace(/\{N\}/g, '(ชื่อนักเรียน)'));
   return o; }
-const sendSig = () => [!!S.stu, S.pre.done, S.labDone.filter(Boolean).length, CONF.uni && typeof revDone==='function' ? revDone() : 0, S.post.done].join(',');
-let sendT;
-async function sendNow(stage){
-  if(!S.stu || !S.uid) return; S.sent = S.sent || {};
-  if(!CONF.send){ S.sent.st = 'nourl'; return; }
-  const body = JSON.stringify(payload(stage || (S.post.done ? 'post' : S.labDone.some(Boolean) ? 'lab' : S.pre.done ? 'pre' : 'start')));
-  S.sent.st = 'sending'; try{ await fetch(CONF.send, {method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'}, body});
-    S.sent.st = 'ok'; S.sent.at = Date.now(); S.sent.sig = sendSig(); }
-  catch(e){ S.sent.st = 'fail'; }
-  save(); if(ui.view==='result') render(); }
-function sendWatch(){ if(!S.stu) return; const g = sendSig(); if(S.sent && S.sent.sig===g && S.sent.st==='ok') return; clearTimeout(sendT); sendT = setTimeout(()=>sendNow(), 1500); }
+const sendSig = i => [pStage(i), S.labDone[i] ? 1 : 0].join(',');
+const sendT = {};
+async function sendNow(i){
+  if(!S.stu || !S.uid || i==null) return; S.sent = S.sent || {}; const t = S.sent[i] = S.sent[i] || {};
+  if(!CONF.send){ t.st = 'nourl'; return; }
+  const body = JSON.stringify(payload(i)), sig = sendSig(i);
+  t.st = 'sending'; try{ await fetch(CONF.send, {method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'}, body});
+    t.st = 'ok'; t.at = Date.now(); t.sig = sig; }
+  catch(e){ t.st = 'fail'; }
+  save(); if(ui.view==='result' && ui.cp===i) render(); }
+function sendWatch(){ if(!S.stu) return; PARTS.forEach((p,i)=>{ if(pStage(i)===0) return; const t = (S.sent || {})[i] || {}; if(t.sig===sendSig(i) && t.st==='ok') return; clearTimeout(sendT[i]); sendT[i] = setTimeout(()=>sendNow(i), 1500); }); }
 setInterval(sendWatch, 4000); window.addEventListener('online', ()=>sendWatch());
-function sendBox(){ const t = S.sent || {}, at = t.at ? new Date(t.at).toLocaleTimeString('th-TH', {hour:'2-digit', minute:'2-digit'}) : '';
-  const msg = !CONF.send ? 'ระบบส่งผลยังไม่ได้ตั้งค่า (ครูยังไม่ได้ใส่ลิงก์ Google Sheet)' : t.st==='ok' ? `ส่งผลให้ครูแล้ว ✓ เวลา ${at} น.` : t.st==='sending' ? 'กำลังส่งผลให้ครู...' : 'ยังส่งผลไม่สำเร็จ ตรวจอินเทอร์เน็ตแล้วกดส่งอีกครั้ง';
-  return `<section class="card pad sendbox ${t.st==='ok' ? 'ok' : ''}"><div><b>${esc(stuTxt())}</b><div class="note">${msg}</div></div>${CONF.send ? `<button class="btn ${t.st==='ok' ? 'ghost' : 'ok'} sm" type="button" data-act="resend">ส่งผลอีกครั้ง</button>` : ''}</section>`; }
-document.addEventListener('input', e=>{ if(e.target.id!=='qOpen') return; const st = S[ui.view], it = QUIZ[ui.q]; if(!st || !it || QT(it)!=='open') return;
-  st.a[ui.q] = e.target.value; save(); const ok = qAns(it, st.a[ui.q]), dot = document.querySelector(`.qdot[data-v="${ui.q}"]`); if(dot) dot.classList.toggle('ans', ok);
-  const n = st.a.filter((x,i)=>qAns(QUIZ[i], x)).length, sb = document.querySelector('[data-act="submitQuiz"]'); if(sb){ sb.disabled = n!==NQ; sb.textContent = `ส่งคำตอบ (${n}/${NQ})`; } });
+function sendBox(i){ const t = (S.sent || {})[i] || {}, at = t.at ? new Date(t.at).toLocaleTimeString('th-TH', {hour:'2-digit', minute:'2-digit'}) : '';
+  const msg = !CONF.send ? 'ระบบส่งผลยังไม่ได้ตั้งค่า' : t.st==='ok' ? `ส่งผล${PARTS[i].k}ให้ครูแล้ว ✓ เวลา ${at} น.` : t.st==='sending' ? 'กำลังส่งผลให้ครู...' : 'ยังส่งผลไม่สำเร็จ ตรวจอินเทอร์เน็ตแล้วกดส่งอีกครั้ง';
+  return `<section class="card pad sendbox ${t.st==='ok' ? 'ok' : ''}"><div><b>${esc(stuTxt())}</b><div class="note">${msg}</div></div>${CONF.send ? `<button class="btn ${t.st==='ok' ? 'ghost' : 'ok'} sm" type="button" data-act="resend" data-v="${i}">ส่งผลอีกครั้ง</button>` : ''}</section>`; }
+document.addEventListener('input', e=>{ if(e.target.id!=='qOpen' || ui.cp==null) return; const st = pqS(ui.cp)[ui.view], L = PQ(ui.cp), it = QUIZ[L[ui.q]]; if(!st || !it || QT(it)!=='open' || st.done) return;
+  st.a[ui.q] = e.target.value; save(); qMeta(); });
+function qMeta(){ const st = pqS(ui.cp)[ui.view], L = PQ(ui.cp); if(!st) return; const ok = j => qDone(QUIZ[L[j]], st.a[j], st.c[j]);
+  document.querySelectorAll('.qdot[data-v]').forEach(d=>d.classList.toggle('ans', ok(+d.dataset.v)));
+  const n = L.filter((_,j)=>ok(j)).length, sb = document.querySelector('[data-act="submitQuiz"]'); if(sb){ sb.disabled = n!==L.length; sb.textContent = `ส่งคำตอบ (${n}/${L.length})`; } }
 
 /* ---------- rail ---------- */
 function renderRail(){
   $('#brandMascot').innerHTML = mascot('wink', 44);
   const nb = $('#nickBar'); nb.hidden = !S.nick; nb.innerHTML = S.nick ? `<span>สวัสดี <b>${esc(S.nick)}</b>${S.stu ? `<br><small>${esc(S.stu.grade)}/${esc(S.stu.room)} เลขที่ ${esc(S.stu.no)}</small>` : ''}</span>` : '';
-  const viewStep = {pre:0, guide:1, picker:2, lab:2, sheet:3, post:4, result:4}[ui.view];
-  $('#steps').innerHTML = `<div class="steps-label">ขั้นตอน</div>` + STEPS.map((l,i)=>{
-    if(HIDE(i)) return '';
-    const open = unlocked(i), d = doneStep(i);
-    const cls = ['step', d?'done':'', viewStep===i?'current':''].join(' ');
-    return `<button type="button" class="${cls}" data-step="${i}" ${open?'':'disabled'} ${viewStep===i?'aria-current="step"':''}>
-      <span class="dot">${i===0 && S.pre.skip && !S.pre.done ? '↷' : d?ICON.check:([0,1,2,3,4].filter(j=>j<=i && !HIDE(j)).length)}</span><span class="lbl">${l}</span>${open?'':`<span style="color:var(--lock)">${ICON.lock}</span>`}</button>`;
-  }).join('');
-  const SI = [0,1,2,3,4].filter(i=>!HIDE(i)), n = SI.filter(doneStep).length;
-  $('#progBar').style.width = (n*100/SI.length)+'%';
-  $('#progText').textContent = `${n} จาก ${SI.length} ขั้นตอน`;
+  const cp = ui.cp, vs = {pre:0, lab:1, post:2, result:2}[ui.view];
+  if(cp==null || ui.view==='home' || ui.view==='picker' || ui.view==='sheet'){
+    const L = PARTS.map((p,i)=>i).filter(i=>UPART==null || i===UPART);
+    $('#steps').innerHTML = `<div class="steps-label">ตอนการทดลอง</div>` + L.map(i=>{ const g = pStage(i);
+      return `<button type="button" class="step ${g===3 ? 'done' : ''}" data-pt="${i}"><span class="dot">${g===3 ? ICON.check : i + 1}</span><span class="lbl">${PARTS[i].t}</span></button>`; }).join('');
+    const n = L.filter(i=>pStage(i)===3).length; $('#progBar').style.width = (n*100/L.length) + '%'; $('#progText').textContent = `เสร็จ ${n} จาก ${L.length} ตอน`;
+  } else {
+    const g = pStage(cp), lab = ['แบบทดสอบก่อนเรียน','ตัวแลป','แบบทดสอบหลังเรียน'];
+    $('#steps').innerHTML = `<div class="steps-label">${PARTS[cp].k} · ${esc(PARTS[cp].t)}</div>` + lab.map((l,k)=>{ const open = k===0 || (k===1 ? g >= 1 : g >= 2), d = g > k;
+      return `<button type="button" class="step ${d ? 'done' : ''} ${vs===k ? 'current' : ''}" data-st="${k}" ${open ? '' : 'disabled'}><span class="dot">${d ? ICON.check : k + 1}</span><span class="lbl">${l}</span>${open ? '' : `<span style="color:var(--lock)">${ICON.lock}</span>`}</button>`; }).join('')
+      + (UPART==null ? `<button type="button" class="step" data-home="1"><span class="dot">${ICON.back}</span><span class="lbl">เลือกตอนอื่น</span></button>` : '');
+    $('#progBar').style.width = (Math.min(g, 3)*100/3) + '%'; $('#progText').textContent = `${PARTS[cp].k} เสร็จ ${Math.min(g, 3)} จาก 3 ขั้น`;
+  }
   $('#resetAll').textContent = ui.confirmReset ? 'กดอีกครั้งเพื่อล้างคำตอบทั้งหมด' : 'เริ่มใหม่ทั้งหมด';
 }
 $('#steps').addEventListener('click', e=>{
-  const b = e.target.closest('[data-step]'); if(!b || b.disabled) return;
-  const i = +b.dataset.step;
-  go(i===4 && S.post.done ? 'result' : STEP_VIEW[i]);
+  const b = e.target.closest('button'); if(!b || b.disabled) return;
+  if(b.dataset.pt!=null){ openPart(+b.dataset.pt); return; }
+  if(b.dataset.home){ go('home'); return; }
+  const k = +b.dataset.st, cp = ui.cp; if(cp==null) return;
+  go(k===0 ? 'pre' : k===1 ? 'lab' : (pqS(cp).post.done ? 'result' : 'post'), {part:cp});
 });
+function openPart(i){ ui.cp = i; const g = pStage(i); go(g===0 ? 'pre' : g===1 ? 'lab' : g===2 ? 'post' : 'result', {part:i}); }
 $('#brand').addEventListener('click', ()=>go('home'));
 if(PD){ const t = $('#teachSheet'); t.hidden = false; t.addEventListener('click', ()=>go('sheet')); }
 $('#nickBar').addEventListener('click', e=>{ if(e.target.closest('[data-nick]')) showNick(true); });
 $('#resetAll').addEventListener('click', ()=>{
   if(!ui.confirmReset){ ui.confirmReset = true; renderRail(); setTimeout(()=>{ ui.confirmReset=false; renderRail(); }, 4000); return; }
-  ui.confirmReset = false; { const keep = {stu:S.stu, nick:S.nick, attempt:(S.attempt || 1) + 1}; S = Object.assign(fresh(), keep); if(S.stu) S.uid = Date.now().toString(36) + Math.random().toString(36).slice(2,8); } save(); ui.q = 0; ui.preSent = false; go('home'); showNick(); toast('ล้างคำตอบแล้ว เริ่มใหม่ได้เลย');
+  ui.confirmReset = false; { const keep = {stu:S.stu, nick:S.nick, attempt:(S.attempt || 1) + 1}; S = Object.assign(fresh(), keep, {pq:{}, sent:{}, tm:{}}); if(S.stu) S.uid = Date.now().toString(36) + Math.random().toString(36).slice(2,8); } save(); ui.q = 0; ui.preSent = false; go('home'); showNick(); toast('ล้างคำตอบแล้ว เริ่มใหม่ได้เลย');
 });
 
 /* ---------- router ---------- */
 function go(view, opt={}){
-  if(view==='pre' && PRE_LOCK()){ toast('เริ่มทำแบบทดสอบหลังเรียนแล้ว ย้อนไปทำก่อนเรียนไม่ได้'); return; }
-  if(view==='sheet' && CONF.uni && !RV && !unlocked(3)){ const left = PARTS.map((p,i)=>S.labDone[i] ? '' : p.k).filter(Boolean); toast('ทำภารกิจให้ครบก่อน เหลือ ' + left.join(', ')); if(ui.view==='lab') return; view = 'picker'; }
-  if((view==='post' || view==='result') && !RV && !unlocked(4)){ const left = PARTS.map((p,i)=>S.labDone[i] ? '' : p.k).filter(Boolean); toast(left.length ? 'ทำภารกิจให้ครบก่อน เหลือ ' + left.join(', ') : 'ทำขั้นสรุปและทบทวนให้ครบก่อน'); if(ui.view==='lab') return; view = left.length ? 'picker' : 'sheet'; }
+  if(view==='picker') view = 'home';
+  if(UPART!=null && (view==='home')){ ui.cp = UPART; }
+  if(opt.part!=null) ui.cp = opt.part;
+  const cp = ui.cp;
+  if(view==='lab' && cp!=null && !RV && !pqS(cp).pre.done){ toast('ทำแบบทดสอบก่อนเรียนของตอนนี้ก่อน'); view = 'pre'; }
+  if((view==='post' || view==='result') && cp!=null && !RV && !S.labDone[cp]){ toast('ทำภารกิจและคำถามท้ายตอนในแล็บให้ครบก่อน'); if(ui.view==='lab') return; view = pqS(cp).pre.done ? 'lab' : 'pre'; }
+  if(view==='result' && cp!=null && !pqS(cp).post.done) view = 'post';
+  if(view==='sheet' && CONF.uni && !RV && !S.labDone.every(Boolean)){ toast('ทำครบทั้ง ' + PARTS.length + ' ตอนก่อน'); view = 'home'; }
   if(ui.view==='lab' && view!=='lab') Lab.stop();
+  if(view==='lab') opt.part = cp;
   ui.view = view; Object.assign(ui, opt);
-  if(view==='pre' || view==='post'){ const st = S[view]; if(!opt.keepQ){ const f = st.a.findIndex(x=>x===null); ui.q = f<0?0:f; } }
+  if((view==='pre' || view==='post') && cp!=null && !opt.keepQ){ const st = pqS(cp)[view], L = PQ(cp); const f = L.findIndex((qi,j)=>!qDone(QUIZ[qi], st.a[j], st.c[j])); ui.q = f < 0 ? 0 : f; }
   render(); window.scrollTo({top:0});
 }
 function render(){
   renderRail();
   const m = $('#main');
-  const V = {home:vHome, pre:()=>vQuiz('pre'), post:()=>vQuiz('post'), guide:vGuide, picker:vPicker, lab:vLab, sheet:vSheet, result:vResult}[ui.view] || vHome;
+  const V = {home:vHome, pre:()=>vQuiz('pre'), post:()=>vQuiz('post'), guide:vGuide, picker:vHome, lab:vLab, sheet:vSheet, result:vResult}[ui.view] || vHome;
   if(CONF.uni) HELP.def = null;
   m.innerHTML = V();
   if(ui.view==='lab') Lab.mount(ui.part);
@@ -829,15 +859,19 @@ document.getElementById('main').addEventListener('click', e=>{
   if(act==='sfx'){ const m = SFX.toggle(); a.innerHTML = m ? SND_OFF : SND_ON; a.setAttribute('aria-label', m ? 'เปิดเสียง' : 'ปิดเสียง'); toast(m ? 'ปิดเสียงแล้ว' : 'เปิดเสียงแล้ว'); if(typeof Lab!=='undefined' && Lab.muted) Lab.muted(m); return; }
   if(act==='ans' || act==='pred') SFX.pick(); else if(!(act==='lab' && /^(cam|z(in|out))/.test(String(v)))) SFX.click();
   if(act==='go') go(v);
-  if(act==='part') go('lab', {part:+v});
-  if(act==='ans'){ const st = S[ui.view], q0 = Math.min(NQ - 1, Math.max(0, ui.q)); ui.q = q0; st.a[q0] = +v; st.a.length = NQ; save(); if(q0<NQ-1) { setTimeout(()=>{ if(ui.q===q0){ ui.q = q0 + 1; render(); } }, 180); } render(); }
-  if(act==='yn'){ const st = S[ui.view], it = QUIZ[ui.q]; if(!st || !it || QT(it)!=='yn') return; const [k, val] = v.split('|').map(Number); const cur = Array.isArray(st.a[ui.q]) ? st.a[ui.q].slice() : it.rows.map(()=>null); cur[k] = val; st.a[ui.q] = cur; save(); render(); return; }
-  if(act==='resend'){ sendNow('manual'); render(); return; }
-  if(act==='q'){ ui.q = +v; render(); }
-  if(act==='prev'){ ui.q = Math.max(0, ui.q-1); render(); }
-  if(act==='next'){ ui.q = Math.min(NQ-1, ui.q+1); render(); }
+  if(act==='part'){ openPart(+v); return; }
+  if(act==='teach'){ teachModal(); return; }
+  if(act==='ans' || act==='yn' || act==='conf'){ const cp = ui.cp, st = cp!=null && pqS(cp)[ui.view], L = cp!=null ? PQ(cp) : [], it = QUIZ[L[ui.q]]; if(!st || !it || st.done) return;
+    if(act==='ans') st.a[ui.q] = +v;
+    else if(act==='yn'){ const [k, val] = v.split('|').map(Number); const cur = Array.isArray(st.a[ui.q]) ? st.a[ui.q].slice() : it.rows.map(()=>null); cur[k] = val; st.a[ui.q] = cur; }
+    else st.c[ui.q] = +v;
+    save(); const q0 = ui.q; if(act==='conf' && qDone(it, st.a[q0], st.c[q0]) && q0 < L.length - 1) setTimeout(()=>{ if(ui.q===q0){ ui.q = q0 + 1; render(); window.scrollTo({top:0}); } }, 250);
+    render(); return; }
+  if(act==='resend'){ sendNow(+v); render(); return; }
+  if(act==='q'){ ui.q = +v; render(); window.scrollTo({top:0}); }
+  if(act==='prev'){ ui.q = Math.max(0, ui.q-1); render(); window.scrollTo({top:0}); }
+  if(act==='next'){ ui.q = Math.min(PQ(ui.cp).length - 1, ui.q+1); render(); window.scrollTo({top:0}); }
   if(act==='submitQuiz') submitQuiz(ui.view);
-  if(act==='skipPre'){ S.pre.skip = true; save(); toast('ข้ามแบบทดสอบก่อนเรียนแล้ว กลับมาทำได้ก่อนเริ่มหลังเรียน'); go(NOG ? 'picker' : 'guide'); return; }
   if(act==='guideDone'){ S.guideRead = true; save(); toast('ปลดล็อกห้องแลปแล้ว'); go('picker'); }
   if(act==='pdf') makePdf(a);
   if(act==='cmChip') cmChip(v);
@@ -863,87 +897,77 @@ document.getElementById('main').addEventListener('click', e=>{
 });
 
 /* ---------- views ---------- */
-function partCards(clickable){
-  return `<div class="parts">${PARTS.map((p,i)=>{
-    const open = partOpen(i), d = S.labDone[i];
-    let pill = d ? `<span class="pill done">${ICON.check} ทำเสร็จแล้ว</span>` : open ? `<span class="pill go">เข้าทำได้ ${ICON.arrow}</span>` :
-      `<span class="pill">${ICON.lock} ${!PRE_OK()?'ทำหรือข้ามแบบทดสอบก่อน':'อ่านคู่มือก่อน'}</span>`;
-    return `<button type="button" class="part" ${clickable&&open?`data-act="part" data-v="${i}"`:''} ${clickable&&open?'':(clickable?'disabled':'tabindex="-1"')}>
+function partCards(){
+  const L = PARTS.map((p,i)=>i).filter(i=>UPART==null || i===UPART);
+  return `<div class="parts">${L.map(i=>{ const p = PARTS[i], g = pStage(i), q = pqS(i), t = (S.sent || {})[i] || {};
+    const chip = (ok, l) => `<span class="pstat ${ok ? 'ok' : ''}">${ok ? '✓ ' : ''}${l}</span>`;
+    return `<button type="button" class="part" data-act="part" data-v="${i}">
       <div class="art" style="background:${p.bg}">${PART_ART[i]}</div>
-      <div class="body"><div class="k">${p.k} · ${p.time}</div><h3>${p.t}</h3><p>${p.d}</p>${pill}</div></button>`;
-  }).join('')}</div>`;
+      <div class="body"><div class="k">${p.k} · ${p.time}</div><h3>${p.t}</h3><p>${p.d}</p>
+        <div class="pstats">${chip(q.pre.done, 'ก่อนเรียน')}${chip(S.labDone[i], 'แล็บ')}${chip(q.post.done, 'หลังเรียน')}${g===3 && t.st==='ok' ? chip(true, 'ส่งครูแล้ว') : ''}</div>
+        <span class="pill ${g===3 ? 'done' : 'go'}">${g===3 ? 'ดูผล' : g===0 ? 'เริ่มตอนนี้' : 'ทำต่อ'} ${ICON.arrow}</span></div></button>`; }).join('')}</div>`;
 }
 function vHome(){
-  const c = curStep();
-  const msgs = [
-    [HS ? `สวัสดีครับ ${esc(S.nick||'')} ผมปาร์ตี้ จะช่วยดูแลการทดลองในแล็บนี้` : SR ? `สวัสดี ${esc(S.nick||'')} พี่ปาร์ตี้จะเป็นพี่เลี้ยงในแลปนี้` : `สวัสดี ${esc(S.nick||'')}! เราชื่อ "ปาร์ตี้"`, SR ? `เริ่มจากแบบทดสอบก่อนเรียน ${NQ} ข้อ ยังไม่เฉลย ตอบตามความเข้าใจตอนนี้ แล้วเทียบกับหลังเรียน` : `ก่อนเข้าห้องแลป มาลองทำแบบทดสอบสั้น ๆ ${NQ} ข้อกันก่อนนะ ข้อนี้ยังไม่เฉลย ตอบตามที่คิดได้เลย`,'เริ่มแบบทดสอบก่อนเรียน','pre'],
-    [SR ? `${esc(S.nick||'')} ทำแบบทดสอบเสร็จแล้ว` : `${esc(S.nick||'')} ทำแบบทดสอบเสร็จแล้ว เก่งมาก!`,'ต่อไปอ่านคู่มือสั้น ๆ ว่าในห้องแลปต้องทำอะไรบ้าง','อ่านคู่มือการทำกิจกรรม','guide'],
-    [`พร้อมเข้าห้องแลปแล้ว ${esc(S.nick||'')}!`,'เลือกทำตอนไหนก่อนก็ได้ ทำภารกิจครบทุกตอนแล้วแบบทดสอบหลังเรียนจะเปิด','เข้าห้องแลป','picker'],
-    CONF.uni ? [`${esc(S.nick||'')} ทดลองครบทุกตอนแล้ว!`,'ต่อไปต่อผังมโนทัศน์ ทบทวนคำทำนาย แล้วรับการ์ดสรุปผล','สรุปและทบทวน','sheet'] :
-    [`${esc(S.nick||'')} ทดลองครบทุกตอนแล้ว!`,'ดาวน์โหลดใบกิจกรรมไปปริ้น เขียนผลและสรุปลงกระดาษ แล้วไปทำแบบทดสอบหลังเรียนได้เลย','เปิดใบกิจกรรม','sheet'],
-    [S.post.done?`${esc(S.nick||'')} ทำครบทุกขั้นตอนแล้ว!`:`เหลืออีกขั้นเดียว ${esc(S.nick||'')}!`, S.post.done?'ดูคะแนนก่อนเรียนเทียบกับหลังเรียนได้ที่หน้าผลคะแนน':'มาทำแบบทดสอบหลังเรียน แล้วดูว่าเราเข้าใจมากขึ้นแค่ไหน', S.post.done?'ดูผลคะแนน':'เริ่มแบบทดสอบหลังเรียน', S.post.done?'result':'post']
-  ][c];
+  const all = S.labDone.every(Boolean);
   return `<div class="wrap">
     <header style="display:flex;flex-direction:column;gap:8px">
       <div class="tags">${CONF.tags.map((t,i)=>`<span class="tag ${["y","g","b"][i%3]}">${t}</span>`).join("")}</div>
-      <h1 class="h1">${CONF.title}</h1>
+      <h1 class="h1">${CONF.title}${UPART!=null ? ` · ${PARTS[UPART].k}` : ''}</h1>
       <p class="credit" style="margin:0;font-size:14px">ออกแบบและพัฒนาโดย ปาร์คณัฐพล</p>
-      <p class="sub">${CONF.sub}</p>
+      <p class="sub">${UPART!=null ? PARTS[UPART].d : CONF.sub}</p>
     </header>
-    <section class="card pad mascot-row">${mascot(c===4&&S.post.done?'yay':'happy', 96)}
-      <div class="say"><b>${msgs[0]}</b><span>${msgs[1]}</span></div>
-      <button class="btn" type="button" data-act="go" data-v="${msgs[3]}">${msgs[2]} ${ICON.arrow}</button>
+    <section class="card pad mascot-row">${mascot('happy', 96)}
+      <div class="say"><b>สวัสดีครับ ${esc(S.nick || '')}</b><span>แต่ละตอนมี 3 ขั้น: แบบทดสอบก่อนเรียน ${PQ(0).length} ข้อ → ทำแล็บ → แบบทดสอบหลังเรียน แล้วระบบจะส่งผลให้ครูเอง${UPART==null ? ' ทำตอนที่ครูบอกในคาบนี้นะครับ' : ''}</span></div>
     </section>
-    <section style="display:flex;flex-direction:column;gap:14px"><h2 style="font-size:23px">ตอนการทดลอง</h2>${partCards(true)}</section>
+    <section style="display:flex;flex-direction:column;gap:14px"><h2 style="font-size:23px">${UPART!=null ? 'ตอนของคาบนี้' : 'ตอนการทดลอง'}</h2>${partCards()}</section>
+    ${all && UPART==null ? `<section class="card pad mascot-row">${mascot('love',80)}<div class="say"><b>${esc(nk('ทำครบทุกตอนแล้ว!'))}</b><span>ทบทวนรวมด้วยผังมโนทัศน์และรับการ์ดสรุปผลได้ (ไม่บังคับ)</span></div><button class="btn ghost" type="button" data-act="go" data-v="sheet">สรุปและทบทวน ${ICON.arrow}</button></section>` : ''}
+    ${UPART==null ? `<div class="row" style="justify-content:flex-end"><button class="linkbtn" type="button" data-act="teach">สำหรับครู: ลิงก์และ QR แยกตอน</button></div>` : ''}
   </div>`;
 }
-function vPicker(){
-  return `<div class="wrap">
-    <header style="display:flex;flex-direction:column;gap:6px"><div class="tags"><span class="tag y">ขั้นที่ 3</span></div><h1 class="h1">เลือกตอนการทดลอง</h1>
-    <p class="sub">เลือกทำตอนไหนก่อนก็ได้ ทำภารกิจทุกตอนให้ครบ แบบทดสอบหลังเรียนจะเปิด</p></header>
-    ${partCards(true)}
-    ${S.labDone.every(Boolean)?`<div class="card pad mascot-row">${mascot('love',80)}<div class="say"><b>${esc(nk('ทดลองครบทั้ง ' + PARTS.length + ' ตอนแล้ว!'))}</b><span>${CONF.uni ? 'ต่อไปสรุปและทบทวน แล้วไปทำแบบทดสอบหลังเรียน' : 'เขียนผลลงใบกิจกรรม แล้วไปทำแบบทดสอบหลังเรียนกัน'}</span></div><div class="row">${CONF.uni ? `<button class="btn ok" type="button" data-act="go" data-v="sheet">สรุปและทบทวน ${ICON.arrow}</button>` : `<button class="btn ghost" type="button" data-act="go" data-v="sheet">${ICON.dl} ใบกิจกรรม</button><button class="btn ok" type="button" data-act="go" data-v="post">แบบทดสอบหลังเรียน ${ICON.arrow}</button>`}</div></div>`:''}
-  </div>`;
-}
-
+function teachModal(){ const base = CONF.site;
+  showInfo('ลิงก์และ QR แยกตอน (สำหรับครู)', `<div class="note">แจกลิงก์หรือ QR ของตอนที่สอนในคาบนั้น นักเรียนจะเห็นเฉพาะตอนนั้น</div><div class="tqr">${PARTS.map((p,i)=>{ const u = base + '?part=' + (i + 1); return `<div class="tq"><div id="qr${i}" class="qrbox"></div><b>${p.k}</b><span>${esc(p.t)}</span><input readonly value="${esc(u)}" onclick="this.select()"></div>`; }).join('')}</div>`);
+  const mk = () => PARTS.forEach((p,i)=>{ const el = document.getElementById('qr' + i); if(el && window.QRCode && !el.firstChild) new QRCode(el, {text:base + '?part=' + (i + 1), width:120, height:120, correctLevel:QRCode.CorrectLevel.M}); });
+  if(window.QRCode) mk(); else { const sc = document.createElement('script'); sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js'; sc.onload = mk; document.head.appendChild(sc); } }
 function optHTML(it, j){
   if(it.pics) return `<span class="badge">${TH[j]}</span>${it.pics[j]}<span class="t" style="text-align:center">${it.labels[j]}</span>`;
   return `<span class="badge">${TH[j]}</span><span class="t">${esc(it.o[j])}</span>`;
 }
 function vQuiz(kind){
-  const st = S[kind], isPre = kind==='pre';
-  if(isPre && st.done){
-    return `<div class="wrap"><section class="card pad mascot-row">${mascot('yay',96)}<div class="say"><b>${esc(nk('ส่งคำตอบแบบทดสอบก่อนเรียนแล้ว'))}</b><span>ยังไม่เฉลยตอนนี้นะ จะได้ดูผลเทียบกับหลังเรียนตอนท้ายกิจกรรม</span></div>
-      ${NOG ? `<button class="btn" type="button" data-act="go" data-v="picker">ไปห้องแลป ${ICON.arrow}</button>` : `<button class="btn" type="button" data-act="go" data-v="guide">อ่านคู่มือต่อ ${ICON.arrow}</button>`}</section></div>`;
+  const cp = ui.cp; if(cp==null) return vHome();
+  const st = pqS(cp)[kind], isPre = kind==='pre', L = PQ(cp), N = L.length, p = PARTS[cp];
+  if(st.done){
+    return isPre ? `<div class="wrap"><section class="card pad mascot-row">${mascot('yay',96)}<div class="say"><b>${esc(nk('ส่งคำตอบก่อนเรียนของ' + p.k + 'แล้ว'))}</b><span>ยังไม่เฉลยตอนนี้ ไปทำแล็บ แล้วทำแบบทดสอบหลังเรียนข้อเดิมเพื่อเทียบกัน</span></div>
+      <button class="btn" type="button" data-act="go" data-v="lab">เข้าห้องแลป${p.k} ${ICON.arrow}</button></section></div>` : vResult();
   }
-  if(!(ui.q >= 0 && ui.q < NQ)) ui.q = 0; st.a.length = NQ;
-  const it = QUIZ[ui.q], answered = st.a.filter((x,i)=>qAns(QUIZ[i], x)).length, all = answered===NQ;
-  const fig = it.fig ? `<div class="qfig">${it.fig}</div>` : '', sc = SCEN[it.sc], ty = QT(it), cur = st.a[ui.q];
-  const scen = sc ? `<section class="card pad scen"><div class="scn">สถานการณ์ที่ ${it.sc + 1} จาก ${SCEN.length}</div><h2>${esc(sc.t)}</h2><p>${esc(sc.txt)}</p>${sc.tab ? `<div class="scroll-x"><table class="stab"><thead><tr>${sc.tab[0].map(h=>`<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${sc.tab.slice(1).map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>` : ''}</section>` : '';
-  const body = ty==='yn' ? `<table class="yn"><thead><tr><th>ข้อความ</th><th>ใช่</th><th>ไม่ใช่</th></tr></thead><tbody>${it.rows.map((r,k)=>`<tr><td>${esc(r[0])}</td>${[1,0].map(val=>`<td><button type="button" class="ynb ${Array.isArray(cur) && cur[k]===val ? 'on' : ''}" data-act="yn" data-v="${k}|${val}" aria-pressed="${Array.isArray(cur) && cur[k]===val}">${val ? 'ใช่' : 'ไม่ใช่'}</button></td>`).join('')}</tr>`).join('')}</tbody></table><div class="note">ตอบให้ครบทุกแถว (ได้คะแนนเมื่อตอบถูกทุกแถว)</div>`
+  if(!(ui.q >= 0 && ui.q < N)) ui.q = 0;
+  const it = QUIZ[L[ui.q]], ok = j => qDone(QUIZ[L[j]], st.a[j], st.c[j]), answered = L.filter((_,j)=>ok(j)).length, all = answered===N;
+  const sc = SCEN[it.sc], ty = QT(it), cur = st.a[ui.q], cf = st.c[ui.q];
+  const scen = sc ? `<section class="card pad scen"><div class="scn">สถานการณ์ · ${p.k}</div><h2>${esc(sc.t)}</h2><p>${esc(nmQ(sc.txt))}</p>${sc.tab ? `<div class="scroll-x"><table class="stab"><thead><tr>${sc.tab[0].map(h=>`<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${sc.tab.slice(1).map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>` : ''}</section>` : '';
+  const body = ty==='yn' ? `<table class="yn"><thead><tr><th>ข้อความ</th><th>ใช่</th><th>ไม่ใช่</th></tr></thead><tbody>${it.rows.map((r,k)=>`<tr><td>${esc(nmQ(r[0]))}</td>${[1,0].map(val=>`<td><button type="button" class="ynb ${Array.isArray(cur) && cur[k]===val ? 'on' : ''}" data-act="yn" data-v="${k}|${val}" aria-pressed="${Array.isArray(cur) && cur[k]===val}">${val ? 'ใช่' : 'ไม่ใช่'}</button></td>`).join('')}</tr>`).join('')}</tbody></table><div class="note">ตอบให้ครบทุกแถว (ได้คะแนนเมื่อตอบถูกทุกแถว)</div>`
     : ty==='open' ? `<textarea id="qOpen" class="qopen" rows="5" maxlength="1200" placeholder="พิมพ์คำตอบและเหตุผลของเรา">${esc(typeof cur==='string' ? cur : '')}</textarea><div class="note">ข้อเขียน ครูจะเป็นผู้ตรวจ · พิมพ์อย่างน้อย 5 ตัวอักษร</div>`
-    : `<div class="opts" role="radiogroup" aria-label="ตัวเลือก">${[0,1,2,3].map(j=>`<button type="button" role="radio" class="opt ${it.pics?'pic':''}" aria-checked="${st.a[ui.q]===j}" data-act="ans" data-v="${j}">${optHTML(it,j)}</button>`).join('')}</div>`;
+    : `<div class="opts" role="radiogroup" aria-label="ตัวเลือก">${[0,1,2,3].map(j=>`<button type="button" role="radio" class="opt" aria-checked="${cur===j}" data-act="ans" data-v="${j}">${optHTML(it,j)}</button>`).join('')}</div>`;
+  const conf = `<div class="confrow"><span>ความมั่นใจในคำตอบข้อนี้</span><div class="seg">${[[1,'มั่นใจ'],[0,'ไม่แน่ใจ']].map(([v,l])=>`<button type="button" data-act="conf" data-v="${v}" aria-pressed="${cf===v}">${l}</button>`).join('')}</div></div>`;
   return `<div class="wrap" style="max-width:940px">
-    <div class="qhead"><div><div class="note">${isPre?'แบบทดสอบก่อนเรียน · ยังไม่เฉลยคำตอบ':'แบบทดสอบหลังเรียน · เฉลยหลังส่งคำตอบ'}</div>
-      <h1 style="font-size:22px">ข้อ ${ui.q+1} จาก ${NQ}</h1>${isPre && !S.pre.skip && !CONF.send ? `<button class="btn ghost sm" type="button" data-act="skipPre" style="margin-top:6px">ข้ามไปก่อน ทำทีหลังได้ ${ICON.arrow}</button>` : ''}</div>
-      <div class="qdots" role="group" aria-label="ไปที่ข้อ">${st.a.map((x,i)=>`${i && QUIZ[i].sc!==QUIZ[i-1].sc ? '<span class="qsep"></span>' : ''}<button type="button" class="qdot ${qAns(QUIZ[i], x)?'ans':''} ${i===ui.q?'cur':''}" data-act="q" data-v="${i}" aria-label="ข้อ ${i+1}">${i+1}</button>`).join('')}</div></div>
+    <div class="qhead"><div><div class="note">${p.k} · ${isPre ? 'แบบทดสอบก่อนเรียน · ยังไม่เฉลยคำตอบ' : 'แบบทดสอบหลังเรียน · เฉลยหลังส่งคำตอบ'}</div>
+      <h1 style="font-size:22px">ข้อ ${ui.q+1} จาก ${N}</h1></div>
+      <div class="qdots" role="group" aria-label="ไปที่ข้อ">${L.map((qi,j)=>`<button type="button" class="qdot ${ok(j) ? 'ans' : ''} ${j===ui.q ? 'cur' : ''}" data-act="q" data-v="${j}" aria-label="ข้อ ${j+1}">${j+1}</button>`).join('')}</div></div>
     ${scen}
-    <section class="card pad" style="display:flex;flex-direction:column;gap:20px">
-      <h2 class="qtext">${esc(it.q)}</h2>${fig}
-      ${body}
+    <section class="card pad" style="display:flex;flex-direction:column;gap:18px">
+      <h2 class="qtext">${esc(nmQ(it.q))}</h2>
+      ${body}${conf}
     </section>
     <div class="row spread">
-      <button class="btn ghost" type="button" data-act="prev" ${ui.q===0?'disabled':''}>${ICON.back} ข้อก่อนหน้า</button>
-      ${ui.q<NQ-1 ? `<button class="btn" type="button" data-act="next">ข้อถัดไป ${ICON.arrow}</button>` :
-        `<button class="btn ok" type="button" data-act="submitQuiz" ${all?'':'disabled'}>ส่งคำตอบ (${answered}/${NQ})</button>`}
+      <button class="btn ghost" type="button" data-act="prev" ${ui.q===0 ? 'disabled' : ''}>${ICON.back} ข้อก่อนหน้า</button>
+      ${ui.q < N-1 ? `<button class="btn" type="button" data-act="next">ข้อถัดไป ${ICON.arrow}</button>` :
+        `<button class="btn ok" type="button" data-act="submitQuiz" ${all ? '' : 'disabled'}>ส่งคำตอบ (${answered}/${N})</button>`}
     </div>
-    ${ui.q===NQ-1 && !all ? `<p class="note" style="margin:0;text-align:right">ยังตอบไม่ครบ กดเลขข้อด้านบนเพื่อกลับไปตอบข้อที่เหลือ</p>`:''}
+    ${ui.q===N-1 && !all ? `<p class="note" style="margin:0;text-align:right">ยังตอบไม่ครบ (ต้องเลือกความมั่นใจทุกข้อด้วย) กดเลขข้อด้านบนเพื่อกลับไปตอบ</p>` : ''}
   </div>`;
 }
 function submitQuiz(kind){
-  const st = S[kind]; st.a.length = NQ; if(st.a.some((x,i)=>!qAns(QUIZ[i], x))) return;
-  st.score = qScore(st.a); st.done = true; st['t_' + kind] = Date.now(); save(); sendNow(kind);
-  if(kind==='pre'){ toast(NOG ? 'ส่งคำตอบแล้ว ปลดล็อกห้องแลป' : 'ส่งคำตอบแล้ว ปลดล็อกคู่มือการทำกิจกรรม'); render(); }
+  const cp = ui.cp, st = pqS(cp)[kind], L = PQ(cp); if(L.some((qi,j)=>!qDone(QUIZ[qi], st.a[j], st.c[j]))) return;
+  st.score = pScore(cp, kind); st.done = true; st.t = Date.now(); save(); sendNow(cp);
+  if(kind==='pre'){ toast('ส่งคำตอบแล้ว เข้าห้องแลปได้เลย'); go('lab'); }
   else go('result');
 }
 
@@ -989,8 +1013,8 @@ function popWatch(){ const r = $('#pRes'); if(!r || r.__pw) return; r.__pw = 1; 
 function resPop(lab, t, cls){ const st = $('#stage'); if(!st) return; let d = $('#resPop'); if(!d){ d = document.createElement('div'); d.id = 'resPop'; st.appendChild(d); }
   d.innerHTML = `${lab ? `<span class="l">${esc(lab)}</span>` : ''}<span class="${cls}">${esc(t)}</span>`; d.classList.remove('show'); void d.offsetWidth; d.classList.add('show');
   const r = $('#pRes'); if(r){ r.classList.remove('pop'); void r.offsetWidth; r.classList.add('pop'); } }
-function nextPartBtn(i){ const n = PARTS.length; for(let d = 1; d < n; d++){ const j = (i + d) % n; if(!S.labDone[j]) return `<button class="btn ok" type="button" data-act="part" data-v="${j}">ไป${PARTS[j].k} ${ICON.arrow}</button>`; } return lastBtn(); }
-function lastBtn(){ const all = S.labDone.every(Boolean); return all ? `<button class="btn ok" type="button" data-act="go" data-v="${CONF.uni ? 'sheet' : 'post'}">${CONF.uni ? 'สรุปและทบทวน' : 'แบบทดสอบหลังเรียน'} ${ICON.arrow}</button>` : `<button class="btn ok" type="button" data-act="go" data-v="picker">เลือกทำตอนที่เหลือ ${ICON.arrow}</button>`; }
+function nextPartBtn(i){ return `<button class="btn ok" type="button" data-act="go" data-v="post">แบบทดสอบหลังเรียน${PARTS[i].k} ${ICON.arrow}</button>`; }
+function lastBtn(){ return nextPartBtn(ui.cp==null ? 0 : ui.cp); }
 /* ---- end-of-part questions (primary) ---- */
 const EQ = i => (typeof ENDQ!=='undefined' && ENDQ && ENDQ[i]) || [];
 function eqSt(i){ S.eq = S.eq || {}; const st = S.eq[i] = S.eq[i] || {a:{}, w:{}}; st.r = st.r || {}; st.wr = st.wr || {}; return st; }
@@ -1020,7 +1044,7 @@ function eqBox(i, open){ const Qs = EQ(i); if(!Qs.length) return ''; const st = 
     const nr = st.wr[q.k] || 0, rbad = st.r[q.k] && st.r[q.k]!==q.ra ? st.r[q.k] : null;
     return `<div class="eq"><div class="eqq">${qi+1}. ${eqN(q.q)}</div><div class="eqok">✓ ${cTxt}</div><div class="eqstep">② เลือกเหตุผลที่สนับสนุนข้อสรุปนี้</div>${opts(true, q, nr, rbad, q.ra)}${hintOf(nr, q.hr || q.h, 'เหตุผลที่ถูกคือปุ่มที่กะพริบ ลองเทียบกับตัวเลขในผลการทดลอง แล้วกดเลือก')}</div>`; }).join(''); }
 const missAll = i => { const v = S.miss[i] || {}; return PARTS[i].miss.every(x=>(x[0] + '_ok') in v ? !!v[x[0] + '_ok'] : !!v[x[0]]); };
-function eqFinish(){ const i = ui.part; if(!S.labDone[i] && missAll(i) && eqDone(i)){ S.labDone[i] = true; save(); renderRail(); toast(i < PARTS.length - 1 ? `${PARTS[i].k}เสร็จแล้ว! ปลดล็อก${PARTS[i+1].k}` : 'ทดลองครบทุกตอนแล้ว! ไปทำแบบทดสอบหลังเรียนได้เลย'); } }
+function eqFinish(){ const i = ui.part; if(!S.labDone[i] && missAll(i) && eqDone(i)){ S.labDone[i] = true; save(); renderRail(); toast(`${PARTS[i].k} ทำแล็บเสร็จแล้ว! ต่อไปทำแบบทดสอบหลังเรียน`); } }
 function eqRender(){ const pm = $('#pMiss'); if(!pm || !EQ(ui.part).length) return; let q = $('#pQ'); if(!q){ q = document.createElement('div'); q.className = 'box'; q.id = 'pQ'; pm.after(q); }
   const i = ui.part, open = missAll(i); setHTML('#pQ', eqBox(i, open));
   ui.eqT = ui.eqT || {}; if(open && !eqDone(i) && !ui.eqT[i]){ ui.eqT[i] = 1; toast(`ภารกิจครบแล้ว! ตอบคำถามท้ายตอน ${EQ(i).length} ข้อ`); setTimeout(()=>flashEl('#pQ'), 300); } }
@@ -1234,7 +1258,7 @@ function vLab(){
   const p = PARTS[ui.part];
   return `<div class="wrap wide">
     <header class="row">
-      <button class="ibtn" type="button" data-act="go" data-v="picker" aria-label="กลับไปเลือกตอน">${ICON.back}</button>
+      <button class="ibtn" type="button" data-act="go" data-v="home" aria-label="กลับไปเลือกตอน">${ICON.back}</button>
       <div style="flex:1 1 220px;min-width:0"><div class="note">${CONF.short} · ${p.k} จาก ${PARTS.length}</div><h1 style="font-size:24px">${p.t}</h1></div>
       <div class="row" style="gap:8px">${NOG ? '' : `<button class="btn ghost sm" type="button" data-act="go" data-v="guide">${ICON.book} คู่มือ</button>`}
       <button class="btn ghost sm" type="button" data-act="lab" data-v="resetPart">${ICON.rotL} จัดโต๊ะใหม่</button></div>
@@ -1355,7 +1379,7 @@ function cardBox(){ const r = revState(), d = new Date(), mc = PARTS.map((p,i)=>
     <div id="sumCard" class="sumcard">
       <div class="sc-top"><div><div class="sc-k">ParK_iLab · ${CONF.subject}</div><div class="sc-t">${CONF.short}</div></div><div class="sc-d">${d.toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'numeric'})}<br>${d.toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'})} น.</div></div>
       <div class="sc-who">${esc(stuTxt())}</div>
-      <div class="sc-grid"><div><span>ก่อนเรียน</span><b>${S.pre.done ? S.pre.score + '/' + NA : S.pre.skip ? 'ข้าม' : '-'}</b></div><div><span>หลังเรียน</span><b>${S.post.done ? S.post.score + '/' + NA : 'ยังไม่ทำ'}</b></div><div><span>ภารกิจ</span><b style="font-size:13px">${mc}</b></div><div><span>ผังมโนทัศน์</span><b>${r.mapDone ? 'ผ่าน (ตรวจ ' + r.tries + ' ครั้ง)' : 'ยังไม่ผ่าน'}</b></div><div><span>คำทำนายถูก</span><b>${nPred}/${PARTS.length} ตอน</b></div><div><span>อธิบายผล</span><b>${PARTS.filter((p,i)=>r.refl[i] && r.refl[i].done).length}/${PARTS.length} ตอน</b></div></div>
+      <div class="sc-grid"><div><span>ก่อนเรียน</span><b>${PARTS.reduce((n,p,i)=>n + (pqS(i).pre.score || 0), 0)}/${NA}</b></div><div><span>หลังเรียน</span><b>${PARTS.reduce((n,p,i)=>n + (pqS(i).post.score || 0), 0)}/${NA}</b></div><div><span>ภารกิจ</span><b style="font-size:13px">${mc}</b></div><div><span>ผังมโนทัศน์</span><b>${r.mapDone ? 'ผ่าน (ตรวจ ' + r.tries + ' ครั้ง)' : 'ยังไม่ผ่าน'}</b></div><div><span>คำทำนายถูก</span><b>${nPred}/${PARTS.length} ตอน</b></div><div><span>อธิบายผล</span><b>${PARTS.filter((p,i)=>r.refl[i] && r.refl[i].done).length}/${PARTS.length} ตอน</b></div></div>
       ${con ? `<div class="sc-con"><b>ข้อสรุปจากหลักฐานของฉัน</b><ul>${con}</ul></div>` : ''}
       <div class="sc-foot">ห้องแลปโดย ปาร์คณัฐพล · ข้อมูลนี้สร้างจากการทดลองในเครื่องของผู้เรียน</div></div>
     <div class="row" style="gap:8px"><button class="btn" type="button" data-act="cardPng">${ICON.dl} บันทึกการ์ดเป็นรูปภาพ</button><span class="note">หรือแคปหน้าจอการ์ดนี้ส่งอาจารย์ได้เลย</span></div></section>`; }
@@ -1375,31 +1399,29 @@ document.addEventListener('input', e=>{ if(e.target && (e.target.id==='cardName'
 
 /* ---------- results ---------- */
 function vResult(){
-  if(!S.post.done) return vQuiz('post');
-  const NOPRE = !S.pre.done, pre = S.pre.score ?? 0, post = S.post.score ?? 0, diff = NOPRE ? 0 : post - pre;
-  const hi = post >= NA*.8, mid = post >= NA*.5;
-  const line = hi ? (diff>0 ? `ได้ ${post} คะแนน เพิ่มขึ้น ${diff} คะแนน ${SR ? 'ทำได้ดีมาก รักษามาตรฐานนี้ไว้' : 'เก่งมาก สู้ ๆ ต่อไปนะ!'}` : `ได้ ${post} คะแนน ${SR ? 'ทำได้ดีมาก' : 'เก่งมาก!'}`) : mid ? `ได้ ${post} คะแนน ${SR ? 'ผ่านเกณฑ์ครึ่งหนึ่งแล้ว ทบทวนเฉลยข้อที่ผิดให้เข้าใจเหตุผล' : 'เกือบแล้ว! ลองอ่านเฉลยข้อที่ผิดดูนะ'}` : `ได้ ${post} คะแนน ${SR ? 'ยังต่ำกว่าเกณฑ์ อ่านเฉลยแล้วกลับไปทดลองซ้ำในตอนที่ยังไม่เข้าใจ' : 'ไม่เป็นไรนะ ลองอ่านเฉลยแล้วกลับไปทดลองอีกครั้ง'}`;
+  const cp = ui.cp; if(cp==null) return vHome(); const q = pqS(cp); if(!q.post.done) return vQuiz('post');
+  const L = PQ(cp), na = NAp(cp), pre = q.pre.score ?? 0, post = q.post.score ?? 0, diff = post - pre, p = PARTS[cp];
+  const hi = post >= na*.8, mid = post >= na*.5;
+  const line = `${p.k} ได้ ${post} จาก ${na} คะแนน` + (diff > 0 ? ` เพิ่มขึ้น ${diff} คะแนน` : '') + (hi ? ' ทำได้ดีมาก' : mid ? ' ทบทวนข้อที่ผิดให้เข้าใจเหตุผล' : ' อ่านเฉลยแล้วกลับไปทดลองซ้ำในส่วนที่ยังไม่เข้าใจ');
+  const nx = PARTS.map((_,i)=>i).find(i=>i!==cp && pStage(i) < 3);
   return `<div class="wrap" style="max-width:980px">
-    <header style="display:flex;flex-direction:column;gap:6px"><div class="tags"><span class="tag g">ทำครบทุกขั้นตอน</span></div><h1 class="h1">ผลคะแนน</h1></header>
-    <section class="card pad mascot-row">${mascot(hi?(post===NA?'sparkle':'cool'):mid?'sweat':'tired',110)}<div class="say"><b>${esc(nk(line))}</b><span>เทียบคะแนนก่อนเรียนกับหลังเรียนของเรา</span></div></section>
+    <header style="display:flex;flex-direction:column;gap:6px"><div class="tags"><span class="tag g">${p.k} เสร็จแล้ว</span></div><h1 class="h1">ผลคะแนน${p.k}</h1></header>
+    ${sendBox(cp)}
+    <section class="card pad mascot-row">${mascot(hi ? (post===na ? 'sparkle' : 'cool') : mid ? 'sweat' : 'tired', 110)}<div class="say"><b>${esc(nk(line))}</b><span>ข้อเขียน 1 ข้อ ครูจะตรวจภายหลัง</span></div>
+      ${UPART==null && nx!=null ? `<button class="btn ghost" type="button" data-act="go" data-v="home">เลือกตอนอื่น ${ICON.arrow}</button>` : ''}</section>
     <div class="score-row">
-      <div class="score"><span class="note">ก่อนเรียน</span><span class="big">${NOPRE ? '<small>ไม่ได้ทำ</small>' : `${pre}<small> / ${NA}</small>`}</span><div class="bar"><i style="width:${NOPRE ? 0 : pre/NA*100}%;background:#9CB5EA"></i></div></div>
-      <div class="score" style="background:var(--ok-soft)"><span class="note" style="color:#1D6B4F">หลังเรียน</span><span class="big">${post}<small> / ${NA}</small></span><div class="bar"><i style="width:${post/NA*100}%;background:var(--ok)"></i></div></div>
+      <div class="score"><span class="note">ก่อนเรียน</span><span class="big">${pre}<small> / ${na}</small></span><div class="bar"><i style="width:${pre/na*100}%;background:#9CB5EA"></i></div></div>
+      <div class="score" style="background:var(--ok-soft)"><span class="note" style="color:#1D6B4F">หลังเรียน</span><span class="big">${post}<small> / ${na}</small></span><div class="bar"><i style="width:${post/na*100}%;background:var(--ok)"></i></div></div>
     </div>
-    ${sendBox()}
-    <section class="card pad gsec"><div class="row spread"><h2>เฉลยแบบทดสอบหลังเรียน</h2>
-      ${CONF.uni ? '<button class="btn ghost sm" type="button" data-act="go" data-v="sheet">ดูการ์ดสรุปผล</button>' : `<button class="btn ghost sm" type="button" data-act="pdf">${ICON.dl} ดาวน์โหลดใบกิจกรรม</button>`}</div>
-      <div class="rev">${QUIZ.map((it,i)=>{
-        const me = S.post.a[i], ty = QT(it), ok = qOk(it, me), sc = SCEN[it.sc], head = `${it.sc!==(QUIZ[i-1]||{}).sc && sc ? `<div class="scn" style="margin-top:6px">สถานการณ์ที่ ${it.sc + 1}: ${esc(sc.t)}</div>` : ''}`;
-        if(ty==='open') return `${head}<div class="item"><div class="row spread"><b>ข้อ ${i+1}. ${esc(it.q)}</b><span class="mark" style="background:#FFF3D6;color:#8A5A00">ครูตรวจ</span></div>
-          <div class="note">คำตอบของฉัน: <b style="color:var(--ink)">${esc(me || '')}</b></div><div style="font-size:15px;color:var(--ink2)">แนวคำตอบ: ${esc(it.model)}</div></div>`;
-        const name = j => it.labels ? it.labels[j] : it.o[j], YN = x => x===1 ? 'ใช่' : x===0 ? 'ไม่ใช่' : '-';
-        const mine = ty==='yn' ? `<ul style="margin:4px 0 0;padding-left:18px">${it.rows.map((r,k)=>{ const good = me && me[k]===(r[1]?1:0); return `<li>${esc(r[0])} · ตอบ <b style="color:${good ? 'var(--ok)' : 'var(--bad, #C0392B)'}">${YN(me && me[k])}</b>${good ? '' : ` · เฉลย <b style="color:var(--ok)">${r[1] ? 'ใช่' : 'ไม่ใช่'}</b>`}</li>`; }).join('')}</ul>`
-          : `คำตอบของฉัน: <b style="color:var(--ink)">${TH[me]}. ${esc(name(me))}</b>${ok?'':` · เฉลย: <b style="color:var(--ok)">${TH[it.a]}. ${esc(name(it.a))}</b>`}`;
-        return `${head}<div class="item ${ok?'right':'wrong'}"><div class="row spread"><b>ข้อ ${i+1}. ${esc(it.q)}</b><span class="mark ${ok?'right':'wrong'}">${ok?'ถูก':'ผิด'}</span></div>
-          <div class="note">${mine}</div>
-          <div style="font-size:15px;color:var(--ink2)">${esc(it.why)}</div></div>`;
-      }).join('')}</div></section>
+    <section class="card pad gsec"><h2>เฉลยแบบทดสอบหลังเรียน</h2>
+      <div class="rev">${L.map((qi,j)=>{ const it = QUIZ[qi], me = q.post.a[j], ty = QT(it), ok = qOk(it, me), cf = q.post.c[j]===1 ? 'มั่นใจ' : 'ไม่แน่ใจ';
+        if(ty==='open') return `<div class="item"><div class="row spread"><b>ข้อ ${j+1}. ${esc(nmQ(it.q))}</b><span class="mark" style="color:#8A5A00">ครูตรวจ</span></div>
+          <div class="note">คำตอบของฉัน: <b style="color:var(--ink)">${esc(me || '')}</b></div><div style="font-size:15px;color:var(--ink2)">แนวคำตอบ: ${esc(nmQ(it.model))}</div></div>`;
+        const name = k => it.o[k], YN = x => x===1 ? 'ใช่' : x===0 ? 'ไม่ใช่' : '-';
+        const mine = ty==='yn' ? `<ul style="margin:4px 0 0;padding-left:18px">${it.rows.map((r,k)=>{ const good = me && me[k]===(r[1]?1:0); return `<li>${esc(nmQ(r[0]))} · ตอบ <b style="color:${good ? 'var(--ok)' : '#C0392B'}">${YN(me && me[k])}</b>${good ? '' : ` · เฉลย <b style="color:var(--ok)">${r[1] ? 'ใช่' : 'ไม่ใช่'}</b>`}</li>`; }).join('')}</ul>`
+          : `คำตอบของฉัน: <b style="color:var(--ink)">${TH[me]}. ${esc(name(me))}</b>${ok ? '' : ` · เฉลย: <b style="color:var(--ok)">${TH[it.a]}. ${esc(name(it.a))}</b>`}`;
+        return `<div class="item ${ok ? 'right' : 'wrong'}"><div class="row spread"><b>ข้อ ${j+1}. ${esc(nmQ(it.q))}</b><span class="mark ${ok ? 'right' : 'wrong'}">${ok ? 'ถูก' : 'ผิด'} · ${cf}</span></div>
+          <div class="note">${mine}</div><div style="font-size:15px;color:var(--ink2)">${esc(it.why)}</div></div>`; }).join('')}</div></section>
   </div>`;
 }
 
@@ -1955,7 +1977,7 @@ const p = s.pts[s.pts.length - 1], t = p.V0/(p.d/100);
   function refresh(){
     check();
     const m = S.miss[P.i];
-    if(PARTS[P.i].miss.every(x=>m[x[0]]) && eqDone(P.i) && !S.labDone[P.i]){ S.labDone[P.i] = true; P.celebrate = true; SFX.done(); toast(P.i < PARTS.length - 1 ? `${PARTS[P.i].k}เสร็จแล้ว ปลดล็อก${PARTS[P.i+1].k}` : 'ทดลองครบทุกตอนแล้ว ปลดล็อกแบบทดสอบหลังเรียน'); renderRail(); }
+    if(PARTS[P.i].miss.every(x=>m[x[0]]) && eqDone(P.i) && !S.labDone[P.i]){ S.labDone[P.i] = true; P.celebrate = true; SFX.done(); toast(`${PARTS[P.i].k} ทำแล็บเสร็จแล้ว! ต่อไปทำแบบทดสอบหลังเรียน`); renderRail(); }
     try { S.ps = S.ps || {}; S.ps[P.i] = JSON.parse(JSON.stringify(P.s)); } catch(e){}
     if(P.warn && P.warn !== P.lastWarn) SFX.bad(); P.lastWarn = P.warn;
     save(); refreshUI();
@@ -1963,7 +1985,7 @@ const p = s.pts[s.pts.length - 1], t = p.V0/(p.d/100);
   function mascotSay(){ if(P && P.mg && Date.now() - P.mg.t < 15000 && P.mg.t > (window.__mgClr || 0)) return ['think', P.mg.msg];
     const s = P.s, m = S.miss[P.i];
     if(P.warn) return [s.wrong >= 3 ? 'cry' : 'shock', P.warn];
-    if(S.labDone[P.i] && P.celebrate) return ['yay', P.i < PARTS.length - 1 ? `ครบทุกภารกิจแล้วครับ ไป${PARTS[P.i+1].k} กันต่อ` : 'ทำครบทุกตอนแล้วครับ บันทึกผลลงใบกิจกรรม แล้วไปทำแบบทดสอบหลังเรียนได้เลย'];
+    if(S.labDone[P.i] && P.celebrate) return ['yay', 'ครบทุกภารกิจแล้วครับ ต่อไปทำแบบทดสอบหลังเรียนของตอนนี้'];
     if(P.say) return ['wow', P.say];
     if(P.i===0){ if(!m.r3) return ['think', `ลากทรงกลม A หรือกดปุ่ม r บนจอ วัดแรงให้ครบ 3 ระยะ เช่น 10, 20 และ 40 cm ครับ (วัดแล้ว ${rset()})`];
       if(!m.q2) return ['think','คำนวณประจุของทรงกลม B จากแถวล่าสุดครับ'];
@@ -2213,6 +2235,7 @@ const p = s.pts[s.pts.length - 1], t = p.V0/(p.d/100);
 
 /* boot */
 render();
+if(UPART!=null){ ui.cp = UPART; }
 showNick();
 })();
 </script>
