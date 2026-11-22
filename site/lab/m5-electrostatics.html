@@ -96,6 +96,7 @@ main{flex:1;min-width:0;padding:28px 36px 48px}
 .ynb{min-width:70px;min-height:44px;border-radius:12px;border:2px solid var(--line2);background:#FAFBFE;font:inherit;font-size:14px;font-weight:600;cursor:pointer}.ynb.on{background:var(--primary);border-color:var(--primary);color:#fff}
 .qopen{width:100%;box-sizing:border-box;border:2px solid var(--line2);border-radius:14px;padding:12px;font:inherit;font-size:16px;line-height:1.6;resize:vertical}
 .qsep{display:inline-block;width:8px}
+.handoff{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .confrow{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:14px;background:#FFF8E6}.confrow>span{font-weight:600;font-size:15px}.confrow .seg{min-width:220px}
 .pstats{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}.pstat{font-size:12.5px;padding:3px 9px;border-radius:99px;background:var(--lock-bg);color:var(--muted);font-weight:600}.pstat.ok{background:var(--ok-soft);color:var(--ok)}
 .tqr{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:10px}.tq{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;border:1px solid var(--line);border-radius:14px;padding:10px}.tq span{font-size:13px;color:var(--muted)}.tq input{width:100%;font-size:11px;padding:4px;border:1px solid var(--line2);border-radius:8px}.qrbox{width:120px;height:120px}
@@ -787,12 +788,12 @@ function sendBox(i){ const t = (S.sent || {})[i] || {}, at = t.at ? new Date(t.a
   const btn = !CONF.send ? '' : (t.st==='fail' || t.st==='win') ? `<button class="btn ok sm" type="button" data-act="sendwin" data-v="${i}">ส่งผลให้ครู</button>` : `<button class="btn ${t.st==='ok' ? 'ghost' : 'ok'} sm" type="button" data-act="resend" data-v="${i}">ส่งผลอีกครั้ง</button>`;
   return `<section class="card pad sendbox ${t.st==='ok' ? 'ok' : ''}"><div><b>${esc(stuTxt())}</b><div class="note">${msg}</div></div>${btn}</section>`; }
 /* fallback when the page may not call other sites (e.g. inside claude.ai): open the receiver in a new window with the data in the address */
-function sendWin(i){ const d = payload(i); delete d._models; delete d._items; d.lab_record = String(d.lab_record || '').slice(0, 300);
+function sendWin(i){ const d = payload(i); delete d._models; delete d._items; d.lab_record = String(d.lab_record || '').slice(0, 300); Object.keys(d).forEach(k=>{ if(/^(pre|post)_\d+$/.test(k) && typeof d[k]==='string') d[k] = d[k].slice(0, 300); });
   const b = btoa(unescape(encodeURIComponent(JSON.stringify(d)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
   const w = window.open(CONF.send + '?d=' + b, '_blank'); const t = (S.sent = S.sent || {})[i] = (S.sent || {})[i] || {}; t.st = w ? 'win' : 'fail'; t.at = Date.now(); t.sig = sendSig(i); save(); render();
   if(!w) toast('เบราว์เซอร์บล็อกหน้าต่างใหม่ อนุญาตป๊อปอัปแล้วกดอีกครั้ง'); }
 document.addEventListener('input', e=>{ if(e.target.id!=='qOpen' || ui.cp==null) return; const st = pqS(ui.cp)[ui.view], L = PQ(ui.cp), it = QUIZ[L[ui.q]]; if(!st || !it || QT(it)!=='open' || st.done) return;
-  st.a[ui.q] = e.target.value; save(); qMeta(); });
+  st.a[ui.q] = e.target.value.slice(0, 300); save(); const qc = document.getElementById('qCnt'); if(qc) qc.textContent = st.a[ui.q].length; qMeta(); });
 function qMeta(){ const st = pqS(ui.cp)[ui.view], L = PQ(ui.cp); if(!st) return; const ok = j => qDone(QUIZ[L[j]], st.a[j], st.c[j]);
   document.querySelectorAll('.qdot[data-v]').forEach(d=>d.classList.toggle('ans', ok(+d.dataset.v)));
   const n = L.filter((_,j)=>ok(j)).length, sb = document.querySelector('[data-act="submitQuiz"]'); if(sb){ sb.disabled = n!==L.length; sb.textContent = `ส่งคำตอบ (${n}/${L.length})`; } }
@@ -829,7 +830,7 @@ if(PD){ const t = $('#teachSheet'); t.hidden = false; t.addEventListener('click'
 $('#nickBar').addEventListener('click', e=>{ if(e.target.closest('[data-nick]')) showNick(true); });
 $('#resetAll').addEventListener('click', ()=>{
   if(!ui.confirmReset){ ui.confirmReset = true; renderRail(); setTimeout(()=>{ ui.confirmReset=false; renderRail(); }, 4000); return; }
-  ui.confirmReset = false; { const keep = {stu:S.stu, nick:S.nick, attempt:(S.attempt || 1) + 1}; S = Object.assign(fresh(), keep, {pq:{}, sent:{}, tm:{}}); if(S.stu) S.uid = Date.now().toString(36) + Math.random().toString(36).slice(2,8); } save(); ui.q = 0; ui.preSent = false; go('home'); showNick(); toast('ล้างคำตอบแล้ว เริ่มใหม่ได้เลย');
+  ui.confirmReset = false; S = fresh(); save(); ui.q = 0; ui.preSent = false; go('home'); showNick(); toast('ล้างคำตอบแล้ว เริ่มใหม่ได้เลย');
 });
 
 /* ---------- router ---------- */
@@ -875,6 +876,8 @@ document.getElementById('main').addEventListener('click', e=>{
     render(); return; }
   if(act==='resend'){ sendNow(+v); render(); return; }
   if(act==='sendwin'){ sendWin(+v); return; }
+  if(act==='handoff'){ if(!ui.hoConfirm){ ui.hoConfirm = true; render(); setTimeout(()=>{ ui.hoConfirm = false; if(ui.view==='result') render(); }, 4000); return; }
+    ui.hoConfirm = false; S = fresh(); save(); ui.q = 0; ui.cp = UPART; go('home'); showNick(); toast('ล้างข้อมูลแล้ว ให้เพื่อนลงทะเบียนได้เลย'); return; }
   if(act==='q'){ ui.q = +v; render(); window.scrollTo({top:0}); }
   if(act==='prev'){ ui.q = Math.max(0, ui.q-1); render(); window.scrollTo({top:0}); }
   if(act==='next'){ ui.q = Math.min(PQ(ui.cp).length - 1, ui.q+1); render(); window.scrollTo({top:0}); }
@@ -951,7 +954,7 @@ function vQuiz(kind){
   const sc = SCEN[it.sc], ty = QT(it), cur = st.a[ui.q], cf = st.c[ui.q];
   const scen = sc ? `<section class="card pad scen"><div class="scn">สถานการณ์ · ${p.k}</div><h2>${esc(sc.t)}</h2><p>${esc(nmQ(sc.txt))}</p>${sc.tab ? `<div class="scroll-x"><table class="stab"><thead><tr>${sc.tab[0].map(h=>`<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${sc.tab.slice(1).map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>` : ''}</section>` : '';
   const body = ty==='yn' ? `<table class="yn"><thead><tr><th>ข้อความ</th><th>ใช่</th><th>ไม่ใช่</th></tr></thead><tbody>${it.rows.map((r,k)=>`<tr><td>${esc(nmQ(r[0]))}</td>${[1,0].map(val=>`<td><button type="button" class="ynb ${Array.isArray(cur) && cur[k]===val ? 'on' : ''}" data-act="yn" data-v="${k}|${val}" aria-pressed="${Array.isArray(cur) && cur[k]===val}">${val ? 'ใช่' : 'ไม่ใช่'}</button></td>`).join('')}</tr>`).join('')}</tbody></table><div class="note">ตอบให้ครบทุกแถว (ได้คะแนนเมื่อตอบถูกทุกแถว)</div>`
-    : ty==='open' ? `<textarea id="qOpen" class="qopen" rows="5" maxlength="1200" placeholder="พิมพ์คำตอบและเหตุผลของเรา">${esc(typeof cur==='string' ? cur : '')}</textarea><div class="note">ข้อเขียน ครูจะเป็นผู้ตรวจ · พิมพ์อย่างน้อย 5 ตัวอักษร</div>`
+    : ty==='open' ? `<textarea id="qOpen" class="qopen" rows="5" maxlength="300" placeholder="พิมพ์คำตอบและเหตุผลของเรา (ไม่เกิน 300 ตัวอักษร)">${esc(typeof cur==='string' ? cur : '')}</textarea><div class="note">ข้อเขียน ครูจะเป็นผู้ตรวจ · พิมพ์ 5–300 ตัวอักษร · <span id="qCnt">${(typeof cur==='string' ? cur : '').length}</span>/300</div>`
     : `<div class="opts" role="radiogroup" aria-label="ตัวเลือก">${[0,1,2,3].map(j=>`<button type="button" role="radio" class="opt" aria-checked="${cur===j}" data-act="ans" data-v="${j}">${optHTML(it,j)}</button>`).join('')}</div>`;
   const conf = `<div class="confrow"><span>ความมั่นใจในคำตอบข้อนี้</span><div class="seg">${[[1,'มั่นใจ'],[0,'ไม่แน่ใจ']].map(([v,l])=>`<button type="button" data-act="conf" data-v="${v}" aria-pressed="${cf===v}">${l}</button>`).join('')}</div></div>`;
   return `<div class="wrap" style="max-width:940px">
@@ -1416,6 +1419,8 @@ function vResult(){
     ${sendBox(cp)}
     <section class="card pad mascot-row">${mascot(hi ? (post===na ? 'sparkle' : 'cool') : mid ? 'sweat' : 'tired', 110)}<div class="say"><b>${esc(nk(line))}</b><span>ข้อเขียน 1 ข้อ ครูจะตรวจภายหลัง</span></div>
       ${UPART==null && nx!=null ? `<button class="btn ghost" type="button" data-act="go" data-v="home">เลือกตอนอื่น ${ICON.arrow}</button>` : ''}</section>
+    <section class="card pad handoff"><div><b>ใช้เครื่องนี้ต่อกับเพื่อนคนถัดไป?</b><div class="note">${(((S.sent || {})[cp] || {}).st==='ok' || ((S.sent || {})[cp] || {}).st==='win') ? 'ผลของเราส่งให้ครูแล้ว กดปุ่มนี้เพื่อล้างชื่อและคำตอบในเครื่อง ให้เพื่อนลงทะเบียนใหม่' : 'ส่งผลให้ครูให้เรียบร้อยก่อน แล้วปุ่มนี้จะกดได้'}</div></div>
+      <button class="btn ghost sm" type="button" data-act="handoff" ${(((S.sent || {})[cp] || {}).st==='ok' || ((S.sent || {})[cp] || {}).st==='win') ? '' : 'disabled'}>${ui.hoConfirm ? 'กดอีกครั้งเพื่อยืนยัน' : 'ส่งเครื่องให้คนถัดไป'}</button></section>
     <div class="score-row">
       <div class="score"><span class="note">ก่อนเรียน</span><span class="big">${pre}<small> / ${na}</small></span><div class="bar"><i style="width:${pre/na*100}%;background:#9CB5EA"></i></div></div>
       <div class="score" style="background:var(--ok-soft)"><span class="note" style="color:#1D6B4F">หลังเรียน</span><span class="big">${post}<small> / ${na}</small></span><div class="bar"><i style="width:${post/na*100}%;background:var(--ok)"></i></div></div>
