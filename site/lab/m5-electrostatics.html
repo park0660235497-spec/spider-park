@@ -89,6 +89,16 @@ main{flex:1;min-width:0;padding:28px 36px 48px}
 /* quiz */
 .qhead{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
 .qdots{display:flex;gap:6px;flex-wrap:wrap}
+.scen{display:flex;flex-direction:column;gap:8px;background:#F4F8FF}.scen h2{font-size:19px;margin:0}.scen p{margin:0;font-size:15.5px;line-height:1.65;color:var(--ink2)}
+.scn{font-size:12.5px;font-weight:700;color:var(--primary-d);letter-spacing:.02em}
+.stab{border-collapse:collapse;font-size:14px;margin-top:4px;background:#fff}.stab th,.stab td{border:1px solid var(--line2);padding:6px 10px;text-align:center}.stab th{background:#EAF1FD}
+.yn{width:100%;border-collapse:collapse;font-size:15px}.yn th,.yn td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:middle}.yn th:not(:first-child),.yn td:not(:first-child){width:84px;text-align:center}
+.ynb{min-width:70px;min-height:44px;border-radius:12px;border:2px solid var(--line2);background:#FAFBFE;font:inherit;font-size:14px;font-weight:600;cursor:pointer}.ynb.on{background:var(--primary);border-color:var(--primary);color:#fff}
+.qopen{width:100%;box-sizing:border-box;border:2px solid var(--line2);border-radius:14px;padding:12px;font:inherit;font-size:16px;line-height:1.6;resize:vertical}
+.qsep{display:inline-block;width:8px}
+.regl{display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:14.5px;flex:1}.regl input,.regl select{font:inherit;font-size:16px;padding:10px 12px;border:2px solid var(--line2);border-radius:12px;background:#fff;min-width:0}
+.regrow{display:flex;gap:10px}.regsum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.regsum div{background:#F4F8FF;border-radius:12px;padding:8px 10px}.regsum span{display:block;font-size:12px;color:var(--muted)}.regsum b{font-size:15px}
+.sendbox{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#FFF8E6}.sendbox.ok{background:var(--ok-soft)}
 .qdot{width:28px;height:28px;border-radius:9px;border:1px solid var(--line2);background:var(--surface);font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;padding:0}
 .qdot.ans{background:#CFE0FB;border-color:#CFE0FB;color:var(--primary-d)}
 .qdot.cur{outline:2px solid var(--primary);outline-offset:1px}
@@ -502,7 +512,7 @@ const CONF = {
   title:'ไฟฟ้าสถิต', short:'ม.5 ฟิสิกส์ บทที่ 11 ไฟฟ้าสถิต', subject:'ฟิสิกส์ ม.5', senior:true, hs:true,
   tags:['ฟิสิกส์ ม.5','ไฟฟ้าสถิต','ห้องแลป 3 มิติ'],
   sub:'วัดแรงระหว่างทรงกลมมีประจุเพื่อตรวจสอบกฎของคูลอมบ์ วัดศักย์ไฟฟ้าระหว่างแผ่นโลหะคู่ขนานเพื่อหาสนามไฟฟ้า ศึกษาเครื่องกรองฝุ่นไฟฟ้าสถิต ทำให้อิเล็กโทรสโคปมีประจุโดยการเหนี่ยวนำ และวัดความจุของตัวเก็บประจุ',
-  key:'parkilab-m5-static-v3', file:'ParK_iLab-M5-Physics-Ch11-electrostatics-worksheet.pdf',
+  key:'parkilab-m5-static-v4', send:'', file:'ParK_iLab-M5-Physics-Ch11-electrostatics-worksheet.pdf',
   hint:'ลากทรงกลม A เพื่อเปลี่ยนระยะ · ลากหัววัดระหว่างแผ่นโลหะ · หมุนปุ่มสีส้มบนแหล่งจ่ายไฟ · ลากแท่งประจุเข้าใกล้อิเล็กโทรสโคป · ลากแผ่นตัวเก็บประจุ',
   observe:'สังเกตค่าแรงเมื่อระยะเพิ่มเป็นสองเท่าหรือประจุเพิ่มขึ้น ค่าศักย์ไฟฟ้าที่ตำแหน่งต่าง ๆ ระหว่างแผ่น ฝุ่นที่ถูกดักเมื่อเปลี่ยนความต่างศักย์และความเร็วลม การกางของแผ่นโลหะบาง และประจุบนตัวเก็บประจุ',
   guide:[
@@ -513,27 +523,43 @@ const CONF = {
   ]
 };
 
+/* PISA-style test: 5 everyday situations; per situation 2 multiple choice + 1 yes/no table (auto-scored) + 1 written explanation (teacher-scored) */
+const SCEN = [
+  {t:'ไฟช็อตที่ลูกบิดประตู', txt:'ช่วงหน้าหนาวอากาศแห้ง นิดเดินลากเท้าบนพรมในห้อง แล้วเอื้อมมือไปจับลูกบิดประตูโลหะ รู้สึกเหมือนโดนไฟช็อตเบา ๆ และเห็นประกายไฟเล็ก ๆ ในที่มืด นิดจึงทดลองเดินบนพรมแล้วจับลูกบิดวันละ 10 ครั้ง เป็นเวลา 5 วัน แล้วจดผลไว้',
+   tab:[['วันที่','ความชื้นในอากาศ (%)','จำนวนครั้งที่ถูกช็อต (จาก 10 ครั้ง)'],['1','30','8'],['2','45','6'],['3','60','3'],['4','75','1'],['5','85','0']]},
+  {t:'ลูกโป่งกับเส้นผม', txt:'ต้นถูลูกโป่งสองลูกกับเส้นผม แล้วแขวนลูกโป่งด้วยด้ายจากจุดเดียวกัน ลูกโป่งทั้งสองแยกออกจากกัน ในชั้นเรียน ครูใช้เครื่องวัดแรงไฟฟ้าระหว่างทรงกลมโลหะเล็ก ๆ สองลูกที่มีประจุคงที่ ได้ผลดังตาราง',
+   tab:[['ระยะห่างระหว่างทรงกลม (cm)','แรงไฟฟ้า (mN)'],['10','3.6'],['20','0.9'],['30','0.4']]},
+  {t:'เครื่องฟอกอากาศไฟฟ้าสถิต', txt:'เครื่องฟอกอากาศบางรุ่นดูดอากาศผ่านลวดไฟฟ้าแรงสูงก่อน ทำให้ฝุ่น PM2.5 ได้รับประจุ จากนั้นอากาศผ่านช่องระหว่างแผ่นโลหะสองแผ่นที่ห่างกัน 5 mm และต่อกับความต่างศักย์ ฝุ่นที่มีประจุจะถูกดึงไปติดแผ่นโลหะ ผู้ผลิตทดสอบที่ความเร็วพัดลมคงที่ ได้ผลดังตาราง',
+   tab:[['ความต่างศักย์ระหว่างแผ่น (V)','ฝุ่นที่ดักได้ (%)'],['0','5'],['2000','40'],['4000','70'],['6000','90']]},
+  {t:'ฟ้าผ่าและสายล่อฟ้า', txt:'ก่อนฝนฟ้าคะนอง ฐานเมฆมีประจุลบสะสมจำนวนมาก พื้นดินและอาคารที่อยู่ใต้เมฆจึงมีประจุบวกปรากฏขึ้นโดยไม่ได้สัมผัสเมฆ อาคารสูงจึงติดตั้งสายล่อฟ้า ซึ่งเป็นแท่งโลหะปลายแหลมบนยอดอาคาร ต่อด้วยสายทองแดงลงไปฝังในดิน'},
+  {t:'เครื่องกระตุกหัวใจ (AED)', txt:'เครื่อง AED ที่ติดตั้งในห้างและสนามบินใช้ตัวเก็บประจุ เครื่องจะชาร์จตัวเก็บประจุจนมีความต่างศักย์สูง แล้วปล่อยประจุผ่านแผ่นที่แปะบนหน้าอกผู้ป่วยเพื่อให้หัวใจกลับมาเต้นเป็นจังหวะ สมมติว่าตัวเก็บประจุมีความจุ 100 µF และชาร์จจนมีความต่างศักย์ 2000 V'}
+];
 const QUIZ = [
-  {q:'ประจุชนิดเดียวกันวางใกล้กันจะเป็นอย่างไร', o:['ผลักกัน','ดูดกัน','ไม่มีแรงกระทำ','หมุนรอบกัน'], a:0, why:'ประจุชนิดเดียวกันผลักกัน ต่างชนิดกันดูดกัน'},
-  {q:'แรงระหว่างประจุสองจุดแปรผันอย่างไรกับระยะห่าง', o:['แปรผกผันกับ r²','แปรผกผันกับ r','แปรผันตรงกับ r','ไม่ขึ้นกับ r'], a:0, why:'กฎของคูลอมบ์ F = {kq₁q₂|r²}'},
-  {q:'ถ้าระยะห่างระหว่างประจุเพิ่มเป็น 2 เท่า แรงจะเป็นเท่าใดของเดิม', o:['1/4','1/2','2','4'], a:0, why:'F ∝ 1/r² ระยะ 2 เท่า แรงเหลือ 1/4'},
-  {q:'ประจุ 2 µC และ 3 µC ห่างกัน 0.3 m แรงระหว่างประจุเท่าใด (k = 9 × 10⁹ N·m²/C²)', o:['0.6 N','0.2 N','1.8 N','6 N'], a:0, why:'F = 9×10⁹ × 2×10⁻⁶ × 3×10⁻⁶ / 0.09 = 0.6 N'},
-  {q:'สนามไฟฟ้าที่จุดใดจุดหนึ่งมีทิศเดียวกับข้อใด', o:['แรงที่กระทำต่อประจุทดสอบบวก','แรงที่กระทำต่อประจุลบ','การเคลื่อนที่ของอิเล็กตรอน','ตั้งฉากกับแรงเสมอ'], a:0, why:'นิยามทิศสนามไฟฟ้าคือทิศของแรงที่กระทำต่อประจุทดสอบบวก'},
-  {q:'สนามไฟฟ้าห่างจากจุดประจุ Q เป็นระยะ r มีขนาดเท่าใด', o:['kQ/r²','kQ/r','kQr','kQ²/r²'], a:0, why:'E = {F|q} = {kQ|r²}'},
-  {q:'แผ่นโลหะคู่ขนานห่างกัน 2 cm ต่อความต่างศักย์ 100 V สนามไฟฟ้าระหว่างแผ่นเท่าใด', o:['5000 V/m','50 V/m','200 V/m','2 V/m'], a:0, why:'E = {V|d} = {100|0.02} = 5000 V/m'},
-  {q:'สนามไฟฟ้าระหว่างแผ่นโลหะคู่ขนาน (ห่างจากขอบ) มีลักษณะอย่างไร', o:['สม่ำเสมอ ขนาดและทิศเท่ากันทุกจุด','มากที่สุดตรงกลางระหว่างแผ่น','มากที่สุดบริเวณใกล้แผ่นบวก','ลดลงตามระยะห่างจากแผ่นบวก'], a:0, why:'ระหว่างแผ่นคู่ขนานสนามไฟฟ้าสม่ำเสมอ ศักย์จึงลดลงเชิงเส้น'},
-  {q:'เส้นศักย์เท่าระหว่างแผ่นโลหะคู่ขนานมีแนวอย่างไร', o:['ขนานกับแผ่นโลหะ','ตั้งฉากกับแผ่นโลหะ','เป็นวงกลม','ไม่มีแนวแน่นอน'], a:0, why:'เส้นศักย์เท่าตั้งฉากกับเส้นสนาม ซึ่งตั้งฉากกับแผ่น'},
-  {q:'งานในการเลื่อนประจุ 2 C ผ่านความต่างศักย์ 12 V เท่าใด', o:['24 J','6 J','14 J','0.17 J'], a:0, why:'W = qV = 2 × 12 = 24 J'},
-  {q:'เครื่องกรองฝุ่นไฟฟ้าสถิตดักฝุ่นได้เพราะอะไร', o:['ฝุ่นได้รับประจุแล้วถูกแรงไฟฟ้าดึงไปติดแผ่นโลหะ','ฝุ่นถูกแม่เหล็กในแผ่นดูด','ฝุ่นถูกความร้อนจากลวดเผา','ฝุ่นตกลงเพราะน้ำหนักของตัวเอง'], a:0, why:'ลวดแรงสูงให้ประจุแก่ฝุ่น สนามไฟฟ้าทำให้เกิดแรง F = qE ดึงฝุ่นไปติดแผ่นโลหะที่ต่อดิน'},
-  {q:'ลวดกับแผ่นโลหะห่างกัน 0.10 m ความต่างศักย์ 20 kV สนามไฟฟ้าเฉลี่ยเท่าใด', o:['2 × 10⁵ V/m','2 × 10³ V/m','200 V/m','2 × 10⁶ V/m'], a:0, why:'E = {V|d} = {20 000|0.10} = 2 × 10⁵ V/m'},
-  {q:'ข้อใดใช้หลักไฟฟ้าสถิตแบบเดียวกับเครื่องกรองฝุ่นไฟฟ้าสถิต', o:['การพ่นสีรถยนต์ด้วยไฟฟ้าสถิต','เตารีดไฟฟ้า','หม้อหุงข้าวไฟฟ้า','พัดลมตั้งโต๊ะ'], a:0, why:'ละอองสีได้รับประจุแล้วถูกดูดไปติดชิ้นงานที่ต่อดิน เหมือนฝุ่นถูกดูดไปติดแผ่นโลหะ'},
-  {q:'ข้อใดเป็นค่าประจุที่เป็นไปได้ของวัตถุ', o:['4.8 × 10⁻¹⁹ C','2.4 × 10⁻¹⁹ C','1.0 × 10⁻¹⁹ C','0.8 × 10⁻¹⁹ C'], a:0, why:'4.8 × 10⁻¹⁹ = 3e เป็นจำนวนเต็มเท่าของ e'},
-  {q:'ตัวเก็บประจุมีความจุ 10 µF ต่อกับความต่างศักย์ 12 V เก็บประจุได้เท่าใด', o:['120 µC','1.2 µC','0.83 µC','22 µC'], a:0, why:'Q = CV = 10 µF × 12 V = 120 µC'},
-  {q:'นำแท่งประจุลบเข้าใกล้ปุ่มโลหะของอิเล็กโทรสโคปที่เป็นกลาง (ไม่แตะ) แผ่นโลหะบางจะมีประจุชนิดใด', o:['ลบ','บวก','ไม่มีประจุ','บวกและลบเท่ากัน'], a:0, why:'อิเล็กตรอนในตัวนำถูกผลักลงไปที่แผ่นโลหะบาง แผ่นโลหะจึงมีประจุลบและกางออก'},
-  {q:'การทำให้ตัวนำมีประจุโดยการเหนี่ยวนำ ต้องทำขั้นตอนใดก่อนนำวัตถุที่มีประจุออก', o:['ถอดสายดิน','ต่อสายดินเพิ่ม','แตะวัตถุกับตัวนำ','ถูตัวนำด้วยผ้า'], a:0, why:'ถ้านำวัตถุออกก่อนถอดสายดิน ประจุจะไหลกลับทางสายดินจนตัวนำเป็นกลาง'},
-  {q:'ถูแท่งแก้วกับผ้าไหม แท่งแก้วมีประจุ +5 nC ผ้าไหมจะมีประจุเท่าใด', o:['−5 nC','+5 nC','0','−10 nC'], a:0, why:'กฎอนุรักษ์ประจุ ประจุรวมก่อนและหลังถูเป็นศูนย์ อิเล็กตรอนย้ายจากแก้วไปที่ผ้าไหม'},
-  {q:'ตัวเก็บประจุแผ่นคู่ขนาน ถ้าเพิ่มระยะห่างระหว่างแผ่นเป็น 2 เท่า ความจุจะเป็นเท่าใดของเดิม', o:['1/2','2','1/4','เท่าเดิม'], a:0, why:'C = {ε₀A|d} ความจุแปรผกผันกับระยะห่างระหว่างแผ่น'},
-  {q:'ตัวเก็บประจุความจุ 20 µF ต่อกับความต่างศักย์ 100 V สะสมพลังงานเท่าใด', o:['0.1 J','0.2 J','2 mJ','1 J'], a:0, why:'U = ½CV² = ½ × 20 × 10⁻⁶ × 100² = 0.1 J'},
+  /* 1 door knob */
+  {sc:0, q:'ทำไมร่างกายของนิดจึงมีประจุไฟฟ้าหลังเดินลากเท้าบนพรม', o:['การเสียดสีทำให้อิเล็กตรอนย้ายระหว่างเท้ากับพรม','พรมสร้างประจุไฟฟ้าขึ้นใหม่ให้ร่างกาย','ลูกบิดประตูส่งประจุมาให้ร่างกายก่อน','ร่างกายดึงไฟฟ้ามาจากปลั๊กไฟในห้อง'], a:0, why:'การเสียดสีทำให้อิเล็กตรอนย้ายจากวัตถุหนึ่งไปอีกวัตถุหนึ่ง ประจุไม่ได้ถูกสร้างขึ้นใหม่'},
+  {sc:0, q:'จากตาราง ข้อสรุปใดถูกต้อง', o:['อากาศชื้นมากขึ้น ถูกช็อตน้อยลง','อากาศชื้นมากขึ้น ถูกช็อตบ่อยขึ้น','ความชื้นไม่เกี่ยวกับการถูกช็อต','ถูกช็อตเฉพาะวันที่ชื้นเกิน 50%'], a:0, why:'ความชื้นเพิ่มจาก 30% เป็น 85% จำนวนครั้งที่ถูกช็อตลดจาก 8 เหลือ 0 ไอน้ำในอากาศช่วยให้ประจุรั่วออกจากร่างกาย'},
+  {sc:0, t:'yn', q:'ข้อความต่อไปนี้ถูกต้องหรือไม่', rows:[['ถ้านิดมีประจุลบ พรมจะมีประจุบวกในปริมาณเท่ากัน', true],['ประกายไฟเกิดจากประจุกระโดดผ่านอากาศระหว่างมือกับลูกบิด', true],['ถ้าลูกบิดเป็นไม้แทนโลหะ นิดจะถูกช็อตแรงขึ้น', false]], why:'ประจุอนุรักษ์ ร่างกายได้อิเล็กตรอนเท่าใด พรมก็เสียไปเท่านั้น · ประกายไฟคือประจุไหลผ่านอากาศ · ไม้เป็นฉนวน ประจุไหลผ่านได้ยาก จึงถูกช็อตน้อยลง ไม่ใช่แรงขึ้น'},
+  {sc:0, t:'open', q:'เสนอวิธีลดการถูกช็อตที่ลูกบิดประตู 1 วิธี และอธิบายเหตุผลโดยใช้ความรู้เรื่องประจุไฟฟ้า', model:'เช่น ใช้กุญแจโลหะแตะลูกบิดก่อน ประจุจะไหลผ่านกุญแจแทนนิ้ว หรือเพิ่มความชื้นในห้อง ไอน้ำช่วยให้ประจุรั่วออกจากร่างกายก่อนจับลูกบิด'},
+  /* 2 balloons */
+  {sc:1, q:'ลูกโป่งสองลูกที่ถูกับเส้นผมแล้วแยกออกจากกันเพราะอะไร', o:['มีประจุชนิดเดียวกันจึงผลักกัน','มีประจุต่างชนิดกันจึงผลักกัน','ด้ายที่แขวนมีประจุจึงดันออก','ลูกโป่งสองลูกหนักไม่เท่ากัน'], a:0, why:'ลูกโป่งทั้งสองถูกับเส้นผมแบบเดียวกัน จึงได้ประจุชนิดเดียวกัน ประจุชนิดเดียวกันผลักกัน'},
+  {sc:1, q:'จากตาราง ถ้าระยะห่างเป็น 40 cm แรงไฟฟ้าจะประมาณเท่าใด', o:['0.23 mN','0.45 mN','0.90 mN','1.80 mN'], a:0, why:'F ∝ 1/r² ระยะ 40 cm เป็น 4 เท่าของ 10 cm แรงจึงเหลือ 1/16 คือ 3.6 ÷ 16 ≈ 0.23 mN'},
+  {sc:1, t:'yn', q:'ข้อความต่อไปนี้ถูกต้องหรือไม่', rows:[['ถ้าลดระยะห่างเหลือครึ่งหนึ่ง แรงจะเพิ่มเป็น 4 เท่า', true],['ทรงกลมที่มีประจุมากกว่าจะออกแรงต่ออีกลูกมากกว่าแรงที่ได้รับกลับ', false],['ลูกโป่งที่มีประจุดูดเศษกระดาษที่เป็นกลางได้', true]], why:'F ∝ 1/r² ระยะครึ่งหนึ่ง แรงเพิ่ม 4 เท่า · แรงคู่กิริยา–ปฏิกิริยามีขนาดเท่ากันเสมอ · ประจุบนลูกโป่งเหนี่ยวนำให้กระดาษเกิดประจุตรงข้ามด้านใกล้ จึงดูดกัน'},
+  {sc:1, t:'open', q:'ต้นนำลูกโป่งที่ถูกับเส้นผมไปแตะผนัง ลูกโป่งติดผนังได้ ทั้งที่ผนังไม่มีประจุ อธิบายว่าเกิดขึ้นได้อย่างไร', model:'ประจุลบบนลูกโป่งผลักอิเล็กตรอนในผนังให้ออกห่าง ผิวผนังด้านใกล้ลูกโป่งจึงเป็นบวก (การเหนี่ยวนำ) ประจุต่างชนิดอยู่ใกล้กว่าจึงดูดกันมากกว่าแรงผลัก ลูกโป่งจึงติดผนัง'},
+  /* 3 air purifier */
+  {sc:2, q:'ถ้าต่อความต่างศักย์ 5000 V กับแผ่นที่ห่างกัน 5 mm สนามไฟฟ้าระหว่างแผ่นเท่าใด', o:['1 × 10⁶ V/m','1 × 10⁴ V/m','2.5 × 10⁴ V/m','1 × 10³ V/m'], a:0, why:'E = V/d = 5000 ÷ 0.005 = 1 × 10⁶ V/m (ต้องเปลี่ยน 5 mm เป็น 0.005 m)'},
+  {sc:2, q:'ที่ความต่างศักย์ 0 V ยังดักฝุ่นได้เพียง 5% เพราะอะไร', o:['ไม่มีสนามไฟฟ้า จึงไม่มีแรง F = qE ดึงฝุ่น','ฝุ่นเล็กเกินกว่าแผ่นโลหะจะมองเห็น','แผ่นโลหะร้อนเกินไปจนฝุ่นติดไม่ได้','พัดลมหยุดหมุนเมื่อไม่มีความต่างศักย์'], a:0, why:'เมื่อ V = 0 สนามไฟฟ้าระหว่างแผ่นเป็นศูนย์ ฝุ่นจึงไม่ถูกแรงไฟฟ้าดึง ที่ดักได้ 5% เป็นฝุ่นที่ชนแผ่นเอง'},
+  {sc:2, t:'yn', q:'ข้อความต่อไปนี้ถูกต้องหรือไม่', rows:[['เพิ่มความต่างศักย์ระหว่างแผ่น ฝุ่นถูกดักได้มากขึ้น', true],['ลดระยะห่างระหว่างแผ่นโดยความต่างศักย์เท่าเดิม สนามไฟฟ้าจะลดลง', false],['เปิดพัดลมแรงขึ้น ฝุ่นจะอยู่ระหว่างแผ่นนานขึ้น', false]], why:'จากตาราง V มากขึ้นดักได้มากขึ้น · E = V/d ระยะลดลง สนามเพิ่มขึ้น · ลมแรงขึ้นฝุ่นผ่านเร็วขึ้น อยู่ในสนามสั้นลง'},
+  {sc:2, t:'open', q:'เพื่อนบอกว่า “ตั้งความต่างศักย์ให้สูงที่สุดเท่าที่ทำได้ดีที่สุด” นักเรียนเห็นด้วยหรือไม่ อธิบายเหตุผล', model:'เห็นด้วยบางส่วน ความต่างศักย์สูงขึ้นทำให้สนามไฟฟ้าและแรงต่อฝุ่นมากขึ้นจึงดักได้มากขึ้น แต่ถ้าสูงเกินไปอาจเกิดประกายไฟ เกิดโอโซน สิ้นเปลืองไฟ และอันตราย จากตารางเพิ่มจาก 4000 เป็น 6000 V ได้เพิ่มเพียง 20%'},
+  /* 4 lightning */
+  {sc:3, q:'พื้นดินใต้เมฆมีประจุบวกปรากฏขึ้นได้อย่างไร', o:['ประจุลบในเมฆผลักอิเล็กตรอนที่ผิวดินออกไป','เมฆปล่อยประจุบวกลงมาที่พื้นดินก่อน','พื้นดินมีประจุบวกอยู่แล้วตลอดเวลา','แสงแดดทำให้ผิวดินสูญเสียโปรตอน'], a:0, why:'การเหนี่ยวนำ ประจุลบในเมฆผลักอิเล็กตรอนที่ผิวดินให้เคลื่อนออกไป ผิวดินใต้เมฆจึงเหลือประจุบวก'},
+  {sc:3, q:'ทำไมสายล่อฟ้าต้องต่อสายทองแดงลงไปในดิน', o:['ให้ประจุไหลลงดินโดยไม่ผ่านตัวอาคาร','ให้อาคารเก็บประจุไว้ได้มากขึ้น','ป้องกันไม่ให้เกิดเมฆฝนเหนืออาคาร','ทำให้แท่งโลหะบนยอดอาคารเย็นลง'], a:0, why:'ทองแดงเป็นตัวนำที่ดี เมื่อฟ้าผ่า ประจุจะไหลผ่านสายทองแดงลงดิน ไม่ไหลผ่านโครงสร้างอาคารและคนข้างใน'},
+  {sc:3, t:'yn', q:'ข้อความต่อไปนี้ถูกต้องหรือไม่', rows:[['ขณะฟ้าคะนอง ยืนหลบใต้ต้นไม้สูงกลางทุ่งปลอดภัย', false],['นั่งในรถยนต์ที่ปิดประตูสนิทปลอดภัยกว่ายืนกลางทุ่ง', true],['ประจุลบในเมฆเกิดขึ้นได้เองโดยไม่มีสิ่งใดเสียอิเล็กตรอนไป', false]], why:'ต้นไม้สูงเป็นจุดที่ฟ้าผ่าได้ง่าย · ตัวถังรถเป็นโลหะ ประจุไหลไปตามผิวด้านนอก · ประจุอนุรักษ์ เมฆได้อิเล็กตรอนมาจากการเสียดสีของหยดน้ำและน้ำแข็ง'},
+  {sc:3, t:'open', q:'อธิบายว่าทำไมการกางร่มด้ามโลหะยืนกลางสนามโล่งขณะฟ้าคะนองจึงอันตราย', model:'ร่มทำให้เราเป็นจุดสูงสุดในสนาม ปลายโลหะแหลมมีประจุเหนี่ยวนำสะสมหนาแน่น สนามไฟฟ้ารอบปลายสูง ฟ้าจึงผ่าลงจุดนั้นได้ง่าย และโลหะนำประจุผ่านร่างกายลงดิน'},
+  /* 5 AED */
+  {sc:4, q:'ตัวเก็บประจุของเครื่อง AED เก็บประจุได้เท่าใด', o:['0.2 C','2 C','0.02 C','20 C'], a:0, why:'Q = CV = 100 × 10⁻⁶ F × 2000 V = 0.2 C'},
+  {sc:4, q:'ตัวเก็บประจุนี้สะสมพลังงานได้เท่าใด', o:['200 J','400 J','100 J','0.2 J'], a:0, why:'U = ½CV² = ½ × 100 × 10⁻⁶ × 2000² = 200 J'},
+  {sc:4, t:'yn', q:'ข้อความต่อไปนี้ถูกต้องหรือไม่', rows:[['ชาร์จด้วยความต่างศักย์สูงขึ้น ตัวเก็บประจุเก็บประจุได้มากขึ้น', true],['ถ้าความต่างศักย์เพิ่มเป็น 2 เท่า พลังงานที่สะสมเพิ่มเป็น 2 เท่า', false],['ตัวเก็บประจุยังเก็บประจุไว้ได้แม้ถอดออกจากแหล่งจ่ายแล้ว', true]], why:'Q = CV ประจุแปรผันตรงกับ V · U = ½CV² V เพิ่ม 2 เท่า พลังงานเพิ่ม 4 เท่า · ตัวเก็บประจุเก็บประจุไว้ได้หลังถอดออก จึงต้องระวังแม้ปิดเครื่อง'},
+  {sc:4, t:'open', q:'ก่อนปล่อยไฟฟ้า เครื่อง AED จะเตือนว่า “ห้ามสัมผัสตัวผู้ป่วย” ใช้ความรู้ไฟฟ้าอธิบายเหตุผล', model:'ร่างกายคนเป็นตัวนำไฟฟ้า ถ้าสัมผัสผู้ป่วยขณะปล่อยประจุ ประจุจะไหลผ่านร่างกายผู้ช่วยด้วย ผู้ช่วยได้รับอันตราย และพลังงานที่ไปถึงหัวใจผู้ป่วยลดลง'}
 ];
 
 const PARTS = [
@@ -634,11 +660,16 @@ const STEP_VIEW = ['pre','guide','picker','sheet','post'];
 /* ---------- state (kept in this browser only) ---------- */
 const KEY = CONF.key;
 const NQ = QUIZ.length, SR = !!CONF.senior, HS = !!CONF.hs;
+const QT = it => it.t || 'mc', AUTO = QUIZ.map((it,i)=>QT(it)!=='open' ? i : -1).filter(i=>i>=0), NA = AUTO.length;
+const qAns = (it, x) => QT(it)==='open' ? typeof x==='string' && x.trim().length >= 5 : QT(it)==='yn' ? Array.isArray(x) && it.rows.every((_,k)=>x[k]===0 || x[k]===1) : x!=null;
+const qOk = (it, x) => QT(it)==='yn' ? Array.isArray(x) && it.rows.every((r,k)=>x[k]===(r[1] ? 1 : 0)) : QT(it)==='open' ? null : x===it.a;
+const qScore = a => AUTO.reduce((n,i)=>n + (qOk(QUIZ[i], a[i]) ? 1 : 0), 0);
 const fresh = () => ({
   qv:2, pre:{a:Array(NQ).fill(null), done:false, score:null},
   guideRead:false, labDone:PARTS.map(()=>false), pred:PARTS.map(()=>null),
   nick:'', miss:Object.fromEntries(PARTS.map((_,i)=>[i,{}])), sheet:{}, sheetDone:false,
-  post:{a:Array(NQ).fill(null), done:false, score:null}
+  post:{a:Array(NQ).fill(null), done:false, score:null},
+  stu:null, uid:'', tm:{}, sent:{}
 });
 let S;
 try { S = JSON.parse(localStorage.getItem(KEY)) || fresh(); } catch(e){ S = fresh(); }
@@ -676,27 +707,75 @@ function toast(msg){ msg = String(msg).replace(/ปลดล็อก(ตอน�
 }
 const nk = msg => S.nick ? `${S.nick} ${msg}` : msg;
 function showNick(force){
-  const m = $('#nickModal'); if(S.nick){ m.hidden = true; return; }
-  m.hidden = false;
-  m.innerHTML = `<div class="card pad" role="dialog" aria-modal="true" aria-labelledby="nickH" style="max-width:480px;width:100%;display:flex;flex-direction:column;gap:16px;box-shadow:0 20px 40px rgba(30,35,64,.12)">
-    <div class="row" style="gap:14px;flex-wrap:nowrap">${mascot('ok',96)}<div><h2 id="nickH" style="font-size:22px">${HS ? 'สวัสดีครับ ผมชื่อ "ปาร์ตี้"' : SR ? 'สวัสดีครับ พี่ชื่อ "ปาร์ตี้"' : 'สวัสดี! เราชื่อ "ปาร์ตี้"'}</h2><div class="note">${HS ? 'ผมจะช่วยดูแลการทดลองในแล็บนี้ พิมพ์ชื่อที่อยากให้ผมเรียกไว้ได้เลยครับ' : SR ? 'พี่จะเป็นพี่เลี้ยงในแลปนี้ บอกชื่อเล่นของน้องไว้ พี่จะได้เรียกถูก' : 'แล้วเพื่อนชื่อะไร? บอกชื่อเล่นหน่อย เราจะได้ทดลองด้วยกัน'.replace('ชื่อะไร','ชื่ออะไร')}</div></div></div>
-    <label for="nickIn" style="font-weight:600">ชื่อเล่นของฉัน <span class="note">(ตั้งได้ครั้งเดียว)</span></label>
-    <input id="nickIn" type="text" maxlength="20" autocomplete="off" value="${esc(showNick.d||S.nick||'')}" placeholder="พิมพ์ชื่อเล่นตรงนี้">
-    <div class="row" style="justify-content:flex-end;gap:8px">${S.nick?'<button class="btn ghost" type="button" id="nickCancel">ยกเลิก</button>':''}<button class="btn" type="button" id="nickGo">${S.nick?'บันทึกชื่อ':'เริ่มกันเลย'} ${ICON.arrow}</button></div></div>`;
-  const inp = $('#nickIn');
-  const ok = ()=>{ const v = inp.value.trim().slice(0,20); if(!v){ inp.focus(); toast('พิมพ์ชื่อเล่นก่อนนะ'); return; }
-    m.querySelector('.card').innerHTML = `<div class="row" style="gap:14px;flex-wrap:nowrap">${mascot('think',80)}<div><h2 style="font-size:22px">ชื่อ “${esc(v)}” ใช่ไหม?</h2><div class="note">ตั้งชื่อได้ครั้งเดียว ยืนยันแล้วเปลี่ยนไม่ได้นะ</div></div></div><div class="row" style="justify-content:flex-end;gap:8px"><button class="btn ghost" type="button" id="nickBack">แก้ชื่อ</button><button class="btn" type="button" id="nickYes">ใช่ ยืนยัน ${ICON.arrow}</button></div>`;
-    $('#nickBack').addEventListener('click', ()=>{ showNick.d = v; showNick(); });
-    $('#nickYes').addEventListener('click', ()=>{ S.nick = v; showNick.d = ''; save(); m.hidden = true; render(); toast(`ยินดีที่ได้รู้จัก ${v}!`); }); };
-  $('#nickGo').addEventListener('click', ok); inp.addEventListener('keydown', e=>{ if(e.key==='Enter') ok(); });
-  const c = $('#nickCancel'); if(c) c.addEventListener('click', ()=>{ m.hidden = true; });
-  setTimeout(()=>inp.focus(), 60);
+  const m = $('#nickModal'); if(S.nick && S.stu){ m.hidden = true; return; }
+  m.hidden = false; const d = showNick.d || {g:'ม.5'};
+  m.innerHTML = `<div class="card pad" role="dialog" aria-modal="true" aria-labelledby="nickH" style="max-width:500px;width:100%;display:flex;flex-direction:column;gap:14px;box-shadow:0 20px 40px rgba(30,35,64,.12)">
+    <div class="row" style="gap:14px;flex-wrap:nowrap">${mascot('ok',88)}<div><h2 id="nickH" style="font-size:22px">สวัสดีครับ ผมชื่อ "ปาร์ตี้"</h2><div class="note">กรอกข้อมูลให้ครบก่อนเริ่มนะครับ ผลการทำแล็บจะส่งถึงครูตามชื่อและเลขที่นี้ (กรอกได้ครั้งเดียว)</div></div></div>
+    <label class="regl">ชื่อจริง และนามสกุล<input id="stName" type="text" maxlength="60" autocomplete="off" value="${esc(d.n||'')}" placeholder="เช่น สมชาย ใจดี"></label>
+    <div class="regrow"><label class="regl">ชั้น<select id="stGrade">${['ม.4','ม.5','ม.6'].map(g=>`<option ${g===d.g?'selected':''}>${g}</option>`).join('')}</select></label>
+      <label class="regl">ห้อง<input id="stRoom" type="number" inputmode="numeric" min="1" max="30" value="${esc(d.r||'')}" placeholder="เช่น 2"></label>
+      <label class="regl">เลขที่<input id="stNo" type="number" inputmode="numeric" min="1" max="70" value="${esc(d.no||'')}" placeholder="เช่น 15"></label></div>
+    <div id="regErr" class="note" style="color:#C0392B;min-height:1em"></div>
+    <div class="row" style="justify-content:flex-end;gap:8px"><button class="btn" type="button" id="nickGo">ถัดไป ${ICON.arrow}</button></div></div>`;
+  const val = () => ({n:$('#stName').value.trim().replace(/\s+/g,' ').slice(0,60), g:$('#stGrade').value, r:$('#stRoom').value.trim(), no:$('#stNo').value.trim()});
+  const ok = ()=>{ const v = val(), er = $('#regErr');
+    if(v.n.length < 2){ er.textContent = 'กรอกชื่อจริงและนามสกุล'; $('#stName').focus(); return; }
+    if(!/^\d{1,2}$/.test(v.r) || +v.r < 1){ er.textContent = 'กรอกห้องเป็นตัวเลข'; $('#stRoom').focus(); return; }
+    if(!/^\d{1,2}$/.test(v.no) || +v.no < 1){ er.textContent = 'กรอกเลขที่เป็นตัวเลข'; $('#stNo').focus(); return; }
+    v.r = String(+v.r); v.no = String(+v.no); showNick.d = v;
+    m.querySelector('.card').innerHTML = `<div class="row" style="gap:14px;flex-wrap:nowrap">${mascot('think',80)}<div><h2 style="font-size:20px">ข้อมูลถูกต้องไหมครับ?</h2><div class="note">ยืนยันแล้วแก้ไขไม่ได้ ตรวจให้ดีก่อนนะครับ</div></div></div>
+      <div class="regsum"><div><span>ชื่อ</span><b>${esc(v.n)}</b></div><div><span>ชั้น/ห้อง</span><b>${esc(v.g)}/${esc(v.r)}</b></div><div><span>เลขที่</span><b>${esc(v.no)}</b></div></div>
+      <div class="row" style="justify-content:flex-end;gap:8px"><button class="btn ghost" type="button" id="nickBack">แก้ไข</button><button class="btn ok" type="button" id="nickYes">ยืนยัน เริ่มเลย ${ICON.arrow}</button></div>`;
+    $('#nickBack').addEventListener('click', ()=>showNick());
+    $('#nickYes').addEventListener('click', ()=>{ S.stu = {name:v.n, grade:v.g, room:v.r, no:v.no}; S.nick = v.n.split(' ')[0]; if(!S.uid) S.uid = Date.now().toString(36) + Math.random().toString(36).slice(2,8); S.t0 = S.t0 || Date.now(); showNick.d = null; save(); m.hidden = true; render(); toast(`ยินดีที่ได้รู้จัก ${S.nick}!`); sendNow('start'); }); };
+  $('#nickGo').addEventListener('click', ok); m.querySelectorAll('input').forEach(x=>x.addEventListener('keydown', e=>{ if(e.key==='Enter') ok(); }));
+  setTimeout(()=>$('#stName').focus(), 60);
 }
+const stuTxt = () => S.stu ? `${S.stu.name} · ${S.stu.grade}/${S.stu.room} เลขที่ ${S.stu.no}` : (S.nick || '');
+
+/* ---------- time on task + sending results to the teacher's Google Sheet ---------- */
+setInterval(()=>{ if(document.hidden || !S.stu) return; const k = ui.view==='lab' ? 'p' + ((ui.part|0) + 1) : ({pre:'pre', post:'post', sheet:'rev', picker:'lab', home:'home', guide:'home', result:'post'})[ui.view] || 'other';
+  S.tm = S.tm || {}; S.tm[k] = (S.tm[k] || 0) + 5; save(); }, 5000);
+function payload(stage){
+  const st = S.stu || {}, min = x => Math.round((x || 0)/6)/10, tm = S.tm || {}, d = new Date();
+  const o = {uid:S.uid, attempt:S.attempt || 1, sent_at:d.toLocaleString('th-TH'), stage, lab:CONF.short, grade:st.grade || '', room:st.room || '', no:st.no || '', name:st.name || '',
+    pre_score:S.pre.done ? S.pre.score : '', post_score:S.post.done ? S.post.score : '', max_score:NA,
+    gain:S.pre.done && S.post.done && S.pre.score < NA ? Math.round((S.post.score - S.pre.score)/(NA - S.pre.score)*100)/100 : '',
+    parts_done:S.labDone.filter(Boolean).length + '/' + PARTS.length};
+  ['pre','post'].forEach(k=>{ const a = S[k].a; QUIZ.forEach((it,i)=>{ const x = a[i], ty = QT(it);
+    o[`${k}_${i+1}`] = !S[k].done ? '' : ty==='open' ? String(x || '') : qOk(it, x) ? 1 : 0; }); });
+  PARTS.forEach((p,i)=>{ const st = (S.eq || {})[i] || {a:{}, w:{}, r:{}, wr:{}}, Qs = EQ(i);
+    o[`endq_p${i+1}`] = Qs.map(q=>`${q.k}:${eqQOk(st, q) ? 'ถูก' : 'ยัง'} ผิด${(st.w[q.k] || 0) + ((st.wr || {})[q.k] || 0)}`).join(' | ');
+    o[`endq_wrong_p${i+1}`] = Qs.reduce((n,q)=>n + (st.w[q.k] || 0) + ((st.wr || {})[q.k] || 0), 0);
+    o[`pred_p${i+1}`] = S.pred[i]==null ? '' : S.pred[i]===p.pred.o[p.pred.a || 0] ? 1 : 0;
+    const ps = (S.ps || {})[i] || {}, rec = {}; ['recs','pts','prec','st','crecs','ans','q1','q2','A','wrong'].forEach(k=>{ const v = ps[k]; if(v!=null && !(typeof v==='object' && !Object.keys(v).length)) rec[k] = v; });
+    o[`rec_p${i+1}`] = Object.keys(rec).length ? JSON.stringify(rec).slice(0, 1500) : ''; });
+  const r = S.rev || {}; o.map_done = r.mapDone ? 1 : 0; o.map_tries = r.tries || 0;
+  ['pre','p1','p2','p3','p4','p5','rev','post'].forEach(k=>{ o['min_' + k] = min(tm[k]); }); o.min_total = min(Object.values(tm).reduce((a,b)=>a + b, 0));
+  return o; }
+const sendSig = () => [!!S.stu, S.pre.done, S.labDone.filter(Boolean).length, CONF.uni && typeof revDone==='function' ? revDone() : 0, S.post.done].join(',');
+let sendT;
+async function sendNow(stage){
+  if(!S.stu || !S.uid) return; S.sent = S.sent || {};
+  if(!CONF.send){ S.sent.st = 'nourl'; return; }
+  const body = JSON.stringify(payload(stage || (S.post.done ? 'post' : S.labDone.some(Boolean) ? 'lab' : S.pre.done ? 'pre' : 'start')));
+  S.sent.st = 'sending'; try{ await fetch(CONF.send, {method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'}, body});
+    S.sent.st = 'ok'; S.sent.at = Date.now(); S.sent.sig = sendSig(); }
+  catch(e){ S.sent.st = 'fail'; }
+  save(); if(ui.view==='result') render(); }
+function sendWatch(){ if(!S.stu) return; const g = sendSig(); if(S.sent && S.sent.sig===g && S.sent.st==='ok') return; clearTimeout(sendT); sendT = setTimeout(()=>sendNow(), 1500); }
+setInterval(sendWatch, 4000); window.addEventListener('online', ()=>sendWatch());
+function sendBox(){ const t = S.sent || {}, at = t.at ? new Date(t.at).toLocaleTimeString('th-TH', {hour:'2-digit', minute:'2-digit'}) : '';
+  const msg = !CONF.send ? 'ระบบส่งผลยังไม่ได้ตั้งค่า (ครูยังไม่ได้ใส่ลิงก์ Google Sheet)' : t.st==='ok' ? `ส่งผลให้ครูแล้ว ✓ เวลา ${at} น.` : t.st==='sending' ? 'กำลังส่งผลให้ครู...' : 'ยังส่งผลไม่สำเร็จ ตรวจอินเทอร์เน็ตแล้วกดส่งอีกครั้ง';
+  return `<section class="card pad sendbox ${t.st==='ok' ? 'ok' : ''}"><div><b>${esc(stuTxt())}</b><div class="note">${msg}</div></div>${CONF.send ? `<button class="btn ${t.st==='ok' ? 'ghost' : 'ok'} sm" type="button" data-act="resend">ส่งผลอีกครั้ง</button>` : ''}</section>`; }
+document.addEventListener('input', e=>{ if(e.target.id!=='qOpen') return; const st = S[ui.view], it = QUIZ[ui.q]; if(!st || !it || QT(it)!=='open') return;
+  st.a[ui.q] = e.target.value; save(); const ok = qAns(it, st.a[ui.q]), dot = document.querySelector(`.qdot[data-v="${ui.q}"]`); if(dot) dot.classList.toggle('ans', ok);
+  const n = st.a.filter((x,i)=>qAns(QUIZ[i], x)).length, sb = document.querySelector('[data-act="submitQuiz"]'); if(sb){ sb.disabled = n!==NQ; sb.textContent = `ส่งคำตอบ (${n}/${NQ})`; } });
 
 /* ---------- rail ---------- */
 function renderRail(){
   $('#brandMascot').innerHTML = mascot('wink', 44);
-  const nb = $('#nickBar'); nb.hidden = !S.nick; nb.innerHTML = S.nick ? `<span>สวัสดี <b>${esc(S.nick)}</b></span>` : '';
+  const nb = $('#nickBar'); nb.hidden = !S.nick; nb.innerHTML = S.nick ? `<span>สวัสดี <b>${esc(S.nick)}</b>${S.stu ? `<br><small>${esc(S.stu.grade)}/${esc(S.stu.room)} เลขที่ ${esc(S.stu.no)}</small>` : ''}</span>` : '';
   const viewStep = {pre:0, guide:1, picker:2, lab:2, sheet:3, post:4, result:4}[ui.view];
   $('#steps').innerHTML = `<div class="steps-label">ขั้นตอน</div>` + STEPS.map((l,i)=>{
     if(HIDE(i)) return '';
@@ -720,7 +799,7 @@ if(PD){ const t = $('#teachSheet'); t.hidden = false; t.addEventListener('click'
 $('#nickBar').addEventListener('click', e=>{ if(e.target.closest('[data-nick]')) showNick(true); });
 $('#resetAll').addEventListener('click', ()=>{
   if(!ui.confirmReset){ ui.confirmReset = true; renderRail(); setTimeout(()=>{ ui.confirmReset=false; renderRail(); }, 4000); return; }
-  ui.confirmReset = false; S = fresh(); save(); ui.q = 0; ui.preSent = false; go('home'); showNick(); toast('ล้างคำตอบแล้ว เริ่มใหม่ได้เลย');
+  ui.confirmReset = false; { const keep = {stu:S.stu, nick:S.nick, attempt:(S.attempt || 1) + 1}; S = Object.assign(fresh(), keep); if(S.stu) S.uid = Date.now().toString(36) + Math.random().toString(36).slice(2,8); } save(); ui.q = 0; ui.preSent = false; go('home'); showNick(); toast('ล้างคำตอบแล้ว เริ่มใหม่ได้เลย');
 });
 
 /* ---------- router ---------- */
@@ -752,6 +831,8 @@ document.getElementById('main').addEventListener('click', e=>{
   if(act==='go') go(v);
   if(act==='part') go('lab', {part:+v});
   if(act==='ans'){ const st = S[ui.view], q0 = Math.min(NQ - 1, Math.max(0, ui.q)); ui.q = q0; st.a[q0] = +v; st.a.length = NQ; save(); if(q0<NQ-1) { setTimeout(()=>{ if(ui.q===q0){ ui.q = q0 + 1; render(); } }, 180); } render(); }
+  if(act==='yn'){ const st = S[ui.view], it = QUIZ[ui.q]; if(!st || !it || QT(it)!=='yn') return; const [k, val] = v.split('|').map(Number); const cur = Array.isArray(st.a[ui.q]) ? st.a[ui.q].slice() : it.rows.map(()=>null); cur[k] = val; st.a[ui.q] = cur; save(); render(); return; }
+  if(act==='resend'){ sendNow('manual'); render(); return; }
   if(act==='q'){ ui.q = +v; render(); }
   if(act==='prev'){ ui.q = Math.max(0, ui.q-1); render(); }
   if(act==='next'){ ui.q = Math.min(NQ-1, ui.q+1); render(); }
@@ -836,15 +917,20 @@ function vQuiz(kind){
       ${NOG ? `<button class="btn" type="button" data-act="go" data-v="picker">ไปห้องแลป ${ICON.arrow}</button>` : `<button class="btn" type="button" data-act="go" data-v="guide">อ่านคู่มือต่อ ${ICON.arrow}</button>`}</section></div>`;
   }
   if(!(ui.q >= 0 && ui.q < NQ)) ui.q = 0; st.a.length = NQ;
-  const it = QUIZ[ui.q], answered = st.a.filter(x=>x!=null).length, all = answered===NQ;
-  const fig = it.fig ? `<div class="qfig">${it.fig}</div>` : '';
+  const it = QUIZ[ui.q], answered = st.a.filter((x,i)=>qAns(QUIZ[i], x)).length, all = answered===NQ;
+  const fig = it.fig ? `<div class="qfig">${it.fig}</div>` : '', sc = SCEN[it.sc], ty = QT(it), cur = st.a[ui.q];
+  const scen = sc ? `<section class="card pad scen"><div class="scn">สถานการณ์ที่ ${it.sc + 1} จาก ${SCEN.length}</div><h2>${esc(sc.t)}</h2><p>${esc(sc.txt)}</p>${sc.tab ? `<div class="scroll-x"><table class="stab"><thead><tr>${sc.tab[0].map(h=>`<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${sc.tab.slice(1).map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>` : ''}</section>` : '';
+  const body = ty==='yn' ? `<table class="yn"><thead><tr><th>ข้อความ</th><th>ใช่</th><th>ไม่ใช่</th></tr></thead><tbody>${it.rows.map((r,k)=>`<tr><td>${esc(r[0])}</td>${[1,0].map(val=>`<td><button type="button" class="ynb ${Array.isArray(cur) && cur[k]===val ? 'on' : ''}" data-act="yn" data-v="${k}|${val}" aria-pressed="${Array.isArray(cur) && cur[k]===val}">${val ? 'ใช่' : 'ไม่ใช่'}</button></td>`).join('')}</tr>`).join('')}</tbody></table><div class="note">ตอบให้ครบทุกแถว (ได้คะแนนเมื่อตอบถูกทุกแถว)</div>`
+    : ty==='open' ? `<textarea id="qOpen" class="qopen" rows="5" maxlength="1200" placeholder="พิมพ์คำตอบและเหตุผลของเรา">${esc(typeof cur==='string' ? cur : '')}</textarea><div class="note">ข้อเขียน ครูจะเป็นผู้ตรวจ · พิมพ์อย่างน้อย 5 ตัวอักษร</div>`
+    : `<div class="opts" role="radiogroup" aria-label="ตัวเลือก">${[0,1,2,3].map(j=>`<button type="button" role="radio" class="opt ${it.pics?'pic':''}" aria-checked="${st.a[ui.q]===j}" data-act="ans" data-v="${j}">${optHTML(it,j)}</button>`).join('')}</div>`;
   return `<div class="wrap" style="max-width:940px">
     <div class="qhead"><div><div class="note">${isPre?'แบบทดสอบก่อนเรียน · ยังไม่เฉลยคำตอบ':'แบบทดสอบหลังเรียน · เฉลยหลังส่งคำตอบ'}</div>
-      <h1 style="font-size:22px">ข้อ ${ui.q+1} จาก ${NQ}</h1>${isPre && !S.pre.skip ? `<button class="btn ghost sm" type="button" data-act="skipPre" style="margin-top:6px">ข้ามไปก่อน ทำทีหลังได้ ${ICON.arrow}</button>` : ''}</div>
-      <div class="qdots" role="group" aria-label="ไปที่ข้อ">${st.a.map((x,i)=>`<button type="button" class="qdot ${x!==null?'ans':''} ${i===ui.q?'cur':''}" data-act="q" data-v="${i}" aria-label="ข้อ ${i+1}">${i+1}</button>`).join('')}</div></div>
+      <h1 style="font-size:22px">ข้อ ${ui.q+1} จาก ${NQ}</h1>${isPre && !S.pre.skip && !CONF.send ? `<button class="btn ghost sm" type="button" data-act="skipPre" style="margin-top:6px">ข้ามไปก่อน ทำทีหลังได้ ${ICON.arrow}</button>` : ''}</div>
+      <div class="qdots" role="group" aria-label="ไปที่ข้อ">${st.a.map((x,i)=>`${i && QUIZ[i].sc!==QUIZ[i-1].sc ? '<span class="qsep"></span>' : ''}<button type="button" class="qdot ${qAns(QUIZ[i], x)?'ans':''} ${i===ui.q?'cur':''}" data-act="q" data-v="${i}" aria-label="ข้อ ${i+1}">${i+1}</button>`).join('')}</div></div>
+    ${scen}
     <section class="card pad" style="display:flex;flex-direction:column;gap:20px">
       <h2 class="qtext">${esc(it.q)}</h2>${fig}
-      <div class="opts" role="radiogroup" aria-label="ตัวเลือก">${[0,1,2,3].map(j=>`<button type="button" role="radio" class="opt ${it.pics?'pic':''}" aria-checked="${st.a[ui.q]===j}" data-act="ans" data-v="${j}">${optHTML(it,j)}</button>`).join('')}</div>
+      ${body}
     </section>
     <div class="row spread">
       <button class="btn ghost" type="button" data-act="prev" ${ui.q===0?'disabled':''}>${ICON.back} ข้อก่อนหน้า</button>
@@ -855,8 +941,8 @@ function vQuiz(kind){
   </div>`;
 }
 function submitQuiz(kind){
-  const st = S[kind]; st.a.length = NQ; if(st.a.some(x=>x==null)) return;
-  st.score = st.a.reduce((s,x,i)=>s+(x===QUIZ[i].a?1:0),0); st.done = true; save();
+  const st = S[kind]; st.a.length = NQ; if(st.a.some((x,i)=>!qAns(QUIZ[i], x))) return;
+  st.score = qScore(st.a); st.done = true; st['t_' + kind] = Date.now(); save(); sendNow(kind);
   if(kind==='pre'){ toast(NOG ? 'ส่งคำตอบแล้ว ปลดล็อกห้องแลป' : 'ส่งคำตอบแล้ว ปลดล็อกคู่มือการทำกิจกรรม'); render(); }
   else go('result');
 }
@@ -1266,11 +1352,10 @@ function cardBox(){ const r = revState(), d = new Date(), mc = PARTS.map((p,i)=>
   const con = PARTS.map((p,i)=>((S.concl && S.concl[i]) || []).map(t=>`<li><b>${p.k}:</b> ${esc(t)}</li>`).join('')).join('');
   const nPred = PARTS.filter((p,i)=>S.pred[i]===p.pred.o[p.pred.a || 0]).length;
   return `<section class="card pad gsec"><h2>③ การ์ดสรุปผล</h2>
-    <div class="row" style="gap:8px"><input id="cardName" class="cardin" placeholder="ชื่อ-สกุล" value="${esc(r.card.name)}" autocomplete="off"><input id="cardId" class="cardin" placeholder="รหัสนักศึกษา" value="${esc(r.card.id)}" inputmode="numeric" autocomplete="off"></div>
     <div id="sumCard" class="sumcard">
       <div class="sc-top"><div><div class="sc-k">ParK_iLab · ${CONF.subject}</div><div class="sc-t">${CONF.short}</div></div><div class="sc-d">${d.toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'numeric'})}<br>${d.toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'})} น.</div></div>
-      <div class="sc-who">${esc(r.card.name || '(ใส่ชื่อ-สกุลด้านบน)')} · ${esc(r.card.id || 'รหัส -')} · ชื่อเล่น ${esc(S.nick || '-')}</div>
-      <div class="sc-grid"><div><span>ก่อนเรียน</span><b>${S.pre.done ? S.pre.score + '/' + NQ : S.pre.skip ? 'ข้าม' : '-'}</b></div><div><span>หลังเรียน</span><b>${S.post.done ? S.post.score + '/' + NQ : 'ยังไม่ทำ'}</b></div><div><span>ภารกิจ</span><b style="font-size:13px">${mc}</b></div><div><span>ผังมโนทัศน์</span><b>${r.mapDone ? 'ผ่าน (ตรวจ ' + r.tries + ' ครั้ง)' : 'ยังไม่ผ่าน'}</b></div><div><span>คำทำนายถูก</span><b>${nPred}/${PARTS.length} ตอน</b></div><div><span>อธิบายผล</span><b>${PARTS.filter((p,i)=>r.refl[i] && r.refl[i].done).length}/${PARTS.length} ตอน</b></div></div>
+      <div class="sc-who">${esc(stuTxt())}</div>
+      <div class="sc-grid"><div><span>ก่อนเรียน</span><b>${S.pre.done ? S.pre.score + '/' + NA : S.pre.skip ? 'ข้าม' : '-'}</b></div><div><span>หลังเรียน</span><b>${S.post.done ? S.post.score + '/' + NA : 'ยังไม่ทำ'}</b></div><div><span>ภารกิจ</span><b style="font-size:13px">${mc}</b></div><div><span>ผังมโนทัศน์</span><b>${r.mapDone ? 'ผ่าน (ตรวจ ' + r.tries + ' ครั้ง)' : 'ยังไม่ผ่าน'}</b></div><div><span>คำทำนายถูก</span><b>${nPred}/${PARTS.length} ตอน</b></div><div><span>อธิบายผล</span><b>${PARTS.filter((p,i)=>r.refl[i] && r.refl[i].done).length}/${PARTS.length} ตอน</b></div></div>
       ${con ? `<div class="sc-con"><b>ข้อสรุปจากหลักฐานของฉัน</b><ul>${con}</ul></div>` : ''}
       <div class="sc-foot">ห้องแลปโดย ปาร์คณัฐพล · ข้อมูลนี้สร้างจากการทดลองในเครื่องของผู้เรียน</div></div>
     <div class="row" style="gap:8px"><button class="btn" type="button" data-act="cardPng">${ICON.dl} บันทึกการ์ดเป็นรูปภาพ</button><span class="note">หรือแคปหน้าจอการ์ดนี้ส่งอาจารย์ได้เลย</span></div></section>`; }
@@ -1292,22 +1377,27 @@ document.addEventListener('input', e=>{ if(e.target && (e.target.id==='cardName'
 function vResult(){
   if(!S.post.done) return vQuiz('post');
   const NOPRE = !S.pre.done, pre = S.pre.score ?? 0, post = S.post.score ?? 0, diff = NOPRE ? 0 : post - pre;
-  const hi = post >= NQ*.8, mid = post >= NQ*.5;
+  const hi = post >= NA*.8, mid = post >= NA*.5;
   const line = hi ? (diff>0 ? `ได้ ${post} คะแนน เพิ่มขึ้น ${diff} คะแนน ${SR ? 'ทำได้ดีมาก รักษามาตรฐานนี้ไว้' : 'เก่งมาก สู้ ๆ ต่อไปนะ!'}` : `ได้ ${post} คะแนน ${SR ? 'ทำได้ดีมาก' : 'เก่งมาก!'}`) : mid ? `ได้ ${post} คะแนน ${SR ? 'ผ่านเกณฑ์ครึ่งหนึ่งแล้ว ทบทวนเฉลยข้อที่ผิดให้เข้าใจเหตุผล' : 'เกือบแล้ว! ลองอ่านเฉลยข้อที่ผิดดูนะ'}` : `ได้ ${post} คะแนน ${SR ? 'ยังต่ำกว่าเกณฑ์ อ่านเฉลยแล้วกลับไปทดลองซ้ำในตอนที่ยังไม่เข้าใจ' : 'ไม่เป็นไรนะ ลองอ่านเฉลยแล้วกลับไปทดลองอีกครั้ง'}`;
   return `<div class="wrap" style="max-width:980px">
     <header style="display:flex;flex-direction:column;gap:6px"><div class="tags"><span class="tag g">ทำครบทุกขั้นตอน</span></div><h1 class="h1">ผลคะแนน</h1></header>
-    <section class="card pad mascot-row">${mascot(hi?(post===NQ?'sparkle':'cool'):mid?'sweat':'tired',110)}<div class="say"><b>${esc(nk(line))}</b><span>เทียบคะแนนก่อนเรียนกับหลังเรียนของเรา</span></div></section>
+    <section class="card pad mascot-row">${mascot(hi?(post===NA?'sparkle':'cool'):mid?'sweat':'tired',110)}<div class="say"><b>${esc(nk(line))}</b><span>เทียบคะแนนก่อนเรียนกับหลังเรียนของเรา</span></div></section>
     <div class="score-row">
-      <div class="score"><span class="note">ก่อนเรียน</span><span class="big">${NOPRE ? '<small>ไม่ได้ทำ</small>' : `${pre}<small> / ${NQ}</small>`}</span><div class="bar"><i style="width:${NOPRE ? 0 : pre/NQ*100}%;background:#9CB5EA"></i></div></div>
-      <div class="score" style="background:var(--ok-soft)"><span class="note" style="color:#1D6B4F">หลังเรียน</span><span class="big">${post}<small> / ${NQ}</small></span><div class="bar"><i style="width:${post/NQ*100}%;background:var(--ok)"></i></div></div>
+      <div class="score"><span class="note">ก่อนเรียน</span><span class="big">${NOPRE ? '<small>ไม่ได้ทำ</small>' : `${pre}<small> / ${NA}</small>`}</span><div class="bar"><i style="width:${NOPRE ? 0 : pre/NA*100}%;background:#9CB5EA"></i></div></div>
+      <div class="score" style="background:var(--ok-soft)"><span class="note" style="color:#1D6B4F">หลังเรียน</span><span class="big">${post}<small> / ${NA}</small></span><div class="bar"><i style="width:${post/NA*100}%;background:var(--ok)"></i></div></div>
     </div>
+    ${sendBox()}
     <section class="card pad gsec"><div class="row spread"><h2>เฉลยแบบทดสอบหลังเรียน</h2>
       ${CONF.uni ? '<button class="btn ghost sm" type="button" data-act="go" data-v="sheet">ดูการ์ดสรุปผล</button>' : `<button class="btn ghost sm" type="button" data-act="pdf">${ICON.dl} ดาวน์โหลดใบกิจกรรม</button>`}</div>
       <div class="rev">${QUIZ.map((it,i)=>{
-        const me = S.post.a[i], ok = me===it.a;
-        const name = j => it.labels ? it.labels[j] : it.o[j];
-        return `<div class="item ${ok?'right':'wrong'}"><div class="row spread"><b>ข้อ ${i+1}. ${esc(it.q)}</b><span class="mark ${ok?'right':'wrong'}">${ok?'ถูก':'ผิด'}</span></div>
-          <div class="note">คำตอบของฉัน: <b style="color:var(--ink)">${TH[me]}. ${esc(name(me))}</b>${ok?'':` · เฉลย: <b style="color:var(--ok)">${TH[it.a]}. ${esc(name(it.a))}</b>`}</div>
+        const me = S.post.a[i], ty = QT(it), ok = qOk(it, me), sc = SCEN[it.sc], head = `${it.sc!==(QUIZ[i-1]||{}).sc && sc ? `<div class="scn" style="margin-top:6px">สถานการณ์ที่ ${it.sc + 1}: ${esc(sc.t)}</div>` : ''}`;
+        if(ty==='open') return `${head}<div class="item"><div class="row spread"><b>ข้อ ${i+1}. ${esc(it.q)}</b><span class="mark" style="background:#FFF3D6;color:#8A5A00">ครูตรวจ</span></div>
+          <div class="note">คำตอบของฉัน: <b style="color:var(--ink)">${esc(me || '')}</b></div><div style="font-size:15px;color:var(--ink2)">แนวคำตอบ: ${esc(it.model)}</div></div>`;
+        const name = j => it.labels ? it.labels[j] : it.o[j], YN = x => x===1 ? 'ใช่' : x===0 ? 'ไม่ใช่' : '-';
+        const mine = ty==='yn' ? `<ul style="margin:4px 0 0;padding-left:18px">${it.rows.map((r,k)=>{ const good = me && me[k]===(r[1]?1:0); return `<li>${esc(r[0])} · ตอบ <b style="color:${good ? 'var(--ok)' : 'var(--bad, #C0392B)'}">${YN(me && me[k])}</b>${good ? '' : ` · เฉลย <b style="color:var(--ok)">${r[1] ? 'ใช่' : 'ไม่ใช่'}</b>`}</li>`; }).join('')}</ul>`
+          : `คำตอบของฉัน: <b style="color:var(--ink)">${TH[me]}. ${esc(name(me))}</b>${ok?'':` · เฉลย: <b style="color:var(--ok)">${TH[it.a]}. ${esc(name(it.a))}</b>`}`;
+        return `${head}<div class="item ${ok?'right':'wrong'}"><div class="row spread"><b>ข้อ ${i+1}. ${esc(it.q)}</b><span class="mark ${ok?'right':'wrong'}">${ok?'ถูก':'ผิด'}</span></div>
+          <div class="note">${mine}</div>
           <div style="font-size:15px;color:var(--ink2)">${esc(it.why)}</div></div>`;
       }).join('')}</div></section>
   </div>`;
