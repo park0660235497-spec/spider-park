@@ -6,11 +6,28 @@
  * - A "สรุป …" tab per part is rebuilt after every send: averages per class, item difficulty, who has not finished.
  */
 function doPost(e) {
+  try { return out_(save_(JSON.parse(e.postData.contents))); }
+  catch (err) { return out_({ok: false, err: String(err)}); }
+}
+
+/* the lab can also send through a new browser window: ?d=<web-safe base64 of the JSON> */
+function doGet(e) {
+  if (!e || !e.parameter || !e.parameter.d) return ContentService.createTextOutput('ParK_iLab receiver is running');
+  var res;
+  try {
+    var json = Utilities.newBlob(Utilities.base64DecodeWebSafe(e.parameter.d)).getDataAsString('UTF-8');
+    res = save_(JSON.parse(json));
+  } catch (err) { res = {ok: false, err: String(err)}; }
+  var msg = res.ok ? '<h2 style="color:#1F8A63">ส่งผลเรียบร้อย ✓</h2><p>ปิดหน้าต่างนี้ แล้วกลับไปที่แล็บได้เลย</p>'
+                   : '<h2 style="color:#C0392B">ส่งผลไม่สำเร็จ</h2><p>' + res.err + '</p>';
+  return HtmlService.createHtmlOutput('<div style="font-family:sans-serif;text-align:center;padding:40px">' + msg + '</div>').setTitle('ParK_iLab ส่งผล');
+}
+
+function save_(d) {
   var lock = LockService.getScriptLock();
   lock.waitLock(25000);
   try {
-    var d = JSON.parse(e.postData.contents);
-    if (!d || !d.uid) return out_({ok: false, err: 'no uid'});
+    if (!d || !d.uid) return {ok: false, err: 'no uid'};
     var ss = SpreadsheetApp.getActiveSpreadsheet();
     var tab = clean_(d.lab || 'ParK_iLab');
     var sh = ss.getSheetByName(tab) || ss.insertSheet(tab);
@@ -51,9 +68,7 @@ function doPost(e) {
     else sh.getRange(sh.getLastRow() + 1, 1, 1, head.length).setValues([row]);
 
     summary_(ss, tab, sh, models, items);
-    return out_({ok: true});
-  } catch (err) {
-    return out_({ok: false, err: String(err)});
+    return {ok: true};
   } finally {
     lock.releaseLock();
   }
@@ -112,10 +127,6 @@ function summary_(ss, tab, sh, models, items) {
 }
 
 function clean_(t) { return String(t).replace(/[\[\]\*\?\/\\:]/g, ' ').slice(0, 90); }
-
-function doGet() {
-  return ContentService.createTextOutput('ParK_iLab receiver is running');
-}
 
 function out_(o) {
   return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON);

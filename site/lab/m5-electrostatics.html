@@ -778,13 +778,19 @@ async function sendNow(i){
   const body = JSON.stringify(payload(i)), sig = sendSig(i);
   t.st = 'sending'; try{ await fetch(CONF.send, {method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'}, body});
     t.st = 'ok'; t.at = Date.now(); t.sig = sig; }
-  catch(e){ t.st = 'fail'; }
+  catch(e){ t.st = 'fail'; t.sig = sig; }
   save(); if(ui.view==='result' && ui.cp===i) render(); }
-function sendWatch(){ if(!S.stu) return; PARTS.forEach((p,i)=>{ if(pStage(i)===0) return; const t = (S.sent || {})[i] || {}; if(t.sig===sendSig(i) && t.st==='ok') return; clearTimeout(sendT[i]); sendT[i] = setTimeout(()=>sendNow(i), 1500); }); }
+function sendWatch(){ if(!S.stu) return; PARTS.forEach((p,i)=>{ if(pStage(i)===0) return; const t = (S.sent || {})[i] || {}; if(t.sig===sendSig(i) && (t.st==='ok' || t.st==='win')) return; if(t.st==='fail' && t.sig===sendSig(i)) return; clearTimeout(sendT[i]); sendT[i] = setTimeout(()=>sendNow(i), 1500); }); }
 setInterval(sendWatch, 4000); window.addEventListener('online', ()=>sendWatch());
 function sendBox(i){ const t = (S.sent || {})[i] || {}, at = t.at ? new Date(t.at).toLocaleTimeString('th-TH', {hour:'2-digit', minute:'2-digit'}) : '';
-  const msg = !CONF.send ? 'ระบบส่งผลยังไม่ได้ตั้งค่า' : t.st==='ok' ? `ส่งผล${PARTS[i].k}ให้ครูแล้ว ✓ เวลา ${at} น.` : t.st==='sending' ? 'กำลังส่งผลให้ครู...' : 'ยังส่งผลไม่สำเร็จ ตรวจอินเทอร์เน็ตแล้วกดส่งอีกครั้ง';
-  return `<section class="card pad sendbox ${t.st==='ok' ? 'ok' : ''}"><div><b>${esc(stuTxt())}</b><div class="note">${msg}</div></div>${CONF.send ? `<button class="btn ${t.st==='ok' ? 'ghost' : 'ok'} sm" type="button" data-act="resend" data-v="${i}">ส่งผลอีกครั้ง</button>` : ''}</section>`; }
+  const msg = !CONF.send ? 'ระบบส่งผลยังไม่ได้ตั้งค่า' : t.st==='ok' ? `ส่งผล${PARTS[i].k}ให้ครูแล้ว ✓ เวลา ${at} น.` : t.st==='win' ? `เปิดหน้าต่างส่งผลแล้ว (${at} น.) ถ้าหน้าต่างนั้นขึ้นว่า “ส่งผลเรียบร้อย ✓” ปิดหน้าต่างนั้นได้เลย` : t.st==='sending' ? 'กำลังส่งผลให้ครู...' : 'ส่งผลอัตโนมัติไม่ได้ กดปุ่ม “ส่งผลให้ครู” ด้านขวา ระบบจะเปิดหน้าต่างใหม่เพื่อส่งผล';
+  const btn = !CONF.send ? '' : (t.st==='fail' || t.st==='win') ? `<button class="btn ok sm" type="button" data-act="sendwin" data-v="${i}">ส่งผลให้ครู</button>` : `<button class="btn ${t.st==='ok' ? 'ghost' : 'ok'} sm" type="button" data-act="resend" data-v="${i}">ส่งผลอีกครั้ง</button>`;
+  return `<section class="card pad sendbox ${t.st==='ok' ? 'ok' : ''}"><div><b>${esc(stuTxt())}</b><div class="note">${msg}</div></div>${btn}</section>`; }
+/* fallback when the page may not call other sites (e.g. inside claude.ai): open the receiver in a new window with the data in the address */
+function sendWin(i){ const d = payload(i); delete d._models; delete d._items; d.lab_record = String(d.lab_record || '').slice(0, 300);
+  const b = btoa(unescape(encodeURIComponent(JSON.stringify(d)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+  const w = window.open(CONF.send + '?d=' + b, '_blank'); const t = (S.sent = S.sent || {})[i] = (S.sent || {})[i] || {}; t.st = w ? 'win' : 'fail'; t.at = Date.now(); t.sig = sendSig(i); save(); render();
+  if(!w) toast('เบราว์เซอร์บล็อกหน้าต่างใหม่ อนุญาตป๊อปอัปแล้วกดอีกครั้ง'); }
 document.addEventListener('input', e=>{ if(e.target.id!=='qOpen' || ui.cp==null) return; const st = pqS(ui.cp)[ui.view], L = PQ(ui.cp), it = QUIZ[L[ui.q]]; if(!st || !it || QT(it)!=='open' || st.done) return;
   st.a[ui.q] = e.target.value; save(); qMeta(); });
 function qMeta(){ const st = pqS(ui.cp)[ui.view], L = PQ(ui.cp); if(!st) return; const ok = j => qDone(QUIZ[L[j]], st.a[j], st.c[j]);
@@ -868,6 +874,7 @@ document.getElementById('main').addEventListener('click', e=>{
     save(); const q0 = ui.q; if(act==='conf' && qDone(it, st.a[q0], st.c[q0]) && q0 < L.length - 1) setTimeout(()=>{ if(ui.q===q0){ ui.q = q0 + 1; render(); window.scrollTo({top:0}); } }, 250);
     render(); return; }
   if(act==='resend'){ sendNow(+v); render(); return; }
+  if(act==='sendwin'){ sendWin(+v); return; }
   if(act==='q'){ ui.q = +v; render(); window.scrollTo({top:0}); }
   if(act==='prev'){ ui.q = Math.max(0, ui.q-1); render(); window.scrollTo({top:0}); }
   if(act==='next'){ ui.q = Math.min(PQ(ui.cp).length - 1, ui.q+1); render(); window.scrollTo({top:0}); }
