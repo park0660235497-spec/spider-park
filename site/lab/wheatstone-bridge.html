@@ -126,11 +126,12 @@ function fresh(){
   const rho=MATS.map(m=>m.rho*(1+rnd(-.03,.03)));
   const dt={};MATS.forEach((m,i)=>DIAS.forEach((d,j)=>{dt[i+'-'+j]=Math.round(d*(1+rnd(-.015,.015))*1000)/1000;}));
   return {v:1,part:0,wires:[[],[]],sup:[{on:false,V:1.0,mode:'V'},{on:false,V:1.0,mode:'V'}],mm:['off','off'],jx:.5,kx:.5,r1i:2,
-    rx,r1,rho,dt,mat:0,dia:1,rec1:{},rec2:{},dmeas:{},cam:[0,0]};
+    rx,r1,rho,dt,mat:0,dia:1,rec1:{},rec2:{},dmeas:{},cam:[0,0],dpos:[{},{}],lock:false};
 }
 let S;
 try{S=JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){S=null;}
 if(!S||S.v!==1)S=fresh();
+if(!S.dpos)S.dpos=[{},{}];if(S.lock===undefined)S.lock=false;
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
 let sel=null, selWire=-1, panelSig='';
 
@@ -140,17 +141,22 @@ const renderer=new THREE.WebGLRenderer({canvas,antialias:true});
 renderer.setPixelRatio(Math.min(2,window.devicePixelRatio||1));
 renderer.outputEncoding=THREE.sRGBEncoding;
 renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-const scene=new THREE.Scene();scene.background=new THREE.Color(0xDDE5EE);
+const scene=new THREE.Scene();scene.background=new THREE.Color(0xEFF3F8);
 const camera=new THREE.PerspectiveCamera(42,1,.01,20);
 const controls=new THREE.OrbitControls(camera,canvas);
 controls.enableDamping=true;controls.dampingFactor=.12;controls.enablePan=false;controls.minDistance=.18;controls.maxDistance=2.6;controls.maxPolarAngle=1.45;
-scene.add(new THREE.HemisphereLight(0xffffff,0xBFAF98,.9));
+scene.add(new THREE.HemisphereLight(0xffffff,0xC9B79C,.95));
 const sun=new THREE.DirectionalLight(0xffffff,.75);sun.position.set(.6,1.6,1.0);sun.castShadow=true;
 sun.shadow.mapSize.set(1024,1024);Object.assign(sun.shadow.camera,{left:-1,right:1,top:1,bottom:-1,near:.1,far:4});scene.add(sun);
 // table
-const table=new THREE.Mesh(new THREE.BoxGeometry(2.0,.04,1.3),new THREE.MeshStandardMaterial({color:0xF1DCDD,roughness:.85}));
+const woodTex=(()=>{const c=document.createElement('canvas');c.width=1024;c.height=512;const g=c.getContext('2d');g.fillStyle='#C4955F';g.fillRect(0,0,1024,512);
+  for(let i=0;i<140;i++){const y=Math.random()*512;g.strokeStyle=`rgba(${110+Math.random()*40|0},${70+Math.random()*25|0},${35+Math.random()*20|0},${.12+Math.random()*.18})`;g.lineWidth=1+Math.random()*3;g.beginPath();g.moveTo(0,y);
+  for(let x=0;x<=1024;x+=64)g.lineTo(x,y+Math.sin(x/90+i)*4+Math.random()*2);g.stroke();}
+  const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;return t;})();
+const table=new THREE.Mesh(new THREE.BoxGeometry(2.0,.04,1.3),new THREE.MeshStandardMaterial({map:woodTex,roughness:.7}));
 table.position.set(0,-.02,.05);table.receiveShadow=true;scene.add(table);
-const floor=new THREE.Mesh(new THREE.PlaneGeometry(8,8),new THREE.MeshStandardMaterial({color:0xC3CAD4}));floor.rotation.x=-Math.PI/2;floor.position.y=-.75;scene.add(floor);
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(8,8),new THREE.MeshStandardMaterial({color:0xC7CCD6}));floor.rotation.x=-Math.PI/2;floor.position.y=-.75;scene.add(floor);
+const wall=new THREE.Mesh(new THREE.PlaneGeometry(8,4),new THREE.MeshStandardMaterial({color:0xF2EEE6}));wall.position.set(0,1.2,-1.4);scene.add(wall);
 
 const mat=(c,o={})=>new THREE.MeshStandardMaterial(Object.assign({color:c,roughness:.6,metalness:0},o));
 const METAL=mat(0xC8CDD3,{metalness:.8,roughness:.3});
@@ -164,7 +170,7 @@ function sprite(text,col='#1D2433',bg='rgba(255,255,255,.9)',w=.05){
 }
 
 let root=new THREE.Group();scene.add(root);
-let TERM={}, HITS=[], DRAGS=[], LABELS=[], MICRO=null, dyn={};
+let TERM={}, HITS=[], DRAGS=[], LABELS=[], MICRO=null, dyn={}, DEVS=[], DEVG={};
 function post(id,parent,x,y,z,col,lab,lw,ly){
   const g=new THREE.Group();g.position.set(x,y,z);parent.add(g);
   const b=cyl(.011,.012,.01,mat(0x222222));b.position.y=.005;g.add(b);
@@ -219,7 +225,7 @@ function supply(x,z){
   dyn.sup={fc,last:''};
   [[-.07,.035],[-.035,.035],[.035,.035],[.07,.035]].forEach(([a,b2])=>{const k=cyl(.009,.01,.014,mat(0xD8C08A));k.rotation.x=Math.PI/2;k.position.set(a,b2,.127);g.add(k);});
   post('S-',g,-.03,0,.15,0x1b1b1b,'−');post('S+',g,.04,0,.15,0xC0141E,'+');
-  dlabel('แหล่งจ่าย DC',b,.09);
+  dlabel('แหล่งจ่าย DC',b,.09);return g;
 }
 function drawSup(){
   const P=S.part,sp=S.sup[P],d=dyn.sup;if(!d)return;
@@ -270,6 +276,7 @@ function analog(x,z,kind){
   dyn[kind]={piv,ang:0};
   if(kind==='G'){post('G1',g,-.05,.05,.04,0xC0141E,'G');post('G2',g,.05,.05,.04,0xC0141E,'G');dlabel('กัลวานอมิเตอร์',fg,.16);}
   else{post('AC',g,-.08,.05,.04,0x1b1b1b,'COM',.034,.06);AR.forEach((a,i)=>post(a.k,g,-.045+i*.031,.05,.04,0xC0141E,a.t,.034,i%2?.088:.06));dlabel('แอมมิเตอร์',fg,.16);}
+  return g;
 }
 function multimeter(x,z){
   const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=-.25;root.add(g);
@@ -281,7 +288,7 @@ function multimeter(x,z){
   const kp=box(.006,.004,.044,mat(0xEEEEEE));kp.position.y=.01;knob.add(kp);
   dyn.mm={fc,knob,last:''};
   post('MC',g,-.022,.03,.068,0x1b1b1b,'COM');post('MV',g,.022,.03,.068,0xC0141E,'VΩ');
-  dlabel('มัลติมิเตอร์',b,.05);
+  dlabel('มัลติมิเตอร์',b,.05);return g;
 }
 function drawMM(){
   const d=dyn.mm;if(!d)return;const m=S.mm[S.part];const txt=mmText();const key=m+txt;if(key===d.last)return;d.last=key;
@@ -308,13 +315,13 @@ function resistor(parent,x,z,nom,idA,idB,lab){
 function holder1(x,z){
   const g=new THREE.Group();g.position.set(x,0,z);root.add(g);
   const b=box(.17,.008,.07,mat(0xF06BB4));b.position.y=.004;g.add(b);
-  resistor(g,0,0,R1N[S.r1i],'R1a','R1b','R₁='+R1N[S.r1i]+'Ω');dlabel('ตัวต้านทานมาตรฐาน R₁',b,.06);
+  resistor(g,0,0,R1N[S.r1i],'R1a','R1b','R₁='+R1N[S.r1i]+'Ω');dlabel('ตัวต้านทานมาตรฐาน R₁',b,.06);return g;
 }
 function holderX(x,z){
   const g=new THREE.Group();g.position.set(x,0,z);root.add(g);
   const b=box(.17,.008,.2,mat(0xF06BB4));b.position.y=.004;g.add(b);
   S.rx.forEach((r,i)=>resistor(g,0,-.065+i*.065,r.n,'X'+(i+1)+'a','X'+(i+1)+'b','Rx'+(i+1)));
-  dlabel('Rx ที่ไม่ทราบค่า 3 ตัว',b,.12);
+  dlabel('Rx ที่ไม่ทราบค่า 3 ตัว',b,.12);return g;
 }
 function micrometer(x,z){
   const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=.4;root.add(g);
@@ -323,7 +330,7 @@ function micrometer(x,z){
   const sl=cyl(.007,.007,.05,METAL);sl.rotation.z=Math.PI/2;sl.position.set(.06,.01,0);g.add(sl);
   const th=cyl(.0095,.0095,.04,mat(0xAAB0B6,{metalness:.7,roughness:.35}));th.rotation.z=Math.PI/2;th.position.set(.105,.01,0);g.add(th);
   const sp=cyl(.0035,.0035,.03,METAL);sp.rotation.z=Math.PI/2;sp.position.set(.02,.01,0);g.add(sp);
-  const hb=new THREE.Mesh(new THREE.BoxGeometry(.2,.06,.1),HIT);hb.position.set(.04,.02,0);hb.userData.micro=1;g.add(hb);MICRO=hb;
+  const hb=new THREE.Mesh(new THREE.BoxGeometry(.2,.06,.1),HIT);hb.position.set(.04,.02,0);hb.userData.dev='mic';g.add(hb);MICRO=hb;DEVS.push(hb);DEVG.mic={g,c:[.04,.02,0]};const pm=S.dpos[S.part].mic;if(pm){g.position.x=pm[0];g.position.z=pm[1];}
   dlabel('ไมโครมิเตอร์ (แตะเพื่อวัด)',g,.06);
 }
 
@@ -331,17 +338,22 @@ function micrometer(x,z){
 let B=null;
 function build(){
   scene.remove(root);root=new THREE.Group();scene.add(root);
-  TERM={};HITS=[];DRAGS=[];LABELS.forEach(l=>l.el&&l.el.remove());LABELS=[];MICRO=null;dyn={};wireMeshes.forEach(w=>w.m&&scene.remove(w.m));wireMeshes=[];
+  TERM={};HITS=[];DRAGS=[];DEVS=[];DEVG={};LABELS.forEach(l=>l.el&&l.el.remove());LABELS=[];MICRO=null;dyn={};wireMeshes.forEach(w=>w.m&&scene.remove(w.m));wireMeshes=[];
   if(S.part===0){
     B=board(.27,0xB87333,.0011,['A','C','D','A','C','D'],'GAMMACO  POTENTIOMETER SLIDE WIRE BRIDGE');
-    supply(-.52,-.27);analog(.02,-.25,'G');multimeter(.5,-.16);holder1(-.25,.0);holderX(.22,.0);
+    dev('board',B.grp,[1.26,.05,.2],[0,.02,.27]);
+    dev('sup',supply(-.52,-.27),[.22,.15,.32],[0,.07,.03]);dev('gal',analog(.02,-.25,'G'),[.2,.18,.15],[0,.08,0]);dev('mm',multimeter(.5,-.16),[.1,.04,.18],[0,.02,0]);
+    dev('r1',holder1(-.25,.0),[.17,.03,.07],[0,.01,0]);dev('rx',holderX(.22,.0),[.17,.03,.2],[0,.01,0]);
   }else{
     const m=MATS[S.mat];B=board(.27,m.col,.0008+S.dia*.0006,['WL','WR','WK','0','100','K'],'ลวด'+m.n+'  d ≈ '+DIAS[S.dia].toFixed(2)+' mm  ยาว 100 cm');
-    supply(-.52,-.27);analog(.0,-.25,'A');multimeter(.5,-.16);micrometer(.3,.03);
+    dev('board',B.grp,[1.26,.05,.2],[0,.02,.27]);
+    dev('sup',supply(-.52,-.27),[.22,.15,.32],[0,.07,.03]);dev('amm',analog(.0,-.25,'A'),[.2,.18,.15],[0,.08,0]);dev('mm',multimeter(.5,-.16),[.1,.04,.18],[0,.02,0]);micrometer(.3,.03);
   }
   root.traverse(o=>{if(o.isMesh&&o.material!==HIT){o.castShadow=true;}});
   placeSlider();setCam(S.cam[S.part],true);
 }
+function dev(id,g,sz,c){const h=new THREE.Mesh(new THREE.BoxGeometry(...sz),HIT);h.position.set(...c);h.userData.dev=id;g.add(h);DEVS.push(h);DEVG[id]={g,c};
+  const p=S.dpos[S.part][id];if(p){g.position.x=p[0];g.position.z=p[1];}}
 function placeSlider(){if(!B)return;const x=(S.part===0?S.jx:S.kx);B.slider.position.x=-.5+x;}
 
 /* ---------- wires ---------- */
@@ -500,8 +512,9 @@ function fit(arr){const n=arr.length;if(n<2)return null;let sx=0,sy=0,sxx=0,sxy=
 function btn(t,act,cls='',dis=false){return `<button class="btn ${cls}" data-act="${act}"${dis?' disabled':''}>${t}</button>`;}
 function wireCard(){
   const W=S.wires[S.part];
-  return `<div class="card"><h3>ต่อสาย</h3><div class="mute">แตะขั้วหนึ่ง แล้วแตะอีกขั้ว = สาย 1 เส้น · แตะขั้วเดิมซ้ำ = ยกเลิก · แตะที่สายเพื่อเลือก</div>
+  return `<div class="card"><h3>ต่อสาย</h3><div class="mute">กดที่ขั้ว แล้วลากไปปล่อยที่อีกขั้ว = สาย 1 เส้น (แตะทีละขั้วก็ได้) · ลากตัวอุปกรณ์เพื่อย้ายที่ · ลากพื้นที่ว่างเพื่อหมุนมุมมอง</div>
   <div class="row">${btn('ตรวจวงจร','diag','pri')}${btn('ดูรูปวงจร','schem')}${btn('ต่อให้ดู','auto')}${btn('ล้างสายทั้งหมด','clear','',!W.length)}</div>
+  <div class="row"><span class="mute">อุปกรณ์</span>${btn(S.lock?'🔒 ล็อกอยู่ (แตะเพื่อปลด)':'🔓 ย้ายได้ (แตะเพื่อล็อก)','lock','sm'+(S.lock?' on':''))}${btn('วางกลับที่เดิม','resetpos','sm')}</div>
   <div class="wl">${W.map((w,i)=>`<div class="wi${i===selWire?' sel':''}"><i class="dot" style="background:#${wireColor(w).toString(16).padStart(6,'0')}"></i><span>${i+1}. ${TN[w.a]} ↔ ${TN[w.b]}</span>${btn('✕','del:'+i,'sm')}</div>`).join('')||'<div class="mute">ยังไม่มีสาย</div>'}</div>
   <div id="diagBox"></div></div>`;
 }
@@ -570,7 +583,7 @@ function p2Panel(){
   <li>R = ${FR('ρℓ','A')} : R แปรผันตรงกับ l และ ρ, แปรผกผันกับ A</li></ol></details></div>`;
 }
 function renderPanel(force){
-  const sig=JSON.stringify([S.part,S.wires[S.part],S.sup[S.part],S.mm[S.part],S.r1i,S.rec1,S.rec2,S.mat,S.dia,S.dmeas,selWire]);
+  const sig=JSON.stringify([S.lock,S.part,S.wires[S.part],S.sup[S.part],S.mm[S.part],S.r1i,S.rec1,S.rec2,S.mat,S.dia,S.dmeas,selWire]);
   if(!force&&sig===panelSig)return;panelSig=sig;
   const st=$('#panel').scrollTop;$('#panel').innerHTML=S.part===0?p1Panel():p2Panel();$('#panel').scrollTop=st;
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',+t.dataset.p===S.part));
@@ -615,6 +628,8 @@ function act(a){
   else if(k==='del')delWire(+v);
   else if(k==='clear'){S.wires[P]=[];selWire=-1;wireMeshes.forEach(w=>scene.remove(w.m));wireMeshes=[];}
   else if(k==='auto'){autoWire();}
+  else if(k==='lock'){S.lock=!S.lock;toast(S.lock?'ล็อกอุปกรณ์แล้ว ลากได้แค่หมุนมุมมอง':'ลากตัวอุปกรณ์เพื่อย้ายที่ได้');}
+  else if(k==='resetpos'){S.dpos[P]={};build();}
   else if(k==='diag')showDiag();else if(k==='schem')showSchem();
   save();renderPanel();
 }
@@ -685,7 +700,7 @@ function microAns(){const t=microTrue(),main=Math.floor(t*2)/2,th=(t-main)*100;$
 const CAMS=[[['ภาพรวม',[0,.95,1.05],[0,0,.02]],['ลวด/สเกล',null,null],['กัลวานอมิเตอร์',[.02,.3,.16],[.02,.08,-.27]],['ตัวต้านทาน',[0,.62,.52],[0,0,-.02]]],
             [['ภาพรวม',[0,.95,1.05],[0,0,.02]],['ลวด/สเกล',null,null],['แอมมิเตอร์',[0,.3,.14],[0,.08,-.27]],['แหล่งจ่าย/มัลติมิเตอร์',[0,.55,.45],[0,.05,-.2]]]];
 let camAnim=null;
-function camFor(i){const P=S.part;const nar=view.clientWidth/view.clientHeight<1.25;if(i===1){const x=-.5+(P===0?S.jx:S.kx);return [[x,.3,.55],[x,.03,.29]];}if(i===0&&nar)return [[0,1.05,.62],[0,0,-.02]];const c=CAMS[P][i];return [c[1],c[2]];}
+function camFor(i){const P=S.part;const nar=view.clientWidth/view.clientHeight<1.25;if(i===1){const x=-.5+(P===0?S.jx:S.kx);return [[x,.3,.55],[x,.03,.29]];}if(i===0&&nar)return [[0,1.0,.5],[0,0,-.1]];const c=CAMS[P][i];return [c[1],c[2]];}
 function fitK(){const a=view.clientWidth/view.clientHeight;return a<1.25?Math.min(2.6,1.65/a):1;}
 function setCam(i,instant){S.cam[S.part]=i;const [p,t]=camFor(i);const T=new THREE.Vector3(...t),Pp=new THREE.Vector3(...p);
   const k=i===0?fitK():Math.min(1.5,fitK()*.75);Pp.sub(T).multiplyScalar(k).add(T);
@@ -696,27 +711,53 @@ $('#camBtns').addEventListener('click',e=>{const b=e.target.closest('button');if
 /* ---------- pointer ---------- */
 const ray=new THREE.Raycaster(),mv=new THREE.Vector2();let down=null,drag=null;
 function ndc(e){const r=canvas.getBoundingClientRect();mv.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);ray.setFromCamera(mv,camera);return r;}
+function scrD(t,r,e){const p=t.top().project(camera);if(p.z>=1)return 1e9;return Math.hypot((p.x+1)/2*r.width-(e.clientX-r.left),(1-p.y)/2*r.height-(e.clientY-r.top));}
+function termAt(e,r,ex,px){const ht=ray.intersectObjects(HITS,false).find(h=>h.object.userData.term!==ex);if(ht)return ht.object.userData.term;
+  let id=null,best=px;Object.values(TERM).forEach(t=>{if(t.id===ex)return;const d=scrD(t,r,e);if(d<best){best=d;id=t.id;}});return id;}
+let wdrag=null,ddrag=null,tmpW=null,hoverT=null;
+function grab(e){controls.enabled=false;try{canvas.setPointerCapture(e.pointerId);}catch(_){}e.stopImmediatePropagation();e.preventDefault();}
+function setHover(id){if(hoverT&&TERM[hoverT]&&hoverT!==sel)TERM[hoverT].ring.visible=false;hoverT=id;if(id&&TERM[id])TERM[id].ring.visible=true;}
+function drawTmp(p1,p2){if(tmpW){scene.remove(tmpW);tmpW.geometry.dispose();}const d=p1.distanceTo(p2),lift=.02+d*.08;
+  const m1=p1.clone().lerp(p2,.3),m2=p1.clone().lerp(p2,.7);m1.y+=lift;m2.y+=lift;
+  tmpW=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3([p1,m1,m2,p2]),24,.0035,8,false),new THREE.MeshStandardMaterial({color:0xFFC400,emissive:0x664400}));scene.add(tmpW);}
 canvas.addEventListener('pointerdown',e=>{
-  ndc(e);const h=ray.intersectObjects(DRAGS,false)[0];const ht=ray.intersectObjects(HITS,false)[0];
-  if(h&&(!ht||h.distance<ht.distance-.02)){drag={id:h.object.userData.drag,pid:e.pointerId};controls.enabled=false;canvas.setPointerCapture(e.pointerId);e.stopImmediatePropagation();e.preventDefault();return;}
+  const r=ndc(e);
+  const t=termAt(e,r,null,14);
+  if(t){wdrag={from:t,x:e.clientX,y:e.clientY,moved:false};TERM[t].ring.visible=true;grab(e);return;}
+  const h=ray.intersectObjects(DRAGS,false)[0];
+  if(h){drag={id:h.object.userData.drag};grab(e);return;}
+  const hd=ray.intersectObjects(DEVS,false)[0];
+  if(hd&&!S.lock){const id=hd.object.userData.dev,D=DEVG[id];ddrag={id,y:hd.point.y,off:D.g.position.clone().sub(hd.point),x:e.clientX,yy:e.clientY,moved:false};grab(e);return;}
   down={x:e.clientX,y:e.clientY,t:performance.now()};
 },{capture:true});
-canvas.addEventListener('pointermove',e=>{if(!drag)return;ndc(e);const pl=new THREE.Plane(new THREE.Vector3(0,1,0),-.05);const p=new THREE.Vector3();
+canvas.addEventListener('pointermove',e=>{
+  if(wdrag){const r=ndc(e);if(Math.hypot(e.clientX-wdrag.x,e.clientY-wdrag.y)>8)wdrag.moved=true;if(!wdrag.moved)return;
+    const tgt=termAt(e,r,wdrag.from,40);setHover(tgt);const p=new THREE.Vector3();
+    const end=tgt?TERM[tgt].top():(ray.ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0,1,0),-.06),p)?p:null);
+    if(end)drawTmp(TERM[wdrag.from].top(),end.clone());return;}
+  if(ddrag){ndc(e);if(Math.hypot(e.clientX-ddrag.x,e.clientY-ddrag.yy)>6)ddrag.moved=true;if(S.lock||!ddrag.moved)return;const p=new THREE.Vector3();
+    if(ray.ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0,1,0),-ddrag.y),p)){const D=DEVG[ddrag.id];const np=p.add(ddrag.off);
+      const cx=Math.max(-.9,Math.min(.9,np.x+D.c[0])),cz=Math.max(-.55,Math.min(.62,np.z+D.c[2]));D.g.position.x=cx-D.c[0];D.g.position.z=cz-D.c[2];}return;}
+  if(!drag)return;ndc(e);const pl=new THREE.Plane(new THREE.Vector3(0,1,0),-.05);const p=new THREE.Vector3();
   if(ray.ray.intersectPlane(pl,p)){const x=Math.max(0,Math.min(1,Math.round((p.x+.5)*1000)/1000));if(S.part===0)S.jx=x;else S.kx=x;placeSlider();}},{capture:true});
-function endDrag(){if(drag){drag=null;controls.enabled=true;save();}}
+function endDrag(){if(drag){drag=null;save();}if(tmpW){scene.remove(tmpW);tmpW.geometry.dispose();tmpW=null;}setHover(null);
+  if(wdrag){if(wdrag.from!==sel&&TERM[wdrag.from])TERM[wdrag.from].ring.visible=false;wdrag=null;}ddrag=null;controls.enabled=true;}
 canvas.addEventListener('pointerup',e=>{
+  if(wdrag){const w=wdrag,r=ndc(e);const tgt=w.moved?termAt(e,r,w.from,40):null;endDrag();
+    if(!w.moved)tapTerm(w.from);else if(tgt){setSel(null);addWire(w.from,tgt);}else toast('ปล่อยสายให้ตรงขั้วปลายทาง');return;}
+  if(ddrag){const d=ddrag;endDrag();if(d.moved&&!S.lock){const g=DEVG[d.id].g;S.dpos[S.part][d.id]=[+g.position.x.toFixed(3),+g.position.z.toFixed(3)];save();}
+    else if(!d.moved){if(d.id==='mic'){openMicro();return;}if(S.lock&&d.moved)return;const r=ndc(e);const wm=ray.intersectObjects(wireMeshes.map(w=>w.m),false)[0];if(wm){selWire=wm.object.userData.wire===selWire?-1:wm.object.userData.wire;renderPanel();}else if(sel)setSel(null);}
+    else toast('อุปกรณ์ถูกล็อกอยู่ ปลดล็อกในแผง "ต่อสาย"');return;}
   if(drag){endDrag();return;}
   if(!down)return;const moved=Math.hypot(e.clientX-down.x,e.clientY-down.y);const dt=performance.now()-down.t;down=null;if(moved>8||dt>600)return;
-  const r=ndc(e);let id=null;const ht=ray.intersectObjects(HITS,false)[0];if(ht)id=ht.object.userData.term;
-  if(!id){let best=34;Object.values(TERM).forEach(t=>{const p=t.top().project(camera);const sx=(p.x+1)/2*r.width,sy=(1-p.y)/2*r.height;const dd=Math.hypot(sx-(e.clientX-r.left),sy-(e.clientY-r.top));if(dd<best&&p.z<1){best=dd;id=t.id;}});}
-  if(id){tapTerm(id);return;}
+  const r=ndc(e);
   const wm=ray.intersectObjects(wireMeshes.map(w=>w.m),false)[0];if(wm){selWire=wm.object.userData.wire===selWire?-1:wm.object.userData.wire;renderPanel();if(selWire>=0)toast('เลือกสาย '+(selWire+1)+' — กด ✕ ในรายการเพื่อลบ');return;}
   if(MICRO&&ray.intersectObject(MICRO,false)[0]){openMicro();return;}
   if(sel){setSel(null);}
 },{capture:true});
 canvas.addEventListener('pointercancel',endDrag);
 function setSel(id){if(sel&&TERM[sel])TERM[sel].ring.visible=false;sel=id;if(id&&TERM[id])TERM[id].ring.visible=true;
-  const tip=$('#selTip');if(id){tip.style.display='block';tip.textContent='เลือก '+TN[id]+' → แตะอีกขั้วเพื่อต่อสาย';}else tip.style.display='none';}
+  const tip=$('#selTip');if(id){tip.style.display='block';tip.textContent='เลือก '+TN[id]+' → แตะอีกขั้ว (หรือลากจากขั้ว) เพื่อต่อสาย';}else tip.style.display='none';}
 function tapTerm(id){if(!sel){setSel(id);return;}if(sel===id){setSel(null);return;}const a=sel;setSel(null);addWire(a,id);}
 
 /* ---------- labels / readout ---------- */
@@ -760,7 +801,7 @@ function loop(now){
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{S.part=+t.dataset.p;setSel(null);selWire=-1;save();build();renderPanel(true);}));
 $('#panel').addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(b&&!b.disabled)act(b.dataset.act);});
 let tT=0;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(tT);tT=setTimeout(()=>t.classList.remove('show'),2600);}
-window.LAB={scr:id=>{const r=canvas.getBoundingClientRect();const q=TERM[id].top().project(camera);return [r.left+(q.x+1)/2*r.width,r.top+(1-q.y)/2*r.height];},S,act,compute:()=>{compute();return RES;},diag1,diag2,setCam,tapTerm};
+window.LAB={devScr:id=>{const D=DEVG[id];const r=canvas.getBoundingClientRect();const v=new THREE.Vector3(...D.c);D.g.localToWorld(v);const q=v.project(camera);return [r.left+(q.x+1)/2*r.width,r.top+(1-q.y)/2*r.height];},scr:id=>{const r=canvas.getBoundingClientRect();const q=TERM[id].top().project(camera);return [r.left+(q.x+1)/2*r.width,r.top+(1-q.y)/2*r.height];},S,act,compute:()=>{compute();return RES;},diag1,diag2,setCam,tapTerm};
 resize();build();renderPanel(true);requestAnimationFrame(loop);
 </script>
 </body>
