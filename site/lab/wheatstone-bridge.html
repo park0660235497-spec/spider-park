@@ -1,0 +1,767 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>วีทสโตนบริดจ์</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#EEF2F7;--card:#FFFFFF;--ink:#1D2433;--mute:#5B6475;--line:#D7DEE8;--pri:#1F6FEB;--pri2:#E7F0FE;--ok:#1F8A63;--okb:#E5F5EE;--bad:#C0392B;--badb:#FDECEA;--warn:#B7791F;--warnb:#FFF6E0;--chip:#F2F5F9}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#11151C;--card:#1A202B;--ink:#E7ECF3;--mute:#9AA5B6;--line:#2C3544;--pri:#5B9BFF;--pri2:#1C2B45;--ok:#4CC08F;--okb:#163126;--bad:#FF7B6B;--badb:#3A1E1B;--warn:#F0B94D;--warnb:#3A2F15;--chip:#232B38}}
+:root[data-theme="dark"]{--bg:#11151C;--card:#1A202B;--ink:#E7ECF3;--mute:#9AA5B6;--line:#2C3544;--pri:#5B9BFF;--pri2:#1C2B45;--ok:#4CC08F;--okb:#163126;--bad:#FF7B6B;--badb:#3A1E1B;--warn:#F0B94D;--warnb:#3A2F15;--chip:#232B38}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:Sarabun,system-ui,sans-serif;font-size:15px}
+header{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--card);border-bottom:1px solid var(--line);flex-wrap:wrap}
+header h1{font-size:16px;margin:0;flex:1;min-width:150px}
+.tabs{display:flex;gap:6px}
+.tab{border:1px solid var(--line);background:var(--chip);color:var(--ink);border-radius:999px;padding:6px 12px;font:inherit;font-weight:600;cursor:pointer}
+.tab.on{background:var(--pri);border-color:var(--pri);color:#fff}
+#app{display:flex;flex-direction:column;height:calc(100% - 50px)}
+#view{position:relative;height:54vh;min-height:300px;background:#DDE5EE;touch-action:none;overflow:hidden}
+#c{width:100%;height:100%;display:block}
+#labels{position:absolute;inset:0;pointer-events:none}
+.dl{position:absolute;transform:translate(-50%,-100%);background:rgba(20,28,40,.78);color:#fff;font-size:11px;padding:2px 6px;border-radius:6px;white-space:nowrap}
+#camBtns{position:absolute;left:8px;bottom:8px;display:flex;gap:6px;flex-wrap:wrap}
+#camBtns button,#readout button{font:inherit;font-size:12px;border:none;border-radius:8px;padding:6px 9px;background:rgba(255,255,255,.92);color:#1D2433;box-shadow:0 1px 3px rgba(0,0,0,.2);cursor:pointer}
+#camBtns button.on{background:#1F6FEB;color:#fff}
+#readout{position:absolute;right:8px;top:8px;background:rgba(255,255,255,.92);color:#1D2433;border-radius:10px;padding:6px 9px;font-size:12px;line-height:1.45;box-shadow:0 1px 3px rgba(0,0,0,.2);max-width:56%}
+#readout b{font-variant-numeric:tabular-nums}
+#selTip{position:absolute;left:50%;top:8px;transform:translateX(-50%);background:#FFF3C4;color:#5a4300;border-radius:10px;padding:5px 10px;font-size:12.5px;display:none;box-shadow:0 1px 3px rgba(0,0,0,.2);max-width:60%;text-align:center}
+#toast{position:absolute;left:50%;bottom:52px;transform:translateX(-50%);background:rgba(20,28,40,.9);color:#fff;padding:7px 12px;border-radius:10px;font-size:13px;opacity:0;transition:opacity .25s;pointer-events:none;max-width:90%;text-align:center}
+#toast.show{opacity:1}
+#panel{flex:1;overflow:auto;padding:10px 12px 40px;-webkit-overflow-scrolling:touch}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:10px}
+.card h3{margin:0 0 6px;font-size:15px}
+.row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:4px 0}
+.btn{font:inherit;border:1px solid var(--line);background:var(--chip);color:var(--ink);border-radius:9px;padding:7px 10px;cursor:pointer;min-height:36px}
+.btn.pri{background:var(--pri);border-color:var(--pri);color:#fff;font-weight:600}
+.btn.on{background:var(--pri2);border-color:var(--pri);color:var(--pri);font-weight:700}
+.btn.sm{padding:4px 8px;min-height:30px;font-size:13px}
+.btn:disabled{opacity:.45}
+.mute{color:var(--mute);font-size:13px}
+.big{font-size:18px;font-weight:700;font-variant-numeric:tabular-nums}
+.wl{display:flex;flex-direction:column;gap:4px;margin-top:6px}
+.wi{display:flex;align-items:center;gap:6px;font-size:13px;background:var(--chip);border-radius:8px;padding:4px 6px}
+.wi .dot{width:10px;height:10px;border-radius:50%;flex:none}
+.wi span{flex:1}
+.wi.sel{outline:2px solid var(--pri)}
+.diag{margin:6px 0 0;padding:0;list-style:none;font-size:13.5px}
+.diag li{padding:2px 0}
+.fbox{background:var(--warnb);border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin:6px 0;text-align:center;font-size:16px}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 3px;line-height:1.15}
+.fr>span:first-child{border-bottom:1.5px solid currentColor;padding:0 3px}
+.fr>span{padding:0 3px}
+table{border-collapse:collapse;width:100%;font-size:13px;font-variant-numeric:tabular-nums}
+th,td{border:1px solid var(--line);padding:4px 5px;text-align:center}
+th{background:var(--chip);font-weight:600}
+.tw{overflow-x:auto}
+.ok{color:var(--ok);font-weight:700}.bad{color:var(--bad);font-weight:700}
+details{margin-top:4px}
+summary{cursor:pointer;font-weight:600}
+details ol{padding-left:20px;margin:6px 0}
+details li{margin-bottom:6px;line-height:1.5}
+#graph{width:100%;height:220px;display:block;background:#fff;border:1px solid var(--line);border-radius:8px}
+#modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:20;padding:12px}
+#modal.show{display:flex}
+#modal .box{background:var(--card);color:var(--ink);border-radius:14px;padding:12px;max-width:640px;width:100%;max-height:92vh;overflow:auto}
+#modal svg{width:100%;height:auto;background:#fff;border-radius:8px}
+#microC{width:100%;height:auto;background:#fff;border-radius:8px;display:block}
+input.num{font:inherit;width:110px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}
+@media (min-width:900px){
+ #app{flex-direction:row}
+ #view{height:100%;flex:1.6}
+ #panel{flex:1;max-width:460px;border-left:1px solid var(--line)}
+}
+</style>
+</head>
+<body>
+<header>
+ <h1>วีทสโตนบริดจ์ และสภาพต้านทานของลวด</h1>
+ <div class="tabs"><button class="tab" data-p="0">ตอนที่ 1</button><button class="tab" data-p="1">ตอนที่ 2</button></div>
+</header>
+<div id="app">
+ <div id="view">
+  <canvas id="c"></canvas>
+  <div id="labels"></div>
+  <div id="readout"></div>
+  <div id="selTip"></div>
+  <div id="camBtns"></div>
+  <div id="toast"></div>
+ </div>
+ <aside id="panel"></aside>
+</div>
+<div id="modal"><div class="box" id="mbox"></div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+'use strict';
+const $=s=>document.querySelector(s);
+const rnd=(a,b)=>a+Math.random()*(b-a);
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const fx=(v,n)=>Number(v).toFixed(n);
+const FR=(a,b)=>`<span class="fr"><span>${a}</span><span>${b}</span></span>`;
+
+/* ---------- constants ---------- */
+const R1N=[10,47,100,220,1000];
+const RXSETS=[[27,33,39],[56,68,82],[120,150,180]];
+const MATS=[{n:'นิโครม',rho:1.10e-6,col:0x9EA4AA},{n:'คอนสแตนแทน',rho:4.9e-7,col:0xC98E5C},{n:'ทังสเตน',rho:5.6e-8,col:0x5E636B}];
+const DIAS=[0.20,0.30,0.40,0.50];
+const AR=[{k:'A2m',t:'2mA',fs:2e-3,r:50,sc:2,u:'mA',m:1e3},{k:'A10m',t:'10mA',fs:1e-2,r:10,sc:10,u:'mA',m:1e3},{k:'A100m',t:'100mA',fs:.1,r:1,sc:100,u:'mA',m:1e3},{k:'A05',t:'0.5A',fs:.5,r:.2,sc:.5,u:'A',m:1},{k:'A5',t:'5A',fs:5,r:.02,sc:5,u:'A',m:1}];
+const MM=[['off','ปิด'],['o200','Ω 200'],['o2k','Ω 2k'],['o20k','Ω 20k'],['v200m','V 200m'],['v2','V 2'],['v20','V 20']];
+const RW=2.0, EA=.006, EC=.004, RG=60, GDIV=10e-6, RS=.02, ILIM=3, ITEST=5e-4;
+const BAND=['#111','#7a4a1e','#d01c1c','#f07b12','#f2d21b','#2a9a3a','#1f4fd6','#7d3cc8','#888','#f4f4f4'];
+
+const TN={'S+':'ขั้ว + แหล่งจ่าย','S-':'ขั้ว − แหล่งจ่าย',A:'ปลาย A ลวดบริดจ์',C:'ปลาย C ลวดบริดจ์',D:'จุดสัมผัส D',G1:'ขั้วซ้าย G',G2:'ขั้วขวา G',
+ R1a:'R₁ ขาซ้าย',R1b:'R₁ ขาขวา',X1a:'Rx1 ขาซ้าย',X1b:'Rx1 ขาขวา',X2a:'Rx2 ขาซ้าย',X2b:'Rx2 ขาขวา',X3a:'Rx3 ขาซ้าย',X3b:'Rx3 ขาขวา',
+ MC:'COM มัลติมิเตอร์',MV:'VΩ มัลติมิเตอร์',WL:'ปลายซ้ายลวด (0 cm)',WR:'ปลายขวาลวด (100 cm)',WK:'คลิป K',AC:'COM แอมมิเตอร์',
+ A2m:'แอมมิเตอร์ 2mA',A10m:'แอมมิเตอร์ 10mA',A100m:'แอมมิเตอร์ 100mA',A05:'แอมมิเตอร์ 0.5A',A5:'แอมมิเตอร์ 5A'};
+
+/* ---------- state ---------- */
+const KEY='parkilab-wheatstone-v1';
+function fresh(){
+  const rx=RXSETS.map(s=>{const n=pick(s);return {n,t:n*(1+rnd(-.045,.045))};});
+  const r1=R1N.map(n=>n*(1+rnd(-.004,.004)));
+  const rho=MATS.map(m=>m.rho*(1+rnd(-.03,.03)));
+  const dt={};MATS.forEach((m,i)=>DIAS.forEach((d,j)=>{dt[i+'-'+j]=Math.round(d*(1+rnd(-.015,.015))*1000)/1000;}));
+  return {v:1,part:0,wires:[[],[]],sup:[{on:false,V:1.0,mode:'V'},{on:false,V:1.0,mode:'V'}],mm:['off','off'],jx:.5,kx:.5,r1i:2,
+    rx,r1,rho,dt,mat:0,dia:1,rec1:{},rec2:{},dmeas:{},cam:[0,0]};
+}
+let S;
+try{S=JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){S=null;}
+if(!S||S.v!==1)S=fresh();
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+let sel=null, selWire=-1, panelSig='';
+
+/* ---------- three setup ---------- */
+const view=$('#view'), canvas=$('#c');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true});
+renderer.setPixelRatio(Math.min(2,window.devicePixelRatio||1));
+renderer.outputEncoding=THREE.sRGBEncoding;
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+const scene=new THREE.Scene();scene.background=new THREE.Color(0xDDE5EE);
+const camera=new THREE.PerspectiveCamera(42,1,.01,20);
+const controls=new THREE.OrbitControls(camera,canvas);
+controls.enableDamping=true;controls.dampingFactor=.12;controls.enablePan=false;controls.minDistance=.18;controls.maxDistance=2.6;controls.maxPolarAngle=1.45;
+scene.add(new THREE.HemisphereLight(0xffffff,0xBFAF98,.9));
+const sun=new THREE.DirectionalLight(0xffffff,.75);sun.position.set(.6,1.6,1.0);sun.castShadow=true;
+sun.shadow.mapSize.set(1024,1024);Object.assign(sun.shadow.camera,{left:-1,right:1,top:1,bottom:-1,near:.1,far:4});scene.add(sun);
+// table
+const table=new THREE.Mesh(new THREE.BoxGeometry(2.0,.04,1.3),new THREE.MeshStandardMaterial({color:0xF1DCDD,roughness:.85}));
+table.position.set(0,-.02,.05);table.receiveShadow=true;scene.add(table);
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(8,8),new THREE.MeshStandardMaterial({color:0xC3CAD4}));floor.rotation.x=-Math.PI/2;floor.position.y=-.75;scene.add(floor);
+
+const mat=(c,o={})=>new THREE.MeshStandardMaterial(Object.assign({color:c,roughness:.6,metalness:0},o));
+const METAL=mat(0xC8CDD3,{metalness:.8,roughness:.3});
+const HIT=new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false});
+function box(w,h,d,m){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.castShadow=true;o.receiveShadow=true;return o;}
+function cyl(r1,r2,h,m,s=20){const o=new THREE.Mesh(new THREE.CylinderGeometry(r1,r2,h,s),m);o.castShadow=true;return o;}
+function ctex(w,h,draw){const c=document.createElement('canvas');c.width=w;c.height=h;const g=c.getContext('2d');draw(g,w,h);const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;t.anisotropy=renderer.capabilities.getMaxAnisotropy();return {t,c,g};}
+function sprite(text,col='#1D2433',bg='rgba(255,255,255,.9)',w=.05){
+  const {t}=ctex(256,96,(g)=>{g.fillStyle=bg;g.beginPath();g.roundRect?g.roundRect(4,8,248,80,20):g.rect(4,8,248,80);g.fill();g.fillStyle=col;g.font='bold 52px Sarabun, sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText(text,128,50);});
+  const s=new THREE.Sprite(new THREE.SpriteMaterial({map:t,depthTest:false,transparent:true}));s.scale.set(w,w*.375,1);s.renderOrder=5;return s;
+}
+
+let root=new THREE.Group();scene.add(root);
+let TERM={}, HITS=[], DRAGS=[], LABELS=[], MICRO=null, dyn={};
+function post(id,parent,x,y,z,col,lab,lw,ly){
+  const g=new THREE.Group();g.position.set(x,y,z);parent.add(g);
+  const b=cyl(.011,.012,.01,mat(0x222222));b.position.y=.005;g.add(b);
+  const cap=cyl(.009,.01,.022,mat(col,{roughness:.4}));cap.position.y=.021;g.add(cap);
+  const st=cyl(.003,.003,.012,METAL);st.position.y=.037;g.add(st);
+  const ring=new THREE.Mesh(new THREE.TorusGeometry(.016,.003,8,24),new THREE.MeshBasicMaterial({color:0xFFD400}));ring.rotation.x=Math.PI/2;ring.position.y=.034;ring.visible=false;g.add(ring);
+  const h=new THREE.Mesh(new THREE.SphereGeometry(.026,10,8),HIT);h.position.y=.025;h.userData.term=id;g.add(h);HITS.push(h);
+  if(lab){const s=sprite(lab,'#1D2433','rgba(255,255,255,.92)',lw||(lab.length>3?.06:.04));s.position.set(0,ly||.065,0);g.add(s);}
+  TERM[id]={id,g,ring,top:()=>g.localToWorld(new THREE.Vector3(0,.04,0))};
+  return g;
+}
+function dlabel(text,obj,dy){LABELS.push({text,obj,dy,el:null});}
+
+/* ---------- devices ---------- */
+function scaleTex(){
+  return ctex(4096,160,(g,w,h)=>{g.fillStyle='#fff';g.fillRect(0,0,w,h);const x0=48,x1=w-48;
+    for(let i=0;i<=1000;i++){const x=x0+(x1-x0)*i/1000;const cm=i%10===0,c5=i%50===0;g.strokeStyle=cm?'#5a2a8a':'#9b6fd0';g.lineWidth=cm?3:1.5;
+      const L=c5?70:cm?52:28;g.beginPath();g.moveTo(x,0);g.lineTo(x,L);g.stroke();g.beginPath();g.moveTo(x,h);g.lineTo(x,h-L*.6);g.stroke();
+      if(i%100===0){g.fillStyle='#3b1a66';g.font='bold 46px Sarabun, sans-serif';g.textAlign='center';g.fillText(String(i/10),x,118);}
+      else if(i%50===0){g.fillStyle='#5a2a8a';g.font='34px Sarabun, sans-serif';g.textAlign='center';g.fillText(String(i/10),x,112);}}
+  }).t;
+}
+function board(z,wireCol,wireR,ids,name){
+  const grp=new THREE.Group();root.add(grp);
+  const b=box(1.26,.03,.2,mat(0x8A4B22,{roughness:.5}));b.position.set(0,.015,z);grp.add(b);
+  const s=new THREE.Mesh(new THREE.PlaneGeometry(1.0+.024,.045),new THREE.MeshStandardMaterial({map:scaleTex(),roughness:.8}));
+  s.rotation.x=-Math.PI/2;s.position.set(0,.0312,z+.035);grp.add(s);
+  const wr=cyl(wireR,wireR,1.0,mat(wireCol,{metalness:.7,roughness:.35}),10);wr.rotation.z=Math.PI/2;wr.position.set(0,.036,z+.006);grp.add(wr);
+  [-1,1].forEach(sg=>{const e=box(.05,.01,.06,METAL);e.position.set(sg*.525,.035,z+.01);grp.add(e);});
+  const rail=box(1.08,.01,.018,METAL);rail.position.set(0,.035,z-.055);grp.add(rail);
+  const lab=ctex(512,64,(g)=>{g.fillStyle='#fff';g.font='bold 30px Sarabun, sans-serif';g.fillText(name,10,42);}).t;
+  const lp=new THREE.Mesh(new THREE.PlaneGeometry(.32,.04),new THREE.MeshBasicMaterial({map:lab,transparent:true}));lp.rotation.x=-Math.PI/2;lp.position.set(.1,.0311,z+.08);grp.add(lp);
+  post(ids[0],grp,-.575,.03,z+.006,0x1b1b1b,ids[3]);
+  post(ids[1],grp,.575,.03,z+.006,0xC0141E,ids[4]);
+  // slider (jockey or clip)
+  const j=new THREE.Group();j.position.set(0,.04,z-.055);grp.add(j);
+  const body=box(.034,.026,.04,mat(0x2A2F38));body.position.y=.008;j.add(body);
+  const arm=box(.008,.006,.068,mat(0x2A2F38));arm.position.set(0,.016,.034);j.add(arm);
+  const knife=cyl(.0005,.006,.016,METAL,8);knife.rotation.x=Math.PI;knife.position.set(0,.004,.061);j.add(knife);
+  const ptr=box(.0016,.001,.032,mat(0xE0242E));ptr.position.set(0,-.0085,.09);j.add(ptr);
+  post(ids[2],j,0,.021,-.004,ids[2]==='D'?0x1b1b1b:0xC0141E,ids[5]);
+  const hb=new THREE.Mesh(new THREE.BoxGeometry(.08,.07,.16),HIT);hb.position.set(0,.01,.04);hb.userData.drag=ids[2];j.add(hb);DRAGS.push(hb);
+  dlabel(ids[2]==='D'?'จุดสัมผัส D':'คลิป K',j,.07);
+  return {grp,slider:j,z};
+}
+function supply(x,z){
+  const g=new THREE.Group();g.position.set(x,0,z);root.add(g);
+  const b=box(.2,.13,.24,mat(0xD9DCD5));b.position.y=.065;g.add(b);
+  const hd=box(.06,.012,.1,mat(0x555555));hd.position.set(0,.135,-.02);g.add(hd);
+  const fc=ctex(512,320,()=>{});const fm=new THREE.Mesh(new THREE.PlaneGeometry(.2,.125),new THREE.MeshStandardMaterial({map:fc.t,roughness:.6}));
+  fm.position.set(0,.065,.1205);g.add(fm);
+  dyn.sup={fc,last:''};
+  [[-.07,.035],[-.035,.035],[.035,.035],[.07,.035]].forEach(([a,b2])=>{const k=cyl(.009,.01,.014,mat(0xD8C08A));k.rotation.x=Math.PI/2;k.position.set(a,b2,.127);g.add(k);});
+  post('S-',g,-.03,0,.15,0x1b1b1b,'−');post('S+',g,.04,0,.15,0xC0141E,'+');
+  dlabel('แหล่งจ่าย DC',b,.09);
+}
+function drawSup(){
+  const P=S.part,sp=S.sup[P],d=dyn.sup;if(!d)return;
+  const r=RES||{};const txt=!sp.on?'':(sp.mode==='V'?fx(r.vout||0,2):fx(r.iout||0,2));
+  const key=txt+sp.mode+(r.cc?'c':'')+(sp.on?1:0);if(key===d.last)return;d.last=key;
+  const g=d.fc.g;g.fillStyle='#E4E6E0';g.fillRect(0,0,512,320);
+  g.fillStyle='#2160B0';g.fillRect(14,12,40,26);g.fillStyle='#fff';g.font='bold 20px sans-serif';g.fillText('GW',18,32);
+  g.fillStyle='#333';g.font='bold 22px sans-serif';g.fillText('LABORATORY DC POWER SUPPLY',64,32);
+  g.fillStyle='#2A0A0A';g.fillRect(60,52,300,92);
+  g.fillStyle='#FF2E2E';g.font='bold 76px monospace';g.textAlign='right';g.fillText(txt,340,126);g.textAlign='left';
+  g.fillStyle='#333';g.font='bold 22px sans-serif';g.fillText(sp.mode==='V'?'VOLTS':'AMPS',380,100);
+  g.fillStyle=r.cc&&sp.on?'#FF2E2E':'#552222';g.beginPath();g.arc(110,200,8,0,7);g.fill();g.fillStyle='#333';g.font='18px sans-serif';g.fillText('C.C.',94,232);
+  g.fillStyle=sp.on&&!r.cc?'#36E05A':'#224422';g.beginPath();g.arc(400,200,8,0,7);g.fill();g.fillStyle='#333';g.fillText('C.V.',384,232);
+  g.fillText('CURRENT',120,180);g.fillText('VOLTAGE',300,180);
+  g.fillStyle=sp.on?'#1F8A3A':'#666';g.font='bold 22px sans-serif';g.fillText(sp.on?'ON':'OFF',20,300);
+  d.fc.t.needsUpdate=true;
+}
+function meterFace(kind){
+  return ctex(512,300,(g)=>{});
+}
+function drawMeterFace(fc,kind){
+  const g=fc.g;g.fillStyle='#FBFBF6';g.fillRect(0,0,512,300);
+  const cx=256,cy=280,R=210;g.strokeStyle='#222';g.lineWidth=3;g.beginPath();g.arc(cx,cy,R,Math.PI*1.22,Math.PI*1.78);g.stroke();
+  const ang=f=>Math.PI*1.22+f*Math.PI*.56;
+  for(let i=0;i<=60;i++){const f=i/60,a=ang(f),L=i%10===0?26:i%5===0?18:10;g.lineWidth=i%10===0?3:1.5;
+    g.beginPath();g.moveTo(cx+Math.cos(a)*R,cy+Math.sin(a)*R);g.lineTo(cx+Math.cos(a)*(R-L),cy+Math.sin(a)*(R-L));g.stroke();}
+  g.fillStyle='#111';g.textAlign='center';
+  if(kind==='G'){g.font='bold 26px sans-serif';[30,20,10,0,10,20,30].forEach((v,i)=>{const a=ang(i/6);g.fillText(v,cx+Math.cos(a)*(R+22),cy+Math.sin(a)*(R+22)+8);});
+    g.font='bold 60px serif';g.fillText('G',cx,200);}
+  else{g.font='bold 22px sans-serif';[0,20,40,60,80,100].forEach((v,i)=>{const a=ang(i/5*1.0);g.fillText(v,cx+Math.cos(a)*(R+20),cy+Math.sin(a)*(R+20)+8);});
+    g.font='18px sans-serif';[0,1,2,3,4,5].forEach((v,i)=>{const a=ang(i/5);g.fillText(v,cx+Math.cos(a)*(R-44),cy+Math.sin(a)*(R-44)+6);});
+    ['0','0.4','0.8','1.2','1.6','2'].forEach((v,i)=>{const a=ang(i/5);g.fillText(v,cx+Math.cos(a)*(R-70),cy+Math.sin(a)*(R-70)+6);});
+    g.font='bold 56px serif';g.fillText('A',cx,215);}
+  fc.t.needsUpdate=true;
+}
+function analog(x,z,kind){
+  const g=new THREE.Group();g.position.set(x,0,z);root.add(g);
+  const base=box(.2,.05,.12,mat(0x22262C));base.position.y=.025;g.add(base);
+  const strip=box(.2,.002,.04,mat(kind==='G'?0x2E7BC4:0x2E8B57));strip.position.set(0,.051,.035);g.add(strip);
+  const fg=new THREE.Group();fg.position.set(0,.05,-.03);fg.rotation.x=-.55;g.add(fg);
+  const fb=box(.19,.13,.012,mat(0x2B2F36));fb.position.set(0,.065,0);fg.add(fb);
+  const fc=meterFace(kind);drawMeterFace(fc,kind);
+  const fp=new THREE.Mesh(new THREE.PlaneGeometry(.17,.1),new THREE.MeshStandardMaterial({map:fc.t,roughness:.7}));fp.position.set(0,.075,.0065);fg.add(fp);
+  const glass=new THREE.Mesh(new THREE.PlaneGeometry(.17,.1),new THREE.MeshStandardMaterial({color:0xffffff,transparent:true,opacity:.08,roughness:.05}));glass.position.set(0,.075,.011);fg.add(glass);
+  const piv=new THREE.Group();piv.position.set(0,.075-.05+.0045,.008);fg.add(piv);
+  const nd=box(.0016,.074,.001,mat(0x111111));nd.position.y=.037;nd.castShadow=false;piv.add(nd);
+  const hub=cyl(.006,.006,.004,mat(0x111111));hub.rotation.x=Math.PI/2;piv.add(hub);
+  dyn[kind]={piv,ang:0};
+  if(kind==='G'){post('G1',g,-.05,.05,.04,0xC0141E,'G');post('G2',g,.05,.05,.04,0xC0141E,'G');dlabel('กัลวานอมิเตอร์',fg,.16);}
+  else{post('AC',g,-.08,.05,.04,0x1b1b1b,'COM',.034,.06);AR.forEach((a,i)=>post(a.k,g,-.045+i*.031,.05,.04,0xC0141E,a.t,.034,i%2?.088:.06));dlabel('แอมมิเตอร์',fg,.16);}
+}
+function multimeter(x,z){
+  const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=-.25;root.add(g);
+  const b=box(.095,.03,.17,mat(0xC8202C));b.position.y=.015;g.add(b);
+  const fc=ctex(256,460,()=>{});const fp=new THREE.Mesh(new THREE.PlaneGeometry(.085,.155),new THREE.MeshStandardMaterial({map:fc.t,roughness:.6}));
+  fp.rotation.x=-Math.PI/2;fp.position.set(0,.0305,-.005);g.add(fp);
+  const knob=new THREE.Group();knob.position.set(0,.031,.0);g.add(knob);
+  const kb=cyl(.026,.026,.008,mat(0x1d1d1d));kb.position.y=.004;knob.add(kb);
+  const kp=box(.006,.004,.044,mat(0xEEEEEE));kp.position.y=.01;knob.add(kp);
+  dyn.mm={fc,knob,last:''};
+  post('MC',g,-.022,.03,.068,0x1b1b1b,'COM');post('MV',g,.022,.03,.068,0xC0141E,'VΩ');
+  dlabel('มัลติมิเตอร์',b,.05);
+}
+function drawMM(){
+  const d=dyn.mm;if(!d)return;const m=S.mm[S.part];const txt=mmText();const key=m+txt;if(key===d.last)return;d.last=key;
+  const g=d.fc.g;g.fillStyle='#1c1c1c';g.fillRect(0,0,256,460);g.fillStyle='#C8202C';g.fillRect(0,0,256,14);
+  g.fillStyle='#B9C4A8';g.fillRect(18,22,220,96);g.fillStyle='#1a1f14';g.font='bold 64px monospace';g.textAlign='right';g.fillText(m==='off'?'':txt,228,94);
+  g.font='bold 18px sans-serif';g.textAlign='left';g.fillText(m.startsWith('o')?(m==='o20k'?'kΩ':'Ω'):m.startsWith('v')?(m==='v200m'?'mV':'V'):'',22,112);
+  g.fillStyle='#ddd';g.font='bold 20px sans-serif';g.textAlign='center';
+  const cx=128,cy=250;const pos={off:-90,o200:-150,o2k:-180,o20k:150,v200m:-30,v2:0,v20:30};
+  Object.keys(pos).forEach(k=>{const a=pos[k]*Math.PI/180;const lab={off:'OFF',o200:'200Ω',o2k:'2kΩ',o20k:'20kΩ',v200m:'200m',v2:'2V',v20:'20V'}[k];
+    g.fillStyle=k===m?'#FFD400':'#ddd';g.fillText(lab,cx+Math.sin(a)*96,cy-Math.cos(a)*86+6);});
+  g.fillStyle='#FFD400';g.font='bold 16px sans-serif';g.fillText('V⎓',cx+70,cy-110);g.fillText('Ω',cx-80,cy-100);
+  d.fc.t.needsUpdate=true;d.knob.rotation.y=-(pos[m]*Math.PI/180);
+}
+function resistor(parent,x,z,nom,idA,idB,lab){
+  const g=new THREE.Group();g.position.set(x,0,z);parent.add(g);
+  const bd=cyl(.0065,.0065,.032,mat(0xD9C9A3),16);bd.rotation.z=Math.PI/2;bd.position.y=.022;g.add(bd);
+  const s=String(Math.round(nom));const d1=+s[0],d2=+(s[1]||0),mul=s.length-2;
+  [[d1,-.01],[d2,-.004],[mul,.002],[-1,.01]].forEach(([c,xo])=>{const bm=cyl(.0068,.0068,.0025,mat(c<0?0xC9A227:new THREE.Color(BAND[c]).getHex(),c<0?{metalness:.6,roughness:.3}:{}),16);bm.rotation.z=Math.PI/2;bm.position.set(xo,.022,0);g.add(bm);});
+  [-1,1].forEach(sg=>{const ld=cyl(.0012,.0012,.034,METAL,6);ld.rotation.z=Math.PI/2;ld.position.set(sg*.033,.022,0);g.add(ld);});
+  post(idA,g,-.06,.008,0,0x1b1b1b,null);post(idB,g,.06,.008,0,0x1b1b1b,null);
+  const sp=sprite(lab,'#fff','rgba(160,20,90,.9)',.055);sp.position.set(0,.055,0);g.add(sp);
+  return g;
+}
+function holder1(x,z){
+  const g=new THREE.Group();g.position.set(x,0,z);root.add(g);
+  const b=box(.17,.008,.07,mat(0xF06BB4));b.position.y=.004;g.add(b);
+  resistor(g,0,0,R1N[S.r1i],'R1a','R1b','R₁='+R1N[S.r1i]+'Ω');dlabel('ตัวต้านทานมาตรฐาน R₁',b,.06);
+}
+function holderX(x,z){
+  const g=new THREE.Group();g.position.set(x,0,z);root.add(g);
+  const b=box(.17,.008,.2,mat(0xF06BB4));b.position.y=.004;g.add(b);
+  S.rx.forEach((r,i)=>resistor(g,0,-.065+i*.065,r.n,'X'+(i+1)+'a','X'+(i+1)+'b','Rx'+(i+1)));
+  dlabel('Rx ที่ไม่ทราบค่า 3 ตัว',b,.12);
+}
+function micrometer(x,z){
+  const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=.4;root.add(g);
+  const fr=new THREE.Mesh(new THREE.TorusGeometry(.035,.007,10,24,Math.PI),mat(0x2F5FA8));fr.rotation.x=-Math.PI/2;fr.position.y=.01;fr.rotation.z=Math.PI;g.add(fr);
+  const an=cyl(.004,.004,.012,METAL);an.rotation.z=Math.PI/2;an.position.set(-.035,.01,.006);g.add(an);
+  const sl=cyl(.007,.007,.05,METAL);sl.rotation.z=Math.PI/2;sl.position.set(.06,.01,0);g.add(sl);
+  const th=cyl(.0095,.0095,.04,mat(0xAAB0B6,{metalness:.7,roughness:.35}));th.rotation.z=Math.PI/2;th.position.set(.105,.01,0);g.add(th);
+  const sp=cyl(.0035,.0035,.03,METAL);sp.rotation.z=Math.PI/2;sp.position.set(.02,.01,0);g.add(sp);
+  const hb=new THREE.Mesh(new THREE.BoxGeometry(.2,.06,.1),HIT);hb.position.set(.04,.02,0);hb.userData.micro=1;g.add(hb);MICRO=hb;
+  dlabel('ไมโครมิเตอร์ (แตะเพื่อวัด)',g,.06);
+}
+
+/* ---------- part scenes ---------- */
+let B=null;
+function build(){
+  scene.remove(root);root=new THREE.Group();scene.add(root);
+  TERM={};HITS=[];DRAGS=[];LABELS.forEach(l=>l.el&&l.el.remove());LABELS=[];MICRO=null;dyn={};wireMeshes.forEach(w=>w.m&&scene.remove(w.m));wireMeshes=[];
+  if(S.part===0){
+    B=board(.27,0xB87333,.0011,['A','C','D','A','C','D'],'GAMMACO  POTENTIOMETER SLIDE WIRE BRIDGE');
+    supply(-.52,-.27);analog(.02,-.25,'G');multimeter(.5,-.16);holder1(-.25,.0);holderX(.22,.0);
+  }else{
+    const m=MATS[S.mat];B=board(.27,m.col,.0008+S.dia*.0006,['WL','WR','WK','0','100','K'],'ลวด'+m.n+'  d ≈ '+DIAS[S.dia].toFixed(2)+' mm  ยาว 100 cm');
+    supply(-.52,-.27);analog(.0,-.25,'A');multimeter(.5,-.16);micrometer(.3,.03);
+  }
+  root.traverse(o=>{if(o.isMesh&&o.material!==HIT){o.castShadow=true;}});
+  placeSlider();setCam(S.cam[S.part],true);
+}
+function placeSlider(){if(!B)return;const x=(S.part===0?S.jx:S.kx);B.slider.position.x=-.5+x;}
+
+/* ---------- wires ---------- */
+let wireMeshes=[];
+const WCOL=[0xD3202A,0x1E1E1E,0x2C6BD6,0x2E9B4A,0xE58A12,0x8A3FC2];
+function wireColor(w){if(w.a==='S+'||w.b==='S+')return 0xD3202A;if(w.a==='S-'||w.b==='S-')return 0x1E1E1E;return w.col;}
+function syncWires(){
+  const W=S.wires[S.part];
+  while(wireMeshes.length>W.length){const x=wireMeshes.pop();scene.remove(x.m);x.m.geometry.dispose();}
+  W.forEach((w,i)=>{
+    const ta=TERM[w.a],tb=TERM[w.b];if(!ta||!tb)return;
+    const p1=ta.top(),p2=tb.top();const key=[p1.x,p1.y,p1.z,p2.x,p2.y,p2.z].map(v=>v.toFixed(4)).join()+(i===selWire?'s':'')+w.a+w.b;
+    let wm=wireMeshes[i];if(wm&&wm.key===key)return;
+    if(wm){scene.remove(wm.m);wm.m.geometry.dispose();}
+    const dist=p1.distanceTo(p2),lift=.025+dist*.08;
+    const m1=p1.clone().lerp(p2,.25),m2=p1.clone().lerp(p2,.75);m1.y+=lift;m2.y+=lift;
+    const curve=new THREE.CatmullRomCurve3([p1,p1.clone().add(new THREE.Vector3(0,.03,0)),m1,m2,p2.clone().add(new THREE.Vector3(0,.03,0)),p2]);
+    const mesh=new THREE.Mesh(new THREE.TubeGeometry(curve,40,i===selWire?.0042:.003,8,false),new THREE.MeshStandardMaterial({color:i===selWire?0xFFC400:wireColor(w),roughness:.45}));
+    mesh.castShadow=true;mesh.userData.wire=i;scene.add(mesh);wireMeshes[i]={m:mesh,key};
+  });
+}
+function addWire(a,b){
+  const W=S.wires[S.part];if(a===b)return;
+  if(W.some(w=>(w.a===a&&w.b===b)||(w.a===b&&w.b===a))){toast('มีสายระหว่าง 2 ขั้วนี้แล้ว');return;}
+  W.push({a,b,col:WCOL[2+W.length%4]});save();toast('ต่อสาย: '+TN[a]+' → '+TN[b]);dirty();
+}
+function delWire(i){S.wires[S.part].splice(i,1);selWire=-1;wireMeshes.forEach(w=>scene.remove(w.m));wireMeshes=[];save();dirty();}
+
+/* ---------- circuit solver ---------- */
+function uf(){const p={};const f=x=>{if(p[x]===undefined)p[x]=x;while(p[x]!==x){p[x]=p[p[x]];x=p[x];}return x;};
+  return {f,u:(a,b)=>{a=f(a);b=f(b);if(a!==b)p[a]=b;}};}
+function groups(){const U=uf();S.wires[S.part].forEach(w=>U.u(w.a,w.b));return U.f;}
+function elements(Vs){
+  const E=[],P=S.part,sp=S.sup[P];
+  if(sp.on&&Vs>0){E.push(['I','S-','S+',Vs/RS]);E.push(['R','S+','S-',RS]);}
+  if(P===0){
+    const x=S.jx;E.push(['R','A','#P',RW*x+EA]);E.push(['R','#P','C',RW*(1-x)+EC]);E.push(['R','D','#P',.02]);
+    E.push(['R','G1','G2',RG]);E.push(['R','R1a','R1b',S.r1[S.r1i]]);
+    S.rx.forEach((r,i)=>E.push(['R','X'+(i+1)+'a','X'+(i+1)+'b',r.t]));
+  }else{
+    const m=MATS[S.mat],d=S.dt[S.mat+'-'+S.dia]*1e-3,Rt=S.rho[S.mat]/(Math.PI*d*d/4);
+    const x=S.kx;E.push(['R','WL','#Q',Rt*x+.003]);E.push(['R','#Q','WR',Rt*(1-x)+.003]);E.push(['R','WK','#Q',.01]);
+    AR.forEach(a=>E.push(['R',a.k,'AC',a.r]));
+  }
+  const mm=S.mm[P];
+  if(mm.startsWith('o')){E.push(['I','MC','MV',ITEST]);E.push(['R','MC','MV',1e7]);}
+  else if(mm.startsWith('v')){E.push(['R','MC','MV',1e7]);}
+  return E;
+}
+function solve(Vs){
+  const f=groups(),E=elements(Vs),idx={},nodes=[];
+  const n=k=>{k=k[0]==='#'?k:f(k);if(idx[k]===undefined){idx[k]=nodes.length;nodes.push(k);}return idx[k];};
+  E.forEach(e=>{e[1]=n(e[1]);e[2]=n(e[2]);});
+  const N=nodes.length,G=Array.from({length:N},()=>new Float64Array(N+1));
+  for(let i=0;i<N;i++)G[i][i]+=1e-9;
+  E.forEach(([t,a,b,v])=>{if(a===b)return;if(t==='R'){const g=1/v;G[a][a]+=g;G[b][b]+=g;G[a][b]-=g;G[b][a]-=g;}else{G[a][N]-=v;G[b][N]+=v;}});
+  for(let c=0;c<N;c++){let p=c;for(let r=c+1;r<N;r++)if(Math.abs(G[r][c])>Math.abs(G[p][c]))p=r;[G[c],G[p]]=[G[p],G[c]];
+    const pv=G[c][c];if(Math.abs(pv)<1e-30)continue;for(let r=0;r<N;r++){if(r===c)continue;const k=G[r][c]/pv;if(k)for(let q=c;q<=N;q++)G[r][q]-=k*G[c][q];}}
+  const V=new Float64Array(N);for(let i=0;i<N;i++)V[i]=G[i][N]/G[i][i];
+  return {v:k=>{k=k[0]==='#'?k:f(k);return idx[k]===undefined?0:V[idx[k]];}};
+}
+let RES={};
+function compute(){
+  const P=S.part,sp=S.sup[P];let Vs=sp.V,sol=solve(Vs);
+  const iout=s=>sp.on?(Vs/RS-(s.v('S+')-s.v('S-'))/RS):0;
+  let I=iout(sol),cc=false;
+  if(sp.on&&I>ILIM){Vs=Vs*ILIM/I;sol=solve(Vs);I=iout(sol);cc=true;}
+  const r={vout:sp.on?sol.v('S+')-sol.v('S-'):0,iout:I,cc};
+  const dv=sol.v('MV')-sol.v('MC');r.mmV=dv;r.mmR=dv/ITEST;
+  if(P===0){r.ig=(sol.v('G1')-sol.v('G2'))/RG;r.div=r.ig/GDIV;}
+  else{let best=null;AR.forEach(a=>{const i=(sol.v(a.k)-sol.v('AC'))/a.r;if(!best||Math.abs(i)>Math.abs(best.i))best={a,i};});r.amm=best;}
+  RES=r;
+}
+function mmText(){
+  const m=S.mm[S.part],r=RES;if(m==='off')return '';
+  if(m.startsWith('o')){const R=r.mmR;if(m==='o200')return (R>199.95||R<-199.95)?'1.':fx(R,1);if(m==='o2k')return (R>1999.5||R<-1999.5)?'1.':fx(R,0);return (R>19995||R<-19995)?'1.':fx(R/1000,2);}
+  const V=r.mmV;if(m==='v200m')return Math.abs(V)>.19995?'1.':fx(V*1000,1);if(m==='v2')return Math.abs(V)>1.9995?'1.':fx(V,3);return Math.abs(V)>19.995?'1.':fx(V,2);
+}
+function mmVal(){const t=mmText();if(!t||t==='1.')return null;const m=S.mm[S.part];let v=parseFloat(t);if(m==='o20k')v*=1000;if(m==='v200m')v/=1000;return v;}
+function ammRead(){const a=RES.amm;if(!a)return null;const f=a.i/a.a.fs;const q=Math.round(f*100)/100;return {f,q,val:q*a.a.fs,a:a.a};}
+
+/* ---------- diagnostics ---------- */
+function diag1(){
+  const f=groups(),g=k=>f(k),gA=g('A'),gC=g('C'),gD=g('D'),out=[];
+  const used=k=>S.wires[0].some(w=>w.a===k||w.b===k);
+  const sOK=(g('S+')===gA&&g('S-')===gC)||(g('S+')===gC&&g('S-')===gA);
+  out.push([sOK,'แหล่งจ่ายต่อกับปลาย A และ C ของลวด']);
+  let gB=null;const g1=g('G1'),g2=g('G2');
+  if(g1===gD&&g2!==gD)gB=g2;else if(g2===gD&&g1!==gD)gB=g1;
+  if(gB===gA||gB===gC)gB=null;
+  const gOK=gB!==null&&used('G1')&&used('G2');
+  out.push([gOK,'กัลวานอมิเตอร์ต่อระหว่างจุด B กับจุดสัมผัส D']);
+  const pair=(a,b,x,y)=>(g(a)===x&&g(b)===y)||(g(a)===y&&g(b)===x);
+  let side=null;if(gB!==null){if(pair('R1a','R1b',gA,gB))side='A';else if(pair('R1a','R1b',gC,gB))side='C';}
+  out.push([!!side,'R₁ ต่อระหว่างปลายลวด (A หรือ C) กับจุด B']);
+  let k=0;if(side){const other=side==='A'?gC:gA;for(let i=1;i<=3;i++)if(pair('X'+i+'a','X'+i+'b',gB,other)){k=i;break;}}
+  out.push([k>0,'Rx ต่อระหว่างจุด B กับปลายลวดอีกด้าน']);
+  out.push([S.sup[0].on,'เปิดแหล่งจ่าย (ตั้ง 0.5–1.0 V)']);
+  return {ok:out.every(o=>o[0]),list:out,k,swapped:side==='C'};
+}
+function diag2(){
+  const f=groups(),g=k=>f(k),gL=g('WL'),gR=g('WR'),gK=g('WK'),out=[];
+  const used=k=>S.wires[1].some(w=>w.a===k||w.b===k);
+  const rng=AR.filter(a=>used(a.k));const ar=rng.length===1?rng[0]:null;
+  const ends=[gL,gR],sP=g('S+'),sN=g('S-');
+  let series=false;
+  if(ar&&used('AC')){const t1=g(ar.k),t2=g('AC');
+    for(const [x,y] of [[t1,t2],[t2,t1]])for(const [s1,s2] of [[sP,sN],[sN,sP]])for(const [e1,e2] of [[gL,gR],[gR,gL]])
+      if(x===s1&&y===e1&&e2===s2&&used('S+')&&used('S-'))series=true;}
+  out.push([series,'แหล่งจ่าย → แอมมิเตอร์ → ลวด (ปลาย 0 ถึง 100 cm) ต่ออนุกรมครบวง']);
+  out.push([rng.length===1,'แอมมิเตอร์ใช้ช่องวัด 1 ช่องคู่กับ COM']);
+  const mv=g('MV'),mc=g('MC');let l=null;
+  if((mv===gL&&mc===gK)||(mv===gK&&mc===gL))l=S.kx*100;else if((mv===gK&&mc===gR)||(mv===gR&&mc===gK))l=(1-S.kx)*100;else if((mv===gL&&mc===gR)||(mv===gR&&mc===gL))l=100;
+  out.push([l!==null&&used('MV')&&used('MC'),'มัลติมิเตอร์ (โวลต์) คร่อมลวดช่วงความยาว l']);
+  out.push([S.mm[1].startsWith('v'),'หมุนมัลติมิเตอร์ไปโหมด V']);
+  out.push([S.sup[1].on,'เปิดแหล่งจ่าย']);
+  return {ok:out.every(o=>o[0]),list:out,l};
+}
+
+/* ---------- recording ---------- */
+function recBalance(){
+  compute();const d=diag1();if(!d.ok){toast('วงจรยังไม่ครบ กด "ตรวจวงจร" ดูว่าขาดอะไร');showDiag();return;}
+  if(Math.abs(RES.div)>=1){toast('เข็ม G ยังไม่ชี้ศูนย์ ('+fx(RES.div,1)+' ช่อง) เลื่อนจุด D ต่อ');return;}
+  const L1=Math.round(S.jx*1000)/10,L2=Math.round((100-L1)*10)/10,R1=R1N[S.r1i];
+  const Rx=d.swapped?R1*L1/L2:R1*L2/L1;
+  const o=S.rec1[d.k]||(S.rec1[d.k]={});o[d.swapped?'s':'n']={L1,L2,R1,Rx};save();dirty();
+  toast('บันทึก Rx'+d.k+(d.swapped?' (สลับตำแหน่ง)':'')+': L₁='+fx(L1,1)+' cm, Rx = '+fx(Rx,1)+' Ω');
+}
+function recOhm(){
+  compute();if(!S.mm[0].startsWith('o')){toast('หมุนมัลติมิเตอร์ไปโหมด Ω ก่อน');return;}
+  const f=groups(),mc=f('MC'),mv=f('MV');let k=0;
+  for(let i=1;i<=3;i++){const a=f('X'+i+'a'),b=f('X'+i+'b');if((a===mc&&b===mv)||(a===mv&&b===mc))k=i;}
+  if(!k){toast('ต่อสาย COM และ VΩ คร่อม Rx ตัวที่จะวัด');return;}
+  const v=mmVal();if(v===null){toast('ค่าเกินช่วงวัด (จอขึ้น 1.) เปลี่ยนช่อง Ω ให้ใหญ่ขึ้น');return;}
+  const busy=S.wires[0].filter(w=>[w.a,w.b].some(t=>t==='X'+k+'a'||t==='X'+k+'b')).length>2;
+  (S.rec1[k]||(S.rec1[k]={})).m=v;save();dirty();
+  toast('บันทึกค่าโอห์มมิเตอร์ Rx'+k+' = '+v+' Ω'+(busy?' (ระวัง: ยังต่ออยู่ในวงจร)':''));
+}
+function wkey(){return S.mat+'-'+S.dia;}
+function recPoint(){
+  compute();const d=diag2();if(!d.ok){toast('วงจรยังไม่ครบ กด "ตรวจวงจร" ดูว่าขาดอะไร');showDiag();return;}
+  const a=ammRead();if(!a||a.f<=0){toast('เข็มแอมมิเตอร์ตีกลับ (ต่อขั้วสลับ) หรือไม่มีกระแส');return;}
+  if(a.f>1.02){toast('เข็มแอมมิเตอร์ตีเกินสเกล เปลี่ยนไปช่องที่ใหญ่ขึ้น');return;}
+  if(a.f<.05){toast('เข็มแอมมิเตอร์แทบไม่ขยับ อ่านค่าไม่ได้ ย้ายสายไปช่องที่เล็กลง');return;}
+  const lowWarn=a.f<.2;
+  const V=mmVal();if(V===null){toast('โวลต์มิเตอร์เกินช่วง เปลี่ยนช่อง V ให้ใหญ่ขึ้น');return;}
+  const l=Math.round(d.l*10)/10,I=a.val,R=Math.abs(V)/I;
+  const arr=S.rec2[wkey()]||(S.rec2[wkey()]=[]);const j=arr.findIndex(p=>Math.abs(p.l-l)<.05);const p={l,V:Math.abs(V),I,R,rg:a.a.t};
+  if(j>=0)arr[j]=p;else arr.push(p);arr.sort((x,y)=>x.l-y.l);save();dirty();
+  toast('บันทึก l = '+fx(l,1)+' cm, R = '+fx(R,3)+' Ω'+(lowWarn?' (เข็มขึ้นน้อย ค่าอาจคลาดเคลื่อนมาก ลองช่องที่เล็กลง)':''));
+}
+function fit(arr){const n=arr.length;if(n<2)return null;let sx=0,sy=0,sxx=0,sxy=0;arr.forEach(p=>{const x=p.l/100;sx+=x;sy+=p.R;sxx+=x*x;sxy+=x*p.R;});
+  const den=n*sxx-sx*sx;if(Math.abs(den)<1e-12)return null;const m=(n*sxy-sx*sy)/den,b=(sy-m*sx)/n;return {m,b};}
+
+/* ---------- panel ---------- */
+function btn(t,act,cls='',dis=false){return `<button class="btn ${cls}" data-act="${act}"${dis?' disabled':''}>${t}</button>`;}
+function wireCard(){
+  const W=S.wires[S.part];
+  return `<div class="card"><h3>ต่อสาย</h3><div class="mute">แตะขั้วหนึ่ง แล้วแตะอีกขั้ว = สาย 1 เส้น · แตะขั้วเดิมซ้ำ = ยกเลิก · แตะที่สายเพื่อเลือก</div>
+  <div class="row">${btn('ตรวจวงจร','diag','pri')}${btn('ดูรูปวงจร','schem')}${btn('ต่อให้ดู','auto')}${btn('ล้างสายทั้งหมด','clear','',!W.length)}</div>
+  <div class="wl">${W.map((w,i)=>`<div class="wi${i===selWire?' sel':''}"><i class="dot" style="background:#${wireColor(w).toString(16).padStart(6,'0')}"></i><span>${i+1}. ${TN[w.a]} ↔ ${TN[w.b]}</span>${btn('✕','del:'+i,'sm')}</div>`).join('')||'<div class="mute">ยังไม่มีสาย</div>'}</div>
+  <div id="diagBox"></div></div>`;
+}
+function supCard(){const sp=S.sup[S.part];
+  return `<div class="card"><h3>แหล่งจ่ายไฟฟ้ากระแสตรง</h3><div class="row">${btn(sp.on?'ปิดเครื่อง':'เปิดเครื่อง','pw',sp.on?'on':'pri')}
+  ${btn('−1','v:-1','sm')}${btn('−0.1','v:-.1','sm')}<span class="big" style="min-width:70px;text-align:center">${fx(sp.V,1)} V</span>${btn('+0.1','v:.1','sm')}${btn('+1','v:1','sm')}</div>
+  <div class="row"><span class="mute">หน้าจอแสดง</span>${btn('VOLTS','mode:V','sm'+(sp.mode==='V'?' on':''))}${btn('AMPS','mode:A','sm'+(sp.mode==='A'?' on':''))}<span class="mute">จำกัดกระแส 3 A</span></div></div>`;}
+function mmCard(list){return `<div class="card"><h3>มัลติมิเตอร์ (หมุนปุ่ม)</h3><div class="row">${MM.filter(m=>list.includes(m[0])).map(m=>btn(m[1],'mm:'+m[0],'sm'+(S.mm[S.part]===m[0]?' on':''))).join('')}</div>
+  <div class="row">อ่านได้ <span class="big" id="mmRead">–</span></div></div>`;}
+function sliderCard(){const P=S.part;
+  return `<div class="card"><h3>${P===0?'จุดสัมผัส D (ลากในภาพได้)':'คลิป K (ลากในภาพได้)'}</h3>
+  <div class="row">${btn('−10','mv:-10','sm')}${btn('−1','mv:-1','sm')}${btn('−0.1','mv:-.1','sm')}<span class="big" id="posRead" style="min-width:86px;text-align:center"></span>${btn('+0.1','mv:.1','sm')}${btn('+1','mv:1','sm')}${btn('+10','mv:10','sm')}</div>
+  ${P===0?'<div class="row">เข็ม G: <span class="big" id="gRead">–</span></div>':''}</div>`;}
+function p1Panel(){
+  const rows=[1,2,3].map(k=>{const o=S.rec1[k]||{};const v=[o.n&&o.n.Rx,o.s&&o.s.Rx].filter(x=>x);const avg=v.length?v.reduce((a,b)=>a+b,0)/v.length:null;
+    const err=(avg&&o.m)?Math.abs(avg-o.m)/o.m*100:null;
+    return `<tr><td>ตัวที่ ${k}</td><td>${o.m!==undefined?o.m:'–'}</td><td>${o.n?fx(o.n.L1,1)+' / '+fx(o.n.L2,1):'–'}</td><td>${o.n?fx(o.n.Rx,1):'–'}</td><td>${o.s?fx(o.s.L1,1)+' / '+fx(o.s.L2,1):'–'}</td><td>${o.s?fx(o.s.Rx,1):'–'}</td><td>${avg?fx(avg,1):'–'}</td><td>${err!==null?fx(err,2)+'%':'–'}</td></tr>`;}).join('');
+  return wireCard()+supCard()+sliderCard()+
+  `<div class="card"><h3>ตัวต้านทาน</h3><div class="row"><span class="mute">R₁ มาตรฐาน</span>${R1N.map((n,i)=>btn(n+' Ω','r1:'+i,'sm'+(S.r1i===i?' on':''))).join('')}</div>
+  <div class="row"><span class="mute">ย้ายสาย Rx ไปตัวที่</span>${[1,2,3].map(k=>btn('Rx'+k,'mvx:'+k,'sm')).join('')}${btn('สลับ R₁ ↔ Rx','swap','sm')}</div></div>`+
+  mmCard(['off','o200','o2k','o20k'])+
+  `<div class="card"><h3>บันทึกผล ตอนที่ 1</h3>
+  <div class="fbox">สมดุลเมื่อเข็ม G ชี้ 0 :&nbsp; ${FR('R<sub>1</sub>','R<sub>x</sub>')} = ${FR('L<sub>1</sub>','L<sub>2</sub>')} &nbsp;→&nbsp; R<sub>x</sub> = ${FR('L<sub>2</sub>','L<sub>1</sub>')} R<sub>1</sub></div>
+  <div class="mute">L₁ วัดจากปลาย A ถึง D, L₂ จาก D ถึง C · ถ้าสลับให้ R₁ อยู่ฝั่ง C ใช้ R<sub>x</sub> = ${FR('L<sub>1</sub>','L<sub>2</sub>')} R<sub>1</sub></div>
+  <div class="row">${btn('บันทึกจุดสมดุล','recB','pri')}${btn('บันทึกค่าโอห์มมิเตอร์','recO')}</div>
+  <div class="tw"><table><tr><th rowspan="2">Rx</th><th rowspan="2">โอห์มมิเตอร์ (Ω)</th><th colspan="2">R₁ ฝั่ง A</th><th colspan="2">สลับ (R₁ ฝั่ง C)</th><th rowspan="2">เฉลี่ย (Ω)</th><th rowspan="2">คลาดเคลื่อน</th></tr>
+  <tr><th>L₁/L₂ (cm)</th><th>Rx (Ω)</th><th>L₁/L₂ (cm)</th><th>Rx (Ω)</th></tr>${rows}</table></div>
+  <div class="row">${btn('ล้างตาราง','clr1','sm')}${btn('สุ่ม Rx ชุดใหม่','newrx','sm')}</div>
+  <div class="mute">% คลาดเคลื่อน = ${FR('|R<sub>x</sub>(ทดลอง) − R<sub>x</sub>(โอห์มมิเตอร์)|','R<sub>x</sub>(โอห์มมิเตอร์)')} × 100</div></div>`+
+  `<div class="card"><details><summary>แนวคำตอบคำถามนำสรุป ตอนที่ 1 (สำหรับครู)</summary><ol>
+  <li>สลับ R₁ กับ Rx แล้วจุดสมดุลย้ายไปฝั่งตรงข้าม (L₁ ใหม่ ≈ L₂ เดิม) และ Rx ที่คำนวณได้ควรเท่าเดิม ถ้าต่างกันเล็กน้อย แสดงว่ามีความต้านทานที่ปลายลวด/ขั้วต่อ หรือสเกลไม่ตรงศูนย์ จึงควรนำ 2 ค่ามาเฉลี่ย</li>
+  <li>ใช้ % คลาดเคลื่อนตามสูตรด้านบน (ตารางคำนวณให้แล้ว) โดยถือค่าจากโอห์มมิเตอร์เป็นค่าอ้างอิง</li>
+  <li>เลือก R₁ ให้ใกล้ Rx เพื่อให้จุดสมดุลอยู่แถวกลางลวด (ประมาณ 30–70 cm), สลับตำแหน่งแล้วเฉลี่ย, แตะจุดสัมผัสเบา ๆ ไม่ลากบนลวด, ใช้แรงดันต่ำไม่ให้ลวดร้อน, อ่านสเกลในแนวตั้งฉาก, ทำซ้ำหลายครั้ง</li>
+  <li>ถ้า R₁ กับ Rx ต่างกันมาก จุดสมดุลไปอยู่ใกล้ปลายลวด L₁ หรือ L₂ สั้นมาก ความคลาดเคลื่อนจากการอ่านความยาว (±0.1 cm) และความต้านทานที่ปลายลวดจึงมีผลมาก ทำให้ Rx คลาดเคลื่อนมาก (ลองเลือก R₁ = 10 Ω หรือ 1000 Ω ในแล็บนี้ดู)</li>
+  <li>บริดจ์สมดุลเมื่อไม่มีกระแสผ่าน G แสดงว่า V<sub>B</sub> = V<sub>D</sub> จะได้ ${FR('R<sub>1</sub>','R<sub>x</sub>')} = ${FR('R<sub>3</sub>','R<sub>4</sub>')} และเพราะลวดสม่ำเสมอ R ∝ L จึงได้ ${FR('R<sub>1</sub>','R<sub>x</sub>')} = ${FR('L<sub>1</sub>','L<sub>2</sub>')}</li></ol></details></div>`;
+}
+function p2Panel(){
+  const arr=S.rec2[wkey()]||[],F=fit(arr),dm=S.dmeas[wkey()],m=MATS[S.mat];
+  let res='<div class="mute">บันทึกอย่างน้อย 3 จุด แล้วผลจะคำนวณให้</div>';
+  if(F&&arr.length>=3){const A=dm?Math.PI*Math.pow(dm*1e-3,2)/4:null;const rho=A?F.m*A:null;
+    res=`<div class="fbox">ความชัน = ${FR('ΔR','Δℓ')} = <b>${fx(F.m,3)}</b> Ω/m</div>
+    <div class="fbox">R = ρ${FR('ℓ','A')} → ρ = ความชัน × A , A = ${FR('πd<sup>2</sup>','4')}</div>`+
+    (A?`<div>d = ${dm} mm → A = ${(A).toExponential(3)} m²</div><div>ρ (ทดลอง) = <b>${rho.toExponential(3)}</b> Ω·m</div><div>ρ มาตรฐาน${m.n} ≈ ${m.rho.toExponential(2)} Ω·m → คลาดเคลื่อน <b>${fx(Math.abs(rho-m.rho)/m.rho*100,1)}%</b></div>`
+    :'<div class="bad">ยังไม่ได้วัดเส้นผ่านศูนย์กลางด้วยไมโครมิเตอร์</div>');}
+  const sum=Object.keys(S.rec2).map(k=>{const a=S.rec2[k],F2=fit(a),[mi,di]=k.split('-').map(Number),d=S.dmeas[k];if(!F2||a.length<3)return '';
+    const rho=d?F2.m*Math.PI*Math.pow(d*1e-3,2)/4:null;return `<tr><td>${MATS[mi].n}</td><td>${d||'–'}</td><td>${fx(F2.m,3)}</td><td>${rho?rho.toExponential(2):'–'}</td></tr>`;}).join('');
+  return wireCard()+
+  `<div class="card"><h3>เลือกลวด (เปลี่ยนลวด = ข้อมูลชุดใหม่)</h3><div class="row">${MATS.map((x,i)=>btn(x.n,'mat:'+i,'sm'+(S.mat===i?' on':''))).join('')}</div>
+  <div class="row"><span class="mute">ขนาดลวด</span>${DIAS.map((x,i)=>btn('≈'+x.toFixed(2)+' mm','dia:'+i,'sm'+(S.dia===i?' on':''))).join('')}</div></div>`+
+  supCard()+sliderCard()+
+  `<div class="card"><h3>แอมมิเตอร์</h3><div class="row">ช่องที่ต่อ: <b id="ammRg">–</b> · อ่านได้ <span class="big" id="ammRead">–</span></div><div class="mute">เปลี่ยนช่อง = ย้ายสายไปขั้วอื่นของแอมมิเตอร์ ${[...AR].map(a=>btn(a.t,'rg:'+a.k,'sm')).join('')}</div></div>`+
+  mmCard(['off','v200m','v2','v20'])+
+  `<div class="card"><h3>ไมโครมิเตอร์</h3><div class="row">${btn('วัดเส้นผ่านศูนย์กลาง','micro','pri')}<span>d = <b>${dm?dm+' mm':'ยังไม่ได้วัด'}</b></span></div></div>`+
+  `<div class="card"><h3>บันทึกผล ตอนที่ 2 · ${m.n}</h3>
+  <div class="fbox">R = ${FR('V','I')}</div>
+  <div class="row">${btn('บันทึกจุดข้อมูล','recP','pri')}${btn('ล้างข้อมูลลวดนี้','clr2','sm')}</div>
+  <div class="tw"><table><tr><th>ℓ (cm)</th><th>V (V)</th><th>I (A)</th><th>ช่อง</th><th>R (Ω)</th><th></th></tr>
+  ${arr.map((p,i)=>`<tr><td>${fx(p.l,1)}</td><td>${fx(p.V,4)}</td><td>${p.I<.1?p.I.toExponential(2):fx(p.I,3)}</td><td>${p.rg}</td><td>${fx(p.R,3)}</td><td>${btn('✕','dp:'+i,'sm')}</td></tr>`).join('')||'<tr><td colspan="6" class="mute">ยังไม่มีข้อมูล</td></tr>'}</table></div>
+  <canvas id="graph" width="640" height="300"></canvas>${res}</div>`+
+  (sum?`<div class="card"><h3>เปรียบเทียบลวดที่ทดลองแล้ว</h3><div class="tw"><table><tr><th>ลวด</th><th>d (mm)</th><th>ความชัน (Ω/m)</th><th>ρ (Ω·m)</th></tr>${sum}</table></div></div>`:'')+
+  `<div class="card"><details><summary>แนวคำตอบคำถามนำสรุป ตอนที่ 2 (สำหรับครู)</summary><ol>
+  <li>ความชันของกราฟ R กับ l คือ ${FR('ΔR','Δℓ')} = ${FR('ρ','A')} หน่วย Ω/m (ความต้านทานต่อความยาว 1 เมตร)</li>
+  <li>ρ = ความชัน × A โดย A = ${FR('πd<sup>2</sup>','4')} (d จากไมโครมิเตอร์ แปลงเป็นเมตรก่อน)</li>
+  <li>ไม่เปลี่ยน เพราะ ρ เป็นสมบัติของวัสดุ (ขึ้นกับชนิดและอุณหภูมิ) เมื่อ A มากขึ้น R และความชันลดลง แต่ ρ = ความชัน × A ยังเท่าเดิม (ลองเปลี่ยนขนาดลวดชนิดเดียวกันแล้วดูตารางเปรียบเทียบ)</li>
+  <li>ρ ทังสเตนมาตรฐานที่ 20 °C ≈ 5.6 × 10⁻⁸ Ω·m เทียบด้วย % คลาดเคลื่อน</li>
+  <li>R = ${FR('ρℓ','A')} : R แปรผันตรงกับ l และ ρ, แปรผกผันกับ A</li></ol></details></div>`;
+}
+function renderPanel(force){
+  const sig=JSON.stringify([S.part,S.wires[S.part],S.sup[S.part],S.mm[S.part],S.r1i,S.rec1,S.rec2,S.mat,S.dia,S.dmeas,selWire]);
+  if(!force&&sig===panelSig)return;panelSig=sig;
+  const st=$('#panel').scrollTop;$('#panel').innerHTML=S.part===0?p1Panel():p2Panel();$('#panel').scrollTop=st;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',+t.dataset.p===S.part));
+  if(S.part===1)drawGraph();
+  const cb=$('#camBtns');cb.innerHTML=CAMS[S.part].map((c,i)=>`<button data-cam="${i}" class="${S.cam[S.part]===i?'on':''}">${c[0]}</button>`).join('');
+}
+function dirty(){renderPanel();}
+function drawGraph(){
+  const c=$('#graph');if(!c)return;const g=c.getContext('2d'),W=c.width,H=c.height,arr=S.rec2[wkey()]||[];
+  g.fillStyle='#fff';g.fillRect(0,0,W,H);const x0=62,y0=H-42,x1=W-16,y1=16;
+  const Rmax=Math.max(.001,...arr.map(p=>p.R))*1.15;
+  g.strokeStyle='#ccc';g.lineWidth=1;g.fillStyle='#333';g.font='15px Sarabun, sans-serif';g.textAlign='center';
+  for(let i=0;i<=5;i++){const x=x0+(x1-x0)*i/5;g.beginPath();g.moveTo(x,y0);g.lineTo(x,y1);g.stroke();g.fillText(fx(i*.2,1),x,y0+18);}
+  g.textAlign='right';for(let i=0;i<=4;i++){const y=y0-(y0-y1)*i/4;g.beginPath();g.moveTo(x0,y);g.lineTo(x1,y);g.stroke();g.fillText(Rmax*i/4<10?fx(Rmax*i/4,2):fx(Rmax*i/4,1),x0-6,y+5);}
+  g.strokeStyle='#333';g.lineWidth=2;g.beginPath();g.moveTo(x0,y1);g.lineTo(x0,y0);g.lineTo(x1,y0);g.stroke();
+  g.textAlign='center';g.fillText('ℓ (m)',(x0+x1)/2,H-6);g.save();g.translate(16,(y0+y1)/2);g.rotate(-Math.PI/2);g.fillText('R (Ω)',0,0);g.restore();
+  const X=l=>x0+(x1-x0)*l/100,Y=R=>y0-(y0-y1)*R/Rmax;
+  const F=fit(arr);if(F&&arr.length>=2){g.strokeStyle='#1F6FEB';g.lineWidth=2;g.beginPath();g.moveTo(X(0),Y(F.b));g.lineTo(X(100),Y(F.b+F.m));g.stroke();}
+  g.fillStyle='#C0392B';arr.forEach(p=>{g.beginPath();g.arc(X(p.l),Y(p.R),5,0,7);g.fill();});
+}
+
+/* ---------- actions ---------- */
+function act(a){
+  const [k,v]=a.split(':');const P=S.part,sp=S.sup[P];
+  if(k==='pw'){sp.on=!sp.on;if(sp.on&&P===0&&sp.V>2)toast('แรงดันสูงเกินไปสำหรับบริดจ์ ควรใช้ 0.5–1.0 V');}
+  else if(k==='v'){sp.V=Math.max(0,Math.min(30,Math.round((sp.V+ +v)*10)/10));}
+  else if(k==='mode'){sp.mode=v;}
+  else if(k==='mm'){S.mm[P]=v;}
+  else if(k==='mv'){const key=P===0?'jx':'kx';S[key]=Math.max(0,Math.min(1,Math.round((S[key]+ +v/100)*1000)/1000));placeSlider();}
+  else if(k==='r1'){S.r1i=+v;build();}
+  else if(k==='mvx'){const to=+v;const d=diag1();const from=[1,2,3].find(i=>S.wires[0].some(w=>[w.a,w.b].some(t=>t==='X'+i+'a'||t==='X'+i+'b')));
+    if(!from){toast('ยังไม่ได้ต่อสายที่ Rx ตัวใด');}else if(from===to){toast('ต่อที่ Rx'+to+' อยู่แล้ว');}else{S.wires[0].forEach(w=>{['a','b'].forEach(e=>{if(w[e]==='X'+from+'a')w[e]='X'+to+'a';else if(w[e]==='X'+from+'b')w[e]='X'+to+'b';});});toast('ย้ายสายจาก Rx'+from+' ไป Rx'+to);}}
+  else if(k==='swap'){const from=[1,2,3].find(i=>S.wires[0].some(w=>[w.a,w.b].some(t=>t==='X'+i+'a'||t==='X'+i+'b')));
+    if(!from){toast('ต่อ Rx ในวงจรก่อน');}else{const m={R1a:'X'+from+'a',R1b:'X'+from+'b'};m['X'+from+'a']='R1a';m['X'+from+'b']='R1b';
+      S.wires[0].forEach(w=>{if(w.a.startsWith('M')||w.b.startsWith('M'))return;['a','b'].forEach(e=>{if(m[w[e]])w[e]=m[w[e]];});});toast('สลับตำแหน่ง R₁ กับ Rx'+from+' แล้ว หาจุดสมดุลใหม่');}}
+  else if(k==='recB')recBalance();else if(k==='recO')recOhm();else if(k==='recP')recPoint();
+  else if(k==='clr1'){S.rec1={};}else if(k==='newrx'){const f=fresh();S.rx=f.rx;S.rec1={};build();toast('สุ่ม Rx ชุดใหม่แล้ว');}
+  else if(k==='clr2'){delete S.rec2[wkey()];}else if(k==='dp'){(S.rec2[wkey()]||[]).splice(+v,1);}
+  else if(k==='mat'){S.mat=+v;build();}else if(k==='dia'){S.dia=+v;build();}
+  else if(k==='rg'){let n=0;S.wires[1].forEach(w=>['a','b'].forEach(e=>{if(AR.some(a=>a.k===w[e])){w[e]=v;n++;}}));toast(n?'ย้ายสายไปช่อง '+AR.find(a=>a.k===v).t:'ยังไม่ได้ต่อสายที่แอมมิเตอร์');}
+  else if(k==='micro')openMicro();
+  else if(k==='del')delWire(+v);
+  else if(k==='clear'){S.wires[P]=[];selWire=-1;wireMeshes.forEach(w=>scene.remove(w.m));wireMeshes=[];}
+  else if(k==='auto'){autoWire();}
+  else if(k==='diag')showDiag();else if(k==='schem')showSchem();
+  save();renderPanel();
+}
+function autoWire(){
+  wireMeshes.forEach(w=>scene.remove(w.m));wireMeshes=[];
+  if(S.part===0)S.wires[0]=[['S+','A'],['S-','C'],['R1a','A'],['R1b','X1a'],['X1b','C'],['G1','R1b'],['G2','D']].map((p,i)=>({a:p[0],b:p[1],col:WCOL[2+i%4]}));
+  else S.wires[1]=[['S+','A5'],['AC','WL'],['WR','S-'],['MV','WL'],['MC','WK']].map((p,i)=>({a:p[0],b:p[1],col:WCOL[2+i%4]}));
+  toast(S.part===0?'ต่อวงจรตัวอย่างให้แล้ว ลองดูทีละสาย':'ต่อแอมมิเตอร์ช่อง 5A ไว้ก่อน (เริ่มช่องใหญ่สุด) แล้วค่อยลดช่องให้เข็มขึ้นมาก ๆ');
+}
+function showDiag(){const d=S.part===0?diag1():diag2();const b=$('#diagBox');if(!b)return;
+  b.innerHTML=`<ul class="diag">${d.list.map(([o,t])=>`<li class="${o?'ok':'bad'}">${o?'✓':'✗'} <span style="color:var(--ink);font-weight:400">${t}</span></li>`).join('')}</ul>`+(d.ok?'<div class="ok">วงจรถูกต้อง พร้อมทดลอง</div>':'');}
+function showSchem(){
+  const s1=`<svg viewBox="0 0 400 250" font-family="Sarabun,sans-serif" font-size="14"><g stroke="#222" stroke-width="2" fill="none">
+  <path d="M60 150 L200 40 L340 150"/><line x1="200" y1="40" x2="200" y2="105"/><circle cx="200" cy="120" r="15"/><line x1="200" y1="135" x2="200" y2="150"/>
+  <line x1="40" y1="150" x2="360" y2="150" stroke-width="4" stroke="#B87333"/><path d="M60 150 L60 215 L185 215"/><path d="M215 215 L340 215 L340 150"/>
+  <line x1="185" y1="200" x2="185" y2="230"/><line x1="195" y1="207" x2="195" y2="223" stroke-width="4"/><line x1="205" y1="200" x2="205" y2="230"/><line x1="215" y1="207" x2="215" y2="223" stroke-width="4"/></g>
+  <rect x="105" y="78" width="40" height="16" fill="#fff" stroke="#222" stroke-width="2" transform="rotate(-38 125 86)"/><rect x="255" y="78" width="40" height="16" fill="#fff" stroke="#222" stroke-width="2" transform="rotate(38 275 86)"/>
+  <polygon points="200,150 194,140 206,140" fill="#222"/>
+  <text x="200" y="30" text-anchor="middle">B</text><text x="194" y="125">G</text><text x="98" y="72">R₁</text><text x="290" y="72">Rx</text><text x="44" y="145">A</text><text x="350" y="145">C</text><text x="208" y="168">D</text>
+  <text x="120" y="172" text-anchor="middle">← L₁ →</text><text x="275" y="172" text-anchor="middle">← L₂ →</text><text x="200" y="246" text-anchor="middle">แหล่งจ่าย 0.5–1.0 V</text></svg>`;
+  const s2=`<svg viewBox="0 0 400 250" font-family="Sarabun,sans-serif" font-size="14"><g stroke="#222" stroke-width="2" fill="none">
+  <line x1="60" y1="150" x2="340" y2="150" stroke-width="4" stroke="#888"/><path d="M60 150 L60 215 L185 215"/><path d="M215 215 L340 215 L340 150"/>
+  <line x1="185" y1="200" x2="185" y2="230"/><line x1="195" y1="207" x2="195" y2="223" stroke-width="4"/><line x1="205" y1="200" x2="205" y2="230"/><line x1="215" y1="207" x2="215" y2="223" stroke-width="4"/>
+  <path d="M60 150 L60 80 L120 80"/><path d="M200 150 L200 80 L150 80"/><circle cx="135" cy="80" r="15"/>
+  <circle cx="270" cy="215" r="15" fill="#fff"/></g>
+  <text x="130" y="85">V</text><text x="264" y="220">A</text><text x="48" y="145">0</text><text x="204" y="168">K</text><text x="336" y="170">100 cm</text>
+  <text x="130" y="140" text-anchor="middle">← l →</text><text x="200" y="246" text-anchor="middle">แหล่งจ่าย (+ เข้าแอมมิเตอร์)</text><text x="135" y="50" text-anchor="middle">โวลต์มิเตอร์คร่อมลวดยาว l</text></svg>`;
+  openModal(`<h3 style="margin:0 0 8px">รูปวงจร ตอนที่ ${S.part+1}</h3>${S.part===0?s1:s2}<div class="row">${btn('ปิด','close','pri')}</div>`);
+}
+function openModal(h){$('#mbox').innerHTML=h;$('#modal').classList.add('show');}
+$('#modal').addEventListener('click',e=>{if(e.target.id==='modal'||e.target.dataset.act==='close')$('#modal').classList.remove('show');
+  const a=e.target.closest&&e.target.closest('[data-act]');if(a&&a.dataset.act==='mchk')microCheck();if(a&&a.dataset.act==='mans')microAns();if(a&&a.dataset.act==='mnew'){microPos=rnd(-.004,.004);drawMicro();}});
+
+/* ---------- micrometer ---------- */
+let microPos=0;
+function microTrue(){return Math.round((S.dt[wkey()]+microPos)*1000)/1000;}
+function openMicro(){
+  openModal(`<h3 style="margin:0 0 6px">อ่านไมโครมิเตอร์ (ลวด${MATS[S.mat].n})</h3><canvas id="microC" width="720" height="340"></canvas>
+  <div class="mute">สเกลหลักบนปลอก: ขีดบน = 1 mm, ขีดล่าง = 0.5 mm · ปลอกหมุน 50 ช่อง ช่องละ 0.01 mm</div>
+  <div class="row">อ่านได้ <input class="num" id="mIn" inputmode="decimal" placeholder="0.000"> mm ${btn('ตรวจ','mchk','pri')}${btn('ดูเฉลย','mans','sm')}${btn('วัดตำแหน่งอื่น','mnew','sm')}</div><div id="mFb"></div>
+  <div class="row">${btn('ปิด','close')}</div>`);
+  drawMicro();
+}
+function drawMicro(){
+  const c=$('#microC');if(!c)return;const g=c.getContext('2d'),W=c.width,H=c.height,d=microTrue();
+  g.fillStyle='#fff';g.fillRect(0,0,W,H);const pxmm=380,x0=90,yc=170,TX=x0+d*pxmm;
+  // anvil + wire + spindle
+  g.fillStyle='#9aa3ad';g.fillRect(20,yc-30,x0-34,60);g.fillStyle=MATS[S.mat].n==='คอนสแตนแทน'?'#c98e5c':'#777';g.beginPath();g.arc(x0-14+0,yc,6,0,7);g.fill();
+  g.fillStyle='#b8c0c8';g.fillRect(x0-8,yc-56,Math.max(TX-x0+8,10),112);
+  g.strokeStyle='#222';g.lineWidth=2;g.beginPath();g.moveTo(x0-8,yc);g.lineTo(TX,yc);g.stroke();
+  for(let i=0;i<=8;i++){const x=x0+i*pxmm*.5;if(x>TX)break;const up=i%2===0;g.lineWidth=2;g.beginPath();g.moveTo(x,yc);g.lineTo(x,up?yc-26:yc+20);g.stroke();
+    if(up){g.fillStyle='#111';g.font='bold 20px sans-serif';g.textAlign='center';g.fillText(String(i/2),x,yc-32);}}
+  // thimble
+  g.fillStyle='#d5dbe1';g.fillRect(TX,yc-110,220,220);g.strokeStyle='#555';g.strokeRect(TX,yc-110,220,220);
+  g.fillStyle='#c4cbd2';g.fillRect(TX,yc-110,14,220);
+  const frac=((d*100)%50+50)%50,sp=14;
+  for(let k=-8;k<=8;k++){const val=Math.floor(frac)+k;const y=yc-(val-frac)*sp;if(y<yc-104||y>yc+104)continue;const vv=((val%50)+50)%50;
+    const L=vv%5===0?34:20;g.strokeStyle='#111';g.lineWidth=vv%5===0?2.2:1.4;g.beginPath();g.moveTo(TX,y);g.lineTo(TX+L,y);g.stroke();
+    if(vv%5===0){g.fillStyle='#111';g.font='bold 19px sans-serif';g.textAlign='left';g.fillText(String(vv),TX+40,y+7);}}
+  g.fillStyle='#333';g.font='16px Sarabun, sans-serif';g.textAlign='left';g.fillText('← เส้นอ้างอิง',x0+4,yc+44);
+}
+function microCheck(){const v=parseFloat(($('#mIn')||{}).value);const t=microTrue();const fb=$('#mFb');if(isNaN(v)){fb.innerHTML='<span class="bad">ใส่ตัวเลขก่อน</span>';return;}
+  if(Math.abs(v-t)<=.006){S.dmeas[wkey()]=Math.round(v*1000)/1000;save();renderPanel(true);fb.innerHTML='<span class="ok">ถูกต้อง ✓ บันทึก d = '+v+' mm แล้ว</span>';}
+  else{const main=Math.floor(t*2)/2;let msg='ยังไม่ตรง ';if(Math.abs(v-t)>=.4)msg+='ดูหน่วย: ค่าต้องเป็น mm';else if(Math.floor(v*2)/2!==main)msg+='ดูสเกลหลักอีกครั้ง ขีดล่างแต่ละขีด = 0.5 mm';else msg+='อ่านสเกลหลักถูกแล้ว ดูขีดบนปลอกหมุนที่ตรงเส้นอ้างอิง (ช่องละ 0.01 mm)';fb.innerHTML='<span class="bad">'+msg+'</span>';}}
+function microAns(){const t=microTrue(),main=Math.floor(t*2)/2,th=(t-main)*100;$('#mFb').innerHTML=`สเกลหลัก ${fx(main,1)} mm + ปลอกหมุน ${fx(th,1)} ช่อง × 0.01 = ${fx(th/100,3)} mm → <b>${fx(t,3)} mm</b>`;}
+
+/* ---------- cameras ---------- */
+const CAMS=[[['ภาพรวม',[0,.95,1.05],[0,0,.02]],['ลวด/สเกล',null,null],['กัลวานอมิเตอร์',[.02,.3,.16],[.02,.08,-.27]],['ตัวต้านทาน',[0,.62,.52],[0,0,-.02]]],
+            [['ภาพรวม',[0,.95,1.05],[0,0,.02]],['ลวด/สเกล',null,null],['แอมมิเตอร์',[0,.3,.14],[0,.08,-.27]],['แหล่งจ่าย/มัลติมิเตอร์',[0,.55,.45],[0,.05,-.2]]]];
+let camAnim=null;
+function camFor(i){const P=S.part;const nar=view.clientWidth/view.clientHeight<1.25;if(i===1){const x=-.5+(P===0?S.jx:S.kx);return [[x,.3,.55],[x,.03,.29]];}if(i===0&&nar)return [[0,1.05,.62],[0,0,-.02]];const c=CAMS[P][i];return [c[1],c[2]];}
+function fitK(){const a=view.clientWidth/view.clientHeight;return a<1.25?Math.min(2.6,1.65/a):1;}
+function setCam(i,instant){S.cam[S.part]=i;const [p,t]=camFor(i);const T=new THREE.Vector3(...t),Pp=new THREE.Vector3(...p);
+  const k=i===0?fitK():Math.min(1.5,fitK()*.75);Pp.sub(T).multiplyScalar(k).add(T);
+  if(instant){camera.position.copy(Pp);controls.target.copy(T);controls.update();}else camAnim={p0:camera.position.clone(),t0:controls.target.clone(),p1:Pp,t1:T,s:0};
+  document.querySelectorAll('#camBtns button').forEach(b=>b.classList.toggle('on',+b.dataset.cam===i));}
+$('#camBtns').addEventListener('click',e=>{const b=e.target.closest('button');if(b){setCam(+b.dataset.cam);save();}});
+
+/* ---------- pointer ---------- */
+const ray=new THREE.Raycaster(),mv=new THREE.Vector2();let down=null,drag=null;
+function ndc(e){const r=canvas.getBoundingClientRect();mv.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);ray.setFromCamera(mv,camera);return r;}
+canvas.addEventListener('pointerdown',e=>{
+  ndc(e);const h=ray.intersectObjects(DRAGS,false)[0];const ht=ray.intersectObjects(HITS,false)[0];
+  if(h&&(!ht||h.distance<ht.distance-.02)){drag={id:h.object.userData.drag,pid:e.pointerId};controls.enabled=false;canvas.setPointerCapture(e.pointerId);e.stopImmediatePropagation();e.preventDefault();return;}
+  down={x:e.clientX,y:e.clientY,t:performance.now()};
+},{capture:true});
+canvas.addEventListener('pointermove',e=>{if(!drag)return;ndc(e);const pl=new THREE.Plane(new THREE.Vector3(0,1,0),-.05);const p=new THREE.Vector3();
+  if(ray.ray.intersectPlane(pl,p)){const x=Math.max(0,Math.min(1,Math.round((p.x+.5)*1000)/1000));if(S.part===0)S.jx=x;else S.kx=x;placeSlider();}},{capture:true});
+function endDrag(){if(drag){drag=null;controls.enabled=true;save();}}
+canvas.addEventListener('pointerup',e=>{
+  if(drag){endDrag();return;}
+  if(!down)return;const moved=Math.hypot(e.clientX-down.x,e.clientY-down.y);const dt=performance.now()-down.t;down=null;if(moved>8||dt>600)return;
+  const r=ndc(e);let id=null;const ht=ray.intersectObjects(HITS,false)[0];if(ht)id=ht.object.userData.term;
+  if(!id){let best=34;Object.values(TERM).forEach(t=>{const p=t.top().project(camera);const sx=(p.x+1)/2*r.width,sy=(1-p.y)/2*r.height;const dd=Math.hypot(sx-(e.clientX-r.left),sy-(e.clientY-r.top));if(dd<best&&p.z<1){best=dd;id=t.id;}});}
+  if(id){tapTerm(id);return;}
+  const wm=ray.intersectObjects(wireMeshes.map(w=>w.m),false)[0];if(wm){selWire=wm.object.userData.wire===selWire?-1:wm.object.userData.wire;renderPanel();if(selWire>=0)toast('เลือกสาย '+(selWire+1)+' — กด ✕ ในรายการเพื่อลบ');return;}
+  if(MICRO&&ray.intersectObject(MICRO,false)[0]){openMicro();return;}
+  if(sel){setSel(null);}
+},{capture:true});
+canvas.addEventListener('pointercancel',endDrag);
+function setSel(id){if(sel&&TERM[sel])TERM[sel].ring.visible=false;sel=id;if(id&&TERM[id])TERM[id].ring.visible=true;
+  const tip=$('#selTip');if(id){tip.style.display='block';tip.textContent='เลือก '+TN[id]+' → แตะอีกขั้วเพื่อต่อสาย';}else tip.style.display='none';}
+function tapTerm(id){if(!sel){setSel(id);return;}if(sel===id){setSel(null);return;}const a=sel;setSel(null);addWire(a,id);}
+
+/* ---------- labels / readout ---------- */
+function updLabels(){
+  const W=view.clientWidth,H=view.clientHeight,box=$('#labels');
+  LABELS.forEach(l=>{if(!l.el){l.el=document.createElement('div');l.el.className='dl';l.el.textContent=l.text;box.appendChild(l.el);}
+    const p=new THREE.Vector3();l.obj.getWorldPosition(p);p.y+=l.dy;p.project(camera);const vis=p.z<1&&p.x>-1.1&&p.x<1.1&&p.y>-1.1&&p.y<1.1;
+    l.el.style.display=vis?'block':'none';l.el.style.left=((p.x+1)/2*W)+'px';l.el.style.top=((1-p.y)/2*H)+'px';});
+}
+function setT(id,t){const e=document.getElementById(id);if(e&&e.textContent!==t)e.textContent=t;}
+function setH(id,t){const e=document.getElementById(id);if(e&&e.innerHTML!==t)e.innerHTML=t;}
+function updReadout(){
+  const P=S.part,r=RES,sp=S.sup[P];const pos=(P===0?S.jx:S.kx)*100;
+  setT('posRead',fx(pos,1)+' cm');setT('mmRead',S.mm[P]==='off'?'ปิด':mmText()+' '+(S.mm[P].startsWith('o')?(S.mm[P]==='o20k'?'kΩ':'Ω'):(S.mm[P]==='v200m'?'mV':'V')));
+  let h=`แหล่งจ่าย: <b>${sp.on?fx(r.vout,2)+' V · '+fx(r.iout,2)+' A':'ปิด'}</b>${r.cc&&sp.on?' <span style="color:#C0392B">C.C.</span>':''}<br>`;
+  if(P===0){const dv=r.div||0;const t=Math.abs(dv)>30?(dv>0?'+30 ตีสุด!':'−30 ตีสุด!'):(dv>0?'+':'')+fx(dv,1);setT('gRead',t+' ช่อง');
+    h+=`D: <b>${fx(pos,1)} cm</b> · G: <b>${t}</b>`;}
+  else{const a=ammRead();let at='–';if(a){if(a.f>1.02)at='ตีเกินสเกล!';else if(a.f<-.02)at='ตีกลับ!';else at=(a.q*a.a.sc).toFixed(a.a.sc>=10?0:2)+' '+(a.a.u)+(a.a.sc===100||a.a.sc===10||a.a.sc===2?'':'');}
+    const used=AR.filter(x=>S.wires[1].some(w=>w.a===x.k||w.b===x.k)).map(x=>x.t).join(', ')||'ยังไม่ต่อ';
+    if(a){const v=a.a.sc*Math.max(-.02,Math.min(1.02,a.f));at=a.f>1.02?'ตีเกินสเกล!':a.f<-.02?'ตีกลับ!':(Math.round(a.f*100)/100*a.a.sc).toFixed(a.a.sc>=10?1:3)+' '+a.a.u;}
+    setT('ammRead',at);setT('ammRg',used);h+=`K: <b>${fx(pos,1)} cm</b> · A: <b>${at}</b>`;}
+  if(S.mm[P]!=='off')h+=`<br>มัลติมิเตอร์: <b>${mmText()}</b>`;
+  setH('readout',h);
+}
+function updNeedles(dt){
+  if(dyn.G){const dv=RES.div||0;const tgt=Math.max(-1.08,Math.min(1.08,dv/30))*.84;dyn.G.ang+=(tgt-dyn.G.ang)*Math.min(1,dt*8);dyn.G.piv.rotation.z=-dyn.G.ang;}
+  if(dyn.A){const a=RES.amm;let f=a?a.i/a.a.fs:0;f=Math.max(-.04,Math.min(1.06,f));const tgt=(f-.5)*2*.84;dyn.A.ang+=(tgt-dyn.A.ang)*Math.min(1,dt*8);dyn.A.piv.rotation.z=-dyn.A.ang;}
+}
+
+/* ---------- loop ---------- */
+function resize(){const w=view.clientWidth,h=view.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
+window.addEventListener('resize',()=>{resize();setCam(S.cam[S.part],true);});
+let last=performance.now(),warnT=0;
+function loop(now){
+  const dt=Math.min(.05,(now-last)/1000);last=now;
+  if(camAnim){camAnim.s=Math.min(1,camAnim.s+dt*2.5);const e=camAnim.s<.5?2*camAnim.s*camAnim.s:1-Math.pow(-2*camAnim.s+2,2)/2;
+    camera.position.lerpVectors(camAnim.p0,camAnim.p1,e);controls.target.lerpVectors(camAnim.t0,camAnim.t1,e);if(camAnim.s>=1)camAnim=null;}
+  placeSlider();controls.update();scene.updateMatrixWorld();syncWires();compute();drawSup();drawMM();updNeedles(dt);updLabels();updReadout();
+  renderer.render(scene,camera);requestAnimationFrame(loop);
+}
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{S.part=+t.dataset.p;setSel(null);selWire=-1;save();build();renderPanel(true);}));
+$('#panel').addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(b&&!b.disabled)act(b.dataset.act);});
+let tT=0;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(tT);tT=setTimeout(()=>t.classList.remove('show'),2600);}
+window.LAB={scr:id=>{const r=canvas.getBoundingClientRect();const q=TERM[id].top().project(camera);return [r.left+(q.x+1)/2*r.width,r.top+(1-q.y)/2*r.height];},S,act,compute:()=>{compute();return RES;},diag1,diag2,setCam,tapTerm};
+resize();build();renderPanel(true);requestAnimationFrame(loop);
+</script>
+</body>
+</html>
