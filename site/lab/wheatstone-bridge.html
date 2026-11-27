@@ -315,7 +315,7 @@ function resistor(parent,x,z,nom,idA,idB,lab){
 function holder1(x,z){
   const g=new THREE.Group();g.position.set(x,0,z);root.add(g);
   const b=box(.17,.008,.07,mat(0xF06BB4));b.position.y=.004;g.add(b);
-  resistor(g,0,0,R1N[S.r1i],'R1a','R1b','R₁='+R1N[S.r1i]+'Ω');dlabel('ตัวต้านทานมาตรฐาน R₁',b,.06);return g;
+  resistor(g,0,0,R1N[S.r1i],'R1a','R1b','R₁='+R1N[S.r1i]+'Ω');dlabel('R₁ มาตรฐาน',b,.06);return g;
 }
 function holderX(x,z){
   const g=new THREE.Group();g.position.set(x,0,z);root.add(g);
@@ -354,6 +354,13 @@ function build(){
 }
 function dev(id,g,sz,c){const h=new THREE.Mesh(new THREE.BoxGeometry(...sz),HIT);h.position.set(...c);h.userData.dev=id;g.add(h);DEVS.push(h);DEVG[id]={g,c};
   const p=S.dpos[S.part][id];if(p){g.position.x=p[0];g.position.z=p[1];}}
+let bMark=null,bT=0;
+function updB(now){if(S.part!==0){if(bMark)bMark.visible=false;return;}if(now-bT<300)return;bT=now;
+  if(!bMark){bMark=sprite('จุด B','#fff','rgba(46,155,74,.95)',.06);scene.add(bMark);}
+  const f=groups(),gD=f('D'),g1=f('G1'),g2=f('G2');let gB=null;if(g1===gD&&g2!==gD)gB=g2;else if(g2===gD&&g1!==gD)gB=g1;
+  const used=k=>S.wires[0].some(w=>w.a===k||w.b===k);
+  const t=gB&&['R1b','R1a','X1a','X2a','X3a','X1b','X2b','X3b','G1','G2'].find(k=>f(k)===gB&&used(k)&&TERM[k]);
+  if(!t||gB===f('A')||gB===f('C')){bMark.visible=false;return;}bMark.visible=true;bMark.position.copy(TERM[t].top()).add(new THREE.Vector3(.035,.11,0));}
 function placeSlider(){if(!B)return;const x=(S.part===0?S.jx:S.kx);B.slider.position.x=-.5+x;}
 
 /* ---------- wires ---------- */
@@ -372,7 +379,7 @@ function syncWires(){
     const m1=p1.clone().lerp(p2,.25),m2=p1.clone().lerp(p2,.75);m1.y+=lift;m2.y+=lift;
     const curve=new THREE.CatmullRomCurve3([p1,p1.clone().add(new THREE.Vector3(0,.03,0)),m1,m2,p2.clone().add(new THREE.Vector3(0,.03,0)),p2]);
     const mesh=new THREE.Mesh(new THREE.TubeGeometry(curve,40,i===selWire?.0042:.003,8,false),new THREE.MeshStandardMaterial({color:i===selWire?0xFFC400:wireColor(w),roughness:.45}));
-    mesh.castShadow=true;mesh.userData.wire=i;scene.add(mesh);wireMeshes[i]={m:mesh,key};
+    mesh.castShadow=true;mesh.userData.wire=i;const hb=new THREE.Mesh(new THREE.TubeGeometry(curve,20,.014,6,false),HIT);hb.userData.wire=i;mesh.add(hb);scene.add(mesh);wireMeshes[i]={m:mesh,key};
   });
 }
 function addWire(a,b){
@@ -380,6 +387,8 @@ function addWire(a,b){
   if(W.some(w=>(w.a===a&&w.b===b)||(w.a===b&&w.b===a))){toast('มีสายระหว่าง 2 ขั้วนี้แล้ว');return;}
   W.push({a,b,col:WCOL[2+W.length%4]});save();toast('ต่อสาย: '+TN[a]+' → '+TN[b]);dirty();
 }
+function tapWire(){const wm=ray.intersectObjects(wireMeshes.map(w=>w.m),true)[0];if(!wm)return false;const i=wm.object.userData.wire;const w=S.wires[S.part][i];if(!w)return false;
+  toast('ถอดสาย: '+TN[w.a]+' ↔ '+TN[w.b]);delWire(i);return true;}
 function delWire(i){S.wires[S.part].splice(i,1);selWire=-1;wireMeshes.forEach(w=>scene.remove(w.m));wireMeshes=[];save();dirty();}
 
 /* ---------- circuit solver ---------- */
@@ -512,7 +521,7 @@ function fit(arr){const n=arr.length;if(n<2)return null;let sx=0,sy=0,sxx=0,sxy=
 function btn(t,act,cls='',dis=false){return `<button class="btn ${cls}" data-act="${act}"${dis?' disabled':''}>${t}</button>`;}
 function wireCard(){
   const W=S.wires[S.part];
-  return `<div class="card"><h3>ต่อสาย</h3><div class="mute">กดที่ขั้ว แล้วลากไปปล่อยที่อีกขั้ว = สาย 1 เส้น (แตะทีละขั้วก็ได้) · ลากตัวอุปกรณ์เพื่อย้ายที่ · ลากพื้นที่ว่างเพื่อหมุนมุมมอง</div>
+  return `<div class="card"><h3>ต่อสาย</h3><div class="mute">กดที่ขั้ว แล้วลากไปปล่อยที่อีกขั้ว = สาย 1 เส้น (แตะทีละขั้วก็ได้) · ลากตัวอุปกรณ์เพื่อย้ายที่ · ลากพื้นที่ว่างเพื่อหมุนมุมมอง · <b>แตะที่สาย = ถอดสายออก</b></div>
   <div class="row">${btn('ตรวจวงจร','diag','pri')}${btn('ดูรูปวงจร','schem')}${btn('ต่อให้ดู','auto')}${btn('ล้างสายทั้งหมด','clear','',!W.length)}</div>
   <div class="row"><span class="mute">อุปกรณ์</span>${btn(S.lock?'🔒 ล็อกอยู่ (แตะเพื่อปลด)':'🔓 ย้ายได้ (แตะเพื่อล็อก)','lock','sm'+(S.lock?' on':''))}${btn('วางกลับที่เดิม','resetpos','sm')}</div>
   <div class="wl">${W.map((w,i)=>`<div class="wi${i===selWire?' sel':''}"><i class="dot" style="background:#${wireColor(w).toString(16).padStart(6,'0')}"></i><span>${i+1}. ${TN[w.a]} ↔ ${TN[w.b]}</span>${btn('✕','del:'+i,'sm')}</div>`).join('')||'<div class="mute">ยังไม่มีสาย</div>'}</div>
@@ -635,21 +644,43 @@ function act(a){
 }
 function autoWire(){
   wireMeshes.forEach(w=>scene.remove(w.m));wireMeshes=[];
-  if(S.part===0)S.wires[0]=[['S+','A'],['S-','C'],['R1a','A'],['R1b','X1a'],['X1b','C'],['G1','R1b'],['G2','D']].map((p,i)=>({a:p[0],b:p[1],col:WCOL[2+i%4]}));
+  if(S.part===0)S.wires[0]=[['S+','A',0],['S-','C',1],['R1a','A',0],['R1b','X1a',3],['X1b','C',1],['G1','R1b',3],['G2','D',2]].map(p=>({a:p[0],b:p[1],col:WCOL[p[2]]}));
   else S.wires[1]=[['S+','A5'],['AC','WL'],['WR','S-'],['MV','WL'],['MC','WK']].map((p,i)=>({a:p[0],b:p[1],col:WCOL[2+i%4]}));
   toast(S.part===0?'ต่อวงจรตัวอย่างให้แล้ว ลองดูทีละสาย':'ต่อแอมมิเตอร์ช่อง 5A ไว้ก่อน (เริ่มช่องใหญ่สุด) แล้วค่อยลดช่องให้เข็มขึ้นมาก ๆ');
 }
 function showDiag(){const d=S.part===0?diag1():diag2();const b=$('#diagBox');if(!b)return;
   b.innerHTML=`<ul class="diag">${d.list.map(([o,t])=>`<li class="${o?'ok':'bad'}">${o?'✓':'✗'} <span style="color:var(--ink);font-weight:400">${t}</span></li>`).join('')}</ul>`+(d.ok?'<div class="ok">วงจรถูกต้อง พร้อมทดลอง</div>':'');}
 function showSchem(){
-  const s1=`<svg viewBox="0 0 400 250" font-family="Sarabun,sans-serif" font-size="14"><g stroke="#222" stroke-width="2" fill="none">
-  <path d="M60 150 L200 40 L340 150"/><line x1="200" y1="40" x2="200" y2="105"/><circle cx="200" cy="120" r="15"/><line x1="200" y1="135" x2="200" y2="150"/>
-  <line x1="40" y1="150" x2="360" y2="150" stroke-width="4" stroke="#B87333"/><path d="M60 150 L60 215 L185 215"/><path d="M215 215 L340 215 L340 150"/>
-  <line x1="185" y1="200" x2="185" y2="230"/><line x1="195" y1="207" x2="195" y2="223" stroke-width="4"/><line x1="205" y1="200" x2="205" y2="230"/><line x1="215" y1="207" x2="215" y2="223" stroke-width="4"/></g>
-  <rect x="105" y="78" width="40" height="16" fill="#fff" stroke="#222" stroke-width="2" transform="rotate(-38 125 86)"/><rect x="255" y="78" width="40" height="16" fill="#fff" stroke="#222" stroke-width="2" transform="rotate(38 275 86)"/>
-  <polygon points="200,150 194,140 206,140" fill="#222"/>
-  <text x="200" y="30" text-anchor="middle">B</text><text x="194" y="125">G</text><text x="98" y="72">R₁</text><text x="290" y="72">Rx</text><text x="44" y="145">A</text><text x="350" y="145">C</text><text x="208" y="168">D</text>
-  <text x="120" y="172" text-anchor="middle">← L₁ →</text><text x="275" y="172" text-anchor="middle">← L₂ →</text><text x="200" y="246" text-anchor="middle">แหล่งจ่าย 0.5–1.0 V</text></svg>`;
+  const RD='#D3202A',BK='#1E1E1E',GN='#2E9B4A',BL='#2C6BD6',CU='#B87333';
+  const s1=`<svg viewBox="0 0 400 262" font-family="Sarabun,sans-serif" font-size="15"><g fill="none" stroke-width="3" stroke-linecap="round">
+  <line x1="40" y1="150" x2="360" y2="150" stroke="${CU}" stroke-width="5"/>
+  <path d="M60 150 L114 107" stroke="${RD}"/><path d="M146 83 L200 40 L254 83" stroke="${GN}"/><path d="M286 107 L340 150" stroke="${BK}"/>
+  <line x1="200" y1="40" x2="200" y2="105" stroke="${GN}"/><line x1="200" y1="135" x2="200" y2="150" stroke="${BL}"/><circle cx="200" cy="120" r="15" stroke="#222" stroke-width="2" fill="#fff"/>
+  <path d="M60 150 L60 215 L185 215" stroke="${RD}"/><path d="M215 215 L340 215 L340 150" stroke="${BK}"/>
+  <line x1="185" y1="200" x2="185" y2="230" stroke="#222" stroke-width="2"/><line x1="195" y1="207" x2="195" y2="223" stroke="#222" stroke-width="4"/><line x1="205" y1="200" x2="205" y2="230" stroke="#222" stroke-width="2"/><line x1="215" y1="207" x2="215" y2="223" stroke="#222" stroke-width="4"/></g>
+  <rect x="110" y="87" width="40" height="16" fill="#fff" stroke="#222" stroke-width="2" transform="rotate(-38 130 95)"/><rect x="250" y="87" width="40" height="16" fill="#fff" stroke="#222" stroke-width="2" transform="rotate(38 270 95)"/>
+  <polygon points="200,150 194,140 206,140" fill="${BL}"/>
+  <circle cx="200" cy="40" r="7" fill="${GN}"/><circle cx="60" cy="150" r="6" fill="${RD}"/><circle cx="340" cy="150" r="6" fill="${BK}"/>
+  <g font-weight="700"><text x="200" y="24" text-anchor="middle" fill="${GN}">B</text><text x="40" y="142" fill="${RD}">A</text><text x="352" y="142" fill="${BK}">C</text><text x="208" y="168" fill="${BL}">D</text></g>
+  <text x="194" y="125">G</text><text x="98" y="78">R₁</text><text x="290" y="78">Rx</text>
+  <text x="120" y="172" text-anchor="middle">← L₁ →</text><text x="275" y="172" text-anchor="middle">← L₂ →</text><text x="200" y="252" text-anchor="middle">แหล่งจ่าย 0.5–1.0 V</text></svg>`;
+  const s1p=`<svg viewBox="0 0 400 300" font-family="Sarabun,sans-serif" font-size="14">
+  <rect x="15" y="15" width="100" height="52" rx="6" fill="#E4E6E0" stroke="#888"/><text x="65" y="45" text-anchor="middle">แหล่งจ่าย</text>
+  <rect x="160" y="12" width="80" height="58" rx="6" fill="#2B2F36"/><circle cx="200" cy="36" r="15" fill="#fff"/><text x="200" y="42" text-anchor="middle" font-weight="700">G</text>
+  <rect x="50" y="128" width="112" height="38" rx="5" fill="#F06BB4"/><rect x="92" y="141" width="28" height="12" rx="4" fill="#D9C9A3"/><text x="106" y="124" text-anchor="middle" font-weight="700">R₁</text>
+  <rect x="238" y="128" width="112" height="38" rx="5" fill="#F06BB4"/><rect x="280" y="141" width="28" height="12" rx="4" fill="#D9C9A3"/><text x="294" y="124" text-anchor="middle" font-weight="700">Rx</text>
+  <rect x="10" y="228" width="380" height="40" rx="5" fill="#8A4B22"/><line x1="40" y1="246" x2="360" y2="246" stroke="${CU}" stroke-width="4"/><text x="200" y="288" text-anchor="middle">มิเตอร์บริดจ์ (ลวดยาว 1 m)</text>
+  <g fill="none" stroke-width="3.5" stroke-linecap="round">
+  <path d="M85 72 C 85 170, 28 170, 28 246" stroke="${RD}"/><path d="M64 147 C 50 200, 28 200, 28 246" stroke="${RD}"/>
+  <path d="M45 72 C 20 120, 400 95, 372 246" stroke="${BK}"/><path d="M336 147 C 352 200, 372 200, 372 246" stroke="${BK}"/>
+  <path d="M148 147 C 175 105, 228 105, 252 147" stroke="${GN}"/><path d="M180 72 C 178 110, 150 110, 148 147" stroke="${GN}"/>
+  <path d="M220 72 C 245 150, 205 180, 200 236" stroke="${BL}"/></g>
+  <g stroke="#111" stroke-width="1.5"><circle cx="45" cy="72" r="6" fill="#222"/><circle cx="85" cy="72" r="6" fill="#C0141E"/><circle cx="180" cy="72" r="6" fill="#C0141E"/><circle cx="220" cy="72" r="6" fill="#C0141E"/>
+  <circle cx="64" cy="147" r="6" fill="#333"/><circle cx="148" cy="147" r="6" fill="#333"/><circle cx="252" cy="147" r="6" fill="#333"/><circle cx="336" cy="147" r="6" fill="#333"/>
+  <circle cx="28" cy="246" r="7" fill="#222"/><circle cx="372" cy="246" r="7" fill="#C0141E"/><rect x="192" y="226" width="16" height="18" fill="#2A2F38"/></g>
+  <text x="45" y="92" text-anchor="middle" font-size="12">−</text><text x="85" y="92" text-anchor="middle" font-size="12">+</text>
+  <circle cx="148" cy="147" r="13" fill="none" stroke="${GN}" stroke-width="3"/>
+  <g font-weight="700"><text x="150" y="184" fill="${GN}" text-anchor="middle">B</text><text x="6" y="236" fill="${RD}">A</text><text x="394" y="236" fill="${BK}" text-anchor="end">C</text><text x="214" y="222" fill="${BL}">D</text></g></svg>`;
   const s2=`<svg viewBox="0 0 400 250" font-family="Sarabun,sans-serif" font-size="14"><g stroke="#222" stroke-width="2" fill="none">
   <line x1="60" y1="150" x2="340" y2="150" stroke-width="4" stroke="#888"/><path d="M60 150 L60 215 L185 215"/><path d="M215 215 L340 215 L340 150"/>
   <line x1="185" y1="200" x2="185" y2="230"/><line x1="195" y1="207" x2="195" y2="223" stroke-width="4"/><line x1="205" y1="200" x2="205" y2="230"/><line x1="215" y1="207" x2="215" y2="223" stroke-width="4"/>
@@ -657,7 +688,7 @@ function showSchem(){
   <circle cx="270" cy="215" r="15" fill="#fff"/></g>
   <text x="130" y="85">V</text><text x="264" y="220">A</text><text x="48" y="145">0</text><text x="204" y="168">K</text><text x="336" y="170">100 cm</text>
   <text x="130" y="140" text-anchor="middle">← l →</text><text x="200" y="246" text-anchor="middle">แหล่งจ่าย (+ เข้าแอมมิเตอร์)</text><text x="135" y="50" text-anchor="middle">โวลต์มิเตอร์คร่อมลวดยาว l</text></svg>`;
-  openModal(`<h3 style="margin:0 0 8px">รูปวงจร ตอนที่ ${S.part+1}</h3>${S.part===0?s1:s2}<div class="row">${btn('ปิด','close','pri')}</div>`);
+  openModal(`<h3 style="margin:0 0 8px">รูปวงจร ตอนที่ ${S.part+1}</h3>${S.part===0?`<div class="mute">① วงจรในหนังสือ</div>${s1}<div class="mute" style="margin-top:8px">② ต่อจริงบนโต๊ะ (สีเดียวกัน = จุดเดียวกัน)</div>${s1p}<div class="fbox" style="text-align:left;font-size:14px"><b style="color:${GN}">จุด B ไม่ใช่ขั้วบนอุปกรณ์</b> แต่คือจุดที่สาย 3 เส้นมาเจอกัน: ขาขวาของ R₁ + ขาซ้ายของ Rx + ขั้วหนึ่งของ G (สายสีเขียว)<br><b style="color:${RD}">A</b> = ปลายซ้ายลวด ต่อกับ R₁ และ + แหล่งจ่าย · <b>C</b> = ปลายขวาลวด ต่อกับ Rx และ − แหล่งจ่าย · <b style="color:${BL}">D</b> = ตัวเลื่อนบนลวด ต่อกับ G</div>`:s2}<div class="row">${btn('ปิด','close','pri')}</div>`);
 }
 function openModal(h){$('#mbox').innerHTML=h;$('#modal').classList.add('show');}
 $('#modal').addEventListener('click',e=>{if(e.target.id==='modal'||e.target.dataset.act==='close')$('#modal').classList.remove('show');
@@ -746,12 +777,12 @@ canvas.addEventListener('pointerup',e=>{
   if(wdrag){const w=wdrag,r=ndc(e);const tgt=w.moved?termAt(e,r,w.from,40):null;endDrag();
     if(!w.moved)tapTerm(w.from);else if(tgt){setSel(null);addWire(w.from,tgt);}else toast('ปล่อยสายให้ตรงขั้วปลายทาง');return;}
   if(ddrag){const d=ddrag;endDrag();if(d.moved&&!S.lock){const g=DEVG[d.id].g;S.dpos[S.part][d.id]=[+g.position.x.toFixed(3),+g.position.z.toFixed(3)];save();}
-    else if(!d.moved){if(d.id==='mic'){openMicro();return;}if(S.lock&&d.moved)return;const r=ndc(e);const wm=ray.intersectObjects(wireMeshes.map(w=>w.m),false)[0];if(wm){selWire=wm.object.userData.wire===selWire?-1:wm.object.userData.wire;renderPanel();}else if(sel)setSel(null);}
+    else if(!d.moved){if(d.id==='mic'){openMicro();return;}if(S.lock&&d.moved)return;const r=ndc(e);if(!tapWire())if(sel)setSel(null);}
     else toast('อุปกรณ์ถูกล็อกอยู่ ปลดล็อกในแผง "ต่อสาย"');return;}
   if(drag){endDrag();return;}
   if(!down)return;const moved=Math.hypot(e.clientX-down.x,e.clientY-down.y);const dt=performance.now()-down.t;down=null;if(moved>8||dt>600)return;
   const r=ndc(e);
-  const wm=ray.intersectObjects(wireMeshes.map(w=>w.m),false)[0];if(wm){selWire=wm.object.userData.wire===selWire?-1:wm.object.userData.wire;renderPanel();if(selWire>=0)toast('เลือกสาย '+(selWire+1)+' — กด ✕ ในรายการเพื่อลบ');return;}
+  if(tapWire())return;
   if(MICRO&&ray.intersectObject(MICRO,false)[0]){openMicro();return;}
   if(sel){setSel(null);}
 },{capture:true});
@@ -795,7 +826,7 @@ function loop(now){
   const dt=Math.min(.05,(now-last)/1000);last=now;
   if(camAnim){camAnim.s=Math.min(1,camAnim.s+dt*2.5);const e=camAnim.s<.5?2*camAnim.s*camAnim.s:1-Math.pow(-2*camAnim.s+2,2)/2;
     camera.position.lerpVectors(camAnim.p0,camAnim.p1,e);controls.target.lerpVectors(camAnim.t0,camAnim.t1,e);if(camAnim.s>=1)camAnim=null;}
-  placeSlider();controls.update();scene.updateMatrixWorld();syncWires();compute();drawSup();drawMM();updNeedles(dt);updLabels();updReadout();
+  placeSlider();updB(now);controls.update();scene.updateMatrixWorld();syncWires();compute();drawSup();drawMM();updNeedles(dt);updLabels();updReadout();
   renderer.render(scene,camera);requestAnimationFrame(loop);
 }
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{S.part=+t.dataset.p;setSel(null);selWire=-1;save();build();renderPanel(true);}));
