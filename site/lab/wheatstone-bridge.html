@@ -359,8 +359,8 @@ function updB(now){if(S.part!==0){if(bMark)bMark.visible=false;return;}if(now-bT
   if(!bMark){bMark=sprite('จุด B','#fff','rgba(46,155,74,.95)',.06);scene.add(bMark);}
   const f=groups(),gD=f('D'),g1=f('G1'),g2=f('G2');let gB=null;if(g1===gD&&g2!==gD)gB=g2;else if(g2===gD&&g1!==gD)gB=g1;
   const used=k=>S.wires[0].some(w=>w.a===k||w.b===k);
-  const t=gB&&['R1b','R1a','X1a','X2a','X3a','X1b','X2b','X3b','G1','G2'].find(k=>f(k)===gB&&used(k)&&TERM[k]);
-  if(!t||gB===f('A')||gB===f('C')){bMark.visible=false;return;}bMark.visible=true;bMark.position.copy(TERM[t].top()).add(new THREE.Vector3(.035,.11,0));}
+  const t=gB&&['G1','G2','R1b','R1a','X1a','X2a','X3a','X1b','X2b','X3b'].find(k=>f(k)===gB&&used(k)&&TERM[k]);
+  if(!t||gB===f('A')||gB===f('C')){bMark.visible=false;return;}bMark.visible=true;bMark.position.copy(TERM[t].top()).add(t[0]==='G'?new THREE.Vector3(-.045,.03,.03):new THREE.Vector3(.035,.11,0));}
 function placeSlider(){if(!B)return;const x=(S.part===0?S.jx:S.kx);B.slider.position.x=-.5+x;}
 
 /* ---------- wires ---------- */
@@ -644,7 +644,7 @@ function act(a){
 }
 function autoWire(){
   wireMeshes.forEach(w=>scene.remove(w.m));wireMeshes=[];
-  if(S.part===0)S.wires[0]=[['S+','A',0],['S-','C',1],['R1a','A',0],['R1b','X1a',3],['X1b','C',1],['G1','R1b',3],['G2','D',2]].map(p=>({a:p[0],b:p[1],col:WCOL[p[2]]}));
+  if(S.part===0)S.wires[0]=[['S+','A',0],['S-','C',1],['R1a','A',0],['R1b','G1',3],['X1a','G1',3],['X1b','C',1],['G2','D',2]].map(p=>({a:p[0],b:p[1],col:WCOL[p[2]]}));
   else S.wires[1]=[['S+','A5'],['AC','WL'],['WR','S-'],['MV','WL'],['MC','WK']].map((p,i)=>({a:p[0],b:p[1],col:WCOL[2+i%4]}));
   toast(S.part===0?'ต่อวงจรตัวอย่างให้แล้ว ลองดูทีละสาย':'ต่อแอมมิเตอร์ช่อง 5A ไว้ก่อน (เริ่มช่องใหญ่สุด) แล้วค่อยลดช่องให้เข็มขึ้นมาก ๆ');
 }
@@ -673,14 +673,14 @@ function showSchem(){
   <g fill="none" stroke-width="3.5" stroke-linecap="round">
   <path d="M85 72 C 85 170, 28 170, 28 246" stroke="${RD}"/><path d="M64 147 C 50 200, 28 200, 28 246" stroke="${RD}"/>
   <path d="M45 72 C 20 120, 400 95, 372 246" stroke="${BK}"/><path d="M336 147 C 352 200, 372 200, 372 246" stroke="${BK}"/>
-  <path d="M148 147 C 175 105, 228 105, 252 147" stroke="${GN}"/><path d="M180 72 C 178 110, 150 110, 148 147" stroke="${GN}"/>
+  <path d="M148 147 C 150 110, 175 110, 180 72" stroke="${GN}"/><path d="M252 147 C 240 105, 195 115, 180 72" stroke="${GN}"/>
   <path d="M220 72 C 245 150, 205 180, 200 236" stroke="${BL}"/></g>
   <g stroke="#111" stroke-width="1.5"><circle cx="45" cy="72" r="6" fill="#222"/><circle cx="85" cy="72" r="6" fill="#C0141E"/><circle cx="180" cy="72" r="6" fill="#C0141E"/><circle cx="220" cy="72" r="6" fill="#C0141E"/>
   <circle cx="64" cy="147" r="6" fill="#333"/><circle cx="148" cy="147" r="6" fill="#333"/><circle cx="252" cy="147" r="6" fill="#333"/><circle cx="336" cy="147" r="6" fill="#333"/>
   <circle cx="28" cy="246" r="7" fill="#222"/><circle cx="372" cy="246" r="7" fill="#C0141E"/><rect x="192" y="226" width="16" height="18" fill="#2A2F38"/></g>
   <text x="45" y="92" text-anchor="middle" font-size="12">−</text><text x="85" y="92" text-anchor="middle" font-size="12">+</text>
-  <circle cx="148" cy="147" r="13" fill="none" stroke="${GN}" stroke-width="3"/>
-  <g font-weight="700"><text x="150" y="184" fill="${GN}" text-anchor="middle">B</text><text x="6" y="236" fill="${RD}">A</text><text x="394" y="236" fill="${BK}" text-anchor="end">C</text><text x="214" y="222" fill="${BL}">D</text></g></svg>`;
+  <circle cx="180" cy="72" r="13" fill="none" stroke="${GN}" stroke-width="3"/>
+  <g font-weight="700"><text x="150" y="96" fill="${GN}" text-anchor="middle">B</text><text x="6" y="236" fill="${RD}">A</text><text x="394" y="236" fill="${BK}" text-anchor="end">C</text><text x="214" y="222" fill="${BL}">D</text></g></svg>`;
   const s2=`<svg viewBox="0 0 400 250" font-family="Sarabun,sans-serif" font-size="14"><g stroke="#222" stroke-width="2" fill="none">
   <line x1="60" y1="150" x2="340" y2="150" stroke-width="4" stroke="#888"/><path d="M60 150 L60 215 L185 215"/><path d="M215 215 L340 215 L340 150"/>
   <line x1="185" y1="200" x2="185" y2="230"/><line x1="195" y1="207" x2="195" y2="223" stroke-width="4"/><line x1="205" y1="200" x2="205" y2="230"/><line x1="215" y1="207" x2="215" y2="223" stroke-width="4"/>
@@ -688,7 +688,7 @@ function showSchem(){
   <circle cx="270" cy="215" r="15" fill="#fff"/></g>
   <text x="130" y="85">V</text><text x="264" y="220">A</text><text x="48" y="145">0</text><text x="204" y="168">K</text><text x="336" y="170">100 cm</text>
   <text x="130" y="140" text-anchor="middle">← l →</text><text x="200" y="246" text-anchor="middle">แหล่งจ่าย (+ เข้าแอมมิเตอร์)</text><text x="135" y="50" text-anchor="middle">โวลต์มิเตอร์คร่อมลวดยาว l</text></svg>`;
-  openModal(`<h3 style="margin:0 0 8px">รูปวงจร ตอนที่ ${S.part+1}</h3>${S.part===0?`<div class="mute">① วงจรในหนังสือ</div>${s1}<div class="mute" style="margin-top:8px">② ต่อจริงบนโต๊ะ (สีเดียวกัน = จุดเดียวกัน)</div>${s1p}<div class="fbox" style="text-align:left;font-size:14px"><b style="color:${GN}">จุด B ไม่ใช่ขั้วบนอุปกรณ์</b> แต่คือจุดที่สาย 3 เส้นมาเจอกัน: ขาขวาของ R₁ + ขาซ้ายของ Rx + ขั้วหนึ่งของ G (สายสีเขียว)<br><b style="color:${RD}">A</b> = ปลายซ้ายลวด ต่อกับ R₁ และ + แหล่งจ่าย · <b>C</b> = ปลายขวาลวด ต่อกับ Rx และ − แหล่งจ่าย · <b style="color:${BL}">D</b> = ตัวเลื่อนบนลวด ต่อกับ G</div>`:s2}<div class="row">${btn('ปิด','close','pri')}</div>`);
+  openModal(`<h3 style="margin:0 0 8px">รูปวงจร ตอนที่ ${S.part+1}</h3>${S.part===0?`<div class="mute">① วงจรในหนังสือ</div>${s1}<div class="mute" style="margin-top:8px">② ต่อจริงบนโต๊ะ (สีเดียวกัน = จุดเดียวกัน)</div>${s1p}<div class="fbox" style="text-align:left;font-size:14px"><b style="color:${GN}">จุด B = ขั้วซ้ายของ G</b> ที่มีสายจาก R₁ และ Rx มาต่อรวมกัน (สายสีเขียว 2 เส้น) เหมือนชุดในห้องแล็บ · ที่จริง B คือจุดที่ R₁, Rx และ G มาเจอกัน จะรวมที่ขั้วไหนก็ได้ ผลเท่ากัน<br><b style="color:${RD}">A</b> = ปลายซ้ายลวด ต่อกับ R₁ และ + แหล่งจ่าย · <b>C</b> = ปลายขวาลวด ต่อกับ Rx และ − แหล่งจ่าย · <b style="color:${BL}">D</b> = ตัวเลื่อนบนลวด ต่อกับ G</div>`:s2}<div class="row">${btn('ปิด','close','pri')}</div>`);
 }
 function openModal(h){$('#mbox').innerHTML=h;$('#modal').classList.add('show');}
 $('#modal').addEventListener('click',e=>{if(e.target.id==='modal'||e.target.dataset.act==='close')$('#modal').classList.remove('show');
