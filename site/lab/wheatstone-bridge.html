@@ -114,7 +114,7 @@ const RW=2.0, EA=.006, EC=.004, RG=60, GDIV=10e-6, RS=.02, ILIM=3, ITEST=5e-4;
 const BAND=['#111','#7a4a1e','#d01c1c','#f07b12','#f2d21b','#2a9a3a','#1f4fd6','#7d3cc8','#888','#f4f4f4'];
 
 const TN={'S+':'ขั้ว + แหล่งจ่าย','S-':'ขั้ว − แหล่งจ่าย',A:'ปลาย A ลวดบริดจ์',C:'ปลาย C ลวดบริดจ์',D:'จุดสัมผัส D',G1:'ขั้วซ้าย G',G2:'ขั้วขวา G',
- R1a:'R₁ ขาซ้าย',R1b:'R₁ ขาขวา',X1a:'Rx1 ขาซ้าย',X1b:'Rx1 ขาขวา',X2a:'Rx2 ขาซ้าย',X2b:'Rx2 ขาขวา',X3a:'Rx3 ขาซ้าย',X3b:'Rx3 ขาขวา',
+ R1a:'ปากคีบซ้ายแผ่น R₁',R1b:'ปากคีบขวาแผ่น R₁',X1a:'ปากคีบซ้ายแผ่น Rx ช่อง 1',X1b:'ปากคีบขวาแผ่น Rx ช่อง 1',X2a:'ปากคีบซ้ายแผ่น Rx ช่อง 2',X2b:'ปากคีบขวาแผ่น Rx ช่อง 2',X3a:'ปากคีบซ้ายแผ่น Rx ช่อง 3',X3b:'ปากคีบขวาแผ่น Rx ช่อง 3',
  MC:'COM มัลติมิเตอร์',MV:'VΩ มัลติมิเตอร์',WL:'ปลายซ้ายลวด (0 cm)',WR:'ปลายขวาลวด (100 cm)',WK:'คลิป K',AC:'COM แอมมิเตอร์',
  A2m:'แอมมิเตอร์ 2mA',A10m:'แอมมิเตอร์ 10mA',A100m:'แอมมิเตอร์ 100mA',A05:'แอมมิเตอร์ 0.5A',A5:'แอมมิเตอร์ 5A'};
 
@@ -126,12 +126,12 @@ function fresh(){
   const rho=MATS.map(m=>m.rho*(1+rnd(-.03,.03)));
   const dt={};MATS.forEach((m,i)=>DIAS.forEach((d,j)=>{dt[i+'-'+j]=Math.round(d*(1+rnd(-.015,.015))*1000)/1000;}));
   return {v:1,part:0,wires:[[],[]],sup:[{on:false,V:1.0,mode:'V'},{on:false,V:1.0,mode:'V'}],mm:['off','off'],jx:.5,kx:.5,r1i:2,
-    rx,r1,rho,dt,mat:0,dia:1,rec1:{},rec2:{},dmeas:{},cam:[0,0],dpos:[{},{}],lock:false};
+    rx,r1,rho,dt,mat:0,dia:1,rec1:{},rec2:{},dmeas:{},cam:[0,0],dpos:[{},{}],lock:false,seat:{R1:'R1',X1:'X1',X2:'X2',X3:'X3'}};
 }
 let S;
 try{S=JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){S=null;}
 if(!S||S.v!==1)S=fresh();
-if(!S.dpos)S.dpos=[{},{}];if(S.lock===undefined)S.lock=false;
+if(!S.dpos)S.dpos=[{},{}];if(!S.seat)S.seat={R1:'R1',X1:'X1',X2:'X2',X3:'X3'};if(S.lock===undefined)S.lock=false;
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
 let sel=null, selWire=-1, panelSig='';
 
@@ -302,26 +302,38 @@ function drawMM(){
   g.fillStyle='#FFD400';g.font='bold 16px sans-serif';g.fillText('V⎓',cx+70,cy-110);g.fillText('Ω',cx-80,cy-100);
   d.fc.t.needsUpdate=true;d.knob.rotation.y=-(pos[m]*Math.PI/180);
 }
-function resistor(parent,x,z,nom,idA,idB,lab){
-  const g=new THREE.Group();g.position.set(x,0,z);parent.add(g);
+const SEATS=['R1','X1','X2','X3'];let RB={},swapA=null;
+function rVal(id){return id==='R1'?S.r1[S.r1i]:S.rx[+id[1]-1].t;}
+function rNom(id){return id==='R1'?R1N[S.r1i]:S.rx[+id[1]-1].n;}
+function rLab(id){return id==='R1'?'R₁='+R1N[S.r1i]+'Ω':'Rx'+id[1];}
+function seatOf(id){return SEATS.find(k=>S.seat[k]===id);}
+function resistor(parent,x,z,seat){
+  const id=S.seat[seat],nom=rNom(id);
+  const g=new THREE.Group();g.position.set(x,0,z);parent.add(g);RB[seat]=g;
   const bd=cyl(.0065,.0065,.032,mat(0xD9C9A3),16);bd.rotation.z=Math.PI/2;bd.position.y=.022;g.add(bd);
   const s=String(Math.round(nom));const d1=+s[0],d2=+(s[1]||0),mul=s.length-2;
   [[d1,-.01],[d2,-.004],[mul,.002],[-1,.01]].forEach(([c,xo])=>{const bm=cyl(.0068,.0068,.0025,mat(c<0?0xC9A227:new THREE.Color(BAND[c]).getHex(),c<0?{metalness:.6,roughness:.3}:{}),16);bm.rotation.z=Math.PI/2;bm.position.set(xo,.022,0);g.add(bm);});
-  [-1,1].forEach(sg=>{const ld=cyl(.0012,.0012,.034,METAL,6);ld.rotation.z=Math.PI/2;ld.position.set(sg*.033,.022,0);g.add(ld);});
-  post(idA,g,-.06,.008,0,0x1b1b1b,null);post(idB,g,.06,.008,0,0x1b1b1b,null);
-  const sp=sprite(lab,'#fff','rgba(160,20,90,.9)',.055);sp.position.set(0,.055,0);g.add(sp);
+  [-1,1].forEach(sg=>{const ld=cyl(.0012,.0012,.04,METAL,6);ld.rotation.z=Math.PI/2;ld.position.set(sg*.036,.022,0);g.add(ld);});
+  post(seat+'a',parent,x-.06,.008,z,0x1b1b1b,null);post(seat+'b',parent,x+.06,.008,z,0x1b1b1b,null);
+  const sp=sprite(rLab(id),'#fff',id==='R1'?'rgba(31,111,235,.92)':'rgba(160,20,90,.9)',.055);sp.position.set(0,.055,0);g.add(sp);
   return g;
 }
+function animSwap(sa,sb,msg){
+  if(swapA)return;const a=RB[sa],b=RB[sb];if(!a||!b)return;scene.attach(a);scene.attach(b);
+  swapA={a,b,pa:a.position.clone(),pb:b.position.clone(),t:0,done:()=>{const t=S.seat[sa];S.seat[sa]=S.seat[sb];S.seat[sb]=t;scene.remove(a);scene.remove(b);save();build();renderPanel(true);toast(msg);}};
+}
+function stepSwap(dt){if(!swapA)return;const A=swapA;A.t=Math.min(1,A.t+dt/0.9);const e=A.t<.5?2*A.t*A.t:1-Math.pow(-2*A.t+2,2)/2,h=Math.sin(Math.PI*A.t)*.12;
+  A.a.position.lerpVectors(A.pa,A.pb,e);A.a.position.y=A.pa.y+h;A.b.position.lerpVectors(A.pb,A.pa,e);A.b.position.y=A.pb.y+h*1.3;if(A.t>=1){swapA=null;A.done();}}
 function holder1(x,z){
   const g=new THREE.Group();g.position.set(x,0,z);root.add(g);
   const b=box(.17,.008,.07,mat(0xF06BB4));b.position.y=.004;g.add(b);
-  resistor(g,0,0,R1N[S.r1i],'R1a','R1b','R₁='+R1N[S.r1i]+'Ω');dlabel('R₁ มาตรฐาน',b,.06);return g;
+  resistor(g,0,0,'R1');return g;
 }
 function holderX(x,z){
   const g=new THREE.Group();g.position.set(x,0,z);root.add(g);
   const b=box(.17,.008,.2,mat(0xF06BB4));b.position.y=.004;g.add(b);
-  S.rx.forEach((r,i)=>resistor(g,0,-.065+i*.065,r.n,'X'+(i+1)+'a','X'+(i+1)+'b','Rx'+(i+1)));
-  dlabel('Rx ที่ไม่ทราบค่า 3 ตัว',b,.12);return g;
+  ['X1','X2','X3'].forEach((k,i)=>resistor(g,0,-.065+i*.065,k));
+  return g;
 }
 function micrometer(x,z){
   const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=.4;root.add(g);
@@ -400,8 +412,7 @@ function elements(Vs){
   if(sp.on&&Vs>0){E.push(['I','S-','S+',Vs/RS]);E.push(['R','S+','S-',RS]);}
   if(P===0){
     const x=S.jx;E.push(['R','A','#P',RW*x+EA]);E.push(['R','#P','C',RW*(1-x)+EC]);E.push(['R','D','#P',.02]);
-    E.push(['R','G1','G2',RG]);E.push(['R','R1a','R1b',S.r1[S.r1i]]);
-    S.rx.forEach((r,i)=>E.push(['R','X'+(i+1)+'a','X'+(i+1)+'b',r.t]));
+    E.push(['R','G1','G2',RG]);SEATS.forEach(k=>E.push(['R',k+'a',k+'b',rVal(S.seat[k])]));
   }else{
     const m=MATS[S.mat],d=S.dt[S.mat+'-'+S.dia]*1e-3,Rt=S.rho[S.mat]/(Math.PI*d*d/4);
     const x=S.kx;E.push(['R','WL','#Q',Rt*x+.003]);E.push(['R','#Q','WR',Rt*(1-x)+.003]);E.push(['R','WK','#Q',.01]);
@@ -456,12 +467,12 @@ function diag1(){
   const gOK=gB!==null&&used('G1')&&used('G2');
   out.push([gOK,'กัลวานอมิเตอร์ต่อระหว่างจุด B กับจุดสัมผัส D']);
   const pair=(a,b,x,y)=>(g(a)===x&&g(b)===y)||(g(a)===y&&g(b)===x);
-  let side=null;if(gB!==null){if(pair('R1a','R1b',gA,gB))side='A';else if(pair('R1a','R1b',gC,gB))side='C';}
+  const sR=seatOf('R1');let side=null;if(gB!==null){if(pair(sR+'a',sR+'b',gA,gB))side='A';else if(pair(sR+'a',sR+'b',gC,gB))side='C';}
   out.push([!!side,'R₁ ต่อระหว่างปลายลวด (A หรือ C) กับจุด B']);
-  let k=0;if(side){const other=side==='A'?gC:gA;for(let i=1;i<=3;i++)if(pair('X'+i+'a','X'+i+'b',gB,other)){k=i;break;}}
+  let k=0,kSeat=null;if(side){const other=side==='A'?gC:gA;for(const st of SEATS){if(st===sR)continue;if(pair(st+'a',st+'b',gB,other)){k=+S.seat[st][1];kSeat=st;break;}}}
   out.push([k>0,'Rx ต่อระหว่างจุด B กับปลายลวดอีกด้าน']);
   out.push([S.sup[0].on,'เปิดแหล่งจ่าย (ตั้ง 0.5–1.0 V)']);
-  return {ok:out.every(o=>o[0]),list:out,k,swapped:side==='C'};
+  return {ok:out.every(o=>o[0]),list:out,k,kSeat,sR,swapped:side==='C'};
 }
 function diag2(){
   const f=groups(),g=k=>f(k),gL=g('WL'),gR=g('WR'),gK=g('WK'),out=[];
@@ -494,10 +505,12 @@ function recBalance(){
 function recOhm(){
   compute();if(!S.mm[0].startsWith('o')){toast('หมุนมัลติมิเตอร์ไปโหมด Ω ก่อน');return;}
   const f=groups(),mc=f('MC'),mv=f('MV');let k=0;
-  for(let i=1;i<=3;i++){const a=f('X'+i+'a'),b=f('X'+i+'b');if((a===mc&&b===mv)||(a===mv&&b===mc))k=i;}
-  if(!k){toast('ต่อสาย COM และ VΩ คร่อม Rx ตัวที่จะวัด');return;}
+  let st=null;for(const q of SEATS){const a=f(q+'a'),b=f(q+'b');if((a===mc&&b===mv)||(a===mv&&b===mc))st=q;}
+  if(!st){toast('ต่อสาย COM และ VΩ คร่อม Rx ตัวที่จะวัด');return;}
+  if(S.seat[st]==='R1'){toast('ตัวนี้คือ R₁ (ตัวต้านทานมาตรฐาน) อ่านได้ '+mmText()+' Ω');return;}
+  k=+S.seat[st][1];
   const v=mmVal();if(v===null){toast('ค่าเกินช่วงวัด (จอขึ้น 1.) เปลี่ยนช่อง Ω ให้ใหญ่ขึ้น');return;}
-  const busy=S.wires[0].filter(w=>[w.a,w.b].some(t=>t==='X'+k+'a'||t==='X'+k+'b')).length>2;
+  const busy=S.wires[0].filter(w=>[w.a,w.b].some(t=>t===st+'a'||t===st+'b')).length>2;
   (S.rec1[k]||(S.rec1[k]={})).m=v;save();dirty();
   toast('บันทึกค่าโอห์มมิเตอร์ Rx'+k+' = '+v+' Ω'+(busy?' (ระวัง: ยังต่ออยู่ในวงจร)':''));
 }
@@ -543,7 +556,7 @@ function p1Panel(){
     return `<tr><td>ตัวที่ ${k}</td><td>${o.m!==undefined?o.m:'–'}</td><td>${o.n?fx(o.n.L1,1)+' / '+fx(o.n.L2,1):'–'}</td><td>${o.n?fx(o.n.Rx,1):'–'}</td><td>${o.s?fx(o.s.L1,1)+' / '+fx(o.s.L2,1):'–'}</td><td>${o.s?fx(o.s.Rx,1):'–'}</td><td>${avg?fx(avg,1):'–'}</td><td>${err!==null?fx(err,2)+'%':'–'}</td></tr>`;}).join('');
   return wireCard()+supCard()+sliderCard()+
   `<div class="card"><h3>ตัวต้านทาน</h3><div class="row"><span class="mute">R₁ มาตรฐาน</span>${R1N.map((n,i)=>btn(n+' Ω','r1:'+i,'sm'+(S.r1i===i?' on':''))).join('')}</div>
-  <div class="row"><span class="mute">ย้ายสาย Rx ไปตัวที่</span>${[1,2,3].map(k=>btn('Rx'+k,'mvx:'+k,'sm')).join('')}${btn('สลับ R₁ ↔ Rx','swap','sm')}</div></div>`+
+  <div class="row"><span class="mute">ใส่ Rx ตัวที่</span>${[1,2,3].map(k=>btn('Rx'+k,'mvx:'+k,'sm')).join('')}${btn('สลับ R₁ ↔ Rx','swap','sm')}</div><div class="mute">สลับ = ถอดตัวต้านทานออกจากปากคีบแล้วแลกที่กัน สายทุกเส้นอยู่ที่เดิม</div></div>`+
   mmCard(['off','o200','o2k','o20k'])+
   `<div class="card"><h3>บันทึกผล ตอนที่ 1</h3>
   <div class="fbox">สมดุลเมื่อเข็ม G ชี้ 0 :&nbsp; ${FR('R<sub>1</sub>','R<sub>x</sub>')} = ${FR('L<sub>1</sub>','L<sub>2</sub>')} &nbsp;→&nbsp; R<sub>x</sub> = ${FR('L<sub>2</sub>','L<sub>1</sub>')} R<sub>1</sub></div>
@@ -592,7 +605,7 @@ function p2Panel(){
   <li>R = ${FR('ρℓ','A')} : R แปรผันตรงกับ l และ ρ, แปรผกผันกับ A</li></ol></details></div>`;
 }
 function renderPanel(force){
-  const sig=JSON.stringify([S.lock,S.part,S.wires[S.part],S.sup[S.part],S.mm[S.part],S.r1i,S.rec1,S.rec2,S.mat,S.dia,S.dmeas,selWire]);
+  const sig=JSON.stringify([S.seat,S.lock,S.part,S.wires[S.part],S.sup[S.part],S.mm[S.part],S.r1i,S.rec1,S.rec2,S.mat,S.dia,S.dmeas,selWire]);
   if(!force&&sig===panelSig)return;panelSig=sig;
   const st=$('#panel').scrollTop;$('#panel').innerHTML=S.part===0?p1Panel():p2Panel();$('#panel').scrollTop=st;
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',+t.dataset.p===S.part));
@@ -623,13 +636,13 @@ function act(a){
   else if(k==='mm'){S.mm[P]=v;}
   else if(k==='mv'){const key=P===0?'jx':'kx';S[key]=Math.max(0,Math.min(1,Math.round((S[key]+ +v/100)*1000)/1000));placeSlider();}
   else if(k==='r1'){S.r1i=+v;build();}
-  else if(k==='mvx'){const to=+v;const d=diag1();const from=[1,2,3].find(i=>S.wires[0].some(w=>[w.a,w.b].some(t=>t==='X'+i+'a'||t==='X'+i+'b')));
-    if(!from){toast('ยังไม่ได้ต่อสายที่ Rx ตัวใด');}else if(from===to){toast('ต่อที่ Rx'+to+' อยู่แล้ว');}else{S.wires[0].forEach(w=>{['a','b'].forEach(e=>{if(w[e]==='X'+from+'a')w[e]='X'+to+'a';else if(w[e]==='X'+from+'b')w[e]='X'+to+'b';});});toast('ย้ายสายจาก Rx'+from+' ไป Rx'+to);}}
-  else if(k==='swap'){const from=[1,2,3].find(i=>S.wires[0].some(w=>[w.a,w.b].some(t=>t==='X'+i+'a'||t==='X'+i+'b')));
-    if(!from){toast('ต่อ Rx ในวงจรก่อน');}else{const m={R1a:'X'+from+'a',R1b:'X'+from+'b'};m['X'+from+'a']='R1a';m['X'+from+'b']='R1b';
-      S.wires[0].forEach(w=>{if(w.a.startsWith('M')||w.b.startsWith('M'))return;['a','b'].forEach(e=>{if(m[w[e]])w[e]=m[w[e]];});});toast('สลับตำแหน่ง R₁ กับ Rx'+from+' แล้ว หาจุดสมดุลใหม่');}}
+  else if(k==='mvx'){const d=diag1();const act=d.kSeat||SEATS.find(st=>st!==seatOf('R1')&&S.wires[0].some(w=>[w.a,w.b].some(t=>t===st+'a'||t===st+'b')));
+    const tgt=seatOf('X'+v);if(!act){toast('ยังไม่ได้ต่อ Rx เข้าวงจร');}else if(act===tgt){toast('Rx'+v+' อยู่ในวงจรแล้ว');}
+    else animSwap(act,tgt,'เปลี่ยนเป็น Rx'+v+' แล้ว (สายอยู่ที่เดิม) หาจุดสมดุลใหม่');}
+  else if(k==='swap'){const d=diag1();if(!d.kSeat){toast('ต่อวงจรให้ครบก่อน (กด "ตรวจวงจร")');}
+    else animSwap(d.sR,d.kSeat,'สลับ R₁ กับ Rx'+d.k+' แล้ว (สายอยู่ที่เดิม) หาจุดสมดุลใหม่');}
   else if(k==='recB')recBalance();else if(k==='recO')recOhm();else if(k==='recP')recPoint();
-  else if(k==='clr1'){S.rec1={};}else if(k==='newrx'){const f=fresh();S.rx=f.rx;S.rec1={};build();toast('สุ่ม Rx ชุดใหม่แล้ว');}
+  else if(k==='clr1'){S.rec1={};}else if(k==='newrx'){const f=fresh();S.rx=f.rx;S.rec1={};S.seat={R1:'R1',X1:'X1',X2:'X2',X3:'X3'};build();toast('สุ่ม Rx ชุดใหม่แล้ว');}
   else if(k==='clr2'){delete S.rec2[wkey()];}else if(k==='dp'){(S.rec2[wkey()]||[]).splice(+v,1);}
   else if(k==='mat'){S.mat=+v;build();}else if(k==='dia'){S.dia=+v;build();}
   else if(k==='rg'){let n=0;S.wires[1].forEach(w=>['a','b'].forEach(e=>{if(AR.some(a=>a.k===w[e])){w[e]=v;n++;}}));toast(n?'ย้ายสายไปช่อง '+AR.find(a=>a.k===v).t:'ยังไม่ได้ต่อสายที่แอมมิเตอร์');}
@@ -826,7 +839,7 @@ function loop(now){
   const dt=Math.min(.05,(now-last)/1000);last=now;
   if(camAnim){camAnim.s=Math.min(1,camAnim.s+dt*2.5);const e=camAnim.s<.5?2*camAnim.s*camAnim.s:1-Math.pow(-2*camAnim.s+2,2)/2;
     camera.position.lerpVectors(camAnim.p0,camAnim.p1,e);controls.target.lerpVectors(camAnim.t0,camAnim.t1,e);if(camAnim.s>=1)camAnim=null;}
-  placeSlider();updB(now);controls.update();scene.updateMatrixWorld();syncWires();compute();drawSup();drawMM();updNeedles(dt);updLabels();updReadout();
+  placeSlider();updB(now);stepSwap(dt);controls.update();scene.updateMatrixWorld();syncWires();compute();drawSup();drawMM();updNeedles(dt);updLabels();updReadout();
   renderer.render(scene,camera);requestAnimationFrame(loop);
 }
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{S.part=+t.dataset.p;setSel(null);selWire=-1;save();build();renderPanel(true);}));
